@@ -1,7 +1,14 @@
 {
   "name": "danieldcs.com",
+  "description": "My personal website built in full-stack React.",
   "private": true,
   "type": "module",
+  "version": "1.0.0",
+  "engines": {
+    "node": "22.16.0",
+    "pnpm": "10.8.1"
+  },
+  "packageManager": "pnpm@10.8.1",
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
