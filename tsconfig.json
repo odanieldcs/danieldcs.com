@@ -28,8 +28,11 @@
       "~/*": [
         "./app/*"
       ],
-      "@content/*": [
+      "@/content/*": [
         "./app/content/*"
+      ],
+      "#/tests/*": [
+        "./tests/*"
       ],
     },
     "esModuleInterop": true,
