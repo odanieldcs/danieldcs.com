@@ -1,4 +1,4 @@
-import About from '@content/about.mdx'
+import About from '@/content/about.mdx'
 import type { Route } from './+types/about'
 
 // biome-ignore lint/correctness/noEmptyPattern: <explanation>
