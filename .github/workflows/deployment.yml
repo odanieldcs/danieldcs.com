@@ -87,3 +87,76 @@ jobs:
       - name: 🔍 Run lint
         run: pnpm lint
 
+  typecheck:
+    name: 🔍 Type Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: setup
+    steps:
+      - name: ⬇️ Download workspace
+        uses: actions/download-artifact@v4
+        with:
+          name: project-workspace
+          path: .
+
+      - name: ⚙️ Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: 📦 Restore pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ needs.setup.outputs.pnpm_store_path }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - name: 🥁 Install dependencies
+        run: pnpm install --frozen-lockfile --store-dir ${{ needs.setup.outputs.pnpm_store_path }}
+
+      - name: 🔍 Run type check
+        run: pnpm typecheck
+
+  test:
+    name: 🧪 Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: setup
+    steps:
+      - name: ⬇️ Download workspace
+        uses: actions/download-artifact@v4
+        with:
+          name: project-workspace
+          path: .
+
+      - name: ⚙️ Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: 📦 Restore pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ needs.setup.outputs.pnpm_store_path }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - name: 🥁 Install dependencies
+        run: pnpm install --frozen-lockfile --store-dir ${{ needs.setup.outputs.pnpm_store_path }}
+
+      - name: 🔍 Run tests
+        run: pnpm test
