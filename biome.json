@@ -22,7 +22,8 @@
 		"rules": {
 			"recommended": true,
 			"suspicious": {
-				"noExplicitAny": "off"
+				"noExplicitAny": "off",
+				"noUnknownAtRules": "off"
 			},
 			"correctness": {
 				"noUnusedImports": "error"
