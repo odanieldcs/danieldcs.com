@@ -123,7 +123,14 @@ jobs:
       - name: ⚙️ Setup Flyctl
         uses: superfly/flyctl-actions/setup-flyctl@master
 
-      - name: 🚀 Deploy
-        run: flyctl deploy --remote-only
+      - name: ⚙️ Get app name
+        uses: SebRollen/toml-action@v1.0.0
+        id: app_name
+        with:
+          file: "fly.toml"
+          field: "app"
+
+      - name: 🚀 Deploy Staging
+        run: flyctl deploy --remote-only --app ${{ steps.app_name.outputs.value }}-staging
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
