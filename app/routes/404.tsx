@@ -1,20 +1,19 @@
 
 export function meta() {
   return [
-    { title: 'Articles - Daniel Castro - Software Engineer' },
+    { title: 'Page Not Found - Daniel Castro - Software Engineer' },
     {
       name: 'description',
-      content:
-        'Explore articles on software engineering, web development, and more.',
+      content: 'The page you are looking for does not exist.',
     },
   ]
 }
 
-export default function Articles() {
+export default function NotFound() {
   return (
     <main className="flex flex-col h-screen items-center justify-center pt-16 pb-4">
       <p className="leading-6 text-gray-700 dark:text-gray-200 text-center">
-        Articles will be available soon!
+        Page not found!
       </p>
     </main>
   )
