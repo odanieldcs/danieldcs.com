@@ -1,15 +1,19 @@
 import { reactRouter } from "@react-router/dev/vite";
 import tailwindcss from "@tailwindcss/vite";
+import path from 'node:path';
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
-import mdx from '@mdx-js/rollup';
 
 export default defineConfig({
-  plugins: [tailwindcss(), mdx(), reactRouter(), tsconfigPaths()],
+  plugins: [
+    tailwindcss(), 
+    reactRouter(),
+    tsconfigPaths(),
+  ],
   resolve: {
     alias: {
-      "~/*": "/src",
-      "@content/*": "/src/content",
+      "@/*": "/src",
+      "@/content": path.resolve(__dirname, '.velite')
     }
   }
 });

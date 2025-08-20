@@ -25,11 +25,11 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "~/*": [
+      "@/*": [
         "./app/*"
       ],
-      "@/content/*": [
-        "./app/content/*"
+      "@/content": [
+        "./.velite"
       ],
       "#/tests/*": [
         "./tests/*"

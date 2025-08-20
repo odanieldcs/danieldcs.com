@@ -10,8 +10,8 @@
   },
   "packageManager": "pnpm@10.8.1",
   "scripts": {
-    "build": "react-router build",
-    "dev": "react-router dev",
+    "build": "velite && react-router build",
+    "dev": "velite && react-router dev",
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
     "format": "biome format --write",
@@ -19,8 +19,6 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@mdx-js/react": "^3.1.0",
-    "@mdx-js/rollup": "^3.1.0",
     "@react-router/node": "^7.5.3",
     "@react-router/serve": "^7.5.3",
     "@testing-library/dom": "^10.4.0",
@@ -38,9 +36,11 @@
     "@types/node": "^20",
     "@types/react": "^19.1.5",
     "@types/react-dom": "^19.1.5",
+    "@velite/plugin-vite": "^0.0.1",
     "@vitejs/plugin-react": "^4.5.0",
     "tailwindcss": "^4.1.4",
     "typescript": "^5.8.3",
+    "velite": "^0.2.4",
     "vite": "^6.3.3",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.1.4"
