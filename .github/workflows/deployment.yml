@@ -114,7 +114,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     needs: build
-    if: ${{ github.ref == 'refs/heads/dev' }}
+    if: ${{ (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/main') && github.event_name == 'push' }}
 
     steps:
       - name: ⬇️ Checkout code
@@ -131,6 +131,13 @@ jobs:
           field: "app"
 
       - name: 🚀 Deploy Staging
+        if: ${{ github.ref == 'refs/heads/dev' }}
         run: flyctl deploy --remote-only --app ${{ steps.app_name.outputs.value }}-staging
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: 🚀 Deploy Production
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
