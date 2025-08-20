@@ -131,6 +131,6 @@ jobs:
         uses: superfly/flyctl-actions/setup-flyctl@master
 
       - name: 🚀 Deploy to staging
-        run: flyctl deploy --remote-only --app ${{ steps.app_name.outputs.values }}_staging
+        run: flyctl deploy --remote-only --app ${{ steps.app_name.outputs.value }}_staging
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
