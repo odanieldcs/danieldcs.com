@@ -1,7 +1,5 @@
-import type { Route } from './+types/articles'
 
-// biome-ignore lint/correctness/noEmptyPattern: <explanation>
-export function meta({}: Route.MetaArgs) {
+export function meta() {
   return [
     { title: 'Articles - Daniel Castro - Software Engineer' },
     {

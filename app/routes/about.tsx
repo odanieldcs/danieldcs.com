@@ -1,8 +1,6 @@
 import About from '@/content/about.mdx'
-import type { Route } from './+types/about'
 
-// biome-ignore lint/correctness/noEmptyPattern: <explanation>
-export function meta({}: Route.MetaArgs) {
+export function meta() {
   return [
     { title: 'About - Daniel Castro - Software Engineer' },
     {
