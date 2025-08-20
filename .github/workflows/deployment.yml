@@ -4,16 +4,14 @@ on:
     branches: [main, dev]
 
 env:
-  NODE_VERSION: '22.16.0'
-  PNPM_VERSION: '10.8.1'
+  NODE_VERSION: "22.16.0"
+  PNPM_VERSION: "10.8.1"
 
 jobs:
-  setup:
-    name: 🏗️ Setup
+  lint:
+    name: 🧹 Lint
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-    outputs:
-      pnpm_store_path: ${{ steps.pnpm-store.outputs.pnpm_store_path }}
+    timeout-minutes: 5
     steps:
       - name: ⬇️ Checkout code
         uses: actions/checkout@v4
@@ -27,62 +25,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
-
-      - name: 📦 Get pnpm store path
-        id: pnpm-store
-        run: |
-          pnpm_store=$(pnpm store path)
-          mkdir -p $pnpm_store
-          echo "pnpm_store_path=$pnpm_store" >> $GITHUB_OUTPUT
-
-      - name: 📦 Cache pnpm store
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.pnpm-store.outputs.pnpm_store_path }}
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
-
-      - name: 📦 Upload workspace
-        uses: actions/upload-artifact@v4
-        with:
-          name: project-workspace
-          path: .
-
-  lint:
-    name: 🧹 Lint
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    needs: setup
-    steps:
-      - name: ⬇️ Download workspace
-        uses: actions/download-artifact@v4
-        with:
-          name: project-workspace
-          path: .
-
-      - name: ⚙️ Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
-
-      - name: ⚙️ Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
-
-      - name: 📦 Restore pnpm cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ needs.setup.outputs.pnpm_store_path }}
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
+          cache: "pnpm"
 
       - name: 🥁 Install dependencies
-        run: pnpm install --frozen-lockfile --store-dir ${{ needs.setup.outputs.pnpm_store_path }}
+        run: pnpm install --frozen-lockfile
 
       - name: 🔍 Run lint
         run: pnpm lint
@@ -90,14 +36,10 @@ jobs:
   typecheck:
     name: 🔍 Type Check
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-    needs: setup
+    timeout-minutes: 5
     steps:
-      - name: ⬇️ Download workspace
-        uses: actions/download-artifact@v4
-        with:
-          name: project-workspace
-          path: .
+      - name: ⬇️ Checkout code
+        uses: actions/checkout@v4
 
       - name: ⚙️ Install pnpm
         uses: pnpm/action-setup@v4
@@ -108,18 +50,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
-
-      - name: 📦 Restore pnpm cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ needs.setup.outputs.pnpm_store_path }}
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
+          cache: "pnpm"
 
       - name: 🥁 Install dependencies
-        run: pnpm install --frozen-lockfile --store-dir ${{ needs.setup.outputs.pnpm_store_path }}
+        run: pnpm install --frozen-lockfile
 
       - name: 🔍 Run type check
         run: pnpm typecheck
@@ -128,13 +62,9 @@ jobs:
     name: 🧪 Test
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    needs: setup
     steps:
-      - name: ⬇️ Download workspace
-        uses: actions/download-artifact@v4
-        with:
-          name: project-workspace
-          path: .
+      - name: ⬇️ Checkout code
+        uses: actions/checkout@v4
 
       - name: ⚙️ Install pnpm
         uses: pnpm/action-setup@v4
@@ -145,18 +75,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
-
-      - name: 📦 Restore pnpm cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ needs.setup.outputs.pnpm_store_path }}
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
+          cache: "pnpm"
 
       - name: 🥁 Install dependencies
-        run: pnpm install --frozen-lockfile --store-dir ${{ needs.setup.outputs.pnpm_store_path }}
+        run: pnpm install --frozen-lockfile
 
       - name: 🔍 Run tests
         run: pnpm test
