@@ -120,15 +120,15 @@ jobs:
       - name: ⬇️ Checkout code
         uses: actions/checkout@v4
 
-      - name: ⚙️ Setup Flyctl
-        uses: superfly/flyctl-actions/setup-flyctl@master
-
       - name: ⚙️ Get app name
         uses: SebRollen/toml-action@v1.0.0
         id: app_name
         with:
           file: "fly.toml"
           field: "app"
+
+      - name: ⚙️ Setup Flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
 
       - name: 🚀 Deploy to staging
         run: flyctl deploy --remote-only --app ${{ steps.app_name.outputs.values }}_staging
