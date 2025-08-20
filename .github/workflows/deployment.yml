@@ -109,8 +109,8 @@ jobs:
       - name: 🧱 Build application
         run: pnpm build
 
-  deploy-staging:
-    name: 🚀 Deploy Staging
+  deploy:
+    name: 🚀 Deploy
     runs-on: ubuntu-latest
     timeout-minutes: 15
     needs: build
@@ -120,17 +120,10 @@ jobs:
       - name: ⬇️ Checkout code
         uses: actions/checkout@v4
 
-      - name: ⚙️ Get app name
-        uses: SebRollen/toml-action@v1.0.0
-        id: app_name
-        with:
-          file: "fly.toml"
-          field: "app"
-
       - name: ⚙️ Setup Flyctl
         uses: superfly/flyctl-actions/setup-flyctl@master
 
-      - name: 🚀 Deploy to staging
-        run: flyctl deploy --remote-only --app ${{ steps.app_name.outputs.value }}_staging
+      - name: 🚀 Deploy
+        run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
