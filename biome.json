@@ -13,13 +13,17 @@
       "next.config.ts",
       "vitest.config.*",
       "app/**/*.test.*",
+      "playwright.config.ts",
+      "e2e/**",
       "postcss.config.mjs",
       "tsconfig.json",
       "package.json",
       "biome.json",
       "!**/.next",
       "!**/node_modules",
-      "!**/pnpm-lock.yaml"
+      "!**/pnpm-lock.yaml",
+      "!**/playwright-report",
+      "!**/test-results"
     ]
   },
   "formatter": {
