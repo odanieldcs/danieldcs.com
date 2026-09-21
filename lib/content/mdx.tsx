@@ -1,5 +1,6 @@
 import rehypeShiki from '@shikijs/rehype'
 import { MDXRemote, type MDXRemoteProps } from 'next-mdx-remote/rsc'
+import { mdxComponents } from './mdx-components'
 
 type MdxOptions = NonNullable<
   NonNullable<MDXRemoteProps['options']>['mdxOptions']
@@ -28,7 +29,7 @@ export function MdxContent({
   return (
     <MDXRemote
       source={source}
-      components={components}
+      components={{ ...mdxComponents, ...components }}
       options={{
         mdxOptions: {
           remarkPlugins: remarkPlugins ?? [],

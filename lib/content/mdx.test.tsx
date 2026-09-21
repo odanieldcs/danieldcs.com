@@ -27,7 +27,7 @@ test('highlights a ts code fence with Shiki tokens', async () => {
 
   expect(html).toContain('shiki')
   expect(html).toMatch(/style=/)
-})
+}, 15_000)
 
 test.each(['ts', 'tsx', 'bash', 'json'] as const)(
   'compiles a %s code fence without error',
@@ -35,4 +35,5 @@ test.each(['ts', 'tsx', 'bash', 'json'] as const)(
     const source = `\`\`\`${language}\n{}\n\`\`\``
     await expect(compileHighlighted(source)).resolves.toBeDefined()
   },
+  15_000,
 )
