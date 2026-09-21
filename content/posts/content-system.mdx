@@ -1,0 +1,33 @@
+---
+title: Como o content system renderiza um artigo
+description: Um passeio pelo pipeline de ponta a ponta — frontmatter, loaders, MDX, Shiki e a rota /blog/[slug].
+date: 2026-09-21
+tags:
+  - content
+  - mdx
+  - nextjs
+cover: content-system.png
+language: pt
+---
+
+Este artigo existe para provar que o pipeline de conteúdo funciona de verdade: do arquivo MDX em `content/posts/` até a página estática em `/blog/content-system`.
+
+## Do arquivo à página
+
+Cada post é um `.mdx` com YAML no topo. O Zod valida `title`, `description`, `date`, `tags`, `cover` e `language`. O loader lê o corpo, separa frontmatter e entrega tudo para a rota `app/blog/[slug]/page.tsx`, que monta metadados, capa e o corpo via `MdxContent`.
+
+O trecho abaixo é o mesmo padrão usado pelos loaders para listar slugs em build time:
+
+```ts
+export function getAllPostSlugs(postsDir?: string): string[] {
+  return readdirSync(resolvePostsDir(postsDir))
+    .filter((filename) => filename.endsWith('.mdx'))
+    .map(slugFromFilename)
+}
+```
+
+Links também fazem parte do contrato: volte para a [home](/) ou consulte a [documentação do App Router](https://nextjs.org/docs/app) no site da Vercel.
+
+![Fluxo simplificado do content system](/media/posts/content-system-pipeline.png)
+
+Na prática, blocos de código passam pelo Shiki (`github-light`), parágrafos e headings usam componentes MDX mínimos, e imagens internas apontam para arquivos em `public/media/posts/`. Nada disso exige CMS nem banco — só arquivos versionados e um `pnpm build`.
