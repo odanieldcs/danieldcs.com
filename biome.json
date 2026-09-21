@@ -9,6 +9,7 @@
     "ignoreUnknown": false,
     "includes": [
       "app/**",
+      "lib/**",
       "next.config.ts",
       "postcss.config.mjs",
       "tsconfig.json",
