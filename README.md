@@ -54,3 +54,7 @@ pnpm test:e2e
 - `e2e/` — Playwright smoke tests
 
 `@/foo` resolves to `<repo>/foo` via `compilerOptions.paths` in `tsconfig.json`. Example: `@/lib/site` → `lib/site.ts`. There is no `~/*` alias.
+
+## Branching
+
+Trunk-based: feature branch → pull request → `main` → Vercel. Direct pushes, force-pushes, and deleting `main` are blocked. The GitHub Actions check `ci` must be green before merge. Reviews are not required in V1 (solo project).
