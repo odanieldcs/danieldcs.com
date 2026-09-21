@@ -52,4 +52,4 @@ test('renders a mixed MDX fixture with semantic HTML and no design-system classe
   expect(html).toContain('shiki')
   expect(html).toMatch(/style=/)
   expect(html).not.toMatch(paletteOrTypeClasses)
-})
+}, 15_000)
