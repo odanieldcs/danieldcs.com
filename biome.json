@@ -11,6 +11,8 @@
       "app/**",
       "lib/**",
       "next.config.ts",
+      "vitest.config.*",
+      "app/**/*.test.*",
       "postcss.config.mjs",
       "tsconfig.json",
       "package.json",
