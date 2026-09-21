@@ -3,5 +3,5 @@ export default function Home() {
     <main>
       <h1 className="text-red-500">danieldcs.com</h1>
     </main>
-  );
+  )
 }
