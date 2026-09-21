@@ -1,8 +1,16 @@
+import rehypeShiki from '@shikijs/rehype'
 import { MDXRemote, type MDXRemoteProps } from 'next-mdx-remote/rsc'
 
 type MdxOptions = NonNullable<
   NonNullable<MDXRemoteProps['options']>['mdxOptions']
 >
+
+type RehypePlugins = NonNullable<MdxOptions['rehypePlugins']>
+
+export const shikiRehypePlugin = [
+  rehypeShiki,
+  { theme: 'github-light' },
+] satisfies RehypePlugins[number]
 
 export type MdxContentProps = {
   source: string
@@ -24,7 +32,7 @@ export function MdxContent({
       options={{
         mdxOptions: {
           remarkPlugins: remarkPlugins ?? [],
-          rehypePlugins: rehypePlugins ?? [],
+          rehypePlugins: [shikiRehypePlugin, ...(rehypePlugins ?? [])],
         },
       }}
     />
