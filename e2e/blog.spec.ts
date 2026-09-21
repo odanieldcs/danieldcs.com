@@ -1,22 +1,31 @@
 import { expect, test } from '@playwright/test'
 
-test('hello-world article renders title, date, tags, and body', async ({
+test('content-system article renders without console errors and highlights code', async ({
   page,
 }) => {
-  await page.goto('/blog/hello-world')
+  const consoleErrors: string[] = []
 
-  await expect(page).toHaveTitle('Hello World')
-  await expect(page.locator('meta[name="description"]')).toHaveAttribute(
-    'content',
-    'Fixture post for the content system loaders.',
-  )
+  page.on('console', (msg) => {
+    if (msg.type() === 'error') {
+      consoleErrors.push(msg.text())
+    }
+  })
+
+  page.on('pageerror', (error) => {
+    consoleErrors.push(error.message)
+  })
+
+  await page.goto('/blog/content-system')
+
+  await expect(page).toHaveTitle('Como o content system renderiza um artigo')
   await expect(
-    page.getByRole('heading', { level: 1, name: 'Hello World' }),
+    page.getByRole('heading', {
+      level: 1,
+      name: 'Como o content system renderiza um artigo',
+    }),
   ).toBeVisible()
-  await expect(page.locator('time')).toHaveText('2026-09-21')
-  await expect(page.getByText('hello', { exact: true })).toBeVisible()
-  await expect(page.getByText('exercise the content loaders')).toBeVisible()
-  await expect(page.getByRole('img', { name: 'Hello World' })).toBeVisible()
+  await expect(page.locator('pre.shiki')).toHaveCount(1)
+  expect(consoleErrors).toEqual([])
 })
 
 test('missing slug returns 404', async ({ page }) => {
