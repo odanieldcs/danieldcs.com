@@ -2,11 +2,10 @@ import type { Metadata } from 'next'
 import { type HomePostSummary, HomeView } from '@/components/home-view'
 import { getAllPosts } from '@/lib/content/posts'
 
-const RECENT_POST_LIMIT = 5
+const RECENT_POST_LIMIT = 2
 
 export const metadata: Metadata = {
-  description:
-    'Software Engineer & Builder. I build software products and systems end to end, and write about what I learn along the way.',
+  description: 'Building software products and running long distances.',
 }
 
 export default async function Home() {
@@ -18,6 +17,7 @@ export default async function Home() {
       date: post.frontmatter.date.toISOString(),
       description: post.frontmatter.description,
       language: post.frontmatter.language,
+      tag: post.frontmatter.tags[0],
     }))
 
   return <HomeView posts={posts} />

@@ -40,6 +40,7 @@ const posts: HomePostSummary[] = [
     date: '2026-09-21T00:00:00.000Z',
     description: 'Um passeio pelo pipeline de ponta a ponta.',
     language: 'pt',
+    tag: 'content',
   },
 ]
 
@@ -50,21 +51,35 @@ afterEach(() => {
   document.documentElement.lang = ''
 })
 
-function renderHome(language: 'pt' | 'en' = 'pt') {
+function renderHome(language: 'pt' | 'en' = 'pt', nextPosts = posts) {
   return render(
     <InterfaceLanguageProvider initialLanguage={language}>
-      <HomeView posts={posts} />
+      <HomeView posts={nextPosts} />
     </InterfaceLanguageProvider>,
   )
 }
 
-test('renders identity, recent posts, and the Trilha CTA in Portuguese', () => {
+test('renders the editorial home, recent posts, and the Trilha band in Portuguese', () => {
   renderHome()
 
+  const headline = screen.getByRole('heading', {
+    level: 1,
+    name: 'Construindo Produtos em Softwares e correndo longas distâncias.',
+  })
+  expect(headline).toBeTruthy()
   expect(
-    screen.getByRole('heading', { level: 1, name: 'Daniel Castro' }),
-  ).toBeTruthy()
-  expect(screen.getByText('Software Engineer & Builder')).toBeTruthy()
+    screen.queryByRole('heading', { level: 1, name: 'Daniel Castro' }),
+  ).toBeNull()
+  expect(headline.closest('section')?.querySelector('a[href="/trilha"]')).toBe(
+    null,
+  )
+  expect(screen.queryByRole('link', { name: 'Ler o blog' })).toBeNull()
+  expect(screen.queryByRole('link', { name: 'Ver todos' })).toBeNull()
+
+  expect(screen.getByText('Engenheiro · Builder · Corredor')).toBeTruthy()
+  expect(screen.getByText('01')).toBeTruthy()
+  expect(screen.getByText('02')).toBeTruthy()
+  expect(screen.getByText('03')).toBeTruthy()
   expect(screen.getByText('Engenheiro Full-Stack')).toBeTruthy()
   expect(screen.getByText('Builder')).toBeTruthy()
   expect(screen.getByText('Corredor')).toBeTruthy()
@@ -75,33 +90,55 @@ test('renders identity, recent posts, and the Trilha CTA in Portuguese', () => {
   ).toBeTruthy()
   expect(
     screen.getByText(
-      'Construo produtos e sistemas de software de ponta a ponta e escrevo sobre o que aprendo no caminho.',
+      'Sou Daniel, engenheiro full-stack. Desenho, construo e faço crescer produtos digitais — e quando não estou codando, estou em movimento.',
     ),
   ).toBeTruthy()
+  expect(screen.getByText('Notas de engenharia')).toBeTruthy()
   expect(
     screen.getByRole('heading', { level: 2, name: 'Escrita recente' }),
   ).toBeTruthy()
-  expect(
-    screen
-      .getByRole('link', { name: 'Como o content system renderiza um artigo' })
-      .getAttribute('href'),
-  ).toBe('/blog/content-system')
+  expect(screen.getByText('content')).toBeTruthy()
+  const articleLink = screen.getByRole('link', { name: /Ler artigo/ })
+  expect(articleLink.getAttribute('href')).toBe('/blog/content-system')
+  expect(articleLink.className).toContain('group')
+  expect(articleLink.querySelector('a')).toBeNull()
+  expect(articleLink.querySelector('svg')).toBeTruthy()
+  expect(articleLink.textContent).toContain(
+    'Como o content system renderiza um artigo',
+  )
   expect(
     screen.getByText('Um passeio pelo pipeline de ponta a ponta.'),
   ).toBeTruthy()
+  expect(
+    screen.getByText('Um passeio pelo pipeline de ponta a ponta.').className,
+  ).not.toContain('truncate')
   expect(document.querySelector('time')?.getAttribute('dateTime')).toBe(
     '2026-09-21T00:00:00.000Z',
   )
-  expect(document.querySelector('time')?.textContent).toMatch(/set/i)
+  expect(document.querySelector('time')?.textContent).toBe('21 set. 2026')
+  const trilhaLink = screen.getByRole('link', { name: 'Ver a Trilha' })
+  expect(trilhaLink.getAttribute('href')).toBe('/trilha')
+  expect(trilhaLink.className).toContain('rounded-full')
+  expect(trilhaLink.className).toContain('px-6!')
+  expect(trilhaLink.querySelector('svg')).toBeTruthy()
   expect(
-    screen.getByRole('link', { name: 'Ver a Trilha' }).getAttribute('href'),
-  ).toBe('/trilha')
+    screen.getByRole('heading', {
+      level: 2,
+      name: 'Um caminho de estudo e prática.',
+    }),
+  ).toBeTruthy()
 })
 
 test('renders English copy when the interface language is en', () => {
   renderHome('en')
 
-  expect(screen.getByText('Software Engineer & Builder')).toBeTruthy()
+  expect(
+    screen.getByRole('heading', {
+      level: 1,
+      name: 'Building software products and running long distances.',
+    }),
+  ).toBeTruthy()
+  expect(screen.getByText('Engineer · Builder · Runner')).toBeTruthy()
   expect(screen.getByText('Full-Stack Engineer')).toBeTruthy()
   expect(screen.getByText('Builder')).toBeTruthy()
   expect(screen.getByText('Runner')).toBeTruthy()
@@ -112,17 +149,36 @@ test('renders English copy when the interface language is en', () => {
   ).toBeTruthy()
   expect(
     screen.getByText(
-      'I build software products and systems end to end, and write about what I learn along the way.',
+      "I'm Daniel, a full-stack engineer. I design, build, and grow digital products — and when I'm not coding, I'm out moving.",
     ),
   ).toBeTruthy()
+  expect(screen.getByText('Engineering notes')).toBeTruthy()
   expect(
     screen.getByRole('heading', { level: 2, name: 'Recent writing' }),
   ).toBeTruthy()
-  expect(document.querySelector('time')?.textContent).toMatch(/Sep/i)
+  expect(document.querySelector('time')?.textContent).toBe('21 Sep. 2026')
+  const articleLink = screen.getByRole('link', { name: /Read article/ })
+  expect(articleLink.getAttribute('href')).toBe('/blog/content-system')
+  expect(articleLink.querySelector('svg')).toBeTruthy()
   expect(
     screen.getByRole('link', { name: 'See the Trilha' }).getAttribute('href'),
   ).toBe('/trilha')
   expect(screen.queryByRole('heading', { name: 'Escrita recente' })).toBeNull()
+})
+
+test('omits the tag label when the post has no tag', () => {
+  renderHome('pt', [
+    {
+      slug: 'content-system',
+      title: 'Como o content system renderiza um artigo',
+      date: '2026-09-21T00:00:00.000Z',
+      description: 'Um passeio pelo pipeline de ponta a ponta.',
+      language: 'pt',
+    },
+  ])
+
+  expect(screen.queryByText('content')).toBeNull()
+  expect(document.querySelector('time')).toBeTruthy()
 })
 
 function LanguageToggle() {
@@ -150,6 +206,13 @@ test('updates Home copy when the interface language changes', () => {
 
   fireEvent.click(screen.getByRole('button', { name: 'Switch to English' }))
 
+  expect(
+    screen.getByRole('heading', {
+      level: 1,
+      name: 'Building software products and running long distances.',
+    }),
+  ).toBeTruthy()
+  expect(screen.getByText('Engineer · Builder · Runner')).toBeTruthy()
   expect(
     screen.getByRole('heading', { level: 2, name: 'Recent writing' }),
   ).toBeTruthy()

@@ -26,6 +26,9 @@ const colorTokens = [
   { name: 'muted', swatch: 'bg-muted' },
   { name: 'border', swatch: 'bg-border' },
   { name: 'link', swatch: 'bg-link' },
+  { name: 'accent', swatch: 'bg-accent' },
+  { name: 'accent-foreground', swatch: 'bg-accent-foreground' },
+  { name: 'label', swatch: 'bg-label' },
 ] as const
 
 const sampleCode = `\`\`\`ts
@@ -74,11 +77,23 @@ export default function DesignSystemPage() {
           <h3 className="text-h3 font-semibold">Heading 3 — text-h3</h3>
           <h4 className="text-h4 font-semibold">Heading 4 — text-h4</h4>
           <p className="text-body">
-            Body — text-body. Readable paragraph with comfortable line height
-            for long-form content.
+            Body — Inter / text-body. Readable paragraph with comfortable line
+            height for long-form content.
           </p>
           <p className="text-caption text-muted">
             Caption — text-caption / text-muted
+          </p>
+          <p className="font-display text-display-section">
+            Home display — Fraunces 500
+          </p>
+          <p className="text-eyebrow uppercase text-label">
+            Eyebrow — text-eyebrow / text-label
+          </p>
+          <p className="text-note text-foreground/65">
+            Note — text-note / foreground 65%
+          </p>
+          <p className="text-sm font-semibold text-accent">
+            Reading link — 14px semibold accent
           </p>
         </div>
       </Section>

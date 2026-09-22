@@ -1,6 +1,25 @@
 import { render, screen } from '@testing-library/react'
-import { expect, test } from 'vitest'
-import { Button } from './button'
+import type { ReactNode } from 'react'
+import { expect, test, vi } from 'vitest'
+import { Button, ButtonLink } from './button'
+
+vi.mock('next/link', () => ({
+  default: function MockLink({
+    children,
+    href,
+    className,
+  }: {
+    children: ReactNode
+    href: string
+    className?: string
+  }) {
+    return (
+      <a href={href} className={className}>
+        {children}
+      </a>
+    )
+  },
+}))
 
 test('primary variant uses inverted foreground/background tokens', () => {
   render(<Button variant="primary">Save</Button>)
@@ -40,4 +59,23 @@ test('forwards disabled state', () => {
   render(<Button disabled>Disabled</Button>)
   const button = screen.getByRole('button', { name: 'Disabled' })
   expect(button.hasAttribute('disabled')).toBe(true)
+})
+
+test('button keeps the default rounded-md radius', () => {
+  render(<Button>Radius</Button>)
+  const button = screen.getByRole('button', { name: 'Radius' })
+  expect(button.className).toContain('rounded-md')
+  expect(button.className).not.toContain('rounded-full')
+})
+
+test('button link pill shape uses rounded-full', () => {
+  render(
+    <ButtonLink href="/trilha" shape="pill">
+      See the Trilha
+    </ButtonLink>,
+  )
+  const link = screen.getByRole('link', { name: 'See the Trilha' })
+  expect(link.getAttribute('href')).toBe('/trilha')
+  expect(link.className).toContain('rounded-full')
+  expect(link.className).not.toContain('rounded-md')
 })

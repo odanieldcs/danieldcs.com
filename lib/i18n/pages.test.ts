@@ -8,16 +8,26 @@ test('pt and en home copy share the same key shape', () => {
   expect(Object.keys(pt)).toEqual(Object.keys(en))
   expect(Object.keys(pt)).toEqual([
     'eyebrow',
+    'headline',
     'intro',
     'highlights',
     'portraitAlt',
+    'recentEyebrow',
     'recentTitle',
+    'readArticle',
+    'trilhaEyebrow',
     'trilhaHeading',
     'trilhaDescription',
     'trilhaCta',
   ])
-  expect(pt.eyebrow).toBe('Software Engineer & Builder')
-  expect(en.eyebrow).toBe('Software Engineer & Builder')
+  expect(pt.headline).toBe(
+    'Construindo Produtos em Softwares e correndo longas distâncias.',
+  )
+  expect(en.headline).toBe(
+    'Building software products and running long distances.',
+  )
+  expect(pt.eyebrow).toBe('Engenheiro · Builder · Corredor')
+  expect(en.eyebrow).toBe('Engineer · Builder · Runner')
   expect(pt.highlights.map((item) => Object.keys(item))).toEqual([
     ['label', 'description'],
     ['label', 'description'],
@@ -42,6 +52,8 @@ test('pt and en home copy share the same key shape', () => {
   )
   expect(pt.recentTitle).toBe('Escrita recente')
   expect(en.recentTitle).toBe('Recent writing')
+  expect(pt.readArticle).toBe('Ler artigo')
+  expect(en.readArticle).toBe('Read article')
 })
 
 test('pt and en trilha placeholder copy share the same key shape', () => {

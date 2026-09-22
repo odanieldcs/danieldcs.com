@@ -1,21 +1,35 @@
-/* Semantic colors, no accent. Dark only under .dark until ENG-75. */
+/* Semantic colors. Dark only under .dark. */
 :root {
-  --background: #f7f7f8;
-  --foreground: #1a1a1a; /* 16.26:1 on background */
-  --muted: #5c5c5c; /* 6.25:1 on background */
-  --border: #e4e4e7;
-  --link: #3f3f46; /* 9.75:1 on background */
+  --background: oklch(0.959 0.012 87.5);
+  /* Warm ink from the editorial reference, not neutral black. */
+  --foreground: oklch(0.225 0.009 155.4);
+  --muted: #595959; /* 6.22:1 on background */
+  --border: color-mix(in oklch, var(--foreground) 12%, transparent);
+  --link: #3f3f46; /* 9.27:1 on background */
+  /* Reference green: 6.94:1 as text on paper. */
+  --accent: oklch(0.431 0.063 167.2);
+  --accent-foreground: oklch(0.975 0.008 87.5); /* 7.30:1 on accent */
+  /* Eyebrows and pillar numbers. Reference terracotta. */
+  --label: oklch(0.58 0.073 56.4);
+  --trail: var(--accent);
+  --trail-foreground: var(--accent-foreground);
   /* Shiki line highlight — Kent pattern: gray wash + darker bar */
   --code-line-highlight-bar: #7a8194;
   --code-line-highlight-fill: #b8bcc6;
 }
 
 .dark {
-  --background: #212121;
-  --foreground: #ececec; /* 13.63:1 on background */
-  --muted: #a3a3a3; /* 6.38:1 on background */
-  --border: #3a3a3a;
-  --link: #d4d4d4; /* 10.86:1 on background */
+  --background: oklch(0.24 0.012 87.5);
+  --foreground: #ececec; /* 13.91:1 on background */
+  --muted: #a3a3a3; /* 6.51:1 on background */
+  --link: #d4d4d4; /* 11.09:1 on background */
+  /* Lighter green so reading links stay readable on the dark paper. */
+  --accent: oklch(0.76 0.08 167.2); /* 7.95:1 on background */
+  --accent-foreground: oklch(0.22 0.04 167.2);
+  --label: oklch(0.75 0.065 56.4); /* 7.28:1 on background */
+  /* Trilha band stays a dark green with light text. */
+  --trail: oklch(0.35 0.055 167.2);
+  --trail-foreground: oklch(0.96 0.012 87.5); /* 9.71:1 on trail */
   --code-line-highlight-bar: #9ca3af;
   --code-line-highlight-fill: #52525b;
 }
@@ -26,4 +40,9 @@
   --color-muted: var(--muted);
   --color-border: var(--border);
   --color-link: var(--link);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-label: var(--label);
+  --color-trail: var(--trail);
+  --color-trail-foreground: var(--trail-foreground);
 }

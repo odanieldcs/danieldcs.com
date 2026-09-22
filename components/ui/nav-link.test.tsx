@@ -29,14 +29,17 @@ afterEach(() => {
 test('renders a navigation link with link tokens', () => {
   render(<NavLink href="/example">Section</NavLink>)
   const link = screen.getByRole('link', { name: 'Section' })
-  expect(link.className).toContain('text-link')
-  expect(link.className).toContain('text-body')
+  expect(link.className).toContain('text-nav')
+  expect(link.className).toContain('text-foreground/70')
+  expect(link.className.split(/\s+/)).not.toContain('text-foreground')
   expect(link.className).not.toContain('underline')
 })
 
 test('active state uses foreground emphasis', () => {
-  expect(navLinkClassName({ active: true })).toContain('text-foreground')
-  expect(navLinkClassName({ active: true })).toContain('font-medium')
+  expect(navLinkClassName({ active: true }).split(/\s+/)).toContain(
+    'text-foreground',
+  )
+  expect(navLinkClassName({ active: true })).toContain('text-nav')
 
   render(
     <NavLink href="/example" active>
@@ -44,6 +47,7 @@ test('active state uses foreground emphasis', () => {
     </NavLink>,
   )
   const link = screen.getByRole('link', { name: 'Current' })
-  expect(link.className).toContain('text-foreground')
-  expect(link.className).toContain('font-medium')
+  expect(link.className.split(/\s+/)).toContain('text-foreground')
+  expect(link.className).toContain('text-nav')
+  expect(link.className).not.toContain('text-foreground/70')
 })

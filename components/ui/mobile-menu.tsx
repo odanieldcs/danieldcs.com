@@ -103,7 +103,7 @@ export function MobileMenu({
             <nav
               id={panelId}
               aria-label={navAriaLabel}
-              className="fixed inset-0 z-10 overflow-y-auto bg-background px-inline pt-24"
+              className="fixed inset-0 z-10 overflow-y-auto bg-background px-page pt-24"
             >
               <ul className="mx-auto flex w-full max-w-container list-none flex-col gap-inline">
                 {items.map((item) => (
