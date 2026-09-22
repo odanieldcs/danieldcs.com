@@ -7,18 +7,100 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* Shiki dual-theme (class strategy via next-themes `.dark`) */
-.shiki {
-  background-color: var(--shiki-light-bg) !important;
+pre.shiki {
+  --code-block-bg: color-mix(in srgb, var(--muted) 5%, var(--background));
+  --code-line-highlight-wash: color-mix(
+    in srgb,
+    var(--code-line-highlight-fill) 22%,
+    var(--code-block-bg)
+  );
+  position: relative;
+  margin-inline: calc(-1 * var(--space-code-breakout));
+  margin-block: var(--space-content-gap);
+  overflow-x: auto;
+  border-radius: 0.5rem;
+  background-color: var(--code-block-bg);
+  padding: 2rem 0;
 }
 
-.shiki span {
+pre.shiki code {
+  display: block;
+  min-width: 100%;
+  background: transparent;
+}
+
+.shiki .line {
+  display: block;
+  position: relative;
+  padding-right: var(--space-inline);
+}
+
+.shiki .line > span {
   color: var(--shiki-light);
 }
 
-.dark .shiki {
-  background-color: var(--shiki-dark-bg) !important;
+.dark .shiki .line > span {
+  color: var(--shiki-dark);
 }
 
-.dark .shiki span {
-  color: var(--shiki-dark);
+pre.shiki[data-line-numbers] .line[data-line-number]::before {
+  content: attr(data-line-number);
+  display: inline-block;
+  width: 3.5rem;
+  padding-right: 1.5rem;
+  padding-left: 0;
+  text-align: right;
+  vertical-align: baseline;
+  font-size: 0.8125rem;
+  line-height: var(--text-code--line-height);
+  color: var(--code-line-highlight-bar);
+  user-select: none;
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background-color: var(--code-block-bg);
+}
+
+pre.shiki[data-line-numbers] .line[data-highlight][data-line-number]::before {
+  background-color: var(--code-line-highlight-wash);
+}
+
+/* Reserve bar width on every line so highlights do not shift the gutter */
+pre.shiki[data-line-numbers] .line[data-line-number] {
+  border-left: 6px solid transparent;
+}
+
+pre.shiki[data-line-numbers] .line[data-highlight][data-line-number] {
+  border-left-color: var(--code-line-highlight-bar);
+}
+
+/* Kent-style: gray wash (::before = line numbers) */
+
+.shiki .line[data-highlight]::after {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background-color: var(--code-line-highlight-wash);
+  content: "";
+  pointer-events: none;
+}
+
+.shiki .line[data-highlight] > * {
+  position: relative;
+  z-index: 1;
+}
+
+pre.shiki[data-language]::after {
+  position: absolute;
+  right: var(--space-inline);
+  bottom: 0.625rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  line-height: 1;
+  color: var(--code-line-highlight-bar);
+  text-transform: lowercase;
+  opacity: 0.7;
+  content: attr(data-language);
+  pointer-events: none;
+  user-select: none;
 }

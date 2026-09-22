@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@shikijs/rehype": "^4.4.3",
+    "@shikijs/transformers": "^4.4.3",
     "@tailwindcss/postcss": "^4.3.3",
     "geist": "^1.7.2",
     "gray-matter": "^4.0.3",

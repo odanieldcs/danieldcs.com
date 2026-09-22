@@ -1,8 +1,29 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import type { MDXRemoteProps } from 'next-mdx-remote/rsc'
-import type { ComponentPropsWithoutRef } from 'react'
+import {
+  type ComponentPropsWithoutRef,
+  isValidElement,
+  type ReactNode,
+} from 'react'
 import { linkClassName } from '@/lib/link-styles'
+
+function containsShikiLine(node: ReactNode): boolean {
+  if (!node) {
+    return false
+  }
+  if (Array.isArray(node)) {
+    return node.some(containsShikiLine)
+  }
+  if (!isValidElement(node)) {
+    return false
+  }
+  const props = node.props as { className?: string; children?: ReactNode }
+  if (typeof props.className === 'string' && /\bline\b/.test(props.className)) {
+    return true
+  }
+  return containsShikiLine(props.children)
+}
 
 const FALLBACK_IMAGE_WIDTH = 800
 const FALLBACK_IMAGE_HEIGHT = 450
@@ -68,8 +89,7 @@ function MdxImage({
 }
 
 const codeBlockPreClassName = [
-  '-mx-inline my-content-gap overflow-x-auto rounded-md p-inline',
-  'font-mono text-code leading-normal',
+  'my-content-gap overflow-x-auto font-mono text-code leading-normal',
 ].join(' ')
 
 const inlineCodeClassName = [
@@ -100,7 +120,9 @@ function MdxCode({
   children,
   ...props
 }: ComponentPropsWithoutRef<'code'>) {
-  const isFence = typeof className === 'string' && /\blanguage-/.test(className)
+  const isFence =
+    (typeof className === 'string' && /\blanguage-/.test(className)) ||
+    containsShikiLine(children)
 
   if (isFence) {
     return (
