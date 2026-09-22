@@ -134,7 +134,10 @@ export default function DesignSystemPage() {
       </Section>
 
       <Section title="Code (Shiki + MDX)">
-        <MdxContent source={sampleCode} />
+        {/* Article-width column — Shiki breakout margins assume max-w-content */}
+        <div className="mx-auto w-full max-w-content">
+          <MdxContent source={sampleCode} />
+        </div>
       </Section>
 
       <Section title="Content image">
