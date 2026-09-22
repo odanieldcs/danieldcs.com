@@ -49,6 +49,7 @@ test('renders a mixed MDX fixture with semantic HTML and styled links', async ()
   expect(html).toContain('alt="Cover"')
   expect(html).toContain('width="800"')
   expect(html).toContain('height="450"')
+  expect(html).toMatch(/<img[^>]*class="[^"]*w-full[^"]*rounded-md/)
   expect(html).toMatch(/<ul[^>]*class="[^"]*list-disc/)
   expect(html).toMatch(
     /<li[^>]*class="[^"]*text-body[^"]*"[^>]*>first item<\/li>/,

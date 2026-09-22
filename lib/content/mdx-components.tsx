@@ -28,6 +28,9 @@ function containsShikiLine(node: ReactNode): boolean {
 const FALLBACK_IMAGE_WIDTH = 800
 const FALLBACK_IMAGE_HEIGHT = 450
 
+/** Responsive content images — reuse on blog cover (`app/blog/[slug]/page.tsx`). */
+export const contentImageClassName = 'h-auto w-full rounded-md'
+
 function joinClasses(...parts: (string | undefined)[]) {
   return parts.filter(Boolean).join(' ')
 }
@@ -84,6 +87,8 @@ function MdxImage({
       alt={alt ?? ''}
       width={toPositiveInt(width, FALLBACK_IMAGE_WIDTH)}
       height={toPositiveInt(height, FALLBACK_IMAGE_HEIGHT)}
+      className={contentImageClassName}
+      sizes="(min-width: 48rem) 42rem, 100vw"
     />
   )
 }
