@@ -3,22 +3,38 @@ import { expect, test } from 'vitest'
 import { siteName } from '@/lib/site'
 import { Footer } from './footer'
 
-test('renders email, LinkedIn, and the current year', () => {
+const socialLinks = [
+  ['LinkedIn', 'https://www.linkedin.com/in/odanieldcs'],
+  ['GitHub', 'https://github.com/odanieldcs'],
+  ['YouTube', 'https://www.youtube.com/@odanieldcs'],
+  ['Instagram', 'https://www.instagram.com/odanieldcs'],
+] as const
+
+test('renders social links, tagline, and the current year', () => {
   render(<Footer />)
 
-  const email = screen.getByRole('link', { name: 'hi@danieldcs.com' })
-  expect(email.getAttribute('href')).toBe('mailto:hi@danieldcs.com')
-  expect(email.getAttribute('target')).toBe('_blank')
-  expect(email.getAttribute('rel')).toBe('noopener noreferrer')
+  expect(screen.queryByRole('link', { name: 'hi@danieldcs.com' })).toBeNull()
+  expect(screen.queryByText(/mailto:/)).toBeNull()
 
-  const linkedIn = screen.getByRole('link', { name: 'LinkedIn' })
-  expect(linkedIn.getAttribute('href')).toBe(
-    'https://www.linkedin.com/in/odanieldcs',
-  )
-  expect(linkedIn.getAttribute('target')).toBe('_blank')
-  expect(linkedIn.getAttribute('rel')).toBe('noopener noreferrer')
+  for (const [name, href] of socialLinks) {
+    const link = screen.getByRole('link', { name })
+    expect(link.getAttribute('href')).toBe(href)
+    expect(link.getAttribute('target')).toBe('_blank')
+    expect(link.getAttribute('rel')).toBe('noopener noreferrer')
+    expect(link.className).toContain('text-muted')
+    expect(link.className).not.toContain('text-link')
+  }
 
   expect(
     screen.getByText(`© ${new Date().getFullYear()} ${siteName}`),
   ).toBeTruthy()
+  expect(screen.getByText('Made with love in Gravataí 🇧🇷')).toBeTruthy()
+
+  const shell = document.querySelector('footer > div')
+  expect(shell?.className).toContain('items-center')
+  expect(shell?.className).toContain('text-center')
+
+  const links = document.querySelector('footer ul')
+  expect(links?.className).toContain('text-caption')
+  expect(links?.className).not.toContain('text-body')
 })

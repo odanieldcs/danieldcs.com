@@ -9,6 +9,12 @@ const navigation = vi.hoisted(() => ({
   pathname: '/',
 }))
 
+vi.mock('next/image', () => ({
+  default: function MockImage({ alt, src }: { alt: string; src: string }) {
+    return <img alt={alt} src={src} />
+  },
+}))
+
 vi.mock('next/link', () => ({
   default: function MockLink({
     children,
@@ -52,13 +58,21 @@ function renderHeader(language: 'pt' | 'en' = 'pt') {
   )
 }
 
-test('site name links home and desktop nav lists the four items', () => {
+test('identity links home and desktop nav lists the four items', () => {
   renderHeader()
 
-  expect(
-    screen.getByRole('link', { name: 'danieldcs.com' }).getAttribute('href'),
-  ).toBe('/')
-  expect(screen.queryByRole('heading', { name: 'danieldcs.com' })).toBeNull()
+  const home = screen.getByRole('link', { name: 'Daniel Castro' })
+  expect(home.getAttribute('href')).toBe('/')
+  expect(home.querySelector('img')?.getAttribute('src')).toBe(
+    '/media/icons/logo-ddev.png',
+  )
+  expect(home.querySelector('img')?.getAttribute('alt')).toBe('')
+  expect(screen.queryByRole('link', { name: 'danieldcs.com' })).toBeNull()
+  expect(screen.queryByText('DC')).toBeNull()
+  expect(screen.queryByRole('heading', { name: 'Daniel Castro' })).toBeNull()
+
+  const shell = document.querySelector('header > div')
+  expect(shell?.className).toContain('grid-cols-[1fr_auto_1fr]')
 
   expect(screen.getByRole('link', { name: 'Blog' }).getAttribute('href')).toBe(
     '/blog',

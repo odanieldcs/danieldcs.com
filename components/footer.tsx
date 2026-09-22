@@ -2,8 +2,26 @@ import { Container } from '@/components/container'
 import { linkClassName } from '@/lib/link-styles'
 import { siteName } from '@/lib/site'
 
-const emailAddress = 'hi@danieldcs.com'
-const linkedInUrl = 'https://www.linkedin.com/in/odanieldcs'
+const socialLinks = [
+  {
+    label: 'LinkedIn',
+    href: 'https://www.linkedin.com/in/odanieldcs',
+  },
+  {
+    label: 'GitHub',
+    href: 'https://github.com/odanieldcs',
+  },
+  {
+    label: 'YouTube',
+    href: 'https://www.youtube.com/@odanieldcs',
+  },
+  {
+    label: 'Instagram',
+    href: 'https://www.instagram.com/odanieldcs',
+  },
+] as const
+
+const footerLinkClassName = linkClassName.replace('text-link', 'text-muted')
 
 export function Footer() {
   const year = new Date().getFullYear()
@@ -12,32 +30,27 @@ export function Footer() {
     <footer>
       <Container
         width="page"
-        className="flex flex-col gap-content-gap py-section"
+        className="flex flex-col items-center gap-content-gap py-section text-center"
       >
-        <ul className="flex list-none flex-wrap gap-content-gap text-body">
-          <li>
-            <a
-              href={`mailto:${emailAddress}`}
-              className={linkClassName}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {emailAddress}
-            </a>
-          </li>
-          <li>
-            <a
-              href={linkedInUrl}
-              className={linkClassName}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              LinkedIn
-            </a>
-          </li>
+        <ul className="flex list-none flex-wrap justify-center gap-content-gap text-caption">
+          {socialLinks.map((link) => (
+            <li key={link.href}>
+              <a
+                href={link.href}
+                className={footerLinkClassName}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
         </ul>
-        <p className="text-caption text-muted">
-          © {year} {siteName}
+        <p className="flex flex-wrap justify-center gap-x-content-gap text-caption text-muted">
+          <span>
+            © {year} {siteName}
+          </span>
+          <span>Made with love in Gravataí 🇧🇷</span>
         </p>
       </Container>
     </footer>
