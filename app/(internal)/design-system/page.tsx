@@ -7,6 +7,7 @@ import Link from 'next/link'
 import type { ReactNode } from 'react'
 import { Button } from '@/components/button'
 import { Container } from '@/components/container'
+import { Footer } from '@/components/footer'
 import { Header } from '@/components/header'
 import { HeaderMobileMenu } from '@/components/header-nav'
 import { LanguageSwitch } from '@/components/ui/language-switch'
@@ -161,6 +162,7 @@ export default function DesignSystemPage() {
           />
         </Section>
       </Container>
+      <Footer />
     </>
   )
 }
