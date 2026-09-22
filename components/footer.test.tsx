@@ -31,4 +31,8 @@ test('renders social links, tagline, and the current year', () => {
   const shell = document.querySelector('footer > div')
   expect(shell?.className).toContain('items-center')
   expect(shell?.className).toContain('text-center')
+
+  const links = document.querySelector('footer ul')
+  expect(links?.className).toContain('text-caption')
+  expect(links?.className).not.toContain('text-body')
 })

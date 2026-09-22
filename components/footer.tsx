@@ -30,7 +30,7 @@ export function Footer() {
         width="page"
         className="flex flex-col items-center gap-content-gap py-section text-center"
       >
-        <ul className="flex list-none flex-wrap justify-center gap-content-gap text-body">
+        <ul className="flex list-none flex-wrap justify-center gap-content-gap text-caption">
           {socialLinks.map((link) => (
             <li key={link.href}>
               <a
