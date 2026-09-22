@@ -4,6 +4,11 @@ import { notFound } from 'next/navigation'
 import { cache } from 'react'
 import { Container } from '@/components/container'
 import { MdxContent } from '@/lib/content/mdx'
+import {
+  articleDateClassName,
+  articleTagsListClassName,
+  articleTitleClassName,
+} from '@/lib/content/mdx-components'
 import { getAllPostSlugs, getPostBySlug } from '@/lib/content/posts'
 
 const COVER_WIDTH = 800
@@ -69,12 +74,15 @@ export default async function BlogPostPage({
 
   return (
     <Container as="article" width="article">
-      <h1>{frontmatter.title}</h1>
-      <time dateTime={frontmatter.date.toISOString()}>
+      <h1 className={articleTitleClassName}>{frontmatter.title}</h1>
+      <time
+        className={articleDateClassName}
+        dateTime={frontmatter.date.toISOString()}
+      >
         {formatPostDate(frontmatter.date)}
       </time>
       {frontmatter.tags.length > 0 ? (
-        <ul>
+        <ul className={articleTagsListClassName}>
           {frontmatter.tags.map((tag) => (
             <li key={tag}>{tag}</li>
           ))}
