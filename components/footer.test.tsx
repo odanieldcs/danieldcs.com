@@ -21,6 +21,8 @@ test('renders social links, tagline, and the current year', () => {
     expect(link.getAttribute('href')).toBe(href)
     expect(link.getAttribute('target')).toBe('_blank')
     expect(link.getAttribute('rel')).toBe('noopener noreferrer')
+    expect(link.className).toContain('text-muted')
+    expect(link.className).not.toContain('text-link')
   }
 
   expect(

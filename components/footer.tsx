@@ -21,6 +21,8 @@ const socialLinks = [
   },
 ] as const
 
+const footerLinkClassName = linkClassName.replace('text-link', 'text-muted')
+
 export function Footer() {
   const year = new Date().getFullYear()
 
@@ -35,7 +37,7 @@ export function Footer() {
             <li key={link.href}>
               <a
                 href={link.href}
-                className={linkClassName}
+                className={footerLinkClassName}
                 target="_blank"
                 rel="noopener noreferrer"
               >
