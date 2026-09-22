@@ -27,4 +27,8 @@ test('renders social links, tagline, and the current year', () => {
     screen.getByText(`© ${new Date().getFullYear()} ${siteName}`),
   ).toBeTruthy()
   expect(screen.getByText('Made with love in Gravataí 🇧🇷')).toBeTruthy()
+
+  const shell = document.querySelector('footer > div')
+  expect(shell?.className).toContain('items-center')
+  expect(shell?.className).toContain('text-center')
 })

@@ -28,9 +28,9 @@ export function Footer() {
     <footer>
       <Container
         width="page"
-        className="flex flex-col gap-content-gap py-section"
+        className="flex flex-col items-center gap-content-gap py-section text-center"
       >
-        <ul className="flex list-none flex-wrap gap-content-gap text-body">
+        <ul className="flex list-none flex-wrap justify-center gap-content-gap text-body">
           {socialLinks.map((link) => (
             <li key={link.href}>
               <a
@@ -44,7 +44,7 @@ export function Footer() {
             </li>
           ))}
         </ul>
-        <p className="flex flex-wrap gap-x-content-gap text-caption text-muted">
+        <p className="flex flex-wrap justify-center gap-x-content-gap text-caption text-muted">
           <span>
             © {year} {siteName}
           </span>
