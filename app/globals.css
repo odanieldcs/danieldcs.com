@@ -1,3 +1,4 @@
 @import "tailwindcss";
 @import "./theme/typography.css";
 @import "./theme/colors.css";
+@import "./theme/spacing.css";
