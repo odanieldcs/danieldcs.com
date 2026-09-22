@@ -28,6 +28,6 @@ test('Escape closes an open menu', () => {
   fireEvent.click(trigger)
   expect(trigger.getAttribute('aria-expanded')).toBe('true')
 
-  fireEvent.keyDown(window, { key: 'Escape' })
+  fireEvent.keyDown(document, { key: 'Escape' })
   expect(trigger.getAttribute('aria-expanded')).toBe('false')
 })

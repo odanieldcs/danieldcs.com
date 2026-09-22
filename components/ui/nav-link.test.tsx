@@ -1,6 +1,30 @@
-import { render, screen } from '@testing-library/react'
-import { expect, test } from 'vitest'
+import { cleanup, render, screen } from '@testing-library/react'
+import type { ReactNode } from 'react'
+import { afterEach, expect, test, vi } from 'vitest'
 import { NavLink, navLinkClassName } from './nav-link'
+
+vi.mock('next/link', () => ({
+  default: function MockLink({
+    children,
+    href,
+    className,
+    ...rest
+  }: {
+    children: ReactNode
+    href: string
+    className?: string
+  }) {
+    return (
+      <a href={href} className={className} {...rest}>
+        {children}
+      </a>
+    )
+  },
+}))
+
+afterEach(() => {
+  cleanup()
+})
 
 test('renders a navigation link with link tokens', () => {
   render(<NavLink href="/example">Section</NavLink>)
