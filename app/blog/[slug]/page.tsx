@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { cache } from 'react'
+import { Container } from '@/components/container'
 import { MdxContent } from '@/lib/content/mdx'
 import { getAllPostSlugs, getPostBySlug } from '@/lib/content/posts'
 
@@ -67,7 +68,7 @@ export default async function BlogPostPage({
     : undefined
 
   return (
-    <article>
+    <Container as="article" width="article">
       <h1>{frontmatter.title}</h1>
       <time dateTime={frontmatter.date.toISOString()}>
         {formatPostDate(frontmatter.date)}
@@ -89,6 +90,6 @@ export default async function BlogPostPage({
         />
       ) : null}
       <MdxContent source={content} />
-    </article>
+    </Container>
   )
 }

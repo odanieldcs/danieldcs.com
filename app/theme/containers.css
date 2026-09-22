@@ -1,0 +1,10 @@
+/* Max widths for page shell vs reading column. Pair with mx-auto w-full px-inline. */
+:root {
+	--container-max: 96rem; /* 1536px — aligns with --breakpoint-2xl */
+	--content-max: 42rem; /* 672px — reading column (~672-720px) */
+}
+
+@theme inline {
+	--max-width-container: var(--container-max);
+	--max-width-content: var(--content-max);
+}
