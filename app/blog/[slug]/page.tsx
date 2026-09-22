@@ -8,6 +8,7 @@ import {
   articleDateClassName,
   articleTagsListClassName,
   articleTitleClassName,
+  contentImageClassName,
 } from '@/lib/content/mdx-components'
 import { getAllPostSlugs, getPostBySlug } from '@/lib/content/posts'
 
@@ -94,6 +95,8 @@ export default async function BlogPostPage({
           alt={frontmatter.title}
           width={COVER_WIDTH}
           height={COVER_HEIGHT}
+          className={contentImageClassName}
+          sizes="(min-width: 48rem) 42rem, 100vw"
           priority
         />
       ) : null}
