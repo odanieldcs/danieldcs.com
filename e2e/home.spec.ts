@@ -14,8 +14,12 @@ test('home loads without console errors', async ({ page }) => {
   })
 
   await page.goto('/')
+
+  const main = page.getByRole('main')
   await expect(
-    page.getByRole('heading', { level: 1, name: 'danieldcs.com' }),
+    main.getByRole('heading', { level: 1, name: 'Daniel Castro' }),
   ).toBeVisible()
+  await expect(main.locator('a[href="/trilha"]')).toBeVisible()
+  await expect(main.locator('a[href^="/blog/"]')).not.toHaveCount(0)
   expect(consoleErrors).toEqual([])
 })
