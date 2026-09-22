@@ -35,12 +35,9 @@ pre.shiki code {
   padding-right: var(--space-inline);
 }
 
-.shiki .line > span {
-  color: var(--shiki-light);
-}
-
+/* Shiki dual-theme: tokens use inline `color` in light; override in `.dark` (Shiki docs). */
 .dark .shiki .line > span {
-  color: var(--shiki-dark);
+  color: var(--shiki-dark) !important;
 }
 
 pre.shiki[data-line-numbers] .line[data-line-number]::before {
