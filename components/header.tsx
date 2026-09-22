@@ -1,7 +1,11 @@
 import Link from 'next/link'
 import { Suspense } from 'react'
 import { Container } from '@/components/container'
-import { HeaderNav, HeaderNavLinks } from '@/components/header-nav'
+import {
+  HeaderMobileMenu,
+  HeaderNav,
+  HeaderNavLinks,
+} from '@/components/header-nav'
 import { LanguageSwitch } from '@/components/ui/language-switch'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { siteName } from '@/lib/site'
@@ -25,8 +29,9 @@ export function Header() {
           <HeaderNav />
         </Suspense>
         <div className="ml-auto flex items-center gap-inline">
-          {/* Mobile menu mounts here in the next phase. */}
-          <div className="md:hidden" />
+          <div className="md:hidden">
+            <HeaderMobileMenu />
+          </div>
           <ThemeToggle />
           <LanguageSwitch />
         </div>

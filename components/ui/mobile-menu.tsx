@@ -1,15 +1,24 @@
 'use client'
 
 import { useEffect, useId, useState } from 'react'
-import { navLinkClassName } from '@/components/ui/nav-link'
+import { NavLink } from '@/components/ui/nav-link'
 
-const placeholderItems = [
-  { id: 'alpha', label: 'Placeholder Alpha' },
-  { id: 'beta', label: 'Placeholder Beta' },
-  { id: 'gamma', label: 'Placeholder Gamma' },
-] as const
+export type MobileMenuItem = {
+  href: string
+  label: string
+}
 
-export function MobileMenu() {
+type MobileMenuProps = {
+  items: readonly MobileMenuItem[]
+  triggerLabel: string
+  navAriaLabel: string
+}
+
+export function MobileMenu({
+  items,
+  triggerLabel,
+  navAriaLabel,
+}: MobileMenuProps) {
   const [open, setOpen] = useState(false)
   const panelId = useId()
 
@@ -40,18 +49,18 @@ export function MobileMenu() {
         aria-controls={panelId}
         onClick={() => setOpen((value) => !value)}
       >
-        Menu
+        {triggerLabel}
       </button>
       {open ? (
         <nav
           id={panelId}
-          aria-label="Example mobile navigation"
+          aria-label={navAriaLabel}
           className="absolute top-full right-0 z-10 mt-inline min-w-48 rounded-md border border-border bg-background p-inline shadow-sm"
         >
           <ul className="flex list-none flex-col gap-inline">
-            {placeholderItems.map((item) => (
-              <li key={item.id}>
-                <span className={navLinkClassName()}>{item.label}</span>
+            {items.map((item) => (
+              <li key={item.href}>
+                <NavLink href={item.href}>{item.label}</NavLink>
               </li>
             ))}
           </ul>
