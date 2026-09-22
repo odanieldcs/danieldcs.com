@@ -60,7 +60,9 @@ export function MobileMenu({
           <ul className="flex list-none flex-col gap-inline">
             {items.map((item) => (
               <li key={item.href}>
-                <NavLink href={item.href}>{item.label}</NavLink>
+                <NavLink href={item.href} prefetch={false}>
+                  {item.label}
+                </NavLink>
               </li>
             ))}
           </ul>
