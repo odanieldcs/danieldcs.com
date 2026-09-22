@@ -20,10 +20,7 @@ const answer = 42
 \`\`\`
 `
 
-const paletteOrTypeClasses =
-  /class="[^"]*(?:text-|bg-|font-|leading-|tracking-|p-|m-|gap-)/
-
-test('renders a mixed MDX fixture with semantic HTML and no design-system classes', async () => {
+test('renders a mixed MDX fixture with semantic HTML and styled links', async () => {
   const { content } = await compileMDX({
     source: fixture,
     components: mdxComponents,
@@ -37,10 +34,16 @@ test('renders a mixed MDX fixture with semantic HTML and no design-system classe
 
   expect(html).toContain('<h1>Heading</h1>')
   expect(html).toContain('<p>')
-  expect(html).toContain('<a href="/blog/hello-world">internal</a>')
-  expect(html).toContain(
-    '<a href="https://example.com" target="_blank" rel="noopener noreferrer">external</a>',
-  )
+  expect(html).toContain('href="/blog/hello-world"')
+  expect(html).toContain('href="https://example.com"')
+  expect(html).toContain('target="_blank"')
+  expect(html).toContain('rel="noopener noreferrer"')
+  const internalAnchor = html.match(/<a[^>]*href="\/blog\/hello-world"[^>]*>/)
+  const externalAnchor = html.match(/<a[^>]*href="https:\/\/example.com"[^>]*>/)
+  expect(internalAnchor?.[0]).toContain('text-link')
+  expect(externalAnchor?.[0]).toContain('text-link')
+  expect(html).toContain('>internal</a>')
+  expect(html).toContain('>external</a>')
   expect(html).toContain('<img')
   expect(html).toContain('hello-world.png')
   expect(html).toContain('alt="Cover"')
@@ -51,5 +54,4 @@ test('renders a mixed MDX fixture with semantic HTML and no design-system classe
   expect(html).toContain('<blockquote>')
   expect(html).toContain('shiki')
   expect(html).toMatch(/style=/)
-  expect(html).not.toMatch(paletteOrTypeClasses)
 }, 15_000)

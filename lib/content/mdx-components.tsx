@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import type { MDXRemoteProps } from 'next-mdx-remote/rsc'
 import type { ComponentPropsWithoutRef } from 'react'
+import { linkClassName } from '@/lib/link-styles'
 
 const FALLBACK_IMAGE_WIDTH = 800
 const FALLBACK_IMAGE_HEIGHT = 450
@@ -17,12 +18,22 @@ function toPositiveInt(value: unknown, fallback: number): number {
   return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback
 }
 
-function MdxLink({ href, ...props }: ComponentPropsWithoutRef<'a'>) {
+function MdxLink({ href, className, ...props }: ComponentPropsWithoutRef<'a'>) {
+  const classes = [linkClassName, className].filter(Boolean).join(' ')
+
   if (isInternalHref(href)) {
-    return <Link href={href} {...props} />
+    return <Link href={href} className={classes} {...props} />
   }
 
-  return <a href={href} target="_blank" rel="noopener noreferrer" {...props} />
+  return (
+    <a
+      href={href}
+      className={classes}
+      target="_blank"
+      rel="noopener noreferrer"
+      {...props}
+    />
+  )
 }
 
 function MdxImage({
