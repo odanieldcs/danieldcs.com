@@ -31,6 +31,8 @@ vi.mock('next/link', () => ({
 
 afterEach(() => {
   cleanup()
+  document.body.style.overflow = ''
+  document.documentElement.style.overflow = ''
 })
 
 function renderMenu() {
@@ -60,15 +62,44 @@ test('toggle button reflects open state with aria-expanded', () => {
   expect(trigger.getAttribute('aria-expanded')).toBe('false')
 })
 
-test('Escape closes an open menu', () => {
+test('Escape closes an open menu and restores scroll', () => {
   renderMenu()
   const trigger = screen.getByRole('button', { name: 'Menu' })
 
   fireEvent.click(trigger)
   expect(trigger.getAttribute('aria-expanded')).toBe('true')
+  expect(document.body.style.overflow).toBe('hidden')
+  expect(document.documentElement.style.overflow).toBe('hidden')
 
   fireEvent.keyDown(document, { key: 'Escape' })
   expect(trigger.getAttribute('aria-expanded')).toBe('false')
+  expect(document.body.style.overflow).toBe('')
+  expect(document.documentElement.style.overflow).toBe('')
+})
+
+test('opens a full-screen overlay and closes when a link is chosen', () => {
+  renderMenu()
+  const trigger = screen.getByRole('button', { name: 'Menu' })
+
+  expect(trigger.querySelector('svg')).toBeTruthy()
+  expect(trigger.textContent).toBe('')
+
+  fireEvent.click(trigger)
+
+  const nav = screen.getByRole('navigation', { name: 'Navegação principal' })
+  expect(nav.className).toContain('fixed')
+  expect(nav.className).toContain('inset-0')
+  expect(document.body.contains(nav)).toBe(true)
+  expect(document.body.style.overflow).toBe('hidden')
+  expect(document.documentElement.style.overflow).toBe('hidden')
+
+  fireEvent.click(screen.getByRole('link', { name: 'Blog' }))
+  expect(trigger.getAttribute('aria-expanded')).toBe('false')
+  expect(
+    screen.queryByRole('navigation', { name: 'Navegação principal' }),
+  ).toBeNull()
+  expect(document.body.style.overflow).toBe('')
+  expect(document.documentElement.style.overflow).toBe('')
 })
 
 test('opens the four real navigation links and no placeholders', () => {

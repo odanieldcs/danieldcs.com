@@ -12,6 +12,9 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'danieldcs.com',
   description: 'Personal website of Daniel Castro',
+  icons: {
+    icon: '/media/icons/logo-ddev.png',
+  },
 }
 
 export default async function RootLayout({ children }: LayoutProps<'/'>) {
