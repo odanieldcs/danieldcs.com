@@ -8,8 +8,8 @@ import type { ReactNode } from 'react'
 import { Button } from '@/components/button'
 import { Container } from '@/components/container'
 import { Header } from '@/components/header'
+import { HeaderMobileMenu } from '@/components/header-nav'
 import { LanguageSwitch } from '@/components/ui/language-switch'
-import { MobileMenu } from '@/components/ui/mobile-menu'
 import { NavLink } from '@/components/ui/nav-link'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { MdxContent } from '@/lib/content/mdx'
@@ -139,7 +139,7 @@ export default function DesignSystemPage() {
                 Active
               </NavLink>
             </nav>
-            <MobileMenu />
+            <HeaderMobileMenu />
           </div>
         </Section>
 

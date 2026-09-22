@@ -76,7 +76,11 @@ test('site name links home and desktop nav lists the four items', () => {
   const nav = screen.getByRole('navigation', { name: 'Navegação principal' })
   expect(nav.className).toContain('hidden')
   expect(nav.className).toContain('md:flex')
-  expect(document.querySelector('header .md\\:hidden')).toBeTruthy()
+  const mobileSlot = document.querySelector('header .md\\:hidden')
+  const menuButton = screen.getByRole('button', { name: 'Menu' })
+  const themeButton = screen.getByRole('button', { name: 'Theme' })
+  expect(mobileSlot?.contains(menuButton)).toBe(true)
+  expect(mobileSlot?.contains(themeButton)).toBe(false)
   expect(screen.getByRole('button', { name: 'Theme' })).toBeTruthy()
   expect(
     screen.getByRole('button', { name: 'Switch to English' }),

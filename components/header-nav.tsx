@@ -5,6 +5,7 @@ import {
   useInterfaceLanguage,
   useUiDictionary,
 } from '@/components/interface-language-provider'
+import { MobileMenu } from '@/components/ui/mobile-menu'
 import { NavLink } from '@/components/ui/nav-link'
 import { getMainNavigationForLanguage } from '@/lib/navigation'
 
@@ -37,4 +38,17 @@ export function HeaderNavLinks({ pathname }: { pathname: string | null }) {
 
 export function HeaderNav() {
   return <HeaderNavLinks pathname={usePathname()} />
+}
+
+export function HeaderMobileMenu() {
+  const { language } = useInterfaceLanguage()
+  const { mobileMenu } = useUiDictionary()
+
+  return (
+    <MobileMenu
+      items={getMainNavigationForLanguage(language)}
+      triggerLabel={mobileMenu.trigger}
+      navAriaLabel={mobileMenu.navAriaLabel}
+    />
+  )
 }
