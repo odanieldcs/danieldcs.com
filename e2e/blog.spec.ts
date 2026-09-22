@@ -24,7 +24,13 @@ test('content-system article renders without console errors and highlights code'
       name: 'Como o content system renderiza um artigo',
     }),
   ).toBeVisible()
-  await expect(page.locator('pre.shiki')).toHaveCount(1)
+  await expect(page.locator('pre.shiki')).toHaveCount(2)
+  await expect(
+    page.locator('pre.shiki[data-language="ts"]').first(),
+  ).toBeVisible()
+  await expect(
+    page.locator('.line[data-highlight="true"]').first(),
+  ).toBeVisible()
   expect(consoleErrors).toEqual([])
 })
 

@@ -26,8 +26,18 @@ export function getAllPostSlugs(postsDir?: string): string[] {
 }
 ```
 
+Para destacar linhas no fence, use a meta nativa do Shiki — por exemplo `{1,3-4}` no fim da abertura do bloco:
+
+```ts {1,3-4}
+export function getAllPostSlugs(postsDir?: string): string[] {
+  return readdirSync(resolvePostsDir(postsDir))
+    .filter((filename) => filename.endsWith('.mdx'))
+    .map(slugFromFilename)
+}
+```
+
 Links também fazem parte do contrato: volte para a [home](/) ou consulte a [documentação do App Router](https://nextjs.org/docs/app) no site da Vercel.
 
 ![Fluxo simplificado do content system](/media/posts/content-system-pipeline.png)
 
-Na prática, blocos de código passam pelo Shiki (`github-light`), parágrafos e headings usam componentes MDX mínimos, e imagens internas apontam para arquivos em `public/media/posts/`. Nada disso exige CMS nem banco — só arquivos versionados e um `pnpm build`.
+Na prática, blocos de código passam pelo Shiki com temas `github-light` / `github-dark` (alternância via classe `.dark`), parágrafos e headings usam componentes MDX mínimos, e imagens internas apontam para arquivos em `public/media/posts/`. Nada disso exige CMS nem banco — só arquivos versionados e um `pnpm build`.

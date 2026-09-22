@@ -54,4 +54,16 @@ export function getAllPostSlugs(postsDir?: string): string[] {
 
 The reference article is [`content-system.mdx`](content-system.mdx).
 
+### Code fences
+
+Fenced blocks are highlighted with Shiki at build time. To highlight lines, append meta to the opening fence (sets `data-highlight="true"` on those lines):
+
+````md
+```ts {1,5,13}
+const a = 1
+```
+````
+
+Ranges work too: `{1,5-7}`.
+
 Invalid frontmatter breaks the loaders and `pnpm build`. Publishing follows the branch/PR flow in [`AGENTS.md`](../../AGENTS.md) and the [root README](../../README.md).

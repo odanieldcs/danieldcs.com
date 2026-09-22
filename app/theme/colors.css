@@ -5,6 +5,9 @@
   --muted: #5c5c5c; /* 6.25:1 on background */
   --border: #e4e4e7;
   --link: #3f3f46; /* 9.75:1 on background */
+  /* Shiki line highlight — Kent pattern: gray wash + darker bar */
+  --code-line-highlight-bar: #7a8194;
+  --code-line-highlight-fill: #b8bcc6;
 }
 
 .dark {
@@ -13,6 +16,8 @@
   --muted: #a3a3a3; /* 6.38:1 on background */
   --border: #3a3a3a;
   --link: #d4d4d4; /* 10.86:1 on background */
+  --code-line-highlight-bar: #9ca3af;
+  --code-line-highlight-fill: #52525b;
 }
 
 @theme inline {

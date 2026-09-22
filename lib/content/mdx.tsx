@@ -1,6 +1,7 @@
 import rehypeShiki from '@shikijs/rehype'
 import { MDXRemote, type MDXRemoteProps } from 'next-mdx-remote/rsc'
 import { mdxComponents } from './mdx-components'
+import { shikiTransformers } from './shiki-transformers'
 
 type MdxOptions = NonNullable<
   NonNullable<MDXRemoteProps['options']>['mdxOptions']
@@ -15,6 +16,7 @@ export const shikiRehypePlugin = [
       light: 'github-light',
       dark: 'github-dark',
     },
+    transformers: shikiTransformers,
   },
 ] satisfies RehypePlugins[number]
 

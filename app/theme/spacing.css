@@ -3,12 +3,29 @@
   --space-section: 4rem; /* scale 16 — between sections, mobile */
   --space-content-gap: 1.5rem; /* scale 6 — inside a content block */
   --space-inline: 1rem; /* scale 4 — compact horizontal gap */
+  /* Code fence: negative margin vs prose column (wider on md+) */
+  --space-code-breakout: var(--space-inline);
 }
 
 @media (min-width: 48rem) {
   /* md — desktop uses more air between sections */
   :root {
     --space-section: 6rem; /* scale 24 */
+    --space-code-breakout: calc(
+      var(--space-inline) +
+      2.5 *
+      var(--space-content-gap)
+    );
+  }
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --space-code-breakout: calc(
+      var(--space-inline) +
+      3.5 *
+      var(--space-content-gap)
+    );
   }
 }
 

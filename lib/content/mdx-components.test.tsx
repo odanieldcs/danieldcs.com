@@ -56,5 +56,8 @@ test('renders a mixed MDX fixture with semantic HTML and styled links', async ()
   expect(html).toMatch(/<blockquote[^>]*class="[^"]*text-muted/)
   expect(html).toContain('shiki')
   expect(html).toMatch(/style=/)
-  expect(html).toMatch(/<pre[^>]*class="[^"]*-mx-inline/)
+  expect(html).toMatch(
+    /<pre[^>]*class="[^"]*my-content-gap[^"]*overflow-x-auto/,
+  )
+  expect(html).toMatch(/<code class="block text-code"/)
 }, 15_000)
