@@ -32,8 +32,10 @@ export function Header() {
           <div className="md:hidden">
             <HeaderMobileMenu />
           </div>
-          <ThemeToggle />
-          <LanguageSwitch />
+          <div className="flex items-center gap-1">
+            <ThemeToggle />
+            <LanguageSwitch />
+          </div>
         </div>
       </Container>
     </header>
