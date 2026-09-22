@@ -19,7 +19,17 @@ test('shows the destination language label and toggles pt and en', () => {
   )
 
   const toEnglish = screen.getByRole('button', { name: 'Switch to English' })
-  expect(toEnglish.className).toContain('border')
+  expect(toEnglish.className).toContain('min-w-11')
+  expect(toEnglish.className).toContain('min-h-11')
+  expect(toEnglish.textContent).not.toContain('Switch to English')
+  expect(toEnglish.querySelector('svg')?.getAttribute('aria-hidden')).toBe(
+    'true',
+  )
+  expect(screen.getByRole('tooltip').textContent).toBe('Switch to English')
+  expect(screen.getByRole('tooltip').className).toContain('right-0')
+  expect(toEnglish.getAttribute('aria-describedby')).toBe(
+    screen.getByRole('tooltip').id,
+  )
 
   fireEvent.click(toEnglish)
 
