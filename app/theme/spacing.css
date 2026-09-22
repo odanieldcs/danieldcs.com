@@ -1,0 +1,26 @@
+/* Semantic spacing on the default Tailwind v4 scale. Not applied to pages yet. */
+:root {
+  --space-section: 4rem; /* scale 16 — between sections, mobile */
+  --space-content-gap: 1.5rem; /* scale 6 — inside a content block */
+  --space-inline: 1rem; /* scale 4 — compact horizontal gap */
+}
+
+@media (min-width: 48rem) {
+  /* md — desktop uses more air between sections */
+  :root {
+    --space-section: 6rem; /* scale 24 */
+  }
+}
+
+@theme inline {
+  --spacing-section: var(--space-section);
+  --spacing-content-gap: var(--space-content-gap);
+  --spacing-inline: var(--space-inline);
+
+  /* Confirmed Tailwind v4 defaults. Use these names in later issues. */
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 96rem;
+}
