@@ -9,6 +9,8 @@ test('pt and en home copy share the same key shape', () => {
   expect(Object.keys(pt)).toEqual([
     'eyebrow',
     'intro',
+    'highlights',
+    'portraitAlt',
     'recentTitle',
     'trilhaHeading',
     'trilhaDescription',
@@ -16,6 +18,28 @@ test('pt and en home copy share the same key shape', () => {
   ])
   expect(pt.eyebrow).toBe('Software Engineer & Builder')
   expect(en.eyebrow).toBe('Software Engineer & Builder')
+  expect(pt.highlights.map((item) => Object.keys(item))).toEqual([
+    ['label', 'description'],
+    ['label', 'description'],
+    ['label', 'description'],
+  ])
+  expect(en.highlights.map((item) => Object.keys(item))).toEqual(
+    pt.highlights.map((item) => Object.keys(item)),
+  )
+  expect(pt.highlights.map((item) => item.label)).toEqual([
+    'Engenheiro Full-Stack',
+    'Builder',
+    'Corredor',
+  ])
+  expect(en.highlights.map((item) => item.label)).toEqual([
+    'Full-Stack Engineer',
+    'Builder',
+    'Runner',
+  ])
+  expect(pt.portraitAlt).toBe('Retrato de Daniel Castro na Golden Gate')
+  expect(en.portraitAlt).toBe(
+    'Portrait of Daniel Castro at the Golden Gate Bridge',
+  )
   expect(pt.recentTitle).toBe('Escrita recente')
   expect(en.recentTitle).toBe('Recent writing')
 })

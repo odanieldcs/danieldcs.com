@@ -19,6 +19,11 @@ test('home loads without console errors', async ({ page }) => {
   await expect(
     main.getByRole('heading', { level: 1, name: 'Daniel Castro' }),
   ).toBeVisible()
+  await expect(
+    main.getByRole('img', {
+      name: 'Retrato de Daniel Castro na Golden Gate',
+    }),
+  ).toBeVisible()
   await expect(main.locator('a[href="/trilha"]')).toBeVisible()
   await expect(main.locator('a[href^="/blog/"]')).not.toHaveCount(0)
   expect(consoleErrors).toEqual([])

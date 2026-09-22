@@ -1,9 +1,17 @@
 import type { InterfaceLanguage } from './types'
 
+export type HomeHighlight = {
+  label: string
+  description: string
+}
+
 export type HomeCopy = {
-  /** Provisional positioning, shown as the hero eyebrow. */
+  /** Role line under the name, beside the portrait. */
   eyebrow: string
   intro: string
+  /** Provisional positioning, shown below the hero. */
+  highlights: HomeHighlight[]
+  portraitAlt: string
   recentTitle: string
   trilhaHeading: string
   trilhaDescription: string
@@ -21,6 +29,21 @@ const homeCopy: Record<InterfaceLanguage, HomeCopy> = {
     eyebrow: 'Software Engineer & Builder',
     intro:
       'Construo produtos e sistemas de software de ponta a ponta e escrevo sobre o que aprendo no caminho.',
+    highlights: [
+      {
+        label: 'Engenheiro Full-Stack',
+        description: 'Produtos e sistemas de ponta a ponta.',
+      },
+      {
+        label: 'Builder',
+        description: 'Da ideia ao que está no ar.',
+      },
+      {
+        label: 'Corredor',
+        description: 'Treino e constância fora da tela.',
+      },
+    ],
+    portraitAlt: 'Retrato de Daniel Castro na Golden Gate',
     recentTitle: 'Escrita recente',
     trilhaHeading: 'Trilha',
     trilhaDescription:
@@ -31,6 +54,21 @@ const homeCopy: Record<InterfaceLanguage, HomeCopy> = {
     eyebrow: 'Software Engineer & Builder',
     intro:
       'I build software products and systems end to end, and write about what I learn along the way.',
+    highlights: [
+      {
+        label: 'Full-Stack Engineer',
+        description: 'Products and systems end to end.',
+      },
+      {
+        label: 'Builder',
+        description: 'From the idea to what is in production.',
+      },
+      {
+        label: 'Runner',
+        description: 'Training and consistency away from the screen.',
+      },
+    ],
+    portraitAlt: 'Portrait of Daniel Castro at the Golden Gate Bridge',
     recentTitle: 'Recent writing',
     trilhaHeading: 'Trilha',
     trilhaDescription:
