@@ -5,3 +5,20 @@
 @import "./theme/containers.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
+
+/* Shiki dual-theme (class strategy via next-themes `.dark`) */
+.shiki {
+  background-color: var(--shiki-light-bg) !important;
+}
+
+.shiki span {
+  color: var(--shiki-light);
+}
+
+.dark .shiki {
+  background-color: var(--shiki-dark-bg) !important;
+}
+
+.dark .shiki span {
+  color: var(--shiki-dark);
+}

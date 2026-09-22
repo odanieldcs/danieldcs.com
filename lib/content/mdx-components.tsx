@@ -67,6 +67,16 @@ function MdxImage({
   )
 }
 
+const codeBlockPreClassName = [
+  '-mx-inline my-content-gap overflow-x-auto rounded-md p-inline',
+  'font-mono text-code leading-normal',
+].join(' ')
+
+const inlineCodeClassName = [
+  'rounded-sm bg-muted/15 px-1.5 py-0.5',
+  'font-mono text-code align-baseline',
+].join(' ')
+
 function MdxPre({
   className,
   style,
@@ -74,7 +84,11 @@ function MdxPre({
   ...props
 }: ComponentPropsWithoutRef<'pre'>) {
   return (
-    <pre className={className} style={style} {...props}>
+    <pre
+      className={joinClasses(codeBlockPreClassName, className)}
+      style={style}
+      {...props}
+    >
       {children}
     </pre>
   )
@@ -86,8 +100,18 @@ function MdxCode({
   children,
   ...props
 }: ComponentPropsWithoutRef<'code'>) {
+  const isFence = typeof className === 'string' && /\blanguage-/.test(className)
+
+  if (isFence) {
+    return (
+      <code className={joinClasses('block text-code', className)} {...props}>
+        {children}
+      </code>
+    )
+  }
+
   return (
-    <code className={className} style={style} {...props}>
+    <code className={joinClasses(inlineCodeClassName, className)} {...props}>
       {children}
     </code>
   )
