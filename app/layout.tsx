@@ -1,6 +1,6 @@
 import { GeistMono } from 'geist/font/mono'
-import { GeistSans } from 'geist/font/sans'
 import type { Metadata } from 'next'
+import { Fraunces, Inter } from 'next/font/google'
 import { cookies } from 'next/headers'
 import { Footer } from '@/components/footer'
 import { Header } from '@/components/header'
@@ -8,6 +8,19 @@ import { InterfaceLanguageProvider } from '@/components/interface-language-provi
 import { ThemeProvider } from '@/components/theme-provider'
 import { getInterfaceLanguageFromCookieStore } from '@/lib/i18n/cookie'
 import './globals.css'
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+})
+
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  variable: '--font-fraunces',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: 'danieldcs.com',
@@ -23,7 +36,7 @@ export default async function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html
       lang={initialLanguage}
-      className={`${GeistSans.variable} ${GeistMono.variable}`}
+      className={`${inter.variable} ${GeistMono.variable} ${fraunces.variable}`}
       suppressHydrationWarning
     >
       <body className="bg-background font-sans text-foreground">

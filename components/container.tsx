@@ -4,8 +4,8 @@ type ContainerWidth = 'page' | 'article'
 type ContainerElement = 'div' | 'main' | 'article' | 'section'
 
 const widthClass: Record<ContainerWidth, string> = {
-  page: 'max-w-container',
-  article: 'max-w-content',
+  page: 'max-w-container px-page',
+  article: 'max-w-content px-inline',
 }
 
 type ContainerProps<T extends ContainerElement> = {
@@ -23,7 +23,7 @@ export function Container<T extends ContainerElement = 'div'>({
   ...rest
 }: ContainerProps<T>) {
   const Component = (as ?? 'div') as ElementType
-  const classes = ['mx-auto', 'w-full', 'px-inline', widthClass[width], className]
+  const classes = ['mx-auto', 'w-full', widthClass[width], className]
     .filter(Boolean)
     .join(' ')
 

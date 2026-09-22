@@ -1,6 +1,6 @@
-/* Max widths for page shell vs reading column. Pair with mx-auto w-full px-inline. */
+/* Page shell is 72rem (1152px): 1072px of content plus 40px of padding each side. */
 :root {
-  --container-max: 96rem; /* 1536px — aligns with --breakpoint-2xl */
+  --container-max: 72rem;
   --content-max: 42rem; /* 672px — reading column (~672-720px) */
 }
 

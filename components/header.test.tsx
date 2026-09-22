@@ -105,22 +105,22 @@ test('marks the current route and nested paths as active', () => {
   navigation.pathname = '/blog'
   const { unmount } = renderHeader()
 
-  expect(screen.getByRole('link', { name: 'Blog' }).className).toContain(
-    'font-medium',
-  )
   expect(
-    screen.getByRole('link', { name: 'Comunidade' }).className,
-  ).not.toContain('font-medium')
+    screen.getByRole('link', { name: 'Blog' }).className.split(/\s+/),
+  ).toContain('text-foreground')
+  expect(screen.getByRole('link', { name: 'Comunidade' }).className).toContain(
+    'text-foreground/70',
+  )
   unmount()
 
   navigation.pathname = '/blog/content-system'
   renderHeader()
 
-  expect(screen.getByRole('link', { name: 'Blog' }).className).toContain(
-    'font-medium',
-  )
-  expect(screen.getByRole('link', { name: 'Sobre' }).className).not.toContain(
-    'font-medium',
+  expect(
+    screen.getByRole('link', { name: 'Blog' }).className.split(/\s+/),
+  ).toContain('text-foreground')
+  expect(screen.getByRole('link', { name: 'Sobre' }).className).toContain(
+    'text-foreground/70',
   )
 })
 
@@ -130,9 +130,9 @@ test('uses English nav labels when the interface language is en', () => {
 
   expect(screen.getByRole('link', { name: 'Writing' })).toBeTruthy()
   expect(screen.getByRole('link', { name: 'Community' })).toBeTruthy()
-  expect(screen.getByRole('link', { name: 'About' }).className).toContain(
-    'font-medium',
-  )
+  expect(
+    screen.getByRole('link', { name: 'About' }).className.split(/\s+/),
+  ).toContain('text-foreground')
   expect(screen.queryByRole('link', { name: 'Blog' })).toBeNull()
   expect(
     screen.getByRole('navigation', { name: 'Main navigation' }),

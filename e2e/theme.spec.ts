@@ -1,8 +1,9 @@
 import { expect, test } from '@playwright/test'
 
-const lightBackground = 'rgb(247, 247, 248)'
-const darkBackground = 'rgb(33, 33, 33)'
-const lightForeground = 'rgb(26, 26, 26)'
+// Chromium serializes these oklch backgrounds as lab().
+const lightBackground = 'lab(95.2984 0.174552 4.59245)'
+const darkBackground = 'lab(11.8869 0.301734 4.69313)'
+const lightForeground = 'lab(10.2215 -2.79985 1.40786)'
 const darkForeground = 'rgb(236, 236, 236)'
 
 function collectConsoleErrors(page: import('@playwright/test').Page) {

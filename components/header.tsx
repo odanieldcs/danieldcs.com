@@ -11,7 +11,7 @@ import { LanguageSwitch } from '@/components/ui/language-switch'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 
 const homeLinkClassName = [
-  'inline-flex min-w-0 items-center gap-3 rounded-sm text-body font-medium text-foreground',
+  'inline-flex min-w-0 items-center gap-3 rounded-sm text-foreground',
   'outline-none focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
 ].join(' ')
 
@@ -33,7 +33,9 @@ export function Header() {
               className="h-5 w-auto"
             />
           </span>
-          <span className="truncate">Daniel Castro</span>
+          <span className="truncate font-display text-xl font-medium">
+            Daniel Castro
+          </span>
         </Link>
         <div className="w-0 min-w-0 justify-self-center overflow-hidden md:w-auto md:overflow-visible">
           <Suspense fallback={<HeaderNavLinks pathname={null} />}>
