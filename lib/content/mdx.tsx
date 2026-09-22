@@ -10,7 +10,12 @@ type RehypePlugins = NonNullable<MdxOptions['rehypePlugins']>
 
 export const shikiRehypePlugin = [
   rehypeShiki,
-  { theme: 'github-light' },
+  {
+    themes: {
+      light: 'github-light',
+      dark: 'github-dark',
+    },
+  },
 ] satisfies RehypePlugins[number]
 
 export type MdxContentProps = {
