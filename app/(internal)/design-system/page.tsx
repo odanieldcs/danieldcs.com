@@ -7,6 +7,7 @@ import Link from 'next/link'
 import type { ReactNode } from 'react'
 import { Button } from '@/components/button'
 import { Container } from '@/components/container'
+import { LanguageSwitch } from '@/components/ui/language-switch'
 import { MobileMenu } from '@/components/ui/mobile-menu'
 import { NavLink } from '@/components/ui/nav-link'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
@@ -60,7 +61,10 @@ export default function DesignSystemPage() {
             Internal verification for milestone tokens and components.
           </p>
         </div>
-        <ThemeToggle />
+        <div className="flex flex-wrap items-center gap-inline">
+          <ThemeToggle />
+          <LanguageSwitch />
+        </div>
       </div>
 
       <Section title="Typography">
