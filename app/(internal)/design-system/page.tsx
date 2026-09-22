@@ -7,8 +7,6 @@ import Link from 'next/link'
 import type { ReactNode } from 'react'
 import { Button } from '@/components/button'
 import { Container } from '@/components/container'
-import { Footer } from '@/components/footer'
-import { Header } from '@/components/header'
 import { HeaderMobileMenu } from '@/components/header-nav'
 import { LanguageSwitch } from '@/components/ui/language-switch'
 import { NavLink } from '@/components/ui/nav-link'
@@ -55,114 +53,107 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
 
 export default function DesignSystemPage() {
   return (
-    <>
-      <Header />
-      <Container as="main" width="page" className="py-section">
-        <div className="mb-section flex flex-wrap items-center justify-between gap-inline">
-          <div>
-            <h1 className="text-h1 font-semibold">Design System</h1>
-            <p className="mt-inline text-body text-muted">
-              Internal verification for milestone tokens and components.
-            </p>
-          </div>
-          <div className="flex flex-wrap items-center gap-inline">
-            <ThemeToggle />
-            <LanguageSwitch />
-          </div>
+    <Container as="main" width="page" className="py-section">
+      <div className="mb-section flex flex-wrap items-center justify-between gap-inline">
+        <div>
+          <h1 className="text-h1 font-semibold">Design System</h1>
+          <p className="mt-inline text-body text-muted">
+            Internal verification for milestone tokens and components.
+          </p>
         </div>
+        <div className="flex flex-wrap items-center gap-inline">
+          <ThemeToggle />
+          <LanguageSwitch />
+        </div>
+      </div>
 
-        <Section title="Typography">
-          <div className="flex flex-col gap-content-gap">
-            <h1 className="text-h1 font-semibold">Heading 1 — text-h1</h1>
-            <h2 className="text-h2 font-semibold">Heading 2 — text-h2</h2>
-            <h3 className="text-h3 font-semibold">Heading 3 — text-h3</h3>
-            <h4 className="text-h4 font-semibold">Heading 4 — text-h4</h4>
-            <p className="text-body">
-              Body — text-body. Readable paragraph with comfortable line height
-              for long-form content.
-            </p>
-            <p className="text-caption text-muted">
-              Caption — text-caption / text-muted
-            </p>
-          </div>
-        </Section>
+      <Section title="Typography">
+        <div className="flex flex-col gap-content-gap">
+          <h1 className="text-h1 font-semibold">Heading 1 — text-h1</h1>
+          <h2 className="text-h2 font-semibold">Heading 2 — text-h2</h2>
+          <h3 className="text-h3 font-semibold">Heading 3 — text-h3</h3>
+          <h4 className="text-h4 font-semibold">Heading 4 — text-h4</h4>
+          <p className="text-body">
+            Body — text-body. Readable paragraph with comfortable line height
+            for long-form content.
+          </p>
+          <p className="text-caption text-muted">
+            Caption — text-caption / text-muted
+          </p>
+        </div>
+      </Section>
 
-        <Section title="Color tokens">
-          <ul className="grid list-none gap-content-gap sm:grid-cols-2 lg:grid-cols-3">
-            {colorTokens.map((token) => (
-              <li key={token.name} className="flex flex-col gap-inline">
-                <div
-                  className={`h-16 rounded-md ${token.swatch}`}
-                  aria-hidden
-                />
-                <span className="font-mono text-caption text-muted">
-                  {token.name}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </Section>
+      <Section title="Color tokens">
+        <ul className="grid list-none gap-content-gap sm:grid-cols-2 lg:grid-cols-3">
+          {colorTokens.map((token) => (
+            <li key={token.name} className="flex flex-col gap-inline">
+              <div className={`h-16 rounded-md ${token.swatch}`} aria-hidden />
+              <span className="font-mono text-caption text-muted">
+                {token.name}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </Section>
 
-        <Section title="Buttons">
-          <div className="flex flex-wrap gap-inline">
-            <Button variant="primary">Primary</Button>
-            <Button variant="outline">Outline</Button>
-            <Button variant="primary" disabled>
-              Disabled
-            </Button>
-          </div>
-        </Section>
+      <Section title="Buttons">
+        <div className="flex flex-wrap gap-inline">
+          <Button variant="primary">Primary</Button>
+          <Button variant="outline">Outline</Button>
+          <Button variant="primary" disabled>
+            Disabled
+          </Button>
+        </div>
+      </Section>
 
-        <Section title="Links">
-          <div className="flex flex-wrap gap-content-gap text-body">
-            <Link href="/" className={linkClassName}>
-              Internal link
-            </Link>
-            <a
-              href="https://example.com"
-              className={linkClassName}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              External link
-            </a>
-          </div>
-        </Section>
+      <Section title="Links">
+        <div className="flex flex-wrap gap-content-gap text-body">
+          <Link href="/" className={linkClassName}>
+            Internal link
+          </Link>
+          <a
+            href="https://example.com"
+            className={linkClassName}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            External link
+          </a>
+        </div>
+      </Section>
 
-        <Section title="Navigation">
-          <div className="flex flex-wrap items-center justify-between gap-content-gap">
-            <nav
-              aria-label="Nav link samples"
-              className="flex flex-wrap gap-content-gap"
-            >
-              <NavLink href="/design-system">Default</NavLink>
-              <NavLink href="/design-system" active>
-                Active
-              </NavLink>
-            </nav>
-            <HeaderMobileMenu />
-          </div>
-        </Section>
+      <Section title="Navigation">
+        <div className="flex flex-wrap items-center justify-between gap-content-gap">
+          <nav
+            aria-label="Nav link samples"
+            className="flex flex-wrap gap-content-gap"
+          >
+            <NavLink href="/design-system">Default</NavLink>
+            <NavLink href="/design-system" active>
+              Active
+            </NavLink>
+          </nav>
+          <HeaderMobileMenu />
+        </div>
+      </Section>
 
-        <Section title="Code (Shiki + MDX)">
-          {/* Article-width column — Shiki breakout margins assume max-w-content */}
-          <div className="mx-auto w-full max-w-content">
-            <MdxContent source={sampleCode} />
-          </div>
-        </Section>
+      <Section title="Code (Shiki + MDX)">
+        {/* Article-width column — Shiki breakout margins assume max-w-content */}
+        <div className="mx-auto w-full max-w-content">
+          <MdxContent source={sampleCode} />
+        </div>
+      </Section>
 
-        <Section title="Content image">
-          <Image
-            src={EXAMPLE_IMAGE.src}
-            alt="Example content image"
-            width={EXAMPLE_IMAGE.width}
-            height={EXAMPLE_IMAGE.height}
-            className={contentImageClassName}
-            sizes="(min-width: 48rem) 42rem, 100vw"
-          />
-        </Section>
-      </Container>
-      <Footer />
-    </>
+      <Section title="Content image">
+        <Image
+          src={EXAMPLE_IMAGE.src}
+          alt="Example content image"
+          width={EXAMPLE_IMAGE.width}
+          height={EXAMPLE_IMAGE.height}
+          className={contentImageClassName}
+          sizes="(min-width: 48rem) 42rem, 100vw"
+        />
+      </Section>
+    </Container>
   )
 }
