@@ -1,5 +1,10 @@
 import { expect, test } from 'vitest'
-import { getAboutCopy, getHomeCopy, getTrilhaCopy } from './pages'
+import {
+  getAboutCopy,
+  getCommunityCopy,
+  getHomeCopy,
+  getTrilhaCopy,
+} from './pages'
 
 test('pt and en home copy share the same key shape', () => {
   const pt = getHomeCopy('pt')
@@ -175,6 +180,46 @@ test('pt and en about copy share the same key shape', () => {
   expect(en.contactCta).toBe('Get in touch')
   expect(pt.contactParagraphs).toHaveLength(2)
   expect(en.contactParagraphs).toHaveLength(2)
+})
+
+test('pt and en community copy share the same key shape', () => {
+  const pt = getCommunityCopy('pt')
+  const en = getCommunityCopy('en')
+
+  expect(Object.keys(pt)).toEqual(Object.keys(en))
+  expect(Object.keys(pt)).toEqual([
+    'eyebrow',
+    'title',
+    'intro',
+    'empty',
+    'yearLabel',
+    'viewLabel',
+    'viewList',
+    'viewGrid',
+    'types',
+  ])
+  expect(pt.title).toBe('Palestras, workshops e encontros.')
+  expect(en.title).toBe('Talks, workshops, and gatherings.')
+  expect(pt.viewList).toBe('Lista')
+  expect(en.viewList).toBe('List')
+  expect(pt.viewGrid).toBe('Grade')
+  expect(en.viewGrid).toBe('Grid')
+  expect(pt.yearLabel).toBe('Ano')
+  expect(en.yearLabel).toBe('Year')
+  expect(pt.types).toEqual({
+    talk: 'Palestra',
+    workshop: 'Workshop',
+    event: 'Evento',
+    other: 'Outro',
+  })
+  expect(en.types).toEqual({
+    talk: 'Talk',
+    workshop: 'Workshop',
+    event: 'Event',
+    other: 'Other',
+  })
+  expect(pt.empty.length).toBeGreaterThan(0)
+  expect(en.empty.length).toBeGreaterThan(0)
 })
 
 test('pt and en trilha placeholder copy share the same key shape', () => {
