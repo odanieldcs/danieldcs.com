@@ -50,7 +50,9 @@ test('blog listing opens a post and paginates to page 2', async ({ page }) => {
     .getByRole('link', { name: '2', exact: true })
     .click()
   await expect(page).toHaveURL('/blog?page=2')
-  await expect(page.locator('main ul').first().locator(':scope > li')).toHaveCount(2)
+  await expect(
+    page.locator('main ul').first().locator(':scope > li'),
+  ).toHaveCount(2)
 })
 
 test('content-system article renders without console errors and highlights code', async ({
