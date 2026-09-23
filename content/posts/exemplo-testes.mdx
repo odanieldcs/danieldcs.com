@@ -1,0 +1,21 @@
+---
+title: Testes que protegem comportamento
+description: Como escolher o nível certo entre unitário, integração e E2E.
+date: 2026-07-20
+tags:
+  - testing
+cover: exemplo-testes.png
+language: pt
+---
+
+Um teste bom falha quando o produto muda de forma que o usuário percebe — não quando refatoramos detalhes internos.
+
+## Pirâmide pragmática
+
+Unitários cobrem regras puras. Integração valida módulos juntos. E2E garante fluxos críticos de ponta a ponta.
+
+```ts
+expect(formatPostDate('2026-09-21T00:00:00.000Z', 'pt')).toMatch(/2026/)
+```
+
+Se um teste só repete a implementação linha a linha, ele provavelmente não vale o custo de manutenção.

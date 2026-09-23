@@ -1,0 +1,23 @@
+---
+title: CI que dá confiança
+description: Lint, testes e build no mesmo pipeline antes do merge.
+date: 2025-11-11
+tags:
+  - ci
+cover: exemplo-ci.png
+language: pt
+---
+
+CI rápido e confiável muda hábito: você mergeia porque viu verde, não porque cansou de esperar.
+
+## Falhar cedo
+
+Biome e Vitest no PR pegam regressão antes do deploy.
+
+```yaml
+- run: pnpm lint
+- run: pnpm test
+- run: pnpm build
+```
+
+Cache de dependências e jobs paralelos mantêm feedback abaixo de poucos minutos.

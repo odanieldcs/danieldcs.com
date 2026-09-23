@@ -1,5 +1,53 @@
 import { expect, test } from '@playwright/test'
 
+test('blog listing shows 12 posts on page 1 without console errors', async ({
+  page,
+}) => {
+  const consoleErrors: string[] = []
+
+  page.on('console', (msg) => {
+    if (msg.type() === 'error') {
+      consoleErrors.push(msg.text())
+    }
+  })
+
+  page.on('pageerror', (error) => {
+    consoleErrors.push(error.message)
+  })
+
+  await page.goto('/blog')
+
+  await expect(page).toHaveTitle('Blog')
+  await expect(
+    page.getByRole('heading', {
+      level: 1,
+      name: 'Artigos e notas de engenharia.',
+    }),
+  ).toBeVisible()
+  await expect(
+    page.getByRole('link', {
+      name: 'Como o content system renderiza um artigo',
+    }),
+  ).toBeVisible()
+  await expect(page.locator('main ul li')).toHaveCount(12)
+
+  expect(consoleErrors).toEqual([])
+})
+
+test('blog listing opens a post and paginates to page 2', async ({ page }) => {
+  await page.goto('/blog')
+
+  await page
+    .getByRole('link', { name: 'Como o content system renderiza um artigo' })
+    .click()
+  await expect(page).toHaveURL('/blog/content-system')
+
+  await page.goto('/blog')
+  await page.getByRole('link', { name: '2' }).click()
+  await expect(page).toHaveURL('/blog?page=2')
+  await expect(page.locator('main ul li')).toHaveCount(2)
+})
+
 test('content-system article renders without console errors and highlights code', async ({
   page,
 }) => {

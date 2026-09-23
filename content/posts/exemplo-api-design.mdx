@@ -1,0 +1,26 @@
+---
+title: Design de APIs estáveis
+description: Versionamento, erros previsíveis e contratos que envelhecem bem.
+date: 2026-01-22
+tags:
+  - api
+cover: exemplo-api-design.png
+language: pt
+---
+
+API pública é produto: mudança breaking exige migração, comunicação e tempo.
+
+## Erros estruturados
+
+Corpo de erro consistente acelera debug no cliente.
+
+```json
+{
+  "error": {
+    "code": "post_not_found",
+    "message": "Post not found: slug"
+  }
+}
+```
+
+Campos opcionais novos são compatíveis; remover ou renomear campos exige versão ou feature flag.

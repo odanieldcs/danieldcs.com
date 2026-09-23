@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest'
 import {
   getAboutCopy,
+  getBlogCopy,
   getCommunityCopy,
   getHomeCopy,
   getTrilhaCopy,
@@ -220,6 +221,31 @@ test('pt and en community copy share the same key shape', () => {
   })
   expect(pt.empty.length).toBeGreaterThan(0)
   expect(en.empty.length).toBeGreaterThan(0)
+})
+
+test('pt and en blog copy share the same key shape', () => {
+  const pt = getBlogCopy('pt')
+  const en = getBlogCopy('en')
+
+  expect(Object.keys(pt)).toEqual(Object.keys(en))
+  expect(Object.keys(pt)).toEqual([
+    'eyebrow',
+    'title',
+    'intro',
+    'empty',
+    'viewLabel',
+    'viewList',
+    'viewGrid',
+    'paginationLabel',
+    'paginationPrevious',
+    'paginationNext',
+  ])
+  expect(pt.title).toBe('Artigos e notas de engenharia.')
+  expect(en.title).toBe('Articles and engineering notes.')
+  expect(pt.paginationPrevious).toBe('Anterior')
+  expect(en.paginationPrevious).toBe('Previous')
+  expect(pt.paginationNext).toBe('Próxima')
+  expect(en.paginationNext).toBe('Next')
 })
 
 test('pt and en trilha placeholder copy share the same key shape', () => {

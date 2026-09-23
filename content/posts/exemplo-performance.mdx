@@ -1,0 +1,27 @@
+---
+title: Performance perceptível
+description: LCP, imagens responsivas e JavaScript sob demanda.
+date: 2025-09-18
+tags:
+  - performance
+cover: exemplo-performance.png
+language: pt
+---
+
+Performance é experiência: página que responde cedo mantém leitor na listagem e no artigo.
+
+## Imagens com tamanho certo
+
+`next/image` com `sizes` evita baixar pixels demais.
+
+```tsx
+<Image
+  src="/media/posts/exemplo-performance.png"
+  alt="Capa do artigo"
+  width={800}
+  height={450}
+  sizes="(min-width: 64rem) 20rem, 100vw"
+/>
+```
+
+Server Components reduzem bundle client; lazy load só onde interação exige hidratação.
