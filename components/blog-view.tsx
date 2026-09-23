@@ -27,19 +27,20 @@ const dateLocale: Record<InterfaceLanguage, string> = {
   en: 'en-US',
 }
 
-function formatPostDate(isoDate: string, language: InterfaceLanguage): string {
+function formatPostMonthYear(
+  isoDate: string,
+  language: InterfaceLanguage,
+): string {
   const parts = new Intl.DateTimeFormat(dateLocale[language], {
-    day: 'numeric',
     month: 'short',
     year: 'numeric',
     timeZone: 'UTC',
   }).formatToParts(new Date(isoDate))
-  const day = parts.find((part) => part.type === 'day')?.value ?? ''
   const month = parts.find((part) => part.type === 'month')?.value ?? ''
   const year = parts.find((part) => part.type === 'year')?.value ?? ''
   const monthLabel = month.endsWith('.') ? month : `${month}.`
 
-  return `${day} ${monthLabel} ${year}`
+  return `${monthLabel} ${year}`
 }
 
 function resolveCoverSrc(cover: string): string {
@@ -55,8 +56,15 @@ const focusClassName = [
   'focus-visible:ring-offset-2 focus-visible:ring-offset-background',
 ].join(' ')
 
+const interactiveSurfaceClassName = [
+  'rounded-lg border border-border',
+  'transition-colors duration-200',
+  'hover:border-accent/40 hover:bg-foreground/5',
+].join(' ')
+
 const listLinkClassName = [
-  'group block border-b border-border py-8 first:pt-0 last:border-b-0 last:pb-0',
+  'group flex items-baseline justify-between gap-4 p-4 sm:gap-6 sm:p-5',
+  interactiveSurfaceClassName,
   focusClassName,
 ].join(' ')
 
@@ -70,31 +78,26 @@ function ListItem({
   return (
     <li>
       <Link href={`/blog/${post.slug}`} className={listLinkClassName}>
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:gap-8">
-          <p className="shrink-0 text-xs font-medium uppercase text-foreground/45">
-            <time dateTime={post.date}>{formatPostDate(post.date, language)}</time>
-          </p>
-          <div className="min-w-0">
-            <h2 className="font-display text-2xl font-medium transition-colors group-hover:text-accent">
-              {post.title}
-            </h2>
-            <p className="mt-2 line-clamp-1 text-sm text-foreground/60">
-              {post.description}
-            </p>
-          </div>
-        </div>
+        <h2 className="min-w-0 font-display text-xl font-medium transition-colors group-hover:text-accent sm:text-2xl">
+          {post.title}
+        </h2>
+        <time
+          dateTime={post.date}
+          className="shrink-0 text-xs font-medium uppercase tabular-nums text-foreground/45"
+        >
+          {formatPostMonthYear(post.date, language)}
+        </time>
       </Link>
     </li>
   )
 }
 
-function GridCard({
-  post,
-  language,
-}: {
-  post: BlogPostView
-  language: InterfaceLanguage
-}) {
+const postDateMetadataClassName = [
+  'absolute size-px overflow-hidden whitespace-nowrap border-0 p-0',
+  '[clip-path:inset(50%)]',
+].join(' ')
+
+function GridCard({ post }: { post: BlogPostView }) {
   const coverSrc = post.cover ? resolveCoverSrc(post.cover) : undefined
 
   return (
@@ -102,8 +105,8 @@ function GridCard({
       <Link
         href={`/blog/${post.slug}`}
         className={[
-          'group flex h-full w-full flex-col overflow-hidden rounded-lg border border-border',
-          'transition-colors hover:border-accent/40 hover:bg-foreground/5',
+          'group flex h-full w-full flex-col overflow-hidden',
+          interactiveSurfaceClassName,
           focusClassName,
         ].join(' ')}
       >
@@ -120,9 +123,9 @@ function GridCard({
           ) : null}
         </div>
         <div className="flex flex-col gap-2 p-5">
-          <p className="text-xs font-medium uppercase text-foreground/45">
-            <time dateTime={post.date}>{formatPostDate(post.date, language)}</time>
-          </p>
+          <time dateTime={post.date} className={postDateMetadataClassName}>
+            {post.date}
+          </time>
           <h2 className="font-display text-xl font-medium transition-colors group-hover:text-accent">
             {post.title}
           </h2>
@@ -317,15 +320,15 @@ export function BlogView({
           </Container>
           <Container width="page" className="pb-16 pt-10 sm:pb-20 sm:pt-12">
             {view === 'list' ? (
-              <ul className="list-none">
+              <ul className="flex list-none flex-col gap-2 sm:gap-3">
                 {posts.map((post) => (
                   <ListItem key={post.slug} post={post} language={language} />
                 ))}
               </ul>
             ) : (
-              <ul className="grid list-none gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <ul className="grid list-none gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
                 {posts.map((post) => (
-                  <GridCard key={post.slug} post={post} language={language} />
+                  <GridCard key={post.slug} post={post} />
                 ))}
               </ul>
             )}

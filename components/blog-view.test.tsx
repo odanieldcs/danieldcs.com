@@ -66,7 +66,7 @@ function renderBlog(
   )
 }
 
-test('list view links to posts and shows date, title, and description', () => {
+test('list view links to posts with title and month-year on the right', () => {
   renderBlog()
 
   const articleLink = screen.getByRole('link', {
@@ -74,10 +74,22 @@ test('list view links to posts and shows date, title, and description', () => {
   })
 
   expect(articleLink.getAttribute('href')).toBe('/blog/content-system')
-  expect(within(articleLink).getByText('21 set. 2026')).toBeTruthy()
   expect(
-    within(articleLink).getByText('Um passeio pelo pipeline de ponta a ponta.'),
-  ).toBeTruthy()
+    within(articleLink).queryByText('Um passeio pelo pipeline de ponta a ponta.'),
+  ).toBeNull()
+  const published = within(articleLink).getByRole('time')
+  expect(published.textContent).toBe('set. 2026')
+  expect(published.getAttribute('dateTime')).toBe('2026-09-21T00:00:00.000Z')
+})
+
+test('list view formats month and year in English', () => {
+  renderBlog('en')
+
+  const articleLink = screen.getByRole('link', {
+    name: /Como o content system renderiza um artigo/i,
+  })
+
+  expect(within(articleLink).getByRole('time').textContent).toMatch(/Sep\.? 2026/)
 })
 
 test('grid view hides descriptions and shows cover images', () => {
