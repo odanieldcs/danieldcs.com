@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react'
 import { expect, test } from 'vitest'
-import { siteName } from '@/lib/site'
+import { linkedInProfileUrl, siteName } from '@/lib/site'
 import { Footer } from './footer'
 
 const socialLinks = [
-  ['LinkedIn', 'https://www.linkedin.com/in/odanieldcs'],
+  ['LinkedIn', linkedInProfileUrl],
   ['GitHub', 'https://github.com/odanieldcs'],
   ['YouTube', 'https://www.youtube.com/@odanieldcs'],
   ['Instagram', 'https://www.instagram.com/odanieldcs'],
