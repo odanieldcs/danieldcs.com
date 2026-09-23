@@ -152,23 +152,24 @@ export type AboutCopy = {
 const aboutCopy: Record<InterfaceLanguage, AboutCopy> = {
   pt: {
     eyebrow: 'Sobre mim',
-    headline: 'Entre sistemas e pessoas, construo caminhos mais simples.',
+    headline: 'Construindo e compartilhando, de Dev para Dev.',
     introParagraphs: [
       'Sou engenheiro de software e gosto de construir sistemas que tornam problemas complexos mais simples. Ao longo da minha carreira, trabalhei entre engenharia, arquitetura, produto e pessoas.',
       'Hoje atuo como Staff Software Engineer na Curebase, construindo software e explorando novas formas de unir engenharia, produto e tecnologia.',
     ],
     pillars: [
-      'Software engineering',
+      'Software Engineering',
       'IA aplicada',
       'Liderança técnica',
       'Ensino',
     ],
-    portraitAlt: 'Daniel Castro palestrando no palco, com microfone',
+    portraitAlt:
+      'Daniel Castro palestrando no palco do TDC Floripa em 2026, com microfone',
     portraitCaption: 'Tecnologia, aprendizado e troca.',
     sectionExperienceIndex: '01 / Experiência',
     experienceTitle: 'Experiência',
     experienceSubtitle:
-      'Alguns dos contextos em que venho construindo software e formando equipes.',
+      'Alguns dos contextos em que venho entregando software.',
     timeline: [
       {
         period: 'out. 2025 — atual',
@@ -263,7 +264,7 @@ const aboutCopy: Record<InterfaceLanguage, AboutCopy> = {
   },
   en: {
     eyebrow: 'About me',
-    headline: 'Between systems and people, I build simpler paths.',
+    headline: 'Building and sharing, from dev to dev.',
     introParagraphs: [
       "I'm a software engineer, and I like building systems that make complex problems simpler. Throughout my career, I've worked across engineering, architecture, product, and people.",
       'Today I work as a Staff Software Engineer at Curebase, building software and exploring new ways to bring engineering, product, and technology together.',
@@ -274,12 +275,13 @@ const aboutCopy: Record<InterfaceLanguage, AboutCopy> = {
       'Technical leadership',
       'Teaching',
     ],
-    portraitAlt: 'Daniel Castro speaking on stage, holding a microphone',
+    portraitAlt:
+      'Daniel Castro speaking on stage at TDC Floripa in 2026, holding a microphone',
     portraitCaption: 'Technology, learning, and exchange.',
     sectionExperienceIndex: '01 / Experience',
     experienceTitle: 'Experience',
     experienceSubtitle:
-      'Some of the contexts where I have been building software and growing teams.',
+      'Some of the contexts where I have been delivering software.',
     timeline: [
       {
         period: 'Oct. 2025 — present',

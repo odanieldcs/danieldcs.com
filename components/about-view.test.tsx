@@ -5,7 +5,7 @@ import {
   useInterfaceLanguage,
 } from '@/components/interface-language-provider'
 import { INTERFACE_LANGUAGE_COOKIE_NAME } from '@/lib/i18n/types'
-import { contactEmail } from '@/lib/site'
+import { contactEmail, linkedInProfileUrl } from '@/lib/site'
 import { AboutView } from './about-view'
 
 vi.mock('next/image', () => ({
@@ -39,7 +39,7 @@ test('renders the about page in Portuguese', () => {
   expect(
     screen.getByRole('heading', {
       level: 1,
-      name: 'Entre sistemas e pessoas, construo caminhos mais simples.',
+      name: 'Construindo e compartilhando, de Dev para Dev.',
     }),
   ).toBeTruthy()
   expect(screen.getByText('Sobre mim')).toBeTruthy()
@@ -48,7 +48,7 @@ test('renders the about page in Portuguese', () => {
   expect(
     screen
       .getByRole('img', {
-        name: 'Daniel Castro palestrando no palco, com microfone',
+        name: 'Daniel Castro palestrando no palco do TDC Floripa em 2026, com microfone',
       })
       .getAttribute('src'),
   ).toBe('/media/personal/daniel_castro_profile_3.jpg')
@@ -59,9 +59,8 @@ test('renders the about page in Portuguese', () => {
   expect(
     screen.getByRole('heading', { level: 3, name: 'Staff Software Engineer' }),
   ).toBeTruthy()
-  expect(
-    screen.getByText('Curebase / Estados Unidos · remoto'),
-  ).toBeTruthy()
+  expect(screen.getByText('Curebase')).toBeTruthy()
+  expect(screen.getByText('Estados Unidos · remoto')).toBeTruthy()
   for (const item of timelineItems) {
     expect(item.querySelectorAll('p')).toHaveLength(2)
   }
@@ -69,29 +68,30 @@ test('renders the about page in Portuguese', () => {
   const linkedin = screen.getByRole('link', {
     name: 'Ver trajetória completa no LinkedIn',
   })
-  expect(linkedin.getAttribute('href')).toBe(
-    'https://www.linkedin.com/in/odanieldcs',
-  )
+  expect(linkedin.getAttribute('href')).toBe(linkedInProfileUrl)
   expect(linkedin.getAttribute('target')).toBe('_blank')
   expect(linkedin.getAttribute('rel')).toBe('noopener noreferrer')
   expect(linkedin.querySelector('svg')).toBeTruthy()
 
   const repertoire = sectionByHeading('Como contribuo')
-  expect(repertoire?.querySelectorAll('h3')).toHaveLength(4)
+  expect(repertoire?.querySelectorAll('h3')).toHaveLength(5)
   expect(screen.getByText('Arquitetura de software')).toBeTruthy()
   expect(screen.getByText('AI-assisted development')).toBeTruthy()
   expect(screen.getAllByText('Mentoria')).toHaveLength(2)
   expect(screen.getByText('Planejamento de entregas')).toBeTruthy()
-  expect(screen.getByText('Idiomas:')).toBeTruthy()
+  expect(
+    screen.getByRole('heading', { level: 3, name: 'Idiomas' }),
+  ).toBeTruthy()
   expect(screen.getByText('Português · Inglês')).toBeTruthy()
 
-  const pillar = screen.getByText('IA aplicada').closest('ul')
-  expect(pillar?.className).toContain('text-caption')
-  expect(pillar?.className).toContain('text-muted')
-  expect(pillar?.className).not.toContain('rounded-full')
+  const pillar = screen.getByText('IA aplicada')
+  expect(pillar.closest('ul')).toBeNull()
+  expect(pillar.parentElement?.className).toContain('text-sm')
+  expect(pillar.parentElement?.className).not.toContain('rounded-full')
 
   const personal = sectionByHeading('Corrida como parte da rotina.')
-  expect(personal?.className).toContain('bg-trail')
+  expect(personal?.className).toContain('border-y')
+  expect(personal?.className).not.toContain('bg-trail')
   expect(
     screen.getByText(/Sou corredor amador e treino com regularidade/),
   ).toBeTruthy()
@@ -117,7 +117,7 @@ test('renders English copy when the interface language is en', () => {
   expect(
     screen.getByRole('heading', {
       level: 1,
-      name: 'Between systems and people, I build simpler paths.',
+      name: 'Building and sharing, from dev to dev.',
     }),
   ).toBeTruthy()
   expect(screen.getByRole('heading', { level: 2, name: 'Experience' })).toBeTruthy()
@@ -135,19 +135,19 @@ test('renders English copy when the interface language is en', () => {
   expect(screen.getByText('Technology, learning, and exchange.')).toBeTruthy()
   expect(
     screen.getByRole('img', {
-      name: 'Daniel Castro speaking on stage, holding a microphone',
+      name:
+        'Daniel Castro speaking on stage at TDC Floripa in 2026, holding a microphone',
     }),
   ).toBeTruthy()
-  expect(screen.getByText('Curebase / United States · remote')).toBeTruthy()
+  expect(screen.getByText('Curebase')).toBeTruthy()
+  expect(screen.getByText('United States · remote')).toBeTruthy()
   expect(screen.getByText('Software architecture')).toBeTruthy()
   expect(screen.getByText('Portuguese · English')).toBeTruthy()
 
   const linkedin = screen.getByRole('link', {
     name: 'See the full path on LinkedIn',
   })
-  expect(linkedin.getAttribute('href')).toBe(
-    'https://www.linkedin.com/in/odanieldcs',
-  )
+  expect(linkedin.getAttribute('href')).toBe(linkedInProfileUrl)
 
   const contact = screen.getByRole('link', { name: 'Get in touch' })
   expect(contact.getAttribute('href')).toBe(`mailto:${contactEmail}`)
@@ -185,7 +185,7 @@ test('updates About copy when the interface language changes', () => {
   expect(
     screen.getByRole('heading', {
       level: 1,
-      name: 'Between systems and people, I build simpler paths.',
+      name: 'Building and sharing, from dev to dev.',
     }),
   ).toBeTruthy()
   expect(screen.getByRole('heading', { level: 2, name: 'Experience' })).toBeTruthy()
@@ -196,7 +196,8 @@ test('updates About copy when the interface language changes', () => {
   ).toBe(`mailto:${contactEmail}`)
   expect(
     screen.getByRole('img', {
-      name: 'Daniel Castro speaking on stage, holding a microphone',
+      name:
+        'Daniel Castro speaking on stage at TDC Floripa in 2026, holding a microphone',
     }),
   ).toBeTruthy()
   expect(screen.queryByRole('heading', { name: 'Como contribuo' })).toBeNull()

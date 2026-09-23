@@ -87,12 +87,22 @@ test('pt and en about copy share the same key shape', () => {
     'contactParagraphs',
     'contactCta',
   ])
-  expect(pt.headline).toBe(
-    'Entre sistemas e pessoas, construo caminhos mais simples.',
+  expect(pt.headline).toBe('Construindo e compartilhando, de Dev para Dev.')
+  expect(en.headline).toBe('Building and sharing, from dev to dev.')
+  expect(pt.portraitAlt).toBe(
+    'Daniel Castro palestrando no palco do TDC Floripa em 2026, com microfone',
   )
-  expect(en.headline).toBe('Between systems and people, I build simpler paths.')
+  expect(en.portraitAlt).toBe(
+    'Daniel Castro speaking on stage at TDC Floripa in 2026, holding a microphone',
+  )
+  expect(pt.experienceSubtitle).toBe(
+    'Alguns dos contextos em que venho entregando software.',
+  )
+  expect(en.experienceSubtitle).toBe(
+    'Some of the contexts where I have been delivering software.',
+  )
   expect(pt.pillars).toEqual([
-    'Software engineering',
+    'Software Engineering',
     'IA aplicada',
     'Liderança técnica',
     'Ensino',
