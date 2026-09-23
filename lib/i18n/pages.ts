@@ -382,8 +382,10 @@ export type CommunityCopy = {
   title: string
   intro: string
   empty: string
-  openLink: string
   yearLabel: string
+  viewLabel: string
+  viewList: string
+  viewGrid: string
   types: Record<CommunityEntryType, string>
 }
 
@@ -393,8 +395,10 @@ const communityCopy: Record<InterfaceLanguage, CommunityCopy> = {
     title: 'Palestras, workshops e encontros.',
     intro: 'Um registro simples das participações, em ordem cronológica.',
     empty: 'Nenhuma participação publicada ainda.',
-    openLink: 'Abrir link',
     yearLabel: 'Ano',
+    viewLabel: 'Formato',
+    viewList: 'Lista',
+    viewGrid: 'Grade',
     types: {
       talk: 'Palestra',
       workshop: 'Workshop',
@@ -407,8 +411,10 @@ const communityCopy: Record<InterfaceLanguage, CommunityCopy> = {
     title: 'Talks, workshops, and gatherings.',
     intro: 'A simple record of participations, in chronological order.',
     empty: 'No participations published yet.',
-    openLink: 'Open link',
     yearLabel: 'Year',
+    viewLabel: 'Layout',
+    viewList: 'List',
+    viewGrid: 'Grid',
     types: {
       talk: 'Talk',
       workshop: 'Workshop',

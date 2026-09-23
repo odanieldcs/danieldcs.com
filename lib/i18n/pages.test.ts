@@ -192,14 +192,18 @@ test('pt and en community copy share the same key shape', () => {
     'title',
     'intro',
     'empty',
-    'openLink',
     'yearLabel',
+    'viewLabel',
+    'viewList',
+    'viewGrid',
     'types',
   ])
   expect(pt.title).toBe('Palestras, workshops e encontros.')
   expect(en.title).toBe('Talks, workshops, and gatherings.')
-  expect(pt.openLink).toBe('Abrir link')
-  expect(en.openLink).toBe('Open link')
+  expect(pt.viewList).toBe('Lista')
+  expect(en.viewList).toBe('List')
+  expect(pt.viewGrid).toBe('Grade')
+  expect(en.viewGrid).toBe('Grid')
   expect(pt.yearLabel).toBe('Ano')
   expect(en.yearLabel).toBe('Year')
   expect(pt.types).toEqual({
