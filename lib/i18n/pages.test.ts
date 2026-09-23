@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { getHomeCopy, getTrilhaCopy } from './pages'
+import { getAboutCopy, getHomeCopy, getTrilhaCopy } from './pages'
 
 test('pt and en home copy share the same key shape', () => {
   const pt = getHomeCopy('pt')
@@ -54,6 +54,101 @@ test('pt and en home copy share the same key shape', () => {
   expect(en.recentTitle).toBe('Recent writing')
   expect(pt.readArticle).toBe('Ler artigo')
   expect(en.readArticle).toBe('Read article')
+})
+
+test('pt and en about copy share the same key shape', () => {
+  const pt = getAboutCopy('pt')
+  const en = getAboutCopy('en')
+
+  expect(Object.keys(pt)).toEqual(Object.keys(en))
+  expect(Object.keys(pt)).toEqual([
+    'eyebrow',
+    'headline',
+    'intro',
+    'portraitAlt',
+    'pillars',
+    'timelineTitle',
+    'timeline',
+    'skillsTitle',
+    'hardSkillsLabel',
+    'hardSkills',
+    'softSkillsLabel',
+    'softSkills',
+    'personalTitle',
+    'personalIntro',
+    'personalFacts',
+    'collabTitle',
+    'collabIntro',
+    'collabCta',
+    'collabSocialNote',
+    'collabChannels',
+  ])
+  expect(pt.headline).toBe('Trajetória, ofício e colaboração.')
+  expect(en.headline).toBe('Path, craft, and collaboration.')
+  expect(pt.pillars).toEqual([
+    'Engenheiro de software',
+    'Builder',
+    'Educador',
+    'Palestrante',
+    'Corredor',
+  ])
+  expect(en.pillars).toEqual([
+    'Software Engineer',
+    'Builder',
+    'Educator',
+    'Speaker',
+    'Runner',
+  ])
+  expect(pt.timeline.map((item) => Object.keys(item))).toEqual([
+    ['period', 'role', 'org', 'description'],
+    ['period', 'role', 'org', 'description'],
+    ['period', 'role', 'org', 'description'],
+    ['period', 'role', 'org', 'description'],
+  ])
+  expect(en.timeline.map((item) => Object.keys(item))).toEqual(
+    pt.timeline.map((item) => Object.keys(item)),
+  )
+  expect(pt.timeline.map((item) => item.role)).toEqual([
+    'Engenheiro de software',
+    'Educador',
+    'Palestrante',
+    'Builder',
+  ])
+  expect(pt.timeline.every((item) => item.org === '[placeholder]')).toBe(true)
+  expect(pt.hardSkills.slice(0, 4)).toEqual([
+    'TypeScript',
+    'React',
+    'Next.js',
+    'Node.js',
+  ])
+  expect(en.hardSkills.slice(0, 4)).toEqual(pt.hardSkills.slice(0, 4))
+  expect(pt.softSkills).toHaveLength(en.softSkills.length)
+  expect(pt.personalFacts.map((item) => Object.keys(item))).toEqual([
+    ['label', 'value'],
+    ['label', 'value'],
+    ['label', 'value'],
+  ])
+  expect(pt.personalFacts[0]?.value).toBe('Gravataí, Brasil')
+  expect(en.personalFacts[0]?.value).toBe('Gravataí, Brazil')
+  expect(pt.collabChannels.map((item) => item.title)).toEqual([
+    'Consultoria',
+    'Mentoria',
+    'Palestras',
+    'Workshops',
+    'Colaborações',
+    'Oportunidades profissionais',
+  ])
+  expect(en.collabChannels.map((item) => item.mailSubject)).toEqual([
+    'Consulting',
+    'Mentoring',
+    'Talk',
+    'Workshop',
+    'Collaboration',
+    'Professional opportunity',
+  ])
+  expect(pt.collabChannels.map((item) => Object.keys(item))).toEqual(
+    en.collabChannels.map((item) => Object.keys(item)),
+  )
 })
 
 test('pt and en trilha placeholder copy share the same key shape', () => {
