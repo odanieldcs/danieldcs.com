@@ -3,7 +3,7 @@ import { AboutView } from '@/components/about-view'
 
 export const metadata: Metadata = {
   title: 'Sobre',
-  description: 'Trajetória, skills e formas de colaborar com Daniel Castro.',
+  description: 'Trajetória, repertório e contato de Daniel Castro.',
 }
 
 export default function AboutPage() {

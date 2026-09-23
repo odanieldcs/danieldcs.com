@@ -1,29 +1,23 @@
 'use client'
 
 import Image from 'next/image'
+import { buttonClassName } from '@/components/button'
 import { Container } from '@/components/container'
 import { useInterfaceLanguage } from '@/components/interface-language-provider'
-import {
-  type AboutCollabChannel,
-  type AboutCopy,
-  getAboutCopy,
-} from '@/lib/i18n/pages'
-import { linkClassName } from '@/lib/link-styles'
+import { type AboutCopy, getAboutCopy } from '@/lib/i18n/pages'
 import { contactEmail } from '@/lib/site'
 
-const PORTRAIT_SRC = '/media/personal/daniel_castro_profile_1.png'
+const PORTRAIT_SRC = '/media/personal/daniel_castro_profile_3.jpg'
+const LINKEDIN_HREF = 'https://www.linkedin.com/in/odanieldcs'
 
-const collabCardClassName = [
-  'group flex h-full w-full flex-col rounded-lg border border-border p-7',
-  'transition-colors hover:border-accent/40 hover:bg-foreground/5',
+const linkedinLinkClassName = [
+  'group inline-flex items-center gap-2 text-sm font-semibold text-accent',
+  'rounded-sm',
   'outline-none focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
 ].join(' ')
 
-const chipClassName = 'rounded-full border border-border px-3 py-1 text-sm'
-
-function collaborationHref(subject: string) {
-  return `mailto:${contactEmail}?subject=${encodeURIComponent(subject)}`
-}
+const plainListClassName =
+  'flex list-none flex-wrap gap-x-inline gap-y-1 text-caption text-muted'
 
 function ArrowRightIcon() {
   return (
@@ -43,28 +37,57 @@ function ArrowRightIcon() {
   )
 }
 
+function SectionIntro({
+  index,
+  title,
+  subtitle,
+}: {
+  index: string
+  title: string
+  subtitle?: string
+}) {
+  return (
+    <div className="flex flex-col gap-inline">
+      <p className="text-eyebrow uppercase text-label">{index}</p>
+      <h2 className="font-display text-display-section">{title}</h2>
+      {subtitle ? (
+        <p className="max-w-xl text-body text-foreground/70">{subtitle}</p>
+      ) : null}
+    </div>
+  )
+}
+
 function Intro({ copy }: { copy: AboutCopy }) {
   return (
     <section className="grid items-center gap-content-gap md:grid-cols-[minmax(0,1.15fr)_minmax(16rem,0.85fr)] md:gap-section">
-      <figure className="group relative order-1 aspect-[3/4] w-[90%] justify-self-center overflow-hidden rounded-lg md:order-2 md:justify-self-end">
-        <Image
-          src={PORTRAIT_SRC}
-          alt={copy.portraitAlt}
-          fill
-          priority
-          sizes="(min-width: 48rem) 24rem, 90vw"
-          className="object-cover object-[center_25%] motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out motion-safe:group-hover:scale-[1.06]"
-        />
+      <figure className="order-1 flex w-[90%] flex-col gap-inline justify-self-center md:order-2 md:justify-self-end">
+        <div className="group relative aspect-[3/4] overflow-hidden rounded-lg">
+          <Image
+            src={PORTRAIT_SRC}
+            alt={copy.portraitAlt}
+            fill
+            priority
+            sizes="(min-width: 48rem) 24rem, 90vw"
+            className="object-cover object-[center_30%] motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out motion-safe:group-hover:scale-[1.06]"
+          />
+        </div>
+        <figcaption className="text-center text-caption text-muted italic">
+          {copy.portraitCaption}
+        </figcaption>
       </figure>
       <div className="order-2 flex min-w-0 flex-col gap-content-gap md:order-1">
         <p className="text-eyebrow uppercase text-label">{copy.eyebrow}</p>
         <h1 className="font-display text-display">{copy.headline}</h1>
-        <p className="max-w-xl text-body text-foreground/70">{copy.intro}</p>
-        <ul className="flex list-none flex-wrap gap-2">
+        <div className="flex max-w-xl flex-col gap-inline">
+          {copy.introParagraphs.map((paragraph) => (
+            <p key={paragraph} className="text-body text-foreground/70">
+              {paragraph}
+            </p>
+          ))}
+        </div>
+        <ul className={plainListClassName}>
           {copy.pillars.map((pillar) => (
-            <li key={pillar} className={chipClassName}>
-              {pillar}
-            </li>
+            <li key={pillar}>{pillar}</li>
           ))}
         </ul>
       </div>
@@ -72,117 +95,106 @@ function Intro({ copy }: { copy: AboutCopy }) {
   )
 }
 
-function Timeline({ copy }: { copy: AboutCopy }) {
+function Experience({ copy }: { copy: AboutCopy }) {
   return (
     <section className="flex flex-col gap-content-gap">
-      <h2 className="font-display text-display-section">{copy.timelineTitle}</h2>
+      <SectionIntro
+        index={copy.sectionExperienceIndex}
+        title={copy.experienceTitle}
+        subtitle={copy.experienceSubtitle}
+      />
       <ol className="flex list-none flex-col">
         {copy.timeline.map((entry) => (
           <li
-            key={`${entry.role}-${entry.period}`}
+            key={entry.role}
             className="flex flex-col gap-inline border-l border-border py-6 pl-6"
           >
             <p className="text-eyebrow text-label">{entry.period}</p>
             <h3 className="font-display text-display-title">{entry.role}</h3>
             <p className="text-note text-foreground/65">{entry.org}</p>
-            <p className="max-w-xl text-body text-foreground/80">
-              {entry.description}
-            </p>
           </li>
         ))}
       </ol>
+      <a
+        href={LINKEDIN_HREF}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={linkedinLinkClassName}
+      >
+        {copy.linkedinCta}
+        <ArrowRightIcon />
+      </a>
     </section>
   )
 }
 
-function SkillGroup({ label, skills }: { label: string; skills: string[] }) {
+function Repertoire({ copy }: { copy: AboutCopy }) {
   return (
-    <div className="flex flex-col gap-inline">
-      <h3 className="text-eyebrow uppercase text-label">{label}</h3>
-      <ul className="flex list-none flex-wrap gap-2">
-        {skills.map((skill) => (
-          <li key={skill} className={chipClassName}>
-            {skill}
+    <section className="flex flex-col gap-content-gap">
+      <SectionIntro
+        index={copy.sectionRepertoireIndex}
+        title={copy.repertoireTitle}
+        subtitle={copy.repertoireSubtitle}
+      />
+      <ul className="grid list-none gap-content-gap sm:grid-cols-2">
+        {copy.repertoireGroups.map((group) => (
+          <li key={group.title} className="flex flex-col gap-inline">
+            <h3 className="font-display text-display-title">{group.title}</h3>
+            <p className="text-note text-foreground/65">{group.description}</p>
+            <ul className={plainListClassName}>
+              {group.skills.map((skill) => (
+                <li key={skill}>{skill}</li>
+              ))}
+            </ul>
           </li>
         ))}
       </ul>
-    </div>
-  )
-}
-
-function Skills({ copy }: { copy: AboutCopy }) {
-  return (
-    <section className="flex flex-col gap-content-gap">
-      <h2 className="font-display text-display-section">{copy.skillsTitle}</h2>
-      <div className="flex flex-col gap-content-gap">
-        <SkillGroup label={copy.hardSkillsLabel} skills={copy.hardSkills} />
-        <SkillGroup label={copy.softSkillsLabel} skills={copy.softSkills} />
-      </div>
+      <p className="text-caption text-muted">
+        <span className="text-foreground">{copy.languagesLabel}:</span>{' '}
+        {copy.languagesValue}
+      </p>
     </section>
   )
 }
 
 function Personal({ copy }: { copy: AboutCopy }) {
   return (
-    <section className="flex flex-col gap-content-gap">
-      <h2 className="font-display text-display-section">{copy.personalTitle}</h2>
-      <p className="max-w-xl text-body text-foreground/80">{copy.personalIntro}</p>
-      <dl className="grid gap-content-gap md:grid-cols-2">
-        {copy.personalFacts.map((fact) => (
-          <div
-            key={fact.label}
-            className="flex flex-col gap-inline border-t border-border pt-4"
-          >
-            <dt className="text-eyebrow uppercase text-label">{fact.label}</dt>
-            <dd className="text-body">{fact.value}</dd>
-          </div>
-        ))}
-      </dl>
+    <section className="w-full bg-trail py-section text-trail-foreground">
+      <Container width="page">
+        <div className="flex max-w-2xl flex-col gap-content-gap">
+          <p className="text-eyebrow uppercase text-trail-foreground/70">
+            {copy.sectionPersonalIndex}
+          </p>
+          <h2 className="font-display text-display-band">{copy.personalTitle}</h2>
+          <p className="max-w-xl text-lead text-trail-foreground/80">
+            {copy.personalParagraph}
+          </p>
+        </div>
+      </Container>
     </section>
   )
 }
 
-function CollabCard({
-  channel,
-  cta,
-}: {
-  channel: AboutCollabChannel
-  cta: string
-}) {
+function Contact({ copy }: { copy: AboutCopy }) {
   return (
-    <a href={collaborationHref(channel.mailSubject)} className={collabCardClassName}>
-      <h3 className="font-display text-display-title transition-colors group-hover:text-accent">
-        {channel.title}
-      </h3>
-      <p className="mt-3 text-note text-foreground/65">{channel.description}</p>
-      <span className="mt-auto inline-flex items-center gap-2 pt-6 text-sm font-semibold text-accent">
-        {cta}
-        <ArrowRightIcon />
-      </span>
-    </a>
-  )
-}
-
-function Collaboration({ copy }: { copy: AboutCopy }) {
-  return (
-    <section className="flex flex-col gap-content-gap">
-      <div className="flex flex-col gap-inline">
-        <h2 className="font-display text-display-section">{copy.collabTitle}</h2>
-        <p className="max-w-xl text-body text-foreground/80">{copy.collabIntro}</p>
-        <p>
-          <a href={`mailto:${contactEmail}`} className={linkClassName}>
-            {contactEmail}
-          </a>
-        </p>
-      </div>
-      <ul className="grid list-none gap-content-gap md:grid-cols-2">
-        {copy.collabChannels.map((channel) => (
-          <li key={channel.mailSubject} className="flex">
-            <CollabCard channel={channel} cta={copy.collabCta} />
-          </li>
+    <section className="flex flex-col items-start gap-content-gap">
+      <SectionIntro
+        index={copy.sectionContactIndex}
+        title={copy.contactTitle}
+      />
+      <div className="flex max-w-xl flex-col gap-inline">
+        {copy.contactParagraphs.map((paragraph) => (
+          <p key={paragraph} className="text-body text-foreground/80">
+            {paragraph}
+          </p>
         ))}
-      </ul>
-      <p className="text-note text-foreground/65">{copy.collabSocialNote}</p>
+      </div>
+      <a
+        href={`mailto:${contactEmail}`}
+        className={buttonClassName({ shape: 'pill' })}
+      >
+        {copy.contactCta}
+      </a>
     </section>
   )
 }
@@ -192,16 +204,20 @@ export function AboutView() {
   const copy = getAboutCopy(language)
 
   return (
-    <Container
-      as="main"
-      width="page"
-      className="flex flex-col gap-section py-section"
-    >
-      <Intro copy={copy} />
-      <Timeline copy={copy} />
-      <Skills copy={copy} />
+    <main className="flex w-full flex-col gap-section py-section">
+      <Container width="page">
+        <Intro copy={copy} />
+      </Container>
+      <Container width="page">
+        <Experience copy={copy} />
+      </Container>
+      <Container width="page">
+        <Repertoire copy={copy} />
+      </Container>
       <Personal copy={copy} />
-      <Collaboration copy={copy} />
-    </Container>
+      <Container width="page">
+        <Contact copy={copy} />
+      </Container>
+    </main>
   )
 }

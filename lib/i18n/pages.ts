@@ -113,254 +113,264 @@ export type AboutTimelineEntry = {
   period: string
   role: string
   org: string
-  description: string
 }
 
-export type AboutFact = {
-  label: string
-  value: string
-}
-
-export type AboutCollabChannel = {
+export type AboutRepertoireGroup = {
   title: string
   description: string
-  /** Subject pre-filled on the mailto link. */
-  mailSubject: string
+  skills: string[]
 }
 
 export type AboutCopy = {
   eyebrow: string
   headline: string
-  intro: string
-  portraitAlt: string
+  introParagraphs: string[]
   pillars: string[]
-  timelineTitle: string
+  portraitAlt: string
+  portraitCaption: string
+  sectionExperienceIndex: string
+  experienceTitle: string
+  experienceSubtitle: string
   timeline: AboutTimelineEntry[]
-  skillsTitle: string
-  hardSkillsLabel: string
-  hardSkills: string[]
-  softSkillsLabel: string
-  softSkills: string[]
+  linkedinCta: string
+  sectionRepertoireIndex: string
+  repertoireTitle: string
+  repertoireSubtitle: string
+  repertoireGroups: AboutRepertoireGroup[]
+  languagesLabel: string
+  languagesValue: string
+  sectionPersonalIndex: string
   personalTitle: string
-  personalIntro: string
-  personalFacts: AboutFact[]
-  collabTitle: string
-  collabIntro: string
-  collabCta: string
-  collabSocialNote: string
-  collabChannels: AboutCollabChannel[]
+  personalParagraph: string
+  sectionContactIndex: string
+  contactTitle: string
+  contactParagraphs: string[]
+  contactCta: string
 }
 
-// Provisional copy. Timeline orgs/descriptions marked [placeholder], the skill
-// lists, and unspecified personal facts are structured stand-ins until Content
-// Migration. Swap the strings here when the final text exists.
+// Real copy, aligned with the about reference. Swap the strings here when the text changes.
 const aboutCopy: Record<InterfaceLanguage, AboutCopy> = {
   pt: {
-    eyebrow: 'Sobre',
-    headline: 'Trajetória, ofício e colaboração.',
-    intro:
-      'Sou Daniel, engenheiro full-stack. Esta página junta a trajetória profissional, o que eu levo para o trabalho e os caminhos para construir algo juntos.',
-    portraitAlt: 'Daniel Castro palestrando no palco, com microfone',
-    pillars: [
-      'Engenheiro de software',
-      'Builder',
-      'Educador',
-      'Palestrante',
-      'Corredor',
+    eyebrow: 'Sobre mim',
+    headline: 'Entre sistemas e pessoas, construo caminhos mais simples.',
+    introParagraphs: [
+      'Sou engenheiro de software e gosto de construir sistemas que tornam problemas complexos mais simples. Ao longo da minha carreira, trabalhei entre engenharia, arquitetura, produto e pessoas.',
+      'Hoje atuo como Staff Software Engineer na Curebase, construindo software e explorando novas formas de unir engenharia, produto e tecnologia.',
     ],
-    timelineTitle: 'Trajetória profissional',
+    pillars: [
+      'Software engineering',
+      'IA aplicada',
+      'Liderança técnica',
+      'Ensino',
+    ],
+    portraitAlt: 'Daniel Castro palestrando no palco, com microfone',
+    portraitCaption: 'Tecnologia, aprendizado e troca.',
+    sectionExperienceIndex: '01 / Experiência',
+    experienceTitle: 'Experiência',
+    experienceSubtitle:
+      'Alguns dos contextos em que venho construindo software e formando equipes.',
     timeline: [
       {
-        period: 'Atual',
-        role: 'Engenheiro de software',
-        org: '[placeholder]',
+        period: 'out. 2025 — atual',
+        role: 'Staff Software Engineer',
+        org: 'Curebase / Estados Unidos · remoto',
+      },
+      {
+        period: 'abr. 2024 — out. 2025',
+        role: 'Frontend Team Lead & Architect',
+        org: 'Grupo ITSS / Brasil · contrato',
+      },
+      {
+        period: 'abr. 2020 — atual',
+        role: 'Software Engineer Consultant & Educator',
+        org: 'DDEVs / Brasil · meio período',
+      },
+      {
+        period: 'fev. 2022 — jul. 2023',
+        role: 'Senior Full Stack Developer',
+        org: 'Bayer / Estados Unidos e Alemanha · contrato',
+      },
+    ],
+    linkedinCta: 'Ver trajetória completa no LinkedIn',
+    sectionRepertoireIndex: '02 / Repertório',
+    repertoireTitle: 'Como contribuo',
+    repertoireSubtitle: 'Uma visão resumida das áreas que conecto no trabalho.',
+    repertoireGroups: [
+      {
+        title: 'Software Engineering',
         description:
-          '[placeholder] Produtos digitais de ponta a ponta, da ideia ao que está no ar.',
+          'Software de ponta a ponta, com arquitetura, aplicações escaláveis e sistemas distribuídos.',
+        skills: [
+          'TypeScript',
+          'React & Next.js',
+          'Node.js',
+          'PostgreSQL',
+          'AWS',
+          'Arquitetura de software',
+        ],
       },
       {
-        period: '[placeholder]',
-        role: 'Educador',
-        org: '[placeholder]',
+        title: 'Product & AI',
         description:
-          '[placeholder] Ensino, turmas e acompanhamento de quem está aprendendo.',
+          'Construção de produtos da ideia à produção, conectando descoberta, engenharia, arquitetura e evolução do produto.',
+        skills: [
+          'Product thinking',
+          'LLM integrations',
+          'RAG',
+          'AI-assisted development',
+          'Descoberta',
+          'Engenharia & produto',
+        ],
       },
       {
-        period: '[placeholder]',
-        role: 'Palestrante',
-        org: '[placeholder]',
+        title: 'Teaching & Community',
         description:
-          '[placeholder] Palestras em eventos e conversas com times.',
+          'Conhecimento compartilhado por meio de aulas, conteúdo e conversas técnicas.',
+        skills: [
+          'Cursos',
+          'Palestras',
+          'Mentoria',
+          'Conteúdo técnico',
+          'Comunidade',
+        ],
       },
       {
-        period: '[placeholder]',
-        role: 'Builder',
-        org: '[placeholder]',
-        description: '[placeholder] Projetos independentes e experimentos.',
-      },
-    ],
-    skillsTitle: 'Habilidades',
-    hardSkillsLabel: 'Habilidades técnicas',
-    hardSkills: [
-      'TypeScript',
-      'React',
-      'Next.js',
-      'Node.js',
-      'Engenharia de produto',
-    ],
-    softSkillsLabel: 'Habilidades interpessoais',
-    softSkills: [
-      'Comunicação',
-      'Mentoria',
-      'Didática',
-      'Colaboração',
-      'Constância',
-    ],
-    personalTitle: 'Pessoal',
-    personalIntro:
-      'O trabalho não é o retrato inteiro. Correr longas distâncias é parte de como eu sustento constância — o resto desta seção ainda está em aberto.',
-    personalFacts: [
-      { label: 'Base', value: 'Gravataí, Brasil' },
-      { label: 'Corrida', value: 'Longas distâncias' },
-      { label: 'Interesses', value: '[placeholder]' },
-    ],
-    collabTitle: 'Colaboração',
-    collabIntro: 'Escolha um caminho. O assunto do e-mail já vem preenchido.',
-    collabCta: 'Escrever',
-    collabSocialNote:
-      'Se preferir as redes, LinkedIn, GitHub, YouTube e Instagram estão no rodapé.',
-    collabChannels: [
-      {
-        title: 'Consultoria',
-        description: 'Apoio pontual em produto, arquitetura e entrega.',
-        mailSubject: 'Consultoria',
-      },
-      {
-        title: 'Mentoria',
+        title: 'Leadership',
         description:
-          'Acompanhamento para quem está construindo carreira ou produto.',
-        mailSubject: 'Mentoria',
-      },
-      {
-        title: 'Palestras',
-        description: 'Conversas para times, comunidades e eventos.',
-        mailSubject: 'Palestra',
-      },
-      {
-        title: 'Workshops',
-        description: 'Sessões práticas, com mão na massa.',
-        mailSubject: 'Workshop',
-      },
-      {
-        title: 'Colaborações',
-        description: 'Projetos, conteúdo e parcerias.',
-        mailSubject: 'Colaboração',
-      },
-      {
-        title: 'Oportunidades profissionais',
-        description: 'Vagas e convites para trabalhar juntos.',
-        mailSubject: 'Oportunidade profissional',
+          'Direção técnica e desenvolvimento de pessoas sem perder a proximidade com o código.',
+        skills: [
+          'Liderança técnica',
+          'Roadmap',
+          'Contratação',
+          'Mentoria',
+          'Planejamento de entregas',
+        ],
       },
     ],
+    languagesLabel: 'Idiomas',
+    languagesValue: 'Português · Inglês',
+    sectionPersonalIndex: '03 / Fora da tela',
+    personalTitle: 'Corrida como parte da rotina.',
+    personalParagraph:
+      'Sou corredor amador e treino com regularidade para provas de 10 km e 21 km. É um espaço simples de constância, movimento e cabeça no lugar.',
+    sectionContactIndex: '04 / Contato',
+    contactTitle: 'Vamos conversar.',
+    contactParagraphs: [
+      'Posso ajudar em desafios de engenharia, liderança técnica e desenvolvimento de equipes.',
+      'Estou aberto a boas conversas, novas oportunidades e colaborações em que minha experiência possa ser útil.',
+    ],
+    contactCta: 'Entre em contato',
   },
   en: {
-    eyebrow: 'About',
-    headline: 'Path, craft, and collaboration.',
-    intro:
-      "I'm Daniel, a full-stack engineer. This page gathers the professional path, what I bring to the work, and the ways to build something together.",
+    eyebrow: 'About me',
+    headline: 'Between systems and people, I build simpler paths.',
+    introParagraphs: [
+      "I'm a software engineer, and I like building systems that make complex problems simpler. Throughout my career, I've worked across engineering, architecture, product, and people.",
+      'Today I work as a Staff Software Engineer at Curebase, building software and exploring new ways to bring engineering, product, and technology together.',
+    ],
+    pillars: [
+      'Software engineering',
+      'Applied AI',
+      'Technical leadership',
+      'Teaching',
+    ],
     portraitAlt: 'Daniel Castro speaking on stage, holding a microphone',
-    pillars: ['Software Engineer', 'Builder', 'Educator', 'Speaker', 'Runner'],
-    timelineTitle: 'Professional path',
+    portraitCaption: 'Technology, learning, and exchange.',
+    sectionExperienceIndex: '01 / Experience',
+    experienceTitle: 'Experience',
+    experienceSubtitle:
+      'Some of the contexts where I have been building software and growing teams.',
     timeline: [
       {
-        period: 'Now',
-        role: 'Software engineer',
-        org: '[placeholder]',
+        period: 'Oct. 2025 — present',
+        role: 'Staff Software Engineer',
+        org: 'Curebase / United States · remote',
+      },
+      {
+        period: 'Apr. 2024 — Oct. 2025',
+        role: 'Frontend Team Lead & Architect',
+        org: 'Grupo ITSS / Brazil · contract',
+      },
+      {
+        period: 'Apr. 2020 — present',
+        role: 'Software Engineer Consultant & Educator',
+        org: 'DDEVs / Brazil · part-time',
+      },
+      {
+        period: 'Feb. 2022 — Jul. 2023',
+        role: 'Senior Full Stack Developer',
+        org: 'Bayer / United States and Germany · contract',
+      },
+    ],
+    linkedinCta: 'See the full path on LinkedIn',
+    sectionRepertoireIndex: '02 / Repertoire',
+    repertoireTitle: 'How I contribute',
+    repertoireSubtitle: 'A short view of the areas I connect at work.',
+    repertoireGroups: [
+      {
+        title: 'Software Engineering',
         description:
-          '[placeholder] Digital products end to end, from the idea to what is live.',
+          'End-to-end software, with architecture, scalable applications, and distributed systems.',
+        skills: [
+          'TypeScript',
+          'React & Next.js',
+          'Node.js',
+          'PostgreSQL',
+          'AWS',
+          'Software architecture',
+        ],
       },
       {
-        period: '[placeholder]',
-        role: 'Educator',
-        org: '[placeholder]',
+        title: 'Product & AI',
         description:
-          '[placeholder] Teaching, cohorts, and support for people who are learning.',
+          'Building products from idea to production, connecting discovery, engineering, architecture, and product evolution.',
+        skills: [
+          'Product thinking',
+          'LLM integrations',
+          'RAG',
+          'AI-assisted development',
+          'Discovery',
+          'Engineering & product',
+        ],
       },
       {
-        period: '[placeholder]',
-        role: 'Speaker',
-        org: '[placeholder]',
+        title: 'Teaching & Community',
         description:
-          '[placeholder] Talks at events and conversations with teams.',
+          'Knowledge shared through classes, content, and technical conversations.',
+        skills: [
+          'Courses',
+          'Talks',
+          'Mentoring',
+          'Technical content',
+          'Community',
+        ],
       },
       {
-        period: '[placeholder]',
-        role: 'Builder',
-        org: '[placeholder]',
-        description: '[placeholder] Independent projects and experiments.',
+        title: 'Leadership',
+        description:
+          'Technical direction and people development without losing proximity to the code.',
+        skills: [
+          'Technical leadership',
+          'Roadmap',
+          'Hiring',
+          'Mentoring',
+          'Delivery planning',
+        ],
       },
     ],
-    skillsTitle: 'Skills',
-    hardSkillsLabel: 'Hard skills',
-    hardSkills: [
-      'TypeScript',
-      'React',
-      'Next.js',
-      'Node.js',
-      'Product engineering',
+    languagesLabel: 'Languages',
+    languagesValue: 'Portuguese · English',
+    sectionPersonalIndex: '03 / Off the screen',
+    personalTitle: 'Running as part of the routine.',
+    personalParagraph:
+      "I'm an amateur runner and I train regularly for 10K and 21K races. It's a simple space for consistency, movement, and a clear head.",
+    sectionContactIndex: '04 / Contact',
+    contactTitle: "Let's talk.",
+    contactParagraphs: [
+      'I can help with engineering challenges, technical leadership, and team development.',
+      "I'm open to good conversations, new opportunities, and collaborations where my experience can be useful.",
     ],
-    softSkillsLabel: 'Soft skills',
-    softSkills: [
-      'Communication',
-      'Mentoring',
-      'Teaching',
-      'Collaboration',
-      'Consistency',
-    ],
-    personalTitle: 'Personal',
-    personalIntro:
-      'The work is not the whole picture. Running long distances is part of how I keep consistency — the rest of this section is still open.',
-    personalFacts: [
-      { label: 'Based in', value: 'Gravataí, Brazil' },
-      { label: 'Running', value: 'Long distances' },
-      { label: 'Interests', value: '[placeholder]' },
-    ],
-    collabTitle: 'Collaboration',
-    collabIntro: 'Pick a path. The email subject is already filled in.',
-    collabCta: 'Write',
-    collabSocialNote:
-      'If you prefer social channels, LinkedIn, GitHub, YouTube, and Instagram are in the footer.',
-    collabChannels: [
-      {
-        title: 'Consulting',
-        description: 'Focused help on product, architecture, and delivery.',
-        mailSubject: 'Consulting',
-      },
-      {
-        title: 'Mentoring',
-        description: 'Guidance for people building a career or a product.',
-        mailSubject: 'Mentoring',
-      },
-      {
-        title: 'Talks',
-        description: 'Conversations for teams, communities, and events.',
-        mailSubject: 'Talk',
-      },
-      {
-        title: 'Workshops',
-        description: 'Hands-on sessions with room to practice.',
-        mailSubject: 'Workshop',
-      },
-      {
-        title: 'Collaborations',
-        description: 'Projects, writing, and partnerships.',
-        mailSubject: 'Collaboration',
-      },
-      {
-        title: 'Professional opportunities',
-        description: 'Roles and invitations to work together.',
-        mailSubject: 'Professional opportunity',
-      },
-    ],
+    contactCta: 'Get in touch',
   },
 }
 

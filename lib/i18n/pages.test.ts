@@ -64,91 +64,107 @@ test('pt and en about copy share the same key shape', () => {
   expect(Object.keys(pt)).toEqual([
     'eyebrow',
     'headline',
-    'intro',
-    'portraitAlt',
+    'introParagraphs',
     'pillars',
-    'timelineTitle',
+    'portraitAlt',
+    'portraitCaption',
+    'sectionExperienceIndex',
+    'experienceTitle',
+    'experienceSubtitle',
     'timeline',
-    'skillsTitle',
-    'hardSkillsLabel',
-    'hardSkills',
-    'softSkillsLabel',
-    'softSkills',
+    'linkedinCta',
+    'sectionRepertoireIndex',
+    'repertoireTitle',
+    'repertoireSubtitle',
+    'repertoireGroups',
+    'languagesLabel',
+    'languagesValue',
+    'sectionPersonalIndex',
     'personalTitle',
-    'personalIntro',
-    'personalFacts',
-    'collabTitle',
-    'collabIntro',
-    'collabCta',
-    'collabSocialNote',
-    'collabChannels',
+    'personalParagraph',
+    'sectionContactIndex',
+    'contactTitle',
+    'contactParagraphs',
+    'contactCta',
   ])
-  expect(pt.headline).toBe('Trajetória, ofício e colaboração.')
-  expect(en.headline).toBe('Path, craft, and collaboration.')
+  expect(pt.headline).toBe(
+    'Entre sistemas e pessoas, construo caminhos mais simples.',
+  )
+  expect(en.headline).toBe('Between systems and people, I build simpler paths.')
   expect(pt.pillars).toEqual([
-    'Engenheiro de software',
-    'Builder',
-    'Educador',
-    'Palestrante',
-    'Corredor',
+    'Software engineering',
+    'IA aplicada',
+    'Liderança técnica',
+    'Ensino',
   ])
   expect(en.pillars).toEqual([
-    'Software Engineer',
-    'Builder',
-    'Educator',
-    'Speaker',
-    'Runner',
+    'Software engineering',
+    'Applied AI',
+    'Technical leadership',
+    'Teaching',
   ])
   expect(pt.timeline.map((item) => Object.keys(item))).toEqual([
-    ['period', 'role', 'org', 'description'],
-    ['period', 'role', 'org', 'description'],
-    ['period', 'role', 'org', 'description'],
-    ['period', 'role', 'org', 'description'],
+    ['period', 'role', 'org'],
+    ['period', 'role', 'org'],
+    ['period', 'role', 'org'],
+    ['period', 'role', 'org'],
   ])
   expect(en.timeline.map((item) => Object.keys(item))).toEqual(
     pt.timeline.map((item) => Object.keys(item)),
   )
   expect(pt.timeline.map((item) => item.role)).toEqual([
-    'Engenheiro de software',
-    'Educador',
-    'Palestrante',
-    'Builder',
+    'Staff Software Engineer',
+    'Frontend Team Lead & Architect',
+    'Software Engineer Consultant & Educator',
+    'Senior Full Stack Developer',
   ])
-  expect(pt.timeline.every((item) => item.org === '[placeholder]')).toBe(true)
-  expect(pt.hardSkills.slice(0, 4)).toEqual([
-    'TypeScript',
-    'React',
-    'Next.js',
-    'Node.js',
-  ])
-  expect(en.hardSkills.slice(0, 4)).toEqual(pt.hardSkills.slice(0, 4))
-  expect(pt.softSkills).toHaveLength(en.softSkills.length)
-  expect(pt.personalFacts.map((item) => Object.keys(item))).toEqual([
-    ['label', 'value'],
-    ['label', 'value'],
-    ['label', 'value'],
-  ])
-  expect(pt.personalFacts[0]?.value).toBe('Gravataí, Brasil')
-  expect(en.personalFacts[0]?.value).toBe('Gravataí, Brazil')
-  expect(pt.collabChannels.map((item) => item.title)).toEqual([
-    'Consultoria',
-    'Mentoria',
-    'Palestras',
-    'Workshops',
-    'Colaborações',
-    'Oportunidades profissionais',
-  ])
-  expect(en.collabChannels.map((item) => item.mailSubject)).toEqual([
-    'Consulting',
-    'Mentoring',
-    'Talk',
-    'Workshop',
-    'Collaboration',
-    'Professional opportunity',
-  ])
-  expect(pt.collabChannels.map((item) => Object.keys(item))).toEqual(
-    en.collabChannels.map((item) => Object.keys(item)),
+  expect(en.timeline.map((item) => item.role)).toEqual(
+    pt.timeline.map((item) => item.role),
   )
+  expect(pt.timeline.map((item) => item.org)).toEqual([
+    'Curebase / Estados Unidos · remoto',
+    'Grupo ITSS / Brasil · contrato',
+    'DDEVs / Brasil · meio período',
+    'Bayer / Estados Unidos e Alemanha · contrato',
+  ])
+  expect(en.timeline.map((item) => item.org)).toEqual([
+    'Curebase / United States · remote',
+    'Grupo ITSS / Brazil · contract',
+    'DDEVs / Brazil · part-time',
+    'Bayer / United States and Germany · contract',
+  ])
+  expect(pt.repertoireGroups.map((group) => Object.keys(group))).toEqual([
+    ['title', 'description', 'skills'],
+    ['title', 'description', 'skills'],
+    ['title', 'description', 'skills'],
+    ['title', 'description', 'skills'],
+  ])
+  expect(en.repertoireGroups.map((group) => group.title)).toEqual(
+    pt.repertoireGroups.map((group) => group.title),
+  )
+  expect(pt.repertoireGroups.map((group) => group.title)).toEqual([
+    'Software Engineering',
+    'Product & AI',
+    'Teaching & Community',
+    'Leadership',
+  ])
+  expect(pt.repertoireGroups[0]?.skills).toEqual([
+    'TypeScript',
+    'React & Next.js',
+    'Node.js',
+    'PostgreSQL',
+    'AWS',
+    'Arquitetura de software',
+  ])
+  expect(en.repertoireGroups[0]?.skills[5]).toBe('Software architecture')
+  expect(pt.repertoireGroups[1]?.skills).toContain('Descoberta')
+  expect(en.repertoireGroups[1]?.skills).toContain('Discovery')
+  expect(pt.languagesValue).toBe('Português · Inglês')
+  expect(en.languagesValue).toBe('Portuguese · English')
+  expect(pt.contactCta).toBe('Entre em contato')
+  expect(en.contactCta).toBe('Get in touch')
+  expect(pt.contactParagraphs).toHaveLength(2)
+  expect(en.contactParagraphs).toHaveLength(2)
 })
 
 test('pt and en trilha placeholder copy share the same key shape', () => {
