@@ -1,3 +1,4 @@
+import type { CommunityEntryType } from '@/lib/content/community-schema'
 import type { InterfaceLanguage } from './types'
 
 export type HomeHighlight = {
@@ -376,8 +377,53 @@ const aboutCopy: Record<InterfaceLanguage, AboutCopy> = {
   },
 }
 
+export type CommunityCopy = {
+  eyebrow: string
+  title: string
+  intro: string
+  empty: string
+  openLink: string
+  yearLabel: string
+  types: Record<CommunityEntryType, string>
+}
+
+const communityCopy: Record<InterfaceLanguage, CommunityCopy> = {
+  pt: {
+    eyebrow: 'Comunidade',
+    title: 'Palestras, workshops e encontros.',
+    intro: 'Um registro simples das participações, em ordem cronológica.',
+    empty: 'Nenhuma participação publicada ainda.',
+    openLink: 'Abrir link',
+    yearLabel: 'Ano',
+    types: {
+      talk: 'Palestra',
+      workshop: 'Workshop',
+      event: 'Evento',
+      other: 'Outro',
+    },
+  },
+  en: {
+    eyebrow: 'Community',
+    title: 'Talks, workshops, and gatherings.',
+    intro: 'A simple record of participations, in chronological order.',
+    empty: 'No participations published yet.',
+    openLink: 'Open link',
+    yearLabel: 'Year',
+    types: {
+      talk: 'Talk',
+      workshop: 'Workshop',
+      event: 'Event',
+      other: 'Other',
+    },
+  },
+}
+
 export function getHomeCopy(lang: InterfaceLanguage): HomeCopy {
   return homeCopy[lang]
+}
+
+export function getCommunityCopy(lang: InterfaceLanguage): CommunityCopy {
+  return communityCopy[lang]
 }
 
 export function getAboutCopy(lang: InterfaceLanguage): AboutCopy {
