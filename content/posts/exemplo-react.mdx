@@ -1,0 +1,25 @@
+---
+title: React 19 no App Router
+description: Server Components por padrão e client boundaries mínimas.
+date: 2026-02-14
+tags:
+  - react
+  - nextjs
+cover: exemplo-react.png
+language: pt
+---
+
+Menos JavaScript no cliente significa menos hidratação, menos estado duplicado e páginas mais rápidas.
+
+## `'use client'` com parcimônia
+
+Mova interatividade para a borda — providers, toggles, formulários — e deixe dados no servidor.
+
+```tsx
+export default async function Page() {
+  const items = getAllPosts()
+  return <BlogView posts={items} />
+}
+```
+
+Serializar props simples (strings, números) entre server e client evita surpresas com `Date` ou funções.

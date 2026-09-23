@@ -1,0 +1,23 @@
+---
+title: Acessibilidade começa no markup
+description: Foco visível, nomes acessíveis e HTML semântico antes de ARIA extra.
+date: 2026-03-08
+tags:
+  - a11y
+cover: exemplo-acessibilidade.png
+language: pt
+---
+
+Acessibilidade não é camada final: é decisão de estrutura. Botão age como botão; link navega; heading descreve seção.
+
+## Estado pressionado
+
+Toggles precisam expor estado para leitores de tela.
+
+```tsx
+<button type="button" aria-pressed={isOn}>
+  Lista
+</button>
+```
+
+Anéis de foco visíveis ajudam teclado e baixa visão — não os remova sem substituto equivalente.

@@ -432,6 +432,50 @@ export function getCommunityCopy(lang: InterfaceLanguage): CommunityCopy {
   return communityCopy[lang]
 }
 
+export type BlogCopy = {
+  eyebrow: string
+  title: string
+  intro: string
+  empty: string
+  viewLabel: string
+  viewList: string
+  viewGrid: string
+  paginationLabel: string
+  paginationPrevious: string
+  paginationNext: string
+}
+
+const blogCopy: Record<InterfaceLanguage, BlogCopy> = {
+  pt: {
+    eyebrow: 'Blog',
+    title: 'Artigos e notas de engenharia.',
+    intro: 'Textos sobre código, produto e o ofício de construir software.',
+    empty: 'Nenhum artigo publicado ainda.',
+    viewLabel: 'Formato',
+    viewList: 'Lista',
+    viewGrid: 'Grade',
+    paginationLabel: 'Paginação',
+    paginationPrevious: 'Anterior',
+    paginationNext: 'Próxima',
+  },
+  en: {
+    eyebrow: 'Writing',
+    title: 'Articles and engineering notes.',
+    intro: 'Essays on code, product, and the craft of building software.',
+    empty: 'No articles published yet.',
+    viewLabel: 'Layout',
+    viewList: 'List',
+    viewGrid: 'Grid',
+    paginationLabel: 'Pagination',
+    paginationPrevious: 'Previous',
+    paginationNext: 'Next',
+  },
+}
+
+export function getBlogCopy(lang: InterfaceLanguage): BlogCopy {
+  return blogCopy[lang]
+}
+
 export function getAboutCopy(lang: InterfaceLanguage): AboutCopy {
   return aboutCopy[lang]
 }

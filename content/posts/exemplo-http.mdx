@@ -1,0 +1,22 @@
+---
+title: HTTP sem mistério
+description: Status codes, cache e idempotência no dia a dia de APIs.
+date: 2026-04-12
+tags:
+  - http
+cover: exemplo-http.png
+language: pt
+---
+
+HTTP já traz semântica rica; o trabalho é usá-la de forma previsível para clientes e proxies.
+
+## GET idempotente, POST não
+
+Leituras não alteram estado. Mutações exigem contrato claro de erro e retry.
+
+```http
+GET /posts HTTP/1.1
+Accept: application/json
+```
+
+`Cache-Control` bem escolhido reduz latência percebida sem servir conteúdo stale demais.

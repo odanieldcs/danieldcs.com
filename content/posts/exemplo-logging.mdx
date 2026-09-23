@@ -1,0 +1,26 @@
+---
+title: Logs que ajudam em incidentes
+description: Contexto, correlação e níveis sem inundar o console.
+date: 2025-10-02
+tags:
+  - observability
+cover: exemplo-logging.png
+language: pt
+---
+
+Log bom responde: o quê aconteceu, para quem, em qual request, com qual duração.
+
+## Estrutura mínima
+
+Campos consistentes permitem busca e alertas.
+
+```json
+{
+  "level": "error",
+  "msg": "post_not_found",
+  "slug": "desconhecido",
+  "requestId": "abc-123"
+}
+```
+
+`console.log` solto em produção vira ruído — prefira eventos nomeados e amostragem quando volume explode.

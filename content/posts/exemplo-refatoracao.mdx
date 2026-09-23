@@ -1,0 +1,24 @@
+---
+title: Refatoração em passos pequenos
+description: Extrair funções puras antes de mover arquivos inteiros.
+date: 2025-12-03
+tags:
+  - refactoring
+cover: exemplo-refatoracao.png
+language: pt
+---
+
+Refatoração segura mantém comportamento verde a cada commit intermediário.
+
+## Extrair parse puro
+
+Lógica de query string sem I/O facilita teste unitário.
+
+```ts
+export function parseBlogPage(raw: string | undefined): number {
+  const parsed = Number.parseInt(raw ?? '', 10)
+  return Number.isFinite(parsed) && parsed >= 1 ? parsed : 1
+}
+```
+
+Renomear ou reorganizar pastas vem depois que a função já tem cobertura.

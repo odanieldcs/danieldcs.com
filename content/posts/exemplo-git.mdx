@@ -1,0 +1,23 @@
+---
+title: Git com histórico legível
+description: Commits pequenos, mensagens claras e branches de curta duração.
+date: 2026-06-10
+tags:
+  - git
+cover: exemplo-git.png
+language: pt
+---
+
+Histórico legível acelera review e incident response. Cada commit deve contar uma história completa e reversível.
+
+## Mensagem em duas frases
+
+A primeira linha resume a intenção; o corpo explica o porquê quando não é óbvio.
+
+```text
+fix(blog): redirect invalid page to last valid page
+
+Keeps view=grid when clamping out-of-range page numbers.
+```
+
+Rebase local antes do push mantém a linha do tempo linear sem reescrever trabalho já compartilhado.

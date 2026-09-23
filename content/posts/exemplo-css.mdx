@@ -1,0 +1,23 @@
+---
+title: CSS moderno sem magia
+description: Variáveis, camadas e utilitários convivendo no mesmo projeto.
+date: 2026-05-05
+tags:
+  - css
+cover: exemplo-css.png
+language: pt
+---
+
+Design system consistente nasce de tokens — cor, espaço, tipografia — aplicados da mesma forma em componentes e utilitários.
+
+## Tokens no `:root`
+
+Centralizar valores evita `#3b82f6` espalhado em dezenas de arquivos.
+
+```css
+:root {
+  --accent: oklch(0.62 0.19 255);
+}
+```
+
+Quando utilitários e componentes compartilham tokens, trocar tema deixa de ser caça ao tesouro.

@@ -1,0 +1,24 @@
+---
+title: TypeScript no dia a dia
+description: Pequenas decisões de tipagem que evitam surpresas em produção.
+date: 2026-08-15
+tags:
+  - typescript
+cover: exemplo-typescript.png
+language: pt
+---
+
+Tipos não substituem testes, mas reduzem o espaço de erro antes do deploy.
+
+## `satisfies` em vez de anotação solta
+
+Quando você quer inferência estreita com validação de forma, `satisfies` costuma ser mais honesto que um cast.
+
+```ts
+const routes = {
+  home: '/',
+  blog: '/blog',
+} as const satisfies Record<string, string>
+```
+
+Prefira nomes explícitos para unions de string em APIs públicas — isso documenta o contrato para quem consome o pacote.
