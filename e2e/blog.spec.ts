@@ -29,7 +29,9 @@ test('blog listing shows 12 posts on page 1 without console errors', async ({
       name: 'Como o content system renderiza um artigo',
     }),
   ).toBeVisible()
-  await expect(page.locator('main ul li')).toHaveCount(12)
+
+  const postList = page.locator('main ul').first()
+  await expect(postList.locator(':scope > li')).toHaveCount(12)
 
   expect(consoleErrors).toEqual([])
 })
@@ -43,9 +45,12 @@ test('blog listing opens a post and paginates to page 2', async ({ page }) => {
   await expect(page).toHaveURL('/blog/content-system')
 
   await page.goto('/blog')
-  await page.getByRole('link', { name: '2' }).click()
+  await page
+    .getByRole('navigation', { name: 'Paginação' })
+    .getByRole('link', { name: '2', exact: true })
+    .click()
   await expect(page).toHaveURL('/blog?page=2')
-  await expect(page.locator('main ul li')).toHaveCount(2)
+  await expect(page.locator('main ul').first().locator(':scope > li')).toHaveCount(2)
 })
 
 test('content-system article renders without console errors and highlights code', async ({
