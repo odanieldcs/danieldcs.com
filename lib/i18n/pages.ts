@@ -23,9 +23,35 @@ export type HomeCopy = {
   trilhaCta: string
 }
 
-export type TrilhaCopy = {
+export type TrilhaPillar = {
+  index: string
   title: string
   description: string
+}
+
+export type TrilhaCopy = {
+  eyebrow: string
+  title: string
+  paragraph: string
+  pillars: {
+    index: string
+    title: string
+    intro: string
+    items: TrilhaPillar[]
+  }
+  building: {
+    label: string
+    title: string
+    body: string
+    personalization: string
+  }
+  cta: {
+    eyebrow: string
+    title: string
+    line: string
+    button: string
+    whatsappMessage: string
+  }
 }
 
 // Provisional copy. The headline can change without touching the layout.
@@ -99,14 +125,108 @@ const homeCopy: Record<InterfaceLanguage, HomeCopy> = {
 
 const trilhaCopy: Record<InterfaceLanguage, TrilhaCopy> = {
   pt: {
-    title: 'Trilha',
-    description:
-      'Esta página é provisória. O conteúdo da Trilha chega em breve.',
+    eyebrow: 'A Trilha · Em construção',
+    title: 'Aprendizado guiado por quem aplica no dia a dia.',
+    paragraph:
+      'Um único espaço para reunir anos de aprendizados e organizar diferentes caminhos de aprendizagem em engenharia de software.',
+    pillars: {
+      index: '01 / Conteúdo',
+      title: 'Pilares da Trilha.',
+      intro:
+        'Uma base que conecta fundamentos, decisões de engenharia e prática — do desenvolvimento de interfaces à construção de sistemas.',
+      items: [
+        {
+          index: '01',
+          title: 'Engenharia Front-end',
+          description:
+            'Funcionamentos web, TypeScript, React e Next.js, arquitetura de interfaces, estado, dados, testes, acessibilidade, SEO e performance.',
+        },
+        {
+          index: '02',
+          title: 'Backend e Sistemas Distribuídos',
+          description:
+            'Node.js, APIs, SQL, cache, microsserviços, DDD, Clean Architecture, padrões de projeto e comunicação entre serviços.',
+        },
+        {
+          index: '03',
+          title: 'Cloud e Qualidade de Software',
+          description:
+            'Testes automatizados, Docker, integração e entrega contínuas, AWS, segurança e observabilidade.',
+        },
+        {
+          index: '04',
+          title: 'IA aplicada ao desenvolvimento',
+          description:
+            'LLM integrations, RAG, processamento de documentos, embeddings, bancos vetoriais, busca semântica, APIs com contexto, harness e AI-Driven Development.',
+        },
+      ],
+    },
+    building: {
+      label: 'Em construção',
+      title: 'Menos conteúdo solto. Mais clareza para avançar com propósito.',
+      body: 'Quatro cursos e anos de experiência reunidos em uma única Trilha guiada, do fundamento aos desafios mais avançados.',
+      personalization:
+        'O caminho poderá ser explorado de acordo com o interesse e o nível de senioridade de cada pessoa.',
+    },
+    cta: {
+      eyebrow: 'Quero acompanhar',
+      title: 'Saiba quando a Trilha estiver pronta.',
+      line: 'Deixe uma mensagem para receber as próximas novidades sobre a Trilha.',
+      button: 'Falar no WhatsApp',
+      whatsappMessage: 'Olá, Daniel. Quero saber mais sobre a Trilha.',
+    },
   },
   en: {
-    title: 'Trilha',
-    description:
-      'This page is a placeholder. The Trilha content is coming soon.',
+    eyebrow: 'The Trilha · In progress',
+    title: 'Learning guided by someone who applies it every day.',
+    paragraph:
+      'One place to gather years of learning and organize different paths for learning software engineering.',
+    pillars: {
+      index: '01 / Content',
+      title: 'Pillars of the Trilha.',
+      intro:
+        'A foundation that connects fundamentals, engineering decisions, and practice — from building interfaces to building systems.',
+      items: [
+        {
+          index: '01',
+          title: 'Frontend Engineering',
+          description:
+            'How the web works, TypeScript, React and Next.js, interface architecture, state, data, testing, accessibility, SEO, and performance.',
+        },
+        {
+          index: '02',
+          title: 'Backend and Distributed Systems',
+          description:
+            'Node.js, APIs, SQL, caching, microservices, DDD, Clean Architecture, design patterns, and communication between services.',
+        },
+        {
+          index: '03',
+          title: 'Cloud and Software Quality',
+          description:
+            'Automated tests, Docker, continuous integration and delivery, AWS, security, and observability.',
+        },
+        {
+          index: '04',
+          title: 'AI applied to development',
+          description:
+            'LLM integrations, RAG, document processing, embeddings, vector databases, semantic search, context-aware APIs, harness, and AI-Driven Development.',
+        },
+      ],
+    },
+    building: {
+      label: 'In progress',
+      title: 'Less loose content. More clarity to move forward with purpose.',
+      body: 'Four courses and years of experience gathered into one guided Trilha, from the fundamentals to the most advanced challenges.',
+      personalization:
+        "The path can be explored according to each person's interest and level of seniority.",
+    },
+    cta: {
+      eyebrow: 'I want to follow along',
+      title: 'Know when the Trilha is ready.',
+      line: 'Leave a message to hear the next updates about the Trilha.',
+      button: 'Message on WhatsApp',
+      whatsappMessage: "Hi, Daniel. I'd like to know more about Trilha.",
+    },
   },
 }
 

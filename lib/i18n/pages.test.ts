@@ -248,12 +248,43 @@ test('pt and en blog copy share the same key shape', () => {
   expect(en.paginationNext).toBe('Next')
 })
 
-test('pt and en trilha placeholder copy share the same key shape', () => {
+test('pt and en trilha copy share the same key shape', () => {
   const pt = getTrilhaCopy('pt')
   const en = getTrilhaCopy('en')
 
-  expect(Object.keys(pt)).toEqual(['title', 'description'])
-  expect(Object.keys(en)).toEqual(Object.keys(pt))
-  expect(pt.title).toBe('Trilha')
-  expect(en.title).toBe('Trilha')
+  expect(Object.keys(pt)).toEqual(Object.keys(en))
+  expect(Object.keys(pt)).toEqual([
+    'eyebrow',
+    'title',
+    'paragraph',
+    'pillars',
+    'building',
+    'cta',
+  ])
+  expect(Object.keys(pt.pillars)).toEqual(Object.keys(en.pillars))
+  expect(Object.keys(pt.building)).toEqual(Object.keys(en.building))
+  expect(Object.keys(pt.cta)).toEqual(Object.keys(en.cta))
+  expect(pt.pillars.items.map((item) => Object.keys(item))).toEqual(
+    en.pillars.items.map((item) => Object.keys(item)),
+  )
+  expect(pt.title).toBe('Aprendizado guiado por quem aplica no dia a dia.')
+  expect(en.title).toBe('Learning guided by someone who applies it every day.')
+  expect(pt.pillars.items.map((item) => item.title)).toEqual([
+    'Engenharia Front-end',
+    'Backend e Sistemas Distribuídos',
+    'Cloud e Qualidade de Software',
+    'IA aplicada ao desenvolvimento',
+  ])
+  expect(en.pillars.items.map((item) => item.title)).toEqual([
+    'Frontend Engineering',
+    'Backend and Distributed Systems',
+    'Cloud and Software Quality',
+    'AI applied to development',
+  ])
+  expect(pt.cta.whatsappMessage).toBe(
+    'Olá, Daniel. Quero saber mais sobre a Trilha.',
+  )
+  expect(en.cta.whatsappMessage).toBe(
+    "Hi, Daniel. I'd like to know more about Trilha.",
+  )
 })

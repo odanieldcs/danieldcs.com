@@ -7,3 +7,10 @@ export const siteName = 'danieldcs.com'
 export const contactEmail = 'hi@danieldcs.com'
 
 export const linkedInProfileUrl = 'https://www.linkedin.com/in/odanieldcs'
+
+const trilhaWhatsAppPhone = '+5551993657109'
+
+/** Opens WhatsApp with a prefilled message about the Trilha. */
+export function trilhaWhatsAppUrl(text: string): string {
+  return `https://api.whatsapp.com/send?phone=${trilhaWhatsAppPhone}&text=${encodeURIComponent(text)}`
+}
