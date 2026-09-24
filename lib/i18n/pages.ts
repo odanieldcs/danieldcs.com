@@ -126,7 +126,7 @@ const homeCopy: Record<InterfaceLanguage, HomeCopy> = {
 const trilhaCopy: Record<InterfaceLanguage, TrilhaCopy> = {
   pt: {
     eyebrow: 'A Trilha · Em construção',
-    title: 'Aprendizado guiado por quem aplica no dia a dia.',
+    title: 'Guiado por quem aplica no dia a dia.',
     paragraph:
       'Um único espaço para reunir anos de aprendizados e organizar diferentes caminhos de aprendizagem em engenharia de software.',
     pillars: {
@@ -178,7 +178,7 @@ const trilhaCopy: Record<InterfaceLanguage, TrilhaCopy> = {
   },
   en: {
     eyebrow: 'The Trilha · In progress',
-    title: 'Learning guided by someone who applies it every day.',
+    title: 'Guided by someone who applies it every day.',
     paragraph:
       'One place to gather years of learning and organize different paths for learning software engineering.',
     pillars: {

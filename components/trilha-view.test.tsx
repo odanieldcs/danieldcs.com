@@ -98,7 +98,7 @@ test('updates Trilha copy when the interface language changes', () => {
   expect(
     screen.getByRole('heading', {
       level: 1,
-      name: 'Learning guided by someone who applies it every day.',
+      name: 'Guided by someone who applies it every day.',
     }),
   ).toBeTruthy()
   expect(screen.queryByText('A Trilha · Em construção')).toBeNull()

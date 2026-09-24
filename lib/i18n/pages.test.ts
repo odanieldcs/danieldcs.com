@@ -267,8 +267,8 @@ test('pt and en trilha copy share the same key shape', () => {
   expect(pt.pillars.items.map((item) => Object.keys(item))).toEqual(
     en.pillars.items.map((item) => Object.keys(item)),
   )
-  expect(pt.title).toBe('Aprendizado guiado por quem aplica no dia a dia.')
-  expect(en.title).toBe('Learning guided by someone who applies it every day.')
+  expect(pt.title).toBe('Guiado por quem aplica no dia a dia.')
+  expect(en.title).toBe('Guided by someone who applies it every day.')
   expect(pt.pillars.items.map((item) => item.title)).toEqual([
     'Engenharia Front-end',
     'Backend e Sistemas Distribuídos',
