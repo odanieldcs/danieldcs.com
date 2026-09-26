@@ -5,7 +5,6 @@ export type UiDictionary = {
   nav: {
     blog: string
     community: string
-    trilha: string
     about: string
   }
   theme: {
@@ -64,7 +63,6 @@ export function getDictionary(lang: InterfaceLanguage): UiDictionary {
     nav: {
       blog: getMainNavLabel(getMainNavItem('/blog'), lang),
       community: getMainNavLabel(getMainNavItem('/community'), lang),
-      trilha: getMainNavLabel(getMainNavItem('/trilha'), lang),
       about: getMainNavLabel(getMainNavItem('/about'), lang),
     },
     ...uiCopy[lang],

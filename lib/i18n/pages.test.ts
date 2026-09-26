@@ -18,20 +18,13 @@ test('pt and en home copy share the same key shape', () => {
     'intro',
     'highlights',
     'portraitAlt',
+    'portraitCaption',
     'recentEyebrow',
     'recentTitle',
     'readArticle',
-    'trilhaEyebrow',
-    'trilhaHeading',
-    'trilhaDescription',
-    'trilhaCta',
   ])
-  expect(pt.headline).toBe(
-    'Construindo Produtos em Softwares e correndo longas distâncias.',
-  )
-  expect(en.headline).toBe(
-    'Building software products and running long distances.',
-  )
+  expect(pt.headline).toBe('Criando e compartilhando, de Dev para Dev.')
+  expect(en.headline).toBe('Creating and sharing, from dev to dev.')
   expect(pt.eyebrow).toBe('Engenheiro · Builder · Corredor')
   expect(en.eyebrow).toBe('Engineer · Builder · Runner')
   expect(pt.highlights.map((item) => Object.keys(item))).toEqual([
@@ -52,10 +45,14 @@ test('pt and en home copy share the same key shape', () => {
     'Builder',
     'Runner',
   ])
-  expect(pt.portraitAlt).toBe('Retrato de Daniel Castro na Golden Gate')
-  expect(en.portraitAlt).toBe(
-    'Portrait of Daniel Castro at the Golden Gate Bridge',
+  expect(pt.portraitAlt).toBe(
+    'Daniel Castro palestrando no palco do TDC Floripa em 2026, com microfone',
   )
+  expect(en.portraitAlt).toBe(
+    'Daniel Castro speaking on stage at TDC Floripa in 2026, holding a microphone',
+  )
+  expect(pt.portraitCaption).toBe('Tecnologia, aprendizado e troca.')
+  expect(en.portraitCaption).toBe('Technology, learning, and exchange.')
   expect(pt.recentTitle).toBe('Escrita recente')
   expect(en.recentTitle).toBe('Recent writing')
   expect(pt.readArticle).toBe('Ler artigo')
@@ -73,7 +70,6 @@ test('pt and en about copy share the same key shape', () => {
     'introParagraphs',
     'pillars',
     'portraitAlt',
-    'portraitCaption',
     'sectionExperienceIndex',
     'experienceTitle',
     'experienceSubtitle',
@@ -85,6 +81,8 @@ test('pt and en about copy share the same key shape', () => {
     'repertoireGroups',
     'languagesLabel',
     'languagesValue',
+    'stackLabel',
+    'stackValue',
     'sectionPersonalIndex',
     'personalTitle',
     'personalParagraph',
@@ -93,13 +91,11 @@ test('pt and en about copy share the same key shape', () => {
     'contactParagraphs',
     'contactCta',
   ])
-  expect(pt.headline).toBe('Construindo e compartilhando, de Dev para Dev.')
-  expect(en.headline).toBe('Building and sharing, from dev to dev.')
-  expect(pt.portraitAlt).toBe(
-    'Daniel Castro palestrando no palco do TDC Floripa em 2026, com microfone',
-  )
+  expect(pt.headline).toBe('Entre código, produto e pessoas.')
+  expect(en.headline).toBe('Between code, product and people.')
+  expect(pt.portraitAlt).toBe('Retrato de Daniel Castro na Golden Gate')
   expect(en.portraitAlt).toBe(
-    'Daniel Castro speaking on stage at TDC Floripa in 2026, holding a microphone',
+    'Portrait of Daniel Castro at the Golden Gate Bridge',
   )
   expect(pt.experienceSubtitle).toBe(
     'Alguns dos contextos em que venho entregando software.',
@@ -109,13 +105,13 @@ test('pt and en about copy share the same key shape', () => {
   )
   expect(pt.pillars).toEqual([
     'Software Engineering',
-    'IA aplicada',
+    'AI-Assisted Development',
     'Liderança técnica',
     'Ensino',
   ])
   expect(en.pillars).toEqual([
-    'Software engineering',
-    'Applied AI',
+    'Software Engineering',
+    'AI-Assisted Development',
     'Technical leadership',
     'Teaching',
   ])
@@ -129,25 +125,25 @@ test('pt and en about copy share the same key shape', () => {
     pt.timeline.map((item) => Object.keys(item)),
   )
   expect(pt.timeline.map((item) => item.role)).toEqual([
+    'Software Engineer Consultant & Educator',
     'Staff Software Engineer',
     'Frontend Team Lead & Architect',
-    'Software Engineer Consultant & Educator',
     'Senior Full Stack Developer',
   ])
   expect(en.timeline.map((item) => item.role)).toEqual(
     pt.timeline.map((item) => item.role),
   )
   expect(pt.timeline.map((item) => item.org)).toEqual([
-    'Curebase / Estados Unidos · remoto',
-    'Grupo ITSS / Brasil · contrato',
     'DDEVs / Brasil · meio período',
-    'Bayer / Estados Unidos e Alemanha · contrato',
+    'Curebase / Estados Unidos · remoto · contrato',
+    'Grupo ITSS / Brasil · remoto · contrato',
+    'Bayer / Estados Unidos e Alemanha · remoto · contrato',
   ])
   expect(en.timeline.map((item) => item.org)).toEqual([
-    'Curebase / United States · remote',
-    'Grupo ITSS / Brazil · contract',
     'DDEVs / Brazil · part-time',
-    'Bayer / United States and Germany · contract',
+    'Curebase / United States · remote · contract',
+    'Grupo ITSS / Brazil · remote · contract',
+    'Bayer / United States and Germany · remote · contract',
   ])
   expect(pt.repertoireGroups.map((group) => Object.keys(group))).toEqual([
     ['title', 'description', 'skills'],
@@ -160,21 +156,23 @@ test('pt and en about copy share the same key shape', () => {
   )
   expect(pt.repertoireGroups.map((group) => group.title)).toEqual([
     'Software Engineering',
-    'Product & AI',
-    'Teaching & Community',
-    'Leadership',
+    'AI Engineering',
+    'Product',
+    'Teaching',
   ])
   expect(pt.repertoireGroups[0]?.skills).toEqual([
     'TypeScript',
     'React & Next.js',
     'Node.js',
     'PostgreSQL',
-    'AWS',
-    'Arquitetura de software',
+    'AWS & Vercel',
+    'Arquitetura',
   ])
-  expect(en.repertoireGroups[0]?.skills[5]).toBe('Software architecture')
-  expect(pt.repertoireGroups[1]?.skills).toContain('Descoberta')
-  expect(en.repertoireGroups[1]?.skills).toContain('Discovery')
+  expect(en.repertoireGroups[0]?.skills[5]).toBe('Architecture')
+  expect(pt.repertoireGroups[2]?.skills).toContain('Métricas')
+  expect(en.repertoireGroups[2]?.skills).toContain('Metrics')
+  expect(pt.stackValue).toContain('Drizzle/Prisma')
+  expect(en.stackValue).toBe(pt.stackValue)
   expect(pt.languagesValue).toBe('Português · Inglês')
   expect(en.languagesValue).toBe('Portuguese · English')
   expect(pt.contactCta).toBe('Entre em contato')

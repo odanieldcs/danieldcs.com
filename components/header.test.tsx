@@ -58,7 +58,7 @@ function renderHeader(language: 'pt' | 'en' = 'pt') {
   )
 }
 
-test('identity links home and desktop nav lists the four items', () => {
+test('identity links home and desktop nav lists the public items', () => {
   renderHeader()
 
   const home = screen.getByRole('link', { name: 'Daniel Castro' })
@@ -80,9 +80,6 @@ test('identity links home and desktop nav lists the four items', () => {
   expect(
     screen.getByRole('link', { name: 'Comunidade' }).getAttribute('href'),
   ).toBe('/community')
-  expect(
-    screen.getByRole('link', { name: 'Trilha' }).getAttribute('href'),
-  ).toBe('/trilha')
   expect(screen.getByRole('link', { name: 'Sobre' }).getAttribute('href')).toBe(
     '/about',
   )
@@ -96,9 +93,7 @@ test('identity links home and desktop nav lists the four items', () => {
   expect(mobileSlot?.contains(menuButton)).toBe(true)
   expect(mobileSlot?.contains(themeButton)).toBe(false)
   expect(screen.getByRole('button', { name: 'Theme' })).toBeTruthy()
-  expect(
-    screen.getByRole('button', { name: 'Switch to English' }),
-  ).toBeTruthy()
+  expect(screen.getByRole('button', { name: 'Switch to English' })).toBeTruthy()
 })
 
 test('marks the current route and nested paths as active', () => {

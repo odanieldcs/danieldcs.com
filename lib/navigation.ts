@@ -1,6 +1,6 @@
 import type { InterfaceLanguage } from '@/lib/i18n/types'
 
-export type MainNavHref = '/blog' | '/community' | '/trilha' | '/about'
+export type MainNavHref = '/blog' | '/community' | '/about'
 
 export type MainNavItem = {
   href: MainNavHref
@@ -10,7 +10,6 @@ export type MainNavItem = {
 export const mainNavigation: readonly MainNavItem[] = [
   { href: '/blog', label: { pt: 'Blog', en: 'Writing' } },
   { href: '/community', label: { pt: 'Comunidade', en: 'Community' } },
-  { href: '/trilha', label: { pt: 'Trilha', en: 'Trilha' } },
   { href: '/about', label: { pt: 'Sobre', en: 'About' } },
 ]
 

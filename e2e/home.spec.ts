@@ -21,16 +21,16 @@ test('home loads without console errors', async ({ page }) => {
   await expect(
     main.getByRole('heading', {
       level: 1,
-      name: 'Construindo Produtos em Softwares e correndo longas distâncias.',
+      name: 'Criando e compartilhando, de Dev para Dev.',
     }),
   ).toBeVisible()
   await expect(
     main.getByRole('img', {
-      name: 'Retrato de Daniel Castro na Golden Gate',
+      name: 'Daniel Castro palestrando no palco do TDC Floripa em 2026, com microfone',
     }),
   ).toBeVisible()
   await expect(hero.locator('a[href="/trilha"]')).toHaveCount(0)
-  await expect(main.locator('a[href="/trilha"]')).toBeVisible()
+  await expect(main.locator('a[href="/trilha"]')).toHaveCount(0)
   await expect(main.locator('a[href^="/blog/"]')).not.toHaveCount(0)
 
   const header = page.getByRole('banner')

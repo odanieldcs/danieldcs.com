@@ -7,7 +7,7 @@ import { useInterfaceLanguage } from '@/components/interface-language-provider'
 import { type AboutCopy, getAboutCopy } from '@/lib/i18n/pages'
 import { contactEmail, linkedInProfileUrl } from '@/lib/site'
 
-const PORTRAIT_SRC = '/media/personal/daniel_castro_profile_3.jpg'
+const PORTRAIT_SRC = '/media/personal/daniel_castro_profile_2.jpg'
 
 const sectionGridClassName =
   'grid items-start gap-10 md:grid-cols-[15rem_minmax(0,1fr)] md:gap-16'
@@ -65,28 +65,25 @@ function SectionLabel({
 
 function Intro({ copy }: { copy: AboutCopy }) {
   return (
-    <section className="grid items-start gap-10 md:grid-cols-[minmax(0,1fr)_18rem] md:gap-16 lg:grid-cols-[minmax(0,1fr)_20rem]">
-      <figure className="order-1 overflow-hidden rounded-lg bg-foreground/[0.06] md:order-2">
-        <div className="relative aspect-[4/5]">
+    <section className="grid items-start gap-content-gap md:grid-cols-[minmax(0,1.15fr)_minmax(16rem,0.85fr)] md:gap-section">
+      <figure className="group order-1 w-[90%] justify-self-center overflow-hidden rounded-lg bg-foreground/[0.06] md:order-2 md:justify-self-end">
+        <div className="relative aspect-[3/4] overflow-hidden">
           <Image
             src={PORTRAIT_SRC}
             alt={copy.portraitAlt}
             fill
             priority
-            sizes="(min-width: 64rem) 20rem, (min-width: 48rem) 18rem, 90vw"
-            className="object-cover object-top"
+            sizes="(min-width: 48rem) 24rem, 90vw"
+            className="object-cover object-[center_30%] motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out motion-safe:group-hover:scale-[1.06] motion-safe:group-hover:rotate-2"
           />
         </div>
-        <figcaption className="border-t border-border px-4 py-3 text-xs text-foreground/50">
-          {copy.portraitCaption}
-        </figcaption>
       </figure>
       <div className="order-2 md:order-1">
         <p className={indexClassName}>{copy.eyebrow}</p>
         <h1 className="mt-5 max-w-2xl font-display text-display">
           {copy.headline}
         </h1>
-        <div className="mt-8 max-w-xl space-y-5 text-base leading-relaxed text-foreground/70 sm:text-lg">
+        <div className="mt-8 max-w-xl space-y-5 text-base leading-relaxed text-foreground/70">
           {copy.introParagraphs.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
@@ -106,7 +103,10 @@ function Experience({ copy }: { copy: AboutCopy }) {
     <section className="w-full border-y border-border">
       <Container
         width="page"
-        className={joinSectionClassName(sectionYClassName, sectionGridClassName)}
+        className={joinSectionClassName(
+          sectionYClassName,
+          sectionGridClassName,
+        )}
       >
         <SectionLabel
           index={copy.sectionExperienceIndex}
@@ -134,7 +134,9 @@ function Experience({ copy }: { copy: AboutCopy }) {
                     {entry.role}
                   </h3>
                   <p className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
-                    <span className="font-semibold text-accent">{org.name}</span>
+                    <span className="font-semibold text-accent">
+                      {org.name}
+                    </span>
                     {org.meta ? (
                       <>
                         <span className="text-foreground/30" aria-hidden="true">
@@ -197,6 +199,14 @@ function Repertoire({ copy }: { copy: AboutCopy }) {
             <p className="text-sm text-foreground/60">{copy.languagesValue}</p>
           </div>
         </div>
+        <div className="mt-6 border-t border-border pt-6">
+          <h3 className="font-display text-xl font-medium">
+            {copy.stackLabel}
+          </h3>
+          <p className="mt-4 max-w-3xl text-sm leading-relaxed text-foreground/60">
+            {copy.stackValue}
+          </p>
+        </div>
       </div>
     </section>
   )
@@ -207,10 +217,7 @@ function Personal({ copy }: { copy: AboutCopy }) {
     <section className="w-full border-y border-border bg-foreground/[0.04]">
       <Container
         width="page"
-        className={joinSectionClassName(
-          'py-14 sm:py-16',
-          sectionGridClassName,
-        )}
+        className={joinSectionClassName('py-14 sm:py-16', sectionGridClassName)}
       >
         <p className={indexClassName}>{copy.sectionPersonalIndex}</p>
         <div>

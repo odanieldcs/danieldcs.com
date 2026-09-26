@@ -73,8 +73,8 @@
   --text-note--line-height: 1.625;
   --text-note--font-weight: 400;
 
-  /* Home intro. 18px, tighter than text-body. */
-  --text-home-intro: 1.125rem;
+  /* Home intro. 16px, quieter than the display headline. */
+  --text-home-intro: 1rem;
   --text-home-intro--line-height: 1.625;
   --text-home-intro--font-weight: 400;
 

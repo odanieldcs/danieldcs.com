@@ -3,13 +3,16 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRightIcon } from '@/components/arrow-right-icon'
-import { ButtonLink } from '@/components/button'
 import { Container } from '@/components/container'
 import { useInterfaceLanguage } from '@/components/interface-language-provider'
-import { type HomeCopy, type HomeHighlight, getHomeCopy } from '@/lib/i18n/pages'
+import {
+  getHomeCopy,
+  type HomeCopy,
+  type HomeHighlight,
+} from '@/lib/i18n/pages'
 import type { InterfaceLanguage } from '@/lib/i18n/types'
 
-const PORTRAIT_SRC = '/media/personal/daniel_castro_profile_2.jpg'
+const PORTRAIT_SRC = '/media/personal/daniel_castro_profile_3.jpg'
 
 export type HomePostSummary = {
   slug: string
@@ -50,29 +53,32 @@ const articleCardClassName = [
   'outline-none focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
 ].join(' ')
 
-const trailCtaClassName = [
-  'h-12 gap-2 px-6! text-sm! font-semibold!',
-  'border-trail-foreground/30! text-trail-foreground!',
-  'hover:border-trail-foreground/70! hover:bg-transparent!',
-].join(' ')
-
 function Hero({ copy }: { copy: HomeCopy }) {
   return (
     <section className="grid items-center gap-content-gap md:grid-cols-[minmax(0,1.15fr)_minmax(16rem,0.85fr)] md:gap-section">
-      <figure className="group relative order-1 aspect-[3/4] w-[90%] justify-self-center overflow-hidden rounded-lg md:order-2 md:justify-self-end">
-        <Image
-          src={PORTRAIT_SRC}
-          alt={copy.portraitAlt}
-          fill
-          priority
-          sizes="(min-width: 48rem) 24rem, 90vw"
-          className="object-cover object-[center_30%] motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out motion-safe:group-hover:scale-[1.06] motion-safe:group-hover:rotate-2"
-        />
+      <figure className="group order-1 w-[90%] justify-self-center md:order-2 md:justify-self-end">
+        <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-foreground/[0.06]">
+          <Image
+            src={PORTRAIT_SRC}
+            alt={copy.portraitAlt}
+            fill
+            priority
+            sizes="(min-width: 48rem) 24rem, 90vw"
+            className="object-cover object-top motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out motion-safe:group-hover:scale-[1.06] motion-safe:group-hover:rotate-2"
+          />
+          <figcaption className="absolute inset-x-0 bottom-0 bg-black/90 px-4 py-3 text-xs text-white/90">
+            {copy.portraitCaption}
+          </figcaption>
+        </div>
       </figure>
       <div className="order-2 flex min-w-0 flex-col gap-content-gap md:order-1">
         <p className="text-eyebrow uppercase text-label">{copy.eyebrow}</p>
         <h1 className="font-display text-display">{copy.headline}</h1>
-        <p className="max-w-xl text-home-intro text-foreground/70">{copy.intro}</p>
+        <div className="flex max-w-xl flex-col gap-3 text-home-intro text-foreground/70">
+          {copy.intro.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
       </div>
     </section>
   )
@@ -99,8 +105,12 @@ function Pillars({ highlights }: { highlights: HomeHighlight[] }) {
             <span className="font-display font-normal text-sm text-label">
               {String(index + 1).padStart(2, '0')}
             </span>
-            <h2 className="font-display text-display-title">{highlight.label}</h2>
-            <p className="text-note text-foreground/65">{highlight.description}</p>
+            <h2 className="font-display text-display-title">
+              {highlight.label}
+            </h2>
+            <p className="text-note text-foreground/65">
+              {highlight.description}
+            </p>
           </li>
         )
       })}
@@ -120,8 +130,12 @@ function RecentWriting({
   return (
     <section className="flex flex-col gap-content-gap">
       <div className="flex flex-col gap-inline">
-        <p className="text-eyebrow uppercase text-label">{copy.recentEyebrow}</p>
-        <h2 className="font-display text-display-section">{copy.recentTitle}</h2>
+        <p className="text-eyebrow uppercase text-label">
+          {copy.recentEyebrow}
+        </p>
+        <h2 className="font-display text-display-section">
+          {copy.recentTitle}
+        </h2>
       </div>
       <ul className="grid list-none gap-content-gap md:grid-cols-2">
         {posts.map((post) => (
@@ -156,29 +170,6 @@ function RecentWriting({
   )
 }
 
-function TrailBand({ copy }: { copy: HomeCopy }) {
-  return (
-    <div className="flex max-w-2xl flex-col items-start gap-content-gap">
-      <p className="text-eyebrow uppercase text-trail-foreground/70">
-        {copy.trilhaEyebrow}
-      </p>
-      <h2 className="font-display text-display-band">{copy.trilhaHeading}</h2>
-      <p className="max-w-xl text-lead text-trail-foreground/80">
-        {copy.trilhaDescription}
-      </p>
-      <ButtonLink
-        href="/trilha"
-        variant="outline"
-        shape="pill"
-        className={trailCtaClassName}
-      >
-        {copy.trilhaCta}
-        <ArrowRightIcon />
-      </ButtonLink>
-    </div>
-  )
-}
-
 export function HomeView({ posts }: { posts: HomePostSummary[] }) {
   const { language } = useInterfaceLanguage()
   const copy = getHomeCopy(language)
@@ -196,11 +187,6 @@ export function HomeView({ posts }: { posts: HomePostSummary[] }) {
       <Container width="page">
         <RecentWriting copy={copy} posts={posts} language={language} />
       </Container>
-      <section className="w-full bg-trail py-section text-trail-foreground">
-        <Container width="page">
-          <TrailBand copy={copy} />
-        </Container>
-      </section>
     </main>
   )
 }
