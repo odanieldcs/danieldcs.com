@@ -43,6 +43,9 @@ test('renders the about page in Portuguese', () => {
     }),
   ).toBeTruthy()
   expect(screen.getByText('Sobre mim')).toBeTruthy()
+  expect(screen.getByRole('link', { name: 'Ler o blog' }).getAttribute('href')).toBe(
+    '/blog',
+  )
   expect(screen.getByText('AI-Assisted Development')).toBeTruthy()
   expect(screen.queryByText('Tecnologia, aprendizado e troca.')).toBeNull()
   expect(
@@ -124,6 +127,9 @@ test('renders English copy when the interface language is en', () => {
       name: 'Between code, product and people.',
     }),
   ).toBeTruthy()
+  expect(
+    screen.getByRole('link', { name: 'Read the blog' }).getAttribute('href'),
+  ).toBe('/blog')
   expect(
     screen.getByRole('heading', { level: 2, name: 'Experience' }),
   ).toBeTruthy()
