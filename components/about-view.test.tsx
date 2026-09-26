@@ -97,7 +97,7 @@ test('renders the about page in Portuguese', () => {
   expect(personal?.className).toContain('border-y')
   expect(personal?.className).not.toContain('bg-trail')
   expect(
-    screen.getByText(/Sou corredor amador e treino com regularidade/),
+    screen.getByText(/Sou corredor amador que pegou o gosto por meia-maratonas/),
   ).toBeTruthy()
 
   const contact = screen.getByRole('link', { name: 'Entre em contato' })

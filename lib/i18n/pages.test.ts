@@ -16,6 +16,7 @@ test('pt and en home copy share the same key shape', () => {
     'eyebrow',
     'headline',
     'intro',
+    'aboutCta',
     'highlights',
     'portraitAlt',
     'portraitCaption',
@@ -68,6 +69,7 @@ test('pt and en about copy share the same key shape', () => {
     'eyebrow',
     'headline',
     'introParagraphs',
+    'blogCta',
     'pillars',
     'portraitAlt',
     'sectionExperienceIndex',
@@ -238,8 +240,8 @@ test('pt and en blog copy share the same key shape', () => {
     'paginationPrevious',
     'paginationNext',
   ])
-  expect(pt.title).toBe('Artigos e notas de engenharia.')
-  expect(en.title).toBe('Articles and engineering notes.')
+  expect(pt.title).toBe('Aprendizados e ideias.')
+  expect(en.title).toBe('Learnings and ideas.')
   expect(pt.paginationPrevious).toBe('Anterior')
   expect(en.paginationPrevious).toBe('Previous')
   expect(pt.paginationNext).toBe('Próxima')

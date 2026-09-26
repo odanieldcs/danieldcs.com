@@ -12,6 +12,7 @@ export type HomeCopy = {
   /** Provisional positioning. Swap the string here when the line is final. */
   headline: string
   intro: string[]
+  aboutCta: string
   highlights: HomeHighlight[]
   portraitAlt: string
   portraitCaption: string
@@ -60,6 +61,7 @@ const homeCopy: Record<InterfaceLanguage, HomeCopy> = {
       'Olá, me chamo Daniel, sou um desenvolvedor full-stack.',
       'Planejo, crio e torno softwares mais acessíveis no dia a dia. Acredito que a tecnologia pode e deve ser usada para melhorar a vida das pessoas. Quando não estou codando, estou em movimento.',
     ],
+    aboutCta: 'Saber mais',
     highlights: [
       {
         label: 'Engenheiro Full-Stack',
@@ -91,6 +93,7 @@ const homeCopy: Record<InterfaceLanguage, HomeCopy> = {
       "Hi, I'm Daniel, a full-stack developer.",
       "I plan, build, and make software more accessible in everyday life. I believe technology can and should be used to improve people's lives. When I'm not coding, I'm out moving.",
     ],
+    aboutCta: 'Learn more',
     highlights: [
       {
         label: 'Full-Stack Engineer',
@@ -240,6 +243,7 @@ export type AboutCopy = {
   eyebrow: string
   headline: string
   introParagraphs: string[]
+  blogCta: string
   pillars: string[]
   portraitAlt: string
   sectionExperienceIndex: string
@@ -277,6 +281,7 @@ const aboutCopy: Record<InterfaceLanguage, AboutCopy> = {
       'Fora do código, sou casado com uma mulher incrível, pai de uma menina linda, pai de pets e corredor amador.',
       'Neste site reúno um pouco de tudo isso: textos, experiências, projetos e experimentos. Mais do que um portfólio, é um lugar para registrar o caminho enquanto continuo aprendendo e construindo.',
     ],
+    blogCta: 'Ler o blog',
     pillars: [
       'Software Engineering',
       'AI-Assisted Development',
@@ -364,16 +369,16 @@ const aboutCopy: Record<InterfaceLanguage, AboutCopy> = {
     languagesValue: 'Português · Inglês',
     stackLabel: 'Stack Principal',
     stackValue:
-      'TypeScript · React · Next.js · Node.js · Drizzle/Prisma · Python · PostgreSQL · GraphQL · AWS · Vercel · Docker',
+      'TypeScript · React · Next.js · Node.js · C# · Python · PostgreSQL · Drizzle/Prisma · GraphQL · AWS · Vercel · Docker',
     sectionPersonalIndex: '03 / Fora da tela',
     personalTitle: 'Corrida como parte da rotina.',
     personalParagraph:
-      'Sou corredor amador e treino com regularidade para provas de 10 km e 21 km. É o meu espaço de constância, movimento e cabeça no lugar.',
+      'Sou corredor amador que pegou o gosto por meia-maratonas. Entre treinos e provas, encontrei na corrida uma forma de cuidar da saúde, desenvolver disciplina e encontrar um pouco de equilíbrio no meio da rotina.',
     sectionContactIndex: '04 / Contato',
     contactTitle: 'Vamos conversar.',
     contactParagraphs: [
-      'Ajudo em desafios de engenharia, liderança técnica e desenvolvimento de equipes.',
-      'Estou aberto a boas conversas, novas oportunidades e colaborações em que minha experiência possa ser útil.',
+      'Ajudo em desafios de engenharia.',
+      'Estou aberto a boas conversas e disposto a colaborar onde minha experiência possa ser útil, seja numa conversa, palestra, mentoria ou treinamento estruturado.',
     ],
     contactCta: 'Entre em contato',
   },
@@ -388,6 +393,7 @@ const aboutCopy: Record<InterfaceLanguage, AboutCopy> = {
       "Away from the code, I'm married to an incredible woman, father of a beautiful girl, a pet dad, and an amateur runner.",
       "On this site I gather a bit of all of that: writing, experiences, projects, and experiments. More than a portfolio, it's a place to record the path while I keep learning and building.",
     ],
+    blogCta: 'Read the blog',
     pillars: [
       'Software Engineering',
       'AI-Assisted Development',
@@ -475,16 +481,16 @@ const aboutCopy: Record<InterfaceLanguage, AboutCopy> = {
     languagesValue: 'Portuguese · English',
     stackLabel: 'Main stack',
     stackValue:
-      'TypeScript · React · Next.js · Node.js · Drizzle/Prisma · Python · PostgreSQL · GraphQL · AWS · Vercel · Docker',
+      'TypeScript · React · Next.js · Node.js · C# · Python · PostgreSQL · Drizzle/Prisma · GraphQL · AWS · Vercel · Docker',
     sectionPersonalIndex: '03 / Off the screen',
     personalTitle: 'Running as part of the routine.',
     personalParagraph:
-      "I'm an amateur runner and I train regularly for 10K and 21K races. It's my space for consistency, movement, and a clear head.",
+      "I'm an amateur runner who got a taste for half marathons. Between training and races, I found in running a way to look after my health, build discipline, and find a bit of balance in the routine.",
     sectionContactIndex: '04 / Contact',
     contactTitle: "Let's talk.",
     contactParagraphs: [
-      'I help with engineering challenges, technical leadership, and team development.',
-      "I'm open to good conversations, new opportunities, and collaborations where my experience can be useful.",
+      'I help with engineering challenges.',
+      "I'm open to good conversations and willing to collaborate where my experience can be useful, whether in a conversation, a talk, mentoring, or structured training.",
     ],
     contactCta: 'Get in touch',
   },
@@ -563,8 +569,8 @@ export type BlogCopy = {
 const blogCopy: Record<InterfaceLanguage, BlogCopy> = {
   pt: {
     eyebrow: 'Blog',
-    title: 'Artigos e notas de engenharia.',
-    intro: 'Textos sobre código, produto e o ofício de construir software.',
+    title: 'Aprendizados e ideias.',
+    intro: 'Um espaço para registrar meus conteúdos técnicos ou não.',
     empty: 'Nenhum artigo publicado ainda.',
     viewLabel: 'Formato',
     viewList: 'Lista',
@@ -575,8 +581,8 @@ const blogCopy: Record<InterfaceLanguage, BlogCopy> = {
   },
   en: {
     eyebrow: 'Writing',
-    title: 'Articles and engineering notes.',
-    intro: 'Essays on code, product, and the craft of building software.',
+    title: 'Learnings and ideas.',
+    intro: 'A space to record my content, technical or not.',
     empty: 'No articles published yet.',
     viewLabel: 'Layout',
     viewList: 'List',
