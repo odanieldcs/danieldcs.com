@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import Link from 'next/link'
 import { ArrowRightIcon } from '@/components/arrow-right-icon'
 import { Container } from '@/components/container'
 import { useInterfaceLanguage } from '@/components/interface-language-provider'
@@ -25,6 +26,12 @@ const subtitleClassName = 'mt-4 text-sm leading-relaxed text-foreground/55'
 const ctaLinkClassName = [
   'group mt-8 inline-flex items-center gap-2 text-sm font-semibold text-accent',
   'rounded-sm hover:underline',
+  'outline-none focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+].join(' ')
+
+const quietCtaClassName = [
+  'group mt-6 inline-flex w-fit items-center gap-1.5 text-sm text-foreground/55',
+  'rounded-sm transition-colors hover:text-foreground',
   'outline-none focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
 ].join(' ')
 
@@ -88,6 +95,10 @@ function Intro({ copy }: { copy: AboutCopy }) {
             <p key={paragraph}>{paragraph}</p>
           ))}
         </div>
+        <Link href="/blog" className={quietCtaClassName}>
+          {copy.blogCta}
+          <ArrowRightIcon />
+        </Link>
         <div className="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm font-medium text-foreground/55">
           {copy.pillars.map((pillar) => (
             <span key={pillar}>{pillar}</span>

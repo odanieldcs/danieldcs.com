@@ -98,6 +98,9 @@ test('renders the editorial home and recent posts in Portuguese', () => {
       'Planejo, crio e torno softwares mais acessíveis no dia a dia. Acredito que a tecnologia pode e deve ser usada para melhorar a vida das pessoas. Quando não estou codando, estou em movimento.',
     ),
   ).toBeTruthy()
+  expect(screen.getByRole('link', { name: 'Saber mais' }).getAttribute('href')).toBe(
+    '/about',
+  )
   expect(screen.getByText('Notas de engenharia')).toBeTruthy()
   expect(
     screen.getByRole('heading', { level: 2, name: 'Escrita recente' }),
@@ -155,6 +158,9 @@ test('renders English copy when the interface language is en', () => {
       "I plan, build, and make software more accessible in everyday life. I believe technology can and should be used to improve people's lives. When I'm not coding, I'm out moving.",
     ),
   ).toBeTruthy()
+  expect(screen.getByRole('link', { name: 'Learn more' }).getAttribute('href')).toBe(
+    '/about',
+  )
   expect(screen.getByText('Engineering notes')).toBeTruthy()
   expect(
     screen.getByRole('heading', { level: 2, name: 'Recent writing' }),

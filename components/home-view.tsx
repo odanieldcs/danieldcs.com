@@ -53,6 +53,12 @@ const articleCardClassName = [
   'outline-none focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
 ].join(' ')
 
+const quietCtaClassName = [
+  'group inline-flex w-fit items-center gap-1.5 text-sm text-foreground/55',
+  'rounded-sm transition-colors hover:text-foreground',
+  'outline-none focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+].join(' ')
+
 function Hero({ copy }: { copy: HomeCopy }) {
   return (
     <section className="grid items-center gap-content-gap md:grid-cols-[minmax(0,1.15fr)_minmax(16rem,0.85fr)] md:gap-section">
@@ -79,6 +85,10 @@ function Hero({ copy }: { copy: HomeCopy }) {
             <p key={paragraph}>{paragraph}</p>
           ))}
         </div>
+        <Link href="/about" className={quietCtaClassName}>
+          {copy.aboutCta}
+          <ArrowRightIcon />
+        </Link>
       </div>
     </section>
   )

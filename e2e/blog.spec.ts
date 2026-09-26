@@ -21,7 +21,7 @@ test('blog listing shows 12 posts on page 1 without console errors', async ({
   await expect(
     page.getByRole('heading', {
       level: 1,
-      name: 'Artigos e notas de engenharia.',
+      name: 'Aprendizados e ideias.',
     }),
   ).toBeVisible()
   await expect(
