@@ -11,7 +11,7 @@ test('pt and en dictionaries share the same key shape', () => {
   const en = getDictionary('en')
 
   expect(Object.keys(pt)).toEqual(Object.keys(en))
-  expect(Object.keys(pt.nav)).toEqual(['blog', 'community', 'trilha', 'about'])
+  expect(Object.keys(pt.nav)).toEqual(['blog', 'community', 'about'])
   expect(Object.keys(en.nav)).toEqual(Object.keys(pt.nav))
   expect(Object.keys(pt.theme)).toEqual(['toggle', 'lightMode', 'darkMode'])
   expect(Object.keys(en.theme)).toEqual(Object.keys(pt.theme))
@@ -29,7 +29,6 @@ test('nav labels match doc 4 in Portuguese', () => {
   expect(getDictionary('pt').nav).toEqual({
     blog: 'Blog',
     community: 'Comunidade',
-    trilha: 'Trilha',
     about: 'Sobre',
   })
 })
@@ -38,7 +37,6 @@ test('nav labels match doc 4 in English', () => {
   expect(getDictionary('en').nav).toEqual({
     blog: 'Writing',
     community: 'Community',
-    trilha: 'Trilha',
     about: 'About',
   })
 })

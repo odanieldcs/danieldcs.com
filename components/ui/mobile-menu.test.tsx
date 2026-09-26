@@ -6,7 +6,6 @@ import { MobileMenu, type MobileMenuItem } from './mobile-menu'
 const items: readonly MobileMenuItem[] = [
   { href: '/blog', label: 'Blog' },
   { href: '/community', label: 'Comunidade' },
-  { href: '/trilha', label: 'Trilha' },
   { href: '/about', label: 'Sobre' },
 ]
 
@@ -102,7 +101,7 @@ test('opens a full-screen overlay and closes when a link is chosen', () => {
   expect(document.documentElement.style.overflow).toBe('')
 })
 
-test('opens the four real navigation links and no placeholders', () => {
+test('opens the public navigation links and no placeholders', () => {
   renderMenu()
   fireEvent.click(screen.getByRole('button', { name: 'Menu' }))
 
@@ -112,9 +111,6 @@ test('opens the four real navigation links and no placeholders', () => {
   expect(
     screen.getByRole('link', { name: 'Comunidade' }).getAttribute('href'),
   ).toBe('/community')
-  expect(
-    screen.getByRole('link', { name: 'Trilha' }).getAttribute('href'),
-  ).toBe('/trilha')
   expect(screen.getByRole('link', { name: 'Sobre' }).getAttribute('href')).toBe(
     '/about',
   )

@@ -11,16 +11,13 @@ export type HomeCopy = {
   eyebrow: string
   /** Provisional positioning. Swap the string here when the line is final. */
   headline: string
-  intro: string
+  intro: string[]
   highlights: HomeHighlight[]
   portraitAlt: string
+  portraitCaption: string
   recentEyebrow: string
   recentTitle: string
   readArticle: string
-  trilhaEyebrow: string
-  trilhaHeading: string
-  trilhaDescription: string
-  trilhaCta: string
 }
 
 export type TrilhaPillar = {
@@ -55,71 +52,68 @@ export type TrilhaCopy = {
 }
 
 // Provisional copy. The headline can change without touching the layout.
-// ENG-94 replaces the Trilha placeholder page; this band does not claim it is ready.
 const homeCopy: Record<InterfaceLanguage, HomeCopy> = {
   pt: {
     eyebrow: 'Engenheiro · Builder · Corredor',
-    headline: 'Construindo Produtos em Softwares e correndo longas distâncias.',
-    intro:
-      'Sou Daniel, engenheiro full-stack. Desenho, construo e faço crescer produtos digitais — e quando não estou codando, estou em movimento.',
+    headline: 'Criando e compartilhando, de Dev para Dev.',
+    intro: [
+      'Olá, me chamo Daniel, sou um desenvolvedor full-stack.',
+      'Planejo, crio e torno softwares mais acessíveis no dia a dia. Acredito que a tecnologia pode e deve ser usada para melhorar a vida das pessoas. Quando não estou codando, estou em movimento.',
+    ],
     highlights: [
       {
         label: 'Engenheiro Full-Stack',
         description:
-          'Produtos e sistemas de ponta a ponta, com clareza técnica e atenção aos detalhes.',
+          'Sistemas de ponta a ponta, com clareza técnica, arquitetura modular, segurança e foco em UX.',
       },
       {
         label: 'Builder',
         description:
-          'Da ideia ao que está no ar, priorizando o que gera valor e aprendizado mais cedo.',
+          'Do conceito ao deploy, priorizando o que gera valor e aprendizado mais cedo. Sempre orientado por métricas.',
       },
       {
         label: 'Corredor',
         description:
-          'Treino e constância fora da tela — disciplina que também levo para o trabalho.',
+          'Apaixonado por corrida. Treino e constância fora da tela. A disciplina que levo para vida.',
       },
     ],
-    portraitAlt: 'Retrato de Daniel Castro na Golden Gate',
+    portraitAlt:
+      'Daniel Castro palestrando no palco do TDC Floripa em 2026, com microfone',
+    portraitCaption: 'Tecnologia, aprendizado e troca.',
     recentEyebrow: 'Notas de engenharia',
     recentTitle: 'Escrita recente',
     readArticle: 'Ler artigo',
-    trilhaEyebrow: 'A Trilha',
-    trilhaHeading: 'Um caminho de estudo e prática.',
-    trilhaDescription:
-      'Acompanho e organizo o que estudo, construo e descubro pelo caminho — com método, constância e espaço para experimentar.',
-    trilhaCta: 'Ver a Trilha',
   },
   en: {
     eyebrow: 'Engineer · Builder · Runner',
-    headline: 'Building software products and running long distances.',
-    intro:
-      "I'm Daniel, a full-stack engineer. I design, build, and grow digital products — and when I'm not coding, I'm out moving.",
+    headline: 'Creating and sharing, from dev to dev.',
+    intro: [
+      "Hi, I'm Daniel, a full-stack developer.",
+      "I plan, build, and make software more accessible in everyday life. I believe technology can and should be used to improve people's lives. When I'm not coding, I'm out moving.",
+    ],
     highlights: [
       {
         label: 'Full-Stack Engineer',
         description:
-          'Products and systems end to end, with technical clarity and attention to detail.',
+          'End-to-end systems, with technical clarity, modular architecture, security, and a focus on UX.',
       },
       {
         label: 'Builder',
         description:
-          'From the idea to what is live, prioritizing what creates value and learning sooner.',
+          'From concept to deploy, prioritizing what creates value and learning sooner. Always guided by metrics.',
       },
       {
         label: 'Runner',
         description:
-          'Training and consistency away from the screen — discipline I carry into the work.',
+          'Passionate about running. Training and consistency away from the screen. The discipline I carry into life.',
       },
     ],
-    portraitAlt: 'Portrait of Daniel Castro at the Golden Gate Bridge',
+    portraitAlt:
+      'Daniel Castro speaking on stage at TDC Floripa in 2026, holding a microphone',
+    portraitCaption: 'Technology, learning, and exchange.',
     recentEyebrow: 'Engineering notes',
     recentTitle: 'Recent writing',
     readArticle: 'Read article',
-    trilhaEyebrow: 'The Trilha',
-    trilhaHeading: 'A path of study and practice.',
-    trilhaDescription:
-      'I keep track of what I study, build, and find along the way — with method, consistency, and room to experiment.',
-    trilhaCta: 'See the Trilha',
   },
 }
 
@@ -248,7 +242,6 @@ export type AboutCopy = {
   introParagraphs: string[]
   pillars: string[]
   portraitAlt: string
-  portraitCaption: string
   sectionExperienceIndex: string
   experienceTitle: string
   experienceSubtitle: string
@@ -260,6 +253,8 @@ export type AboutCopy = {
   repertoireGroups: AboutRepertoireGroup[]
   languagesLabel: string
   languagesValue: string
+  stackLabel: string
+  stackValue: string
   sectionPersonalIndex: string
   personalTitle: string
   personalParagraph: string
@@ -273,44 +268,46 @@ export type AboutCopy = {
 const aboutCopy: Record<InterfaceLanguage, AboutCopy> = {
   pt: {
     eyebrow: 'Sobre mim',
-    headline: 'Construindo e compartilhando, de Dev para Dev.',
+    headline: 'Entre código, produto e pessoas.',
     introParagraphs: [
-      'Sou engenheiro de software e gosto de construir sistemas que tornam problemas complexos mais simples. Ao longo da minha carreira, trabalhei entre engenharia, arquitetura, produto e pessoas.',
-      'Hoje atuo como Staff Software Engineer na Curebase, construindo software e explorando novas formas de unir engenharia, produto e tecnologia.',
+      'Olá, me chamo Daniel Castro e sou engenheiro de software. Trabalho com programação desde 2005 e, ao longo desse tempo, passei por diferentes contextos entre engenharia, arquitetura, liderança técnica, produto e ensino.',
+      'Sempre gostei de entender problemas complexos, encontrar formas de otimizar processos e criar soluções que facilitem a vida das pessoas com tecnologia.',
+      'Atuar como Engenheiro de Software, desenvolvendo aplicações e sistemas para a web, explorando novas formas de aproximar engenharia, produto e métricas, agora com IA acelerando processos para melhorar a vida das pessoas é algo que tem feito minha jornada gratificante.',
+      'Compartilhar também é parte do que sou. Ensinar, escrever, palestrar, participar de comunidades e orientar pessoas em diferentes momentos da carreira é algo que me faz feliz.',
+      'Fora do código, sou casado com uma mulher incrível, pai de uma menina linda, pai de pets e corredor amador.',
+      'Neste site reúno um pouco de tudo isso: textos, experiências, projetos e experimentos. Mais do que um portfólio, é um lugar para registrar o caminho enquanto continuo aprendendo e construindo.',
     ],
     pillars: [
       'Software Engineering',
-      'IA aplicada',
+      'AI-Assisted Development',
       'Liderança técnica',
       'Ensino',
     ],
-    portraitAlt:
-      'Daniel Castro palestrando no palco do TDC Floripa em 2026, com microfone',
-    portraitCaption: 'Tecnologia, aprendizado e troca.',
+    portraitAlt: 'Retrato de Daniel Castro na Golden Gate',
     sectionExperienceIndex: '01 / Experiência',
     experienceTitle: 'Experiência',
     experienceSubtitle:
       'Alguns dos contextos em que venho entregando software.',
     timeline: [
       {
-        period: 'out. 2025 — atual',
-        role: 'Staff Software Engineer',
-        org: 'Curebase / Estados Unidos · remoto',
-      },
-      {
-        period: 'abr. 2024 — out. 2025',
-        role: 'Frontend Team Lead & Architect',
-        org: 'Grupo ITSS / Brasil · contrato',
-      },
-      {
         period: 'abr. 2020 — atual',
         role: 'Software Engineer Consultant & Educator',
         org: 'DDEVs / Brasil · meio período',
       },
       {
+        period: 'out. 2025 — set. 2026',
+        role: 'Staff Software Engineer',
+        org: 'Curebase / Estados Unidos · remoto · contrato',
+      },
+      {
+        period: 'abr. 2024 — out. 2025',
+        role: 'Frontend Team Lead & Architect',
+        org: 'Grupo ITSS / Brasil · remoto · contrato',
+      },
+      {
         period: 'fev. 2022 — jul. 2023',
         role: 'Senior Full Stack Developer',
-        org: 'Bayer / Estados Unidos e Alemanha · contrato',
+        org: 'Bayer / Estados Unidos e Alemanha · remoto · contrato',
       },
     ],
     linkedinCta: 'Ver trajetória completa no LinkedIn',
@@ -327,102 +324,101 @@ const aboutCopy: Record<InterfaceLanguage, AboutCopy> = {
           'React & Next.js',
           'Node.js',
           'PostgreSQL',
-          'AWS',
-          'Arquitetura de software',
+          'AWS & Vercel',
+          'Arquitetura',
         ],
       },
       {
-        title: 'Product & AI',
+        title: 'AI Engineering',
         description:
-          'Construção de produtos da ideia à produção, conectando descoberta, engenharia, arquitetura e evolução do produto.',
+          'Integração de IA ao software, conectando LLMs, dados, ferramentas e processos de desenvolvimento.',
         skills: [
-          'Product thinking',
           'LLM integrations',
           'RAG',
+          'AI SDKs',
           'AI-assisted development',
-          'Descoberta',
-          'Engenharia & produto',
+          'Harness engineering',
         ],
       },
       {
-        title: 'Teaching & Community',
+        title: 'Product',
         description:
-          'Conhecimento compartilhado por meio de aulas, conteúdo e conversas técnicas.',
+          'Da descoberta à entrega, conectando problemas, produto, engenharia e resultados.',
         skills: [
-          'Cursos',
-          'Palestras',
-          'Mentoria',
-          'Conteúdo técnico',
-          'Comunidade',
-        ],
-      },
-      {
-        title: 'Leadership',
-        description:
-          'Direção técnica e desenvolvimento de pessoas sem perder a proximidade com o código.',
-        skills: [
-          'Liderança técnica',
+          'Discovery',
+          'MVPs',
+          'Métricas',
           'Roadmap',
-          'Contratação',
-          'Mentoria',
-          'Planejamento de entregas',
+          'Planejamento',
+          'Product thinking',
         ],
+      },
+      {
+        title: 'Teaching',
+        description:
+          'Conhecimento compartilhado por meio de conteúdo, aulas e conversas técnicas.',
+        skills: ['Conteúdo', 'Palestras', 'Mentoria', 'Cursos'],
       },
     ],
     languagesLabel: 'Idiomas',
     languagesValue: 'Português · Inglês',
+    stackLabel: 'Stack Principal',
+    stackValue:
+      'TypeScript · React · Next.js · Node.js · Drizzle/Prisma · Python · PostgreSQL · GraphQL · AWS · Vercel · Docker',
     sectionPersonalIndex: '03 / Fora da tela',
     personalTitle: 'Corrida como parte da rotina.',
     personalParagraph:
-      'Sou corredor amador e treino com regularidade para provas de 10 km e 21 km. É um espaço simples de constância, movimento e cabeça no lugar.',
+      'Sou corredor amador e treino com regularidade para provas de 10 km e 21 km. É o meu espaço de constância, movimento e cabeça no lugar.',
     sectionContactIndex: '04 / Contato',
     contactTitle: 'Vamos conversar.',
     contactParagraphs: [
-      'Posso ajudar em desafios de engenharia, liderança técnica e desenvolvimento de equipes.',
+      'Ajudo em desafios de engenharia, liderança técnica e desenvolvimento de equipes.',
       'Estou aberto a boas conversas, novas oportunidades e colaborações em que minha experiência possa ser útil.',
     ],
     contactCta: 'Entre em contato',
   },
   en: {
     eyebrow: 'About me',
-    headline: 'Building and sharing, from dev to dev.',
+    headline: 'Between code, product and people.',
     introParagraphs: [
-      "I'm a software engineer, and I like building systems that make complex problems simpler. Throughout my career, I've worked across engineering, architecture, product, and people.",
-      'Today I work as a Staff Software Engineer at Curebase, building software and exploring new ways to bring engineering, product, and technology together.',
+      "Hi, my name is Daniel Castro and I'm a software engineer. I've been programming since 2005 and, over that time, I've worked across engineering, architecture, technical leadership, product, and teaching.",
+      "I've always liked understanding complex problems, finding ways to streamline processes, and creating solutions that make people's lives easier with technology.",
+      "Working as a software engineer, building web applications and systems, exploring new ways to bring engineering, product, and metrics closer together, now with AI speeding up processes to improve people's lives, is something that has made my journey rewarding.",
+      'Sharing is also part of who I am. Teaching, writing, speaking, taking part in communities, and guiding people at different moments in their careers is something that makes me happy.',
+      "Away from the code, I'm married to an incredible woman, father of a beautiful girl, a pet dad, and an amateur runner.",
+      "On this site I gather a bit of all of that: writing, experiences, projects, and experiments. More than a portfolio, it's a place to record the path while I keep learning and building.",
     ],
     pillars: [
-      'Software engineering',
-      'Applied AI',
+      'Software Engineering',
+      'AI-Assisted Development',
       'Technical leadership',
       'Teaching',
     ],
-    portraitAlt:
-      'Daniel Castro speaking on stage at TDC Floripa in 2026, holding a microphone',
-    portraitCaption: 'Technology, learning, and exchange.',
+    portraitAlt: 'Portrait of Daniel Castro at the Golden Gate Bridge',
     sectionExperienceIndex: '01 / Experience',
     experienceTitle: 'Experience',
     experienceSubtitle:
       'Some of the contexts where I have been delivering software.',
     timeline: [
       {
-        period: 'Oct. 2025 — present',
-        role: 'Staff Software Engineer',
-        org: 'Curebase / United States · remote',
-      },
-      {
-        period: 'Apr. 2024 — Oct. 2025',
-        role: 'Frontend Team Lead & Architect',
-        org: 'Grupo ITSS / Brazil · contract',
-      },
-      {
         period: 'Apr. 2020 — present',
         role: 'Software Engineer Consultant & Educator',
         org: 'DDEVs / Brazil · part-time',
       },
       {
+        period: 'Oct. 2025 — Sep. 2026',
+        role: 'Staff Software Engineer',
+        org: 'Curebase / United States · remote · contract',
+      },
+      {
+        period: 'Apr. 2024 — Oct. 2025',
+        role: 'Frontend Team Lead & Architect',
+        org: 'Grupo ITSS / Brazil · remote · contract',
+      },
+      {
         period: 'Feb. 2022 — Jul. 2023',
         role: 'Senior Full Stack Developer',
-        org: 'Bayer / United States and Germany · contract',
+        org: 'Bayer / United States and Germany · remote · contract',
       },
     ],
     linkedinCta: 'See the full path on LinkedIn',
@@ -439,58 +435,55 @@ const aboutCopy: Record<InterfaceLanguage, AboutCopy> = {
           'React & Next.js',
           'Node.js',
           'PostgreSQL',
-          'AWS',
-          'Software architecture',
+          'AWS & Vercel',
+          'Architecture',
         ],
       },
       {
-        title: 'Product & AI',
+        title: 'AI Engineering',
         description:
-          'Building products from idea to production, connecting discovery, engineering, architecture, and product evolution.',
+          'Bringing AI into software, connecting LLMs, data, tools, and development processes.',
         skills: [
-          'Product thinking',
           'LLM integrations',
           'RAG',
+          'AI SDKs',
           'AI-assisted development',
+          'Harness engineering',
+        ],
+      },
+      {
+        title: 'Product',
+        description:
+          'From discovery to delivery, connecting problems, product, engineering, and results.',
+        skills: [
           'Discovery',
-          'Engineering & product',
-        ],
-      },
-      {
-        title: 'Teaching & Community',
-        description:
-          'Knowledge shared through classes, content, and technical conversations.',
-        skills: [
-          'Courses',
-          'Talks',
-          'Mentoring',
-          'Technical content',
-          'Community',
-        ],
-      },
-      {
-        title: 'Leadership',
-        description:
-          'Technical direction and people development without losing proximity to the code.',
-        skills: [
-          'Technical leadership',
+          'MVPs',
+          'Metrics',
           'Roadmap',
-          'Hiring',
-          'Mentoring',
-          'Delivery planning',
+          'Planning',
+          'Product thinking',
         ],
+      },
+      {
+        title: 'Teaching',
+        description:
+          'Knowledge shared through content, classes, and technical conversations.',
+        skills: ['Content', 'Talks', 'Mentoring', 'Courses'],
       },
     ],
     languagesLabel: 'Languages',
     languagesValue: 'Portuguese · English',
+    stackLabel: 'Main stack',
+    stackValue:
+      'TypeScript · React · Next.js · Node.js · Drizzle/Prisma · Python · PostgreSQL · GraphQL · AWS · Vercel · Docker',
     sectionPersonalIndex: '03 / Off the screen',
     personalTitle: 'Running as part of the routine.',
     personalParagraph:
-      "I'm an amateur runner and I train regularly for 10K and 21K races. It's a simple space for consistency, movement, and a clear head.",
+      "I'm an amateur runner and I train regularly for 10K and 21K races. It's my space for consistency, movement, and a clear head.",
     sectionContactIndex: '04 / Contact',
     contactTitle: "Let's talk.",
     contactParagraphs: [
-      'I can help with engineering challenges, technical leadership, and team development.',
+      'I help with engineering challenges, technical leadership, and team development.',
       "I'm open to good conversations, new opportunities, and collaborations where my experience can be useful.",
     ],
     contactCta: 'Get in touch',
@@ -513,7 +506,8 @@ const communityCopy: Record<InterfaceLanguage, CommunityCopy> = {
   pt: {
     eyebrow: 'Comunidade',
     title: 'Palestras, workshops e encontros.',
-    intro: 'Um registro simples das participações, em ordem cronológica.',
+    intro:
+      'Um breve registro das minhas contribuições nas comunidades. Experiências compartilhadas de Dev para Dev.',
     empty: 'Nenhuma participação publicada ainda.',
     yearLabel: 'Ano',
     viewLabel: 'Formato',
@@ -529,7 +523,8 @@ const communityCopy: Record<InterfaceLanguage, CommunityCopy> = {
   en: {
     eyebrow: 'Community',
     title: 'Talks, workshops, and gatherings.',
-    intro: 'A simple record of participations, in chronological order.',
+    intro:
+      'A short record of my contributions in communities. Experiences shared from dev to dev.',
     empty: 'No participations published yet.',
     yearLabel: 'Year',
     viewLabel: 'Layout',

@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: 'Trilha',
   description:
     'Guiado por quem aplica no dia a dia, em engenharia de software.',
+  robots: { index: false, follow: false },
 }
 
 export default function TrilhaPage() {

@@ -6,7 +6,7 @@ import {
   useInterfaceLanguage,
 } from '@/components/interface-language-provider'
 import { INTERFACE_LANGUAGE_COOKIE_NAME } from '@/lib/i18n/types'
-import { HomeView, type HomePostSummary } from './home-view'
+import { type HomePostSummary, HomeView } from './home-view'
 
 vi.mock('next/image', () => ({
   default: function MockImage({ alt, src }: { alt: string; src: string }) {
@@ -59,12 +59,12 @@ function renderHome(language: 'pt' | 'en' = 'pt', nextPosts = posts) {
   )
 }
 
-test('renders the editorial home, recent posts, and the Trilha band in Portuguese', () => {
+test('renders the editorial home and recent posts in Portuguese', () => {
   renderHome()
 
   const headline = screen.getByRole('heading', {
     level: 1,
-    name: 'Construindo Produtos em Softwares e correndo longas distâncias.',
+    name: 'Criando e compartilhando, de Dev para Dev.',
   })
   expect(headline).toBeTruthy()
   expect(
@@ -73,6 +73,7 @@ test('renders the editorial home, recent posts, and the Trilha band in Portugues
   expect(headline.closest('section')?.querySelector('a[href="/trilha"]')).toBe(
     null,
   )
+  expect(screen.queryByRole('link', { name: 'Ver a Trilha' })).toBeNull()
   expect(screen.queryByRole('link', { name: 'Ler o blog' })).toBeNull()
   expect(screen.queryByRole('link', { name: 'Ver todos' })).toBeNull()
 
@@ -85,12 +86,16 @@ test('renders the editorial home, recent posts, and the Trilha band in Portugues
   expect(screen.getByText('Corredor')).toBeTruthy()
   expect(
     screen.getByRole('img', {
-      name: 'Retrato de Daniel Castro na Golden Gate',
+      name: 'Daniel Castro palestrando no palco do TDC Floripa em 2026, com microfone',
     }),
+  ).toBeTruthy()
+  expect(screen.getByText('Tecnologia, aprendizado e troca.')).toBeTruthy()
+  expect(
+    screen.getByText('Olá, me chamo Daniel, sou um desenvolvedor full-stack.'),
   ).toBeTruthy()
   expect(
     screen.getByText(
-      'Sou Daniel, engenheiro full-stack. Desenho, construo e faço crescer produtos digitais — e quando não estou codando, estou em movimento.',
+      'Planejo, crio e torno softwares mais acessíveis no dia a dia. Acredito que a tecnologia pode e deve ser usada para melhorar a vida das pessoas. Quando não estou codando, estou em movimento.',
     ),
   ).toBeTruthy()
   expect(screen.getByText('Notas de engenharia')).toBeTruthy()
@@ -116,17 +121,12 @@ test('renders the editorial home, recent posts, and the Trilha band in Portugues
     '2026-09-21T00:00:00.000Z',
   )
   expect(document.querySelector('time')?.textContent).toBe('21 set. 2026')
-  const trilhaLink = screen.getByRole('link', { name: 'Ver a Trilha' })
-  expect(trilhaLink.getAttribute('href')).toBe('/trilha')
-  expect(trilhaLink.className).toContain('rounded-full')
-  expect(trilhaLink.className).toContain('px-6!')
-  expect(trilhaLink.querySelector('svg')).toBeTruthy()
   expect(
-    screen.getByRole('heading', {
+    screen.queryByRole('heading', {
       level: 2,
       name: 'Um caminho de estudo e prática.',
     }),
-  ).toBeTruthy()
+  ).toBeNull()
 })
 
 test('renders English copy when the interface language is en', () => {
@@ -135,7 +135,7 @@ test('renders English copy when the interface language is en', () => {
   expect(
     screen.getByRole('heading', {
       level: 1,
-      name: 'Building software products and running long distances.',
+      name: 'Creating and sharing, from dev to dev.',
     }),
   ).toBeTruthy()
   expect(screen.getByText('Engineer · Builder · Runner')).toBeTruthy()
@@ -144,12 +144,15 @@ test('renders English copy when the interface language is en', () => {
   expect(screen.getByText('Runner')).toBeTruthy()
   expect(
     screen.getByRole('img', {
-      name: 'Portrait of Daniel Castro at the Golden Gate Bridge',
+      name: 'Daniel Castro speaking on stage at TDC Floripa in 2026, holding a microphone',
     }),
   ).toBeTruthy()
   expect(
+    screen.getByText("Hi, I'm Daniel, a full-stack developer."),
+  ).toBeTruthy()
+  expect(
     screen.getByText(
-      "I'm Daniel, a full-stack engineer. I design, build, and grow digital products — and when I'm not coding, I'm out moving.",
+      "I plan, build, and make software more accessible in everyday life. I believe technology can and should be used to improve people's lives. When I'm not coding, I'm out moving.",
     ),
   ).toBeTruthy()
   expect(screen.getByText('Engineering notes')).toBeTruthy()
@@ -160,9 +163,7 @@ test('renders English copy when the interface language is en', () => {
   const articleLink = screen.getByRole('link', { name: /Read article/ })
   expect(articleLink.getAttribute('href')).toBe('/blog/content-system')
   expect(articleLink.querySelector('svg')).toBeTruthy()
-  expect(
-    screen.getByRole('link', { name: 'See the Trilha' }).getAttribute('href'),
-  ).toBe('/trilha')
+  expect(screen.queryByRole('link', { name: 'See the Trilha' })).toBeNull()
   expect(screen.queryByRole('heading', { name: 'Escrita recente' })).toBeNull()
 })
 
@@ -209,7 +210,7 @@ test('updates Home copy when the interface language changes', () => {
   expect(
     screen.getByRole('heading', {
       level: 1,
-      name: 'Building software products and running long distances.',
+      name: 'Creating and sharing, from dev to dev.',
     }),
   ).toBeTruthy()
   expect(screen.getByText('Engineer · Builder · Runner')).toBeTruthy()
@@ -219,10 +220,8 @@ test('updates Home copy when the interface language changes', () => {
   expect(screen.getByText('Full-Stack Engineer')).toBeTruthy()
   expect(
     screen.getByRole('img', {
-      name: 'Portrait of Daniel Castro at the Golden Gate Bridge',
+      name: 'Daniel Castro speaking on stage at TDC Floripa in 2026, holding a microphone',
     }),
   ).toBeTruthy()
-  expect(
-    screen.getByRole('link', { name: 'See the Trilha' }).getAttribute('href'),
-  ).toBe('/trilha')
+  expect(screen.queryByRole('link', { name: 'See the Trilha' })).toBeNull()
 })
