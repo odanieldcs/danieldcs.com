@@ -1,0 +1,78 @@
+---
+title: "Como usar Babeljs em produção"
+description: "Se você trabalha com os recursos mais recentes do NodeJS ou programa em ES6, certamente deve usar o Babeljs para transpilar seu JavaScript."
+date: 2019-02-18
+tags:
+  - babel
+  - javascript
+  - nodejs
+language: pt
+---
+
+Se você trabalha com os recursos mais recentes do NodeJS ou programa em ES6, certamente deve usar o [Babeljs para transpilar](https://babeljs.io/docs/en/babel-cli/#babel-node) seu javascript, embora existam outras ferramentas no mercado, Babel é de longe o favorito.
+
+Um dos problemas que temos ao usar o transpiler é coloca-lo pra execução em produção, apesar de existir uma orientação bem explícita na [documentação](https://babeljs.io/docs/en/babel-cli/#babel-node), não recomendando o uso em produção, é fato isto pode ser esquecido.
+
+Para resolver este problema, adotei uma nova estrutura em minhas apps, algo simples que agora facilita meu deploy em produção.
+
+Se você leu minhas publicações anteriores, vai notar que não havia está mudança:
+
+- [Como enviar SMS em NodeJS com SNS AWS](https://www.danieldcs.com.br/como-enviar-sms-em-nodejs-com-sns-aws/)
+
+- [Construindo um Web Scraping com NodeJS](https://www.danieldcs.com.br/construindo-um-web-scraping-em-nodejs/)
+
+## Guia para usar babeljs em produção
+
+Primeiro passo é mover todos os seus arquivos NodeJS para um novo diretório, eu chamei source. Em seguida crie um diretório de saída do seu código transpilado, no mesmo nível de source, eu chamei de build.
+
+Agora abra o package.json para adicionar alguns scripts:
+
+**Defina um script para limpeza e criação da pasta de saída:**
+
+```json
+"clean": "rm -rf build && mkdir build"
+```
+
+**Defina o script de build (transpiler):**
+
+```json
+"build": "npm run clean && babel source --ignore=source/test --out-dir=build -s"
+```
+
+**Defina o script de start:**  
+
+```json
+ "start": "node ./build/app.js"
+```
+
+**Debug com nodejs, babeljs e nodemon**
+
+Adicionalmente, se você precisar inspecionar seu código você pode adicionar o seguinte script para debug do seu código compilado.
+
+```json
+"debug-build": "node --debug ./build/app.js",
+```
+
+Se precisar depurar seu código enquanto desenvolve, você pode combinar o babeljs e o nodemon, quando você atualizar seu fonte o nodemon vai reiniciar sua app, o babel recompilar e habilitar o inspect:
+
+```json
+"debug": "nodemon --exec babel-node ./source/app.js --inspect"
+```
+
+## **Resumo**
+
+No fim, o seu package.json deverá parecer com este exemplo:
+
+```json
+  "scripts": {
+    "start": "node ./build/app.js",
+    "debug-build": "node --debug ./build/app.js",
+    "debug": "nodemon --exec babel-node source/app.js --inspect",
+    "clean": "rm -rf build && mkdir build",
+    "build": "npm run clean && babel source --ignore=source/test --out-dir=build -s"
+  },
+```
+
+Como pode ver no meu exemplo, sua app vai ficar dentro do diretório build, desta forma quando precisar enviar sua app para produção, basta compactar o seu package.json, a pasta build e o arquivo de variáveis, se for o caso.
+
+Até logo! :)

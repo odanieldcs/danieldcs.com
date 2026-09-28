@@ -1,0 +1,236 @@
+---
+title: "Dicas avançadas de TypeScript que você precisa conhecer"
+description: "Dicas avançadas de TypeScript, patterns com exemplos práticos, para impulsionar seus projetos JavaScript em Node.js, React.js e React Native."
+date: 2020-08-05
+tags:
+  - nodejs
+  - react-native
+  - react
+  - typescript
+language: pt
+---
+
+Se você está começando agora no mundo de desenvolvimento e não conhece TypeScript, talvez estas dicas avançadas de TypeScript não te ajude tanto, para isso recomendo ler meu artigo anterior onde explico [**o que é TypeScript e os motivos que me levaram a usar nos meus projetos**](/blog/motivos-para-usar-typescript-em-projetos-javascript/) Node.js, React.js e React Native.
+
+Caso você já esteja utilizando TypeScript em seus projetos e quer conhecer alguns truques novos e expandir o uso do TypeScript, neste artigo vou compartilhar alguns exemplos práticos de Types avançados que estou usando.
+
+## Intersection Types
+
+Um Intersection Type combina vários tipos em um só. Isso permiti que você adicione tipos existentes para criar um novo tipo, herdando todos os recursos existentes.
+
+Vamos pensar na hipótese que você precisa ter um Tipo para Pessoa, Contato e Endereço, cada _interface_ com suas _definições_, por que talvez você use em outras partes do seu sistema, mas se agora você quiser ter um novo tipo customizado chamado Cliente, herdando estas interfaces? Você pode agrupar todos estes tipos existentes em um só.
+
+```typescript
+interface Person {
+  name: string;
+  age: number;
+}
+
+interface Contact {
+  phone: string;
+  mail: string;
+}
+
+interface Address {
+  city: string;
+}
+
+type Customer = Person & Contact & Address;
+
+function saveCustomer(customer: Customer) {
+  // your code
+}
+```
+
+## Union Types
+
+Os Union Types permitem que você atribua diferentes tipos para uma mesma variável.
+
+Este tipo de definição é útil para você suprimir o tipo _any_, geralmente quando não sabemos o que esperar para uma determinada variável ou método, ou ainda queremos permitir que mais de um tipo seja aceito, utilizamos o tipo _any_, mas o seu uso pode exigir testes adicionais e gerar exceções em nosso sistema.
+
+Ao invés disto, você pode limitar os tipos usando **Union Types**, ao declarar uma variável, você pode usar uma barra vertical para separar, em nosso exemplo anterior, adicionei o Código Postal para o Endereço, aceitando uma string ou número.
+
+```typescript
+interface Address {
+  postalCode: string | number;
+  city: string;
+}
+
+function saveAddress(address: Address) {
+  // your code
+}
+```
+
+## Generic Types
+
+Um Generic Type permiti que você defina um tipo genérico para um argumento, facilitando a re-utilização e abstração do seu código para tipos diferentes. Entre as dicas avançadas de TypeScript, está é minha favorita.
+
+Talvez você queira usar o tipo _**any**_, afinal é um tipo genérico, mas é importante explicar que ao utilizar ele, perdemos as informações sobre qual tipo estamos tratando, isto acaba nos trazendo mais complexidade do que deveria.
+
+Você pode aplicar Generic Types em Funções, Interfaces e Classes, no lugar do tipo que pode ser uma string, um boolean ou até sua interface, coloque um T. Vamos a prática.
+
+Observando nosso código anterior, vamos re-criar a função **_salvar_** usando um Generic, vamos criar um função que recebe e retorna o tipo que definirmos.
+
+```typescript
+function save<T>(args: T): T {
+  // your code
+  return args;
+}
+
+// call function
+save<Person>({ name: 'Daniel', age: 32 });
+save<Contact>({ phone: '5551900000000', mail: 'mail@domain.com' });
+save<Address>({ postalCode: '90000000', city: 'City Name' });
+```
+
+Agora também vamos aplicar Generic em nossa interface Contato.
+
+```typescript
+interface Contact<B, K> {
+  phone: B;
+  mail: K;
+}
+
+save<Contact<number, string>>({
+  phone: 5551900000000,
+  mail: 'mail@domain.com',
+});
+```
+
+Perceba que não usei T como sugeri no inicio e também adicionei mais de um _type_ para nossa interface, isto ocorre por que podemos passar quantos tipos quisermos, além disto, o T é apenas um nome, você pode usar a letra que achar adequada. Observe que agora para chamar o método **_save_**, preciso definir o _type_ esperado para o B e K.
+
+Agora vamos a um exemplo de uma Classe com Generic Types, aqui a implementação é mais interessante. Vamos criar uma classe que servirá para manipular uma lista de Contatos em nosso sistema.
+
+```typescript
+interface Contact<B, K> {
+  phone: B;
+  mail: K;
+}
+
+class List<T> {
+  private data: T[];
+  constructor(...itens: T[]) {
+    this.data = itens;
+  }
+  add(item: T) {
+    this.data.push(item);
+  }
+  remove(item: T) {
+    const index = this.data.indexOf(item);
+    index > -1 && this.data.splice(index, 1);
+  }
+  asArray(): T[] {
+    return this.data;
+  }
+}
+
+// instância da classe vazia
+const contactList = new List<Contact<number, string>>();
+contactList.add({phone: 1234, mail: 'mail1@domain'});
+contactList.add({phone: 4321, mail: 'mail2@domain'});
+contactList.add({phone: 5678, mail: 'mail3@domain'});
+
+// retorna todos os itens do array
+console.log(contactList.asArray());
+contactList.remove({phone: 4321, mail: 'mail2@domain'});
+
+// retorna todos os itens após remover um objeto.
+console.log(contactList.asArray());
+```
+
+## Type Guards
+
+Um Type Guard é uma expressão que verifica se o tipo testado corresponde ao tipo esperado, para isso contamos com duas expressões e um operador, mas podemos escrever novas funções, usando predicados de tipos.
+
+### typeof
+
+O tipeof verifica se o parâmetro recebido em uma condição, corresponde ao tipo primitivo number, string, boolean ou symbol que precisa ser testado. Exemplo:
+
+```typescript
+function sum(x: number | string) {
+  if (typeof x === "number") {
+    return `Este é o resultado ${x + x}`
+  }
+  throw new Error(`Operação não pode ser realizada com o tipo ${typeof x}`)
+}
+
+showType("I'm not a number")
+// Error: This operation can't be done on a string
+showType(8)
+// Output: The result is 16
+```
+
+### instanceof
+
+O instanceof verifica se o parâmetro recebido em uma condição, corresponde ao tipo de uma instância de classe. Exemplo:
+
+```typescript
+class List {
+  all() {
+    return []
+  }
+}
+
+class Contact {
+  name = "Daniel"
+}
+
+function showType(arg: List | Contact) {
+  if (arg instanceof List) {
+    console.log(arg.all())
+    return arg.all()
+  }
+  throw new Error("O tipo não é suportado")
+}
+
+showType(new List())
+// Output: []
+showType(new Contact())
+// Error: O tipo não é suportado
+```
+
+### operador in
+
+O operador in permiti verificar se uma propriedade x pertence ao parâmetro recebido na condição. Exemplo:
+
+```typescript
+interface Contact {
+  phone: number
+}
+
+interface Address {
+  city: string
+}
+
+function showType(arg: Contact | Address) {
+  if ("phone" in arg) {
+    console.log(`A propriedade ${arg.phone} existe`)
+    return `A propriedade ${arg.phone} existe`
+  }
+  throw new Error("Este tipo não é suportado")
+}
+
+showType({ phone: 51900000000 })
+// Output: A propriedade 51900000000 existe
+showType({ city: "RS" })
+// Error: Este tipo não é suportado
+```
+
+## Conditional types
+
+Um conditional type seleciona um dos dois tipos possíveis, utilizando um operador ternário JavaScript.
+
+A regra é sempre **T extends U ? X : Y**. Exemplo:
+
+```typescript
+declare function f<T extends boolean>(x: T): T extends true ? string : number;
+
+// O tipo é 'string | number'
+let x = f(Math.random() < 0.5)
+```
+
+Estas dicas avançadas de TypeScript consegui aplicar em alguns projetos e ampliar ainda mais meu uso de TS. Em breve devo compartilhar mais ideias, aplique também em seus projetos aquilo que fizer sentido, tenho certeza que vai ajudar.
+
+Qualquer dúvida e sugestão, deixe seu comentário ou [entre em contato comigo](https://danieldcs.com/contato/).
+
+Obrigado pela leitura! Até mais.

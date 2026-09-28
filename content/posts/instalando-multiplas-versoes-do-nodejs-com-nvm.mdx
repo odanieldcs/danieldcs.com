@@ -1,0 +1,119 @@
+---
+title: "Instalando múltiplas versões do Node.js com NVM"
+description: "Aprenda a trabalhar com diferentes versões do Node.js com NVM no seu ambiente. Neste artigo te ajudo a instalar e conhecer os principais comandos do NVM."
+date: 2021-12-05
+tags:
+  - nodejs
+cover: "/media/posts/instalando-multiplas-versoes-do-nodejs-com-nvm/nodejs-com-nvm.png"
+language: pt
+---
+
+Quando trabalhamos com desenvolvimento de aplicações utilizando o Node.js, é comum instalarmos diversos pacotes para atender necessidades especificas da nossa aplicação, estes pacotes estão distribuídos no NPM, e você pode usar este gerenciador de pacotes que é instalado junto com o Node.js.
+
+Além do NPM ajudar a gerenciar as dependências do projeto, o NPM também tem uma serie de comandos úteis, que auxiliam a verificar a integridade dos pacotes, atualizar dependências a até executar scripts.
+
+Mas e se precisarmos manter também um controle das versões do Node.js e dependências no nosso Sistema Operacional? Para os dois casos nós temos duas ferramentas úteis, uma é o Homebrew, um gerenciador de pacotes para o MacOS e o segundo é o NVM, um gerenciador de versões do Node.js. Vamos entender um pouco mais.
+
+## Homebrew
+
+O **Homebrew** é um [gerenciador de pacotes para Mac OS](https://brew.sh/), similar ao NPM, ele gerencia diferentes pacotes para o Mac a partir da linha de comando.
+
+Com o Homebrew você consegue instalar o MySQL, Node.js, Python, PHP, NGINX e muitos outros pacotes no ambiente de desenvolvimento sem precisar fazer manualmente. De forma geral, ele cria uma pasta com as dependências e vincula links simbólicos a estes pacotes para o usuário local.
+
+Desta forma, você pode acessar e executar cada um destes pacotes pelo terminal.
+
+Para o processo de instalação, basta executar o seguinte comando no seu terminal:
+
+```bash
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+```
+
+Se tiver algum problema, você consultar mais detalhes aqui na documentação oficial e verificar se atende aos [requisitos necessários](https://docs.brew.sh/Installation).
+
+Após a instalação, você pode verificar se tudo está correto confirmando a versão instalada:
+
+```bash
+brew --version
+```
+
+Você deve ver algo como:
+
+```bash
+Homebrew 3.3.6
+```
+
+### Node Version Manager
+
+Agora que você já conheceu o Homebrew, vamos ao principal objetivo deste artigo.
+
+O NVM, assim como o Homebrew e NPM, é um gerenciador, mas especificamente para versões do Node.js. Com ele você pode ter diferentes versões do Node.js instalado na sua máquina e alternar conforme a necessidade de trabalho.
+
+Por exemplo, digamos que você começou a trabalhar em uma aplicação que usa NodeJS 14.x, mas seu ambiente já está com a versão mais recente. Com o NVM, você pode alterar a versão do Node.js para aquela que precisar executando apenas um comando.
+
+Para instalar o NVM, o processo pode ser feito pelo Homebrew ou você pode instalar seguindo as [recomendações oficiais](https://github.com/creationix/nvm#installation) da documentação. Ele também é compatível com o Linux e Windows WSL.
+
+Para instalar via Homebrew, execute o seguinte comando:
+
+```bash
+brew install nvm
+```
+
+Após instalado, você pode instalar o Node.js na sua versão mais recente executando:
+
+```bash
+nvm install node
+```
+
+Este comando instalou a versão lts.
+
+Agora, caso você precise instalar uma versão especifica, você pode executar o _**comando install**_ especificando a versão do Node.js, usando seu codinome:
+
+```bash
+nvm install lts/fermium
+```
+
+Este comando instala a versão 14.18.2, além de manter a versão anterior.
+
+Agora, se você precisar alternar entre as versões, basta executar o comando **_nvm use_** e informar a versão que precisa deixar como padrão no seu ambiente.
+
+```bash
+nvm use node
+```
+
+Este comando deixa a versão lts como padrão, no meu caso, ficou a 17.2.
+
+Se você ainda tiver dúvida da versão em execução, é possível confirmar executando este comando para o NVM te retornar a versão em uso:
+
+```bash
+nvm run node --version
+```
+
+Outro comando útil é a listagem de versões instaladas, execute este comando:
+
+```bash
+nvm ls
+```
+
+Você pode também nomear alguma versão com um nome customizado, basta executar o seguinte comando com a versão desejada:
+
+```bash
+nvm alias nome_personalizado 17
+```
+
+Se você quiser verificar todas as versões disponíveis do Node.js para instalação, basta executar este comando:
+
+```bash
+nvm ls-remote
+```
+
+Por fim, se você quiser remover alguma versão instalada, você pode executar uninstall com a versão que deseja desinstalar:
+
+```bash
+nvm uninstall 14
+```
+
+## Conclusão
+
+Espero que este artigo te ajude a gerenciar as diferentes versões do Node.js, a proposta foi ser algo rápido e objetivo. Se tiver qualquer dúvida ou comentário a fazer, pode deixar logo a baixo, vou ficar muito feliz em saber e tentar te ajudar.
+
+PS: Este post foi escrito em 20/03/2018 e atualizado para um conteúdo mais atual.

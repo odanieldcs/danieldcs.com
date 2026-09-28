@@ -1,0 +1,65 @@
+---
+title: "Variáveis de ambiente em Node.js"
+description: "Entenda como trabalhar com variáveis de ambiente em node.js, usando o módulo dotenv em diferentes ambiente, dev, homologação ou produção."
+date: 2018-12-14
+tags:
+  - javascript
+  - nodejs
+language: pt
+---
+
+Uma necessidade comum ao desenvolver aplicações, é alterar variáveis de ambiente em node.js dinamicamente. Durante a inicialização da nossa aplicação independente do ambiente, é importante separar o que é do escopo de desenvolvimento, homologação e produção.
+
+Idealmente devemos ter recursos isolados, com senhas, propriedades e keys especificas, restringindo o acesso a determinados recursos. O melhor cenário, é nunca compartilhar dados de produção, por mais tentador que possa ser.
+
+Existem algumas maneiras de atender este requisito. Hoje vou compartilhar uma primeira dica em Node.js, além de ser uma boa prática. Vai tornar seu código imutável e mais seguro, independente do ambiente que você inicialize sua app (desenvolvimento, homologação ou produção).
+
+## Instalando o dotenv
+
+Nossa solução consiste em usar variáveis de ambientes e acessar com o [módulo dotenv](https://www.npmjs.com/package/dotenv). O primeiro passo é instalar o módulo dotenv na sua app nodejs, executando o comando:
+
+```bash
+npm install dotenv --save
+```
+
+Agora crie um arquivo a extensão ".env" na raiz da sua app e adicione o conteúdo:
+
+```text
+NODE_ENV = 'homolog'
+PASSWORD = 'pwdHmg'
+```
+
+Por fim, inicialize o dotenv na sua aplicação, se você tem algum arquivo onde é definido as variáveis do seu app, você pode inicializar nele.
+
+Exemplo de um arquivo contendo as variáveis, lendo as variáveis que definimos no arquivo .env: config.js
+
+```javascript
+require('dotenv').load()
+params = {
+  env: process.env.NODE_ENV,
+  password: process.env.PASSWORD
+}
+module.exports = params
+```
+
+Para evitar o acesso de uma variável de produção, também podemos validar o ambiente definido no arquivo com este exemplo simples:
+
+```javascript
+if(process.env.NODE_ENV == 'production') {
+  console.log("Variáveis de produção")
+} else if(process.env.NODE_ENV !== 'homolog'){
+  console.log("Variáveis de homologação")  
+} else {
+  console.log("Variáveis em desenvolvimento ou não definidas")
+}
+```
+
+Está primeira dica para trabalhar com variáveis de ambiente em node.js vai ajudar a deixar seu código mais independente e flexível, seguindo uma boa prática. Existem outras maneiras também, mas este é um primeiro ponto de partida para seus estudos.
+
+Em breve vou explicar como você pode usar o [AWS Key Management Service](https://aws.amazon.com/pt/kms/) (KMS), uma solução mais completa e segura para você gerenciar e armazenar as chaves da sua aplicação.
+
+O KMS da Amazon Web Services é uma alternativa que utilizo em minhas aplicações, por estar acessível pelos [SDKs](https://aws.amazon.com/pt/tools/), não preciso adicionar módulos de terceiros e ainda posso compartilhar com outros serviços da AWS.
+
+Qualquer dúvida ou sugestão, não deixe de comentar, ou se preferir, [entre em contato comigo](https://danieldcs.com/contato/).
+
+Até logo! :)
