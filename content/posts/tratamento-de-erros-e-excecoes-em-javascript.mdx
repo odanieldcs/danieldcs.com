@@ -1,0 +1,153 @@
+---
+title: "Tratamento de erros e exceções em JavaScript"
+description: "Artigo prático sobre tratamento de erros em JavaScript. Entenda a sintaxe, como implementar e criar erros customizados em JS."
+date: 2021-01-26
+tags:
+  - javascript
+cover: "/media/posts/tratamento-de-erros-e-excecoes-em-javascript/tutorial-js-try-catch-blog.png"
+language: pt
+---
+
+Se tem um requisito de software que deveríamos priorizar, em qualquer projeto, seja ele de backend ou frontend, é como vamos realizar o tratamento de erros e exceções da nossa aplicação. Neste post quero trazer uma introdução prática sobre como você pode realizar o **tratamento de erros em JavaScript**.
+
+Embora seja um tópico relativamente fácil de compreender, quantas vezes você realmente usou Try Catch e sabia o que estava fazendo? Atire a primeira pedra, quem nunca errou.
+
+Não importa o quão bom sejamos, às vezes nossos scripts podem falhar. O erro pode ocorrer por algum problema de digitação durante o desenvolvimento, um comportamento inesperado do servidor, um input errado do usuário, uma requisição mal formatado e por tantos outros motivos que poderíamos descrever aqui.
+
+Assumir que o código sempre pode falhar e você precisa se preocupar com o **tratamentos de exceções**, vai tornar seu código mais seguro e evitar que falhas inesperadas, interrompam seus sistema por completo. De quebra você ganha o que chamamos de **resiliência**, um pilar fundamental no desenvolvimento de software.
+
+Quando falamos em **tratamento de erros em JavaScript**, precisamos entender que existem dois tipos. O primeiro chamamos de **erros de sintaxe**, que podem ser detectados configurando um Linter, como opção você tem o ESLint, podemos falar sobre ele em outro momento, não será nosso foco agora.
+
+O segundo tipo é chamado de **erro em tempo de execução**, ocorre quando nossa aplicação está em produção e algum problema inesperado acontece. Para capturar estes erros e aplicar algum tratamento, podemos usar a sintaxe try catch e é este o assunto a seguir.
+
+## Sintaxe do Try Catch
+
+A sintaxe do try catch é composta por dois blocos principais: O try onde o código é executado e o catch, onde você recebe via parâmetro na função, um objeto do tipo Error. Com este objeto você pode aplicar o tratamento que for adequado. Veja o exemplo.
+
+```javascript
+try {
+  // seu código aqui
+} catch (error) {
+  // tratamento de erro aqui
+}
+```
+
+Você também pode estender o try catch usando a cláusula finally. Este bloco será executado independente se houver ou não falha, ou seja, depois que o try ou catch executar, este bloco será acionado. Isto pode ser útil por exemplo, para fechar um arquivo que foi aberto para leitura, registrar algum log ou fechar alguma conexão. Veja a sintaxe de exemplo.
+
+```javascript
+try {
+  // seu código aqui
+} catch (error) {
+  // tratamento de erro aqui
+} finally {
+  // executa sempre
+}
+```
+
+## Objeto Error
+
+Sempre que uma exceção é lançada dentro do bloco try, o JavaScript cria um objeto do tipo **Error** e envia como argumento para o catch. Por padrão, este objeto é composto de duas propriedades principais:
+
+**name**  
+Representa o tipo do erro. Por exemplo, um erro de sintaxe no parse de um JSON, lançaria um exceção do tipo _**SyntaxError**_.
+
+**message**  
+Mensagem em texto, contendo mais detalhes do erro.
+
+Em alguns ambientes onde você realiza o tratamento de erros em JavaScript, também terá a propriedade **stack**. Nela você tem a sequência de chamadas que levaram ao erro. Este tipo de informação é bastante útil para depuração.
+
+Uma possibilidade adicional que você tem, é omitir o argumento error na função catch. Isto é útil quando não precisamos saber os detalhes do erro, veja o exemplo:
+
+```javascript
+try {
+  // seu código aqui
+} catch {
+  // tratamento de erro aqui sem o argumento
+}
+```
+
+Outra característica bem importante do objeto Error é que ele é a base de alguns tipos nativos. O JavaScript possui os seguintes tipos de erros nativos que podem ser lançados:
+
+**ReferenceError**  
+Lançado quando uma referência a uma variável ou função inexistente ou inválida é detectada.
+
+**TypeError**  
+Lançado quando um operador ou argumento passado para a função é de um tipo diferente do esperado.
+
+**SyntaxError**  
+Lançado quando ocorre algum erro de sintaxe ao interpretar o código, por exemplo ao realizar o parse de um JSON.
+
+**URIError**  
+Lançado quando ocorre algum erro no tratamento de URI, por exemplo, enviando parâmetros inválidos no decodeURI() ou encodeURI().
+
+**RangeError**  
+Lançado quando um valor não está no conjunto ou intervalo de valores permitidos. Por exemplo, um valor em string num array número.
+
+Todos os erros nativos do JavaScript, são extensões do objeto Error, partindo deste principio, você também pode criar seus próprios tipos de erros.
+
+## Custom Errors
+
+Os erros nativos do JavaScript são muito úteis quando não temos ideia do problema que pode aparecer em nossa aplicação, porém se temos regras de negócio definidas, podemos definir algum padrão e criar nossos próprios tipos de erros e lançar quando for preciso. Veja um exemplo:
+
+```javascript
+class UserTypeError extends Error {
+  constructor(message) {
+    super(message)
+    this.name = 'UserTypeError'
+  }
+}
+
+const payload = '{ "type":"PJF" }'
+
+try {
+  const { type } = JSON.parse(payload)
+  
+  if(type === "PF" || type === "PJ") {
+    console.log('Usuário válido')
+  } else {
+    throw new UserTypeError('Tipo de usuário inválido')
+  }
+  
+} catch (error) {
+  console.log(error.name) // Output: CustomError
+  console.log(error.message) // Output: Tipo de usuário inválido
+}
+```
+
+Observe que na linha 1, eu defini a class UserTypeError extendendo do objeto global Error, usando a palavra chave **_extends_**. No construtor passei a mensagem customizada e defini o nome do tipo de erro. Na linha 11 [**desestruturei o objeto**](/blog/desestruturacao-de-objetos-em-javascript) para obter o type. Na linha 16, usei criei uma nova instância deste erro e chamei com o operador Throw, que veremos a seguir.
+
+Neste exemplo não temos grandes vantagens ao criar este erro customizado, mas a grande sacada está em poder criar erros customizados para regras de negócio e chamar estes erros dentro da aplicação, quando algum critério não for atendido, deixando para o Catch, o tratamento da exceção. Em alguns projetos que participei, adotamos esta abordagem para padronizar os erros da aplicação.
+
+## Operador Throw
+
+Se você analisou o exemplo de erro customizado, percebeu que usei o operador throw para lançar o erro. A principal função dele é basicamente esta.
+
+Quando precisamos lançar um exceção, usamos a instrução throw precedida do valor, e este pode ser uma string, um número, um objeto literal, uma função ou até mesmo uma classe, como no exemplo anterior. Veja alguns exemplos de uso do Throw:
+
+```javascript
+// Lançando uma string
+throw "Descrição do erro"
+// Lançando uma StatusCode HTTP
+throw 404
+// Lançando um objeto literal
+throw {
+  name: 'Erro',
+  message: 'Descrição do erro'
+}
+// Lançando um erro customizado
+throw new UserTypeError('Tipo de usuário inválido')
+```
+
+## Onde usar try catch
+
+Este é um ponto bem interessante, talvez você já tenha captado uma abordagem que podemos adotar, ou até já tenha visto o uso de um try catch global, pegando toda a aplicação.
+
+Uma boa prática é evitar um try catch global, o mais indicado é aplicar um try catch por função ou contextos da sua aplicação, para então tratar as exceções. Entenda que uma vez chamada a exceção, seu script será interrompido.
+
+## Resumo e Próximo passo
+
+Neste artigo passamos pela sintaxe básica, estendemos com o uso de finally, aprendemos sobre os tipos de erros, como criar erros personalizados, o operador Throw e onde usar. Com estes conceitos em mãos agora você tem condições de realizar o tratamento de erros em JavaScript e tornar sua aplicação mais segura e resiliente a falhas.
+
+Espero que este conteúdo tenha te ajudado de alguma forma, compartilhe com seus amigos e se tiver qualquer dúvida, deixe um comentário que vou te ajudar.
+
+Caso deseje ver outros exemplos, você [também encontra aqui](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Statements/try...catch).

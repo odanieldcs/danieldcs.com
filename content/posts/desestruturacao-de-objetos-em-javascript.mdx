@@ -1,0 +1,206 @@
+---
+title: "Desestruturação de objetos em JavaScript"
+description: "Artigo prático sobre desestruturação de objetos em JavaScript. Entenda como usar está funcionalidade e otimizar seus projetos."
+date: 2021-01-08
+tags:
+  - javascript
+cover: "/media/posts/desestruturacao-de-objetos-em-javascript/tutorial-js-destructuring-objects-blog.png"
+language: pt
+---
+
+Neste artigo, resolvi resgatar um assunto bem interessante do JavaScript, a desestruturação de objetos. Embora seja um assunto [**já conhecido do ES6**](https://hacks.mozilla.org/2015/05/es6-in-depth-destructuring/), percebi a pouca utilização deste recurso ao longo de projetos que participei. Hoje quero compartilhar uma abordagem prática sobre como utilizar desestruturação de objetos e simplificar nossos projetos em JavaScript.
+
+O foco deste post será mergulharmos no tema **Destructuring**, para isto, é importante que você já tenha alguma experiência com JavaScript. Se surgir alguma dúvida, você pode deixar nos comentários no fim da página.
+
+Caso você use [**TypeScript**](https://danieldcs.com/dicas-avancadas-de-typescript-que-voce-precisa-conhecer/) ou algum framework moderno como React ou Vue, talvez já está familiarizado com desestruturação de objetos. No entanto, é bem provável que este post possa te ajudar a conhecer alguma forma nova. :)
+
+Para realizar os exercícios, recomendo que você utilize algum editor online como [JSFiddle](https://jsfiddle.net/) ou [Codepen](https://codepen.io/). Se preferir executar localmente, recomendo executar com o Node.js.
+
+## Por que desestruturar?
+
+Vamos avaliar o cenário a seguir, algo bem comum pra quem trabalha com JavaScript. No exemplo temos um objeto _usuário_, a estrutura contém diversas informações, para exibir alguns destes dados, podemos implementar uma função da seguinte forma:
+
+```javascript
+const user = {
+  firstName: 'Daniel',
+  lastName: 'Castro',
+  age: 33,
+  social: {
+    github: 'https://github.com/danielcsrs',
+  },
+  skills: {
+    frontend: {
+      languages: [ 'HTML', 'CSS', 'JavaScript' ],
+      frameworks: [ 'React', 'React Native' ],
+    },
+    backend: {
+      languages: [ 'JavaScript', 'C#', 'Go', 'PHP' ],
+    }
+  },
+};
+
+function summary() {
+  console.log(`Nome completo: ${user.firstName} ${user.lastName}`);
+  console.log(`Github: ${user.social.github}`);
+  console.log(`Habilidades: ${user.skills.backend.languages}`);
+}
+
+summary();
+// Output:
+// Nome completo: Daniel Castro
+// Github: https://github.com/danielcsrs 
+// Habilidades: JavaScript,C#,PHP
+```
+
+O resultado desta implementação será um resumo do usuário. A solução aplicada está correta, no entanto, se eu precisar ampliar este resumo, adicionando novas informações, posso facilmente cometer erros de digitação, por exemplo, _**skills**_ pode ser escrito _**skill**_.
+
+Mas digamos que tomei o cuidado, ainda terei que lidar com objetos aninhados, e quanto mais níveis eles tiverem, maior será minha string. Observe o objeto "**_languages_**", precisei acessar "**_user.skills.backend_**" para então chegar no destino..
+
+Embora isto não seja um problema, podemos tornar o código mais limpo e organizado com a desestruturação de objetos.
+
+> Ao desestruturar um objeto, estamos quebrando uma estrutura complexa em fragmentos, criando partes mais simples de arrays e objetos.
+
+Voltando ao nosso exemplo, veja como posso aplicar a desestruturação na função _**summary**_:
+
+```javascript
+function summary({ firstName, lastName, social: { github }, skills: { backend} }) {
+  console.log(`Nome completo: ${firstName} ${lastName}`);
+  console.log(`Github: ${github}`);
+  console.log(`Habilidades: ${backend.languages}`);
+}
+
+summary(user);
+```
+
+Se não ficou muito claro o que fiz, fique tranquilo, continue lendo este post até o fim, garanto que fará sentido nos próximos passos.
+
+## Desestruturação de Objetos
+
+Vamos começar do zero. Este é um exemplo básico de desestruturação de objeto. Estamos declarando variáveis, que correspondem aos mesmos nomes dos valores que fazem parte do objeto **_user_**.
+
+```javascript
+const user = {
+  firstName: 'Daniel',
+  lastName: 'Castro',
+  age: 33,
+};
+
+const { firstName, lastName } = user;
+
+console.log(`${firstName} ${lastName}`);
+// Output:
+// Daniel Castro
+```
+
+Agora vamos ver como atribuir valores a variáveis via desestruturação:
+
+```javascript
+let firstName = 'D';
+let lastName = 'C'
+const user = {
+  firstName: 'Daniel',
+  lastName: 'Castro',
+  age: 33,
+};
+({ firstName, lastName } = user);
+console.log(`${firstName} ${lastName}`);
+// Output:
+// Daniel Castro
+```
+
+O que fizemos foi alterar os valores das nossas variáveis locais, declaradas nas linhas 1 e 2, para os valores que constavam no objeto **_user_**.
+
+### Valores Default
+
+Ao tentar atribuir uma variável a uma chave que não existe no objeto, o valor **_undefined_** será atribuído a variável. Para lidar com isso, você pode definir um valor padrão que será atribuído em caso de falha. Veja um exemplo:
+
+```javascript
+const user = {
+    firstName: 'Daniel',
+    lastName: 'Castro'
+};
+
+const { firstName, lastName, country = 'BR' } = user;
+
+console.log(`${firstName} ${lastName} do ${country}.`);
+// Output:
+// Daniel Castro do BR.
+```
+
+O que fizemos foi definir o valor BR para a variável **_country_**, como ela não existe no objeto **_user_**, desta forma evitamos de ter uma variável **_undefined_**.
+
+### Alterar nomes de variáveis
+
+Um recurso muito útil quando você tem objetos com nomes ruins ou complexos, você pode pode atribuir um novo nome há uma variável. Veja este exemplo:
+
+```javascript
+const user = {
+  firstName: 'Daniel',
+  lastName: 'Castro'
+};
+
+const { firstName: name, lastName, countryName: country = 'Brasil' } = user;
+
+console.log(`${name} ${lastName} do ${country}.`);
+// Output:
+// Daniel Castro do Brasil.
+```
+
+O que fizemos foi dar um novo nome a **_firstName_** e **_countryName_**, adicionalmente, combinamos um valor default com a variável **_country_**.
+
+### Desestruturando Objetos Aninhados
+
+Para entender a desestruturação de um objeto aninhado, vamos olhar nosso exemplo inicial.
+
+Na estrutura do objeto **_user_**, quero obter as _**languages**_ de backend, o _**github**_ do usuário e as _**languages**_ de frontend. Uma regra a considerar, não é sempre que a informação sobre o frontend está disponível no objeto. Vamos ver a implementação:
+
+```javascript
+const user = {
+  firstName: 'Daniel',
+  lastName: 'Castro',
+  social: {
+    github: 'https://github.com/danielcsrs',
+  },
+  skills: {
+    backend: {
+      languages: [ 'JavaScript', 'C#', 'Go', 'PHP' ],
+    }
+  },
+};
+
+const { 
+  social: { github }, 
+  skills: { 
+    backend: { languages: languagesBackend }, 
+    frontend: { languages: languagesFrontend = 'Não informada' } = {} 
+  }  
+} = user;
+
+console.log(`${github} - ${languagesBackend} - ${languagesFrontend}`);
+// Output:
+// https://github.com/danielcsrs - JavaScript,C#,Go,PHP - Não informada
+```
+
+Observe que aqui, o que fiz foi usar a desestruturação aninhada declarando as variáveis github, languagensBackend e languagesFront. Também aproveitei para unir conceitos anteriores, alterando o nomes de variáveis, por quê teríamos duas variáveis **_languages_** e atribui um valor padrão para **_languagesFrontend_** e **_frontend_** para tratar a inexistência dos objetos.
+
+### Desestruturando parâmetros de funções
+
+Desestruturação também pode ser aplicada a parâmetros de funções, talvez você tenha percebido esta possibilidade já no primeiro exemplo, quando desestruturei o objeto **_user_**, passado como parâmetro para a função **_summary_**. O cuidado que devemos ter aqui é sempre informar o parâmetro, caso contrário teremos um erro. Este é o exemplo:
+
+```javascript
+function summary({ firstName, lastName, social: { github }, skills: { backend} }) {
+  console.log(`Nome completo: ${firstName} ${lastName}`);
+  console.log(`Github: ${github}`);
+  console.log(`Habilidades: ${backend.languages}`);
+}
+
+summary(user);
+```
+
+## Próximos passos
+
+Neste artigo abordei apenas desestruturação de objetos e parâmetros de funções, faltou explorar desestruturação com arrays. Para este tema, estou preparando um novo artigo especial. Então recomendo, desde já, assinar a newsletter para ser avisado das próximas publicações.
+
+Se este artigo te ajudou, não esqueça de compartilhar com seus amigos, quanto mais gente tiver acesso, melhor será nossa comunidade.
+
+Qualquer dúvida ou sugestão, deixa aí nos comentários.

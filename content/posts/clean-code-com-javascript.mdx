@@ -1,0 +1,254 @@
+---
+title: "Clean Code com JavaScript"
+description: "Artigo com fundamentos e exemplos práticos sobre Clean Code com JavaScript. Entenda os princípios e como aplicar em projetos JavaScript."
+date: 2021-02-03
+tags:
+  - clean-code
+  - javascript
+cover: "/media/posts/clean-code-com-javascript/tutorial-clean-code-javascript-blog-1.png"
+language: pt
+---
+
+Nas últimas semanas estive escrevendo sobre qualidade de código com JavaScript puro, falei sobre [**desestruturação**](/blog/desestruturacao-de-objetos-em-javascript) e [**tratamento de erros**](/blog/tratamento-de-erros-e-excecoes-em-javascript), neste artigo quero te apresentar o Clean Code aplicado em JavaScript, um conjunto de princípios para desenvolver códigos com mais qualidade.
+
+Se você ainda não ouviu falar sobre Clean Code, recomendo acompanhar este artigo até o fim.
+
+Preocupar-se com a qualidade de código, como ele é escrito, ao invés de se preocupar apenas se funciona, deveria ser premissa de todo desenvolvedor. Um código bem escrito, legível e organizado, vai garantir um maior tempo de vida para o software, menores riscos de bugs e vai contribuir para a produtividade do time. :)
+
+Partindo desta premissa, o livro [Clean Code de Robert C. Martin](https://amzn.to/3toThT2), aborda princípios de engenharia de software essenciais para um desenvolvimento com qualidade. Se você é desenvolvedor há algum tempo, provavelmente um código confuso já fez com que você ficasse longas horas avaliando o comportamento, tentando adivinhar o que o autor daquele código tinha em mente. Provavelmente você também já foi autor de códigos assim, e seu código deve ter lhe causado alguns problemas.
+
+Se você participou do inicio de algum um projeto de software, percebeu que a entrega de funcionalidades geralmente é rápida. O time performa bem, as Sprints são entregues continuamente, pois não há muita preocupação com padrões e qualidade no código. O objetivo principal é entregar com agilidade, para atender aos requisitos de negócio.
+
+Com o tempo, essa prática tende a impactar a inclusão de novas funcionalidades. A quantidade de código adicionado pelo time aumenta e pequenos problemas começam a aparecer. Alguns erros de design, código duplicado, declarações confusas e até mesmo o acoplamento de funções.
+
+Num primeiro estágio, isso passa a ser percebido como um cheiro de problema no ar, um clássico **_code smell_**. Quando estes primeiros problemas são percebidos, o recomendado é agir e aplicar alguma correção imediatamente. No entanto, isto nem sempre é possível, a dinâmica de alguns negócios, às vezes está mais focada na entrega imediata, do que na qualidade no longo prazo. O resultado disto, é um código cada vez mais confuso e complexo.
+
+Conforme essa confusão aumenta e os débitos técnicos crescem, a produtividade do time passa a ser afetada. O que antes levaria pouco tempo, agora requer algumas Sprints para o time desenvolver, testar e se sentir seguro para entregar.
+
+Quando associamos essa baixa produtividade a uma alta pressão dos gestores, é a receita perfeita para desastres e intermináveis ciclos de desenvolvimento sem entrega.
+
+O Clean Code não é uma receita mágica, mas um conjunto de boas práticas que servem para guiar o time para uma qualidade aceitável e começar a minimizar estes problemas. Os princípios que ele apresenta, nos faz refletir sobre a qualidade do código que estamos escrevendo.
+
+Um dos principais ensinamos que o livro trás é **A Regra do Escoteiro**, para desenvolvedores que estão trabalhando em algum projeto legado, está uma boa prática a seguir. A regra consistente em "Deixar a área do acampamento mais limpa do que como você a encontrou", embora essa regra tenha surgido na Boy Scouts of America (a maior organização de jovens escoteiros dos EUA) conforme o autor menciona, é uma excelente regra para aplicar em projetos complexos.
+
+É natural que com o tempo códigos comecem a falhar ou degradar, o que devemos passar a fazer, é assumir um papel ativo na prevenção destas falhas e adotar a melhoria contínua.
+
+Se todos deixarem o código mais limpo a cada iteração, realizando pequenas limpezas, seja trocando o nome de uma variável por uma melhor, dividindo uma função que esteja muito grande, eliminando um pouco de repetição de código, com o tempo, nosso código simplesmente será menos suscetível a falhas e degradações.
+
+Agora que entendemos um pouco sobre a proposta do livro, vamos ver o que podemos aplicar na prática. Embora, meu foco seja falar de **Clean Code com JavaScript**, você pode, e recomendo aplicar estes princípios em qualquer linguagem de programação, seja ela Python, C# ou PHP.
+
+Neste post vou passar por alguns fundamentos de **clean code**, se você quiser conhecer o livro a fundo, vou deixar **[este link da Amazon](https://amzn.to/3toThT2)** para você adquirir. Inclusive, é um ótimo livro para fazer parte da coleção de qualquer desenvolvedor.
+
+## **Variáveis**
+
+**Use nomes de variáveis que revelem sua intenção**
+
+Não declare variáveis com nomes confusos ou abreviados, como "x", "cy" ou "dc". A variável deve revelar o que vai armazenar, por exemplo, os dados de um usuário faz mais sentido estar numa variável chamada **_user_**, ao invés de, uma variável nomeado como **_x_**.
+
+```javascript
+// ruim 👎
+const x = {}; // objeto contendo dados do usuário
+// bom 😃
+const user = {}; // objeto contendo dados do usuário
+```
+
+**Use nomes pronunciáveis e passíveis de busca**
+
+Além de revelar a intenção, precisamos ser capazes de pronunciar, melhor ainda se podermos pesquisar por eles no código com facilidade. Se voltarmos aos princípios de código limpo, que falei na introdução, a principal prática é que estamos escrevendo códigos legíveis para humanos. Adicionar siglas, diminutivos ou abreviações, só vão te fazer pensar mais, você perderá tempo deduzindo a intenção da variável.
+
+```javascript
+// ruim 👎
+const cy = new Date().getFullYear();
+// bom 😃
+const currentYear = new Date().getFullYear();
+```
+
+**Não adicione palavras desnecessárias**
+
+É bem comum adicionar alguma palavra para dar contexto a variável. A exemplo, um objeto que retorne as permissões de um usuário, é um forte candidato a aplicarmos isto. No exemplo a seguir, se removermos a palavra **roles**, o código será perfeitamente compreendido.
+
+```javascript
+// ruim 👎
+const roles = {
+  rolesUser: [{}],
+  rolesGuest: [{}],
+  roleManager: [{}],
+}
+
+// bom 😃
+const roles = {
+  user: [{}],
+  guest: [{}],
+  manager: [{}],
+}
+```
+
+**Não use o tipo da variável no nome**
+
+Uma abordagem antiga era adicionarmos um prefixo no nome das variáveis. Eu aprendi isto na faculdade. Mas hoje, isto já não é mais uma boa prática. Atribuir um prefixo só aumentará o acoplamento do seu código, algo que não contribui em nada no projeto.
+
+```javascript
+// ruim 👎
+const sName = '';
+const aProducts = [];
+const dPrice = 12.1;
+
+// bom 😃
+const name = '';
+const products = [];
+const price = 12.1;
+```
+
+**Não use números ou strings mágicas**
+
+Quando você estiver escrevendo algum código, nunca atribua uma string ou número direto no código fonte (hardcode) a uma variável. Declare uma constante, seguindo os princípios de Clean Code explicados anteriormente e atribua o valor a esta constante.
+
+```javascript
+// ruim 👎
+setTimeout (checkAuthentication, 1000); 
+user.role = "guest";
+
+// bom 😃
+const TIME_AWAIT = 1000; 
+const GUEST_ROLE = "guest";
+setTimeout (checkAuthentication, TIME_AWAIT); 
+user.rolE = GUEST_ROLE;
+```
+
+**Defina um vocabulário para o mesmo tipo de dado**
+
+Se você precisa recuperar informações de um produto, todos do time devem se referir a este dado de forma igual. Na prática, é bem comum ver declarações que retornam o mesmo tipo de dados com nomes variados. Por exemplo, getProductData, getProductInfo ou getProductDetails retornam os mesmos dados de um produto. Simplifique e use apenas getProduct().
+
+Este tipo de decisão, recomendo que você discuta e adote uma convenção que faça sentido para seu time e contexto de negócio.
+
+```javascript
+// ruim 👎
+getProductData();
+getProductInfo();
+getProductDetails();
+// todos retornam os dados do produto.
+
+// bom 😃
+getProduct();
+```
+
+## Funções
+
+**Funções devem expressar uma ação**
+
+Ao definir o nome de uma função, tenha certeza que ela esteja expressando alguma ação. Uma boa prática é usar um verbo no tempo verbal infinitivo, ações como BuscaCliente, DadosProduto ou BuscaPedido, seria nomeado como getCustomer, getProduct e getInvoice.
+
+```javascript
+// ruim 👎
+buscaCliente();
+dadosProduto();
+buscaPedido();
+
+// bom 😃
+getCustomer();
+getProduct();
+getInvoice();
+```
+
+**Use argumentos padrões no lugar de condicionais ou short-circuit**
+
+Talvez você já tenha visto alguma função ter um condicional para testar o valor um argumento dentro de sua função, ou até mesmo um [short-circuit](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Operators/Operadores_Logicos#short-circuit_evaluation) de uma função. Ao invés disto, atribua um valor padrão para o argumento.
+
+```javascript
+// ruim 👎
+function printDefaultCountryOrArgument(country) {
+  const newCountry = country || 'Brasil';  
+  return newCountry;
+}
+console.log(printDefaultCountryOrArgument());
+
+// bom 😃
+function printDefaultCountryOrArgument(country = 'Brasil') { 
+  return country;
+}
+console.log(printDefaultCountryOrArgument());
+```
+
+**Use dois ou menos argumentos de funções**
+
+Este conceito é essencial para melhorar a clareza do seu código: Você deve reduzir o número de argumentos de função. Um número ideal seria dois ou menos. Se você não poder reduzir os argumentos, escape de primitivos comece a usar objetos.
+
+```javascript
+// ruim 👎
+function insertProduct(name, description, price, category) {}
+insertProduct('Clean Code', 40.55, 'Livro sobre qualidade de código', 'livro');
+
+// bom 😃
+function insertProduct(product) {} // exemplo do objeto como argumento
+function insertProduct({name, description, price, category}) {} // exemplo com objeto desestruturado
+const product = { 
+  name: 'Clean Code', 
+  price: 40.55, 
+  description: 'Livro sobre qualidade de código', 
+  category: 'livro', 
+}; 
+insertProduct(product);
+```
+
+**Funções devem fazer apenas uma coisa**
+
+Talvez seja um dos princípios de programação mais importantes, o que na prática, nem sempre é seguido. Uma função idealmente deve realizar apenas uma tarefa, mesmo que seja o agrupamento de pequenas tarefas, elas não devem se misturar, isso é conhecido como acoplamento.
+
+```javascript
+// ruim 👎
+function emailUsers(users) {
+  users.forEach((user) => {
+    const userRecord = database.find(user);
+    if (userRecord.isActive()) {
+      email(userRecord);
+    }
+   });
+}
+
+// bom 😃
+function emailActiveUsers(users) {
+  users
+   .filter(isActiveUser)
+   .forEach(email);
+ }
+ 
+function isActiveUser(user) {
+  const userRecord = database.find(user);
+  return userRecord.isActive();
+}
+```
+
+**Evite efeitos colaterais globais**
+
+Causar um efeito colateral em uma variável ou objeto global pode ser necessário em algumas situações, mas tenha em mente, que isto pode ser uma grande fonte de problemas na sua aplicação e impedir que sua função seja testada.
+
+Quando alteramos variáveis que estão fora do escopo da função, o estado da variável que ele modifica não é controlado ou gerenciado totalmente pela função que o modifica. Esse comportamento, nos impedi de testar a função adequadamente por não conhecer os argumentos.
+
+A maneira de evitar esse efeito colateral é passar as variáveis que estão sendo usadas dentro da função, como um argumento.
+
+```javascript
+// ruim 👎
+let colors  = 'Red Green Blue';
+function splitColors() {
+  colors = colors.split(' ')
+}
+splitColors();
+console.log(colors); // saída: ["Red", "Green", "Blue"]
+
+// bom 😃
+let colors  = 'Red Green Blue';
+function splitColors(colors) {
+  return colors.split(' ')
+}
+const colorsList = splitColors(colors);
+console.log(colors); // saída: "Red Green Blue"
+console.log(colorsList); // saída: ["Red", "Green", "Blue"]
+```
+
+## Conclusão
+
+O tema Clean Code é bastante extenso e precisaríamos de muitos exemplos para passar por todos os fundamentos. Neste artigo procurei trazer alguns dos fundamentos de Clean Code com JavaScript aplicado a Variáveis e Funções, tenho ciência que não cobri todos os aspectos, mas é um primeiro ponto de partida para te ajudar a refletir sobre a forma como tem escrito seus códigos.
+
+Caso deseje aprender mais sobre Clean Code e como aplicar na prática em projetos de software, inscreva-se na minha newsletter para receber as próximas novidades.
+
+Qualquer dúvida ou sugestão, deixe aí nos comentários.
