@@ -4,6 +4,8 @@ import path from 'node:path'
 import { afterEach, expect, test } from 'vitest'
 import { getAllPostSlugs, getAllPosts, getPostBySlug } from './posts'
 
+const postsDir = path.join(import.meta.dirname, '__fixtures__', 'posts')
+
 const isolatedDirs: string[] = []
 
 afterEach(() => {
@@ -30,11 +32,11 @@ function writePost(
   )
 }
 
-test('reads the hello-world fixture from content/posts', () => {
-  const slugs = getAllPostSlugs()
+test('reads the hello-world fixture from the fixture posts directory', () => {
+  const slugs = getAllPostSlugs(postsDir)
   expect(slugs).toContain('hello-world')
 
-  const post = getPostBySlug('hello-world')
+  const post = getPostBySlug('hello-world', postsDir)
 
   expect(post.slug).toBe('hello-world')
   expect(post.frontmatter.title).toBe('Hello World')
@@ -48,7 +50,7 @@ test('reads the hello-world fixture from content/posts', () => {
   expect(post.content).toContain('exercise the content loaders')
   expect(post.content).not.toContain('# ')
 
-  const summaries = getAllPosts()
+  const summaries = getAllPosts(postsDir)
   const hello = summaries.find((entry) => entry.slug === 'hello-world')
   expect(hello?.frontmatter.title).toBe('Hello World')
   expect(hello).not.toHaveProperty('content')
@@ -73,7 +75,7 @@ test('throws an identifiable error for invalid frontmatter in an isolated direct
 })
 
 test('throws when the slug does not exist', () => {
-  expect(() => getPostBySlug('slug-inexistente')).toThrow(
+  expect(() => getPostBySlug('slug-inexistente', postsDir)).toThrow(
     'Post not found: slug-inexistente',
   )
 })
