@@ -1,0 +1,293 @@
+---
+title: "Introdução e como usar o Tailwind CSS"
+description: "Aprenda como usar o Tailwind CSS e os motivos que me fizeram sair do Bootstrap para projetos React neste artigo com exemplos práticos."
+date: 2022-01-03
+tags:
+  - css
+  - frontend
+  - nextjs
+  - tailwindcss
+cover: "/media/posts/introducao-e-como-usar-o-tailwind-css/como-usar-o-tailwindcss.png"
+language: pt
+---
+
+Neste artigo vou compartilhar com você minhas primeiras impressões e os motivos que me fizeram usar o **Tailwind CSS** para a maioria dos meus projetos e também **como usar o Tailwind CSS**, com alguns exemplos para você dar os primeiros passos.
+
+Se você, como eu, um dia usou o popular framework Bootstrap e hoje está desenvolvendo aplicações web com React, talvez esteja usando o React Bootstrap, um framework de componentes de interface, que implementa o Bootstrap, mas em componentes React.
+
+Até pouco tempo eu o utilizava em meus projetos, inclusive ensino no [meu treinamento de desenvolvimento web fullstack](/cursos), na criação da aplicação de e-mail marketing do curso.
+
+O Boostrap sempre funcionou muito bem, é um framework fantástico que otimizou muito meu tempo, porém quando comecei a trabalhar com React, comecei a enfrentar alguns desafios que me fizeram buscar alternativas e aí que entrou o Tailwind CSS.
+
+## O que é o Tailwind CSS
+
+Assim como o Boostrap, Tailwind é um framework CSS que oferece a possibilidade de você criar layouts usando uma estrutura de CSS pronta. Isso permite que você otimize o tempo de criação de uma UI sem precisar fazer tudo manualmente.
+
+Adotar essa estratégia tem seus prós e contras, como sempre se fala, _nenhum framework, biblioteca ou tecnologia deve ser tratado como bala de prata_. Qualquer um deles deve ser bem avaliado, são apenas meios para otimizar o desenvolvimento.
+
+Embora Boostrap e Tailwind sejam parecidos, existem diferenças relevantes entre eles.
+
+A principal delas é que, enquanto o Bootstrap oferece componentes de UI, como botões, navbars e modals, o Tailwind entrega classes CSS utilitárias, com estilos prévios para você criar seus próprios componentes de UI.
+
+Lendo esta definição, talvez você pense: "Poxa, mas então é melhor usar o Boostrap, já vou ter todos os componentes e estilos prontos."
+
+Bem, era assim que eu pensava, até começar a gastar horas para customizar elementos da minha UI, muitas vezes acabava recriando componentes com CSS e Styled Components para substituir componentes nativos do React Bootstrap. Imagina a bagunça.
+
+Quando comecei a avaliar o Tailwind, uma das características que me incomodou no início foi justamente o fato de não ter componentes. Eu teria que usar classes CSS pra tudo. Porém, depois de usar no dia a dia, os benefícios começaram a aparecer, era a flexibilidade que eu buscava e acabava "martelando" no Bootstrap.
+
+Vamos ver um exemplo, para deixar isso um pouco mais claro.
+
+```jsx
+import { Button } from 'react-bootstrap';
+
+function MyCustomButton({ children }) {
+	return <Button variant="primary" size="sm">{children}</Button>;
+}
+
+export default MyCustomButton;
+```
+
+Neste primeiro criamos um componente de botão com o React Bootstrap.
+
+```jsx
+function MyCustomButton({ children }) {
+	return <button className="bg-indigo-500 w-24">{children}</button>;
+}
+
+export default MyCustomButton;
+```
+
+Agora neste temos também um botão, mas com a tag button do HTML e classes do Tailwind.
+
+## Benefícios de usar o Tailwind
+
+Olhando os dois códigos, parece não ter grandes benefícios, mas vamos a alguns detalhes.
+
+No exemplo com React Bootstrap estamos implementando um componente Button com props especificas: _variant_ para mudar cor e _size_ para tamanho. Existe também outras propriedades que podem ser [conferidas aqui](https://react-bootstrap.github.io/components/buttons/#button-props). Esta implementação, por baixo, retorna um React.Component e renderiza um elemento button.
+
+Já no segundo exemplo, estamos retornando um elemento button do HTML usando classes CSS utilitárias do Tailwind. Perceba que esta implementação não depende de nenhum componente adicional, você tem total liberdade para ajustar o estilo do seu botão sem muito esforço, apenas combinando classes.
+
+Eu sei no que você está pensando, eu pensei: "Que mudança horrível, por que usar um monte de classes.". E você tem razão, mas usando no dia a dia, percebi alguns benefícios importantes que começaram a justificar o uso pra mim:
+
+- Chega de nomes de classes sem sentido, não preciso mais gastar tempo com isso.
+
+- Tudo passou a ser reutilizável, raramente precisei escrever um novo CSS.
+
+- Mudanças no CSS ficaram mais seguras, todo o estilo passou a ser global.
+
+- Consegui [customizar o tema do Tailwind](https://tailwindcss.com/docs/theme) conforme o design do meu projeto.
+
+Inclusive, na documentação isto é citado, mas no inicio não é tão óbvio.
+
+Estes foram alguns dos benefícios que encontrei ao começar a usar o Tailwind e conforme fui avançando, comecei a encontrar algumas dúvidas e novas lições foram aprendidas.
+
+## Design Responsivo com Tailwind
+
+Atualmente é impossível projetar uma UI sem considerar que o design da aplicação precisa ser responsiva, no mínimo para celulares, e a razão para isso é que a cada ano aumenta a quantidade de consumidores que [utilizam o celular como principal meio de acesso a internet](https://www.abranet.org.br/Noticias/IBGE%3A-40-milhoes-de-brasileiros-nao-tem-acesso-a-Internet-3345.html?UserActiveTemplate=site#.Ycd8gHXMKV4).
+
+No Tailwind é utilizado a abordagem de mobile-first, similar ao que temos no Bootstrap, e isto quer dizer que quando um estilo é adicionado ao código, ele é aplicado da menor para a maior resolução. Até aqui, nenhuma novidade.
+
+Os breakpoints são organizados em 5 grupos e conseguimos atender a uma variedade bem ampla de dispositivos:
+
+| Prefixo | Resolução | CSS |
+| --- | --- | --- |
+| sm | 640px | @media (min-width: 640px) { … } |
+| md | 768px | @media (min-width: 768px) { … } |
+| lg | 1024px | @media (min-width: 1024px) { … } |
+| xl | 1280px | @media (min-width: 1280px) { … } |
+| 2xl | 1536px | @media (min-width: 1536px) { … } |
+
+Embora aqui não aparente ter nada de novo, algo que gostei foi a possibilidade de adicionar estilos condicionais usando os prefixos como modificadores. Veja na prática:
+
+```html
+<button class="w-full md:w-32 lg:w-48 p-3 bg-indigo-600 text-white">
+	Nome
+</button>
+```
+
+Neste exemplo defini que o padrão do botão é ocupar toda área disponível, mas quando estiver com resoluções maiores, "md" ou "lg", terá um tamanho fixo para cada.
+
+O mais bacana de usar estes modificadores é que consigo combinar qualquer estilo a qualquer elemento, algo que não conseguia facilmente no React Bootrstrap.
+
+Se quiser ver ainda mais detalhes dessa abordagem, [pode consultar aqui](https://tailwindcss.com/docs/responsive-design).
+
+## Estados de Hover, Focus e mais
+
+Assim como temos modificadores para resoluções, temos como adicionar modificadores para estados dos elementos, tão simples como o exemplo anterior.
+
+Neste exemplo quero alterar a cor do botão ao passar o mouse sobre o elemento (hover):
+
+```html
+<button class="bg-indigo-600 hover:bg-indigo-900 w-48 p-6 text-white">
+	Nome
+</button>
+```
+
+O mais legal é que o Tailwind inclui modificadores para praticamente tudo que você precisa:
+
+- **Pseudo-classes** como _:hover_, _:focus_, _:first-child_ e _:required_.
+
+- **Pseudo-elementos** como _::before_, _::after_, _::placeholder_ e _::selection_.
+
+Se quiser ver outros exemplos de modificadores e mais detalhes, [pode consultar aqui](https://tailwindcss.com/docs/hover-focus-and-other-states).
+
+## Dark mode no Tailwind
+
+O recurso dark mode tem se tornado padrão dos sistemas operacionais e para usar isto no Tailwind é tão fácil como usar um modificador. Você adiciona o modificador **dark:{classe}** e por padrão o Tailwind verifica a **[prefers-color-scheme](https://developer.mozilla.org/pt-BR/docs/Web/CSS/@media/prefers-color-scheme)** que contém a preferência do usuário (dark ou light) no sistema e aplica o estilo que você definiu.
+
+```html
+<button class="bg-white dark:bg-gray-900">
+	Nome
+</button>
+```
+
+Além deste exemplo básico, você também pode combinar com outros modificadores de estado ou resolução, para criar componentes ainda mais complexos.
+
+```html
+<button class="bg-white dark:md:bg-gray-900">
+	Nome
+</button>
+```
+
+Se preferir, você também pode alternar entre estes modos manualmente, útil quando você quer dar a opção ao usuário escolher o tema da aplicação, entre o modo dark, light ou seguir o padrão do sistema.
+
+Para este exemplo, sugiro dar uma [olhada aqui na documentação](https://tailwindcss.com/docs/dark-mode) que contém mais detalhes.
+
+## Diretivas no Tailwind
+
+Aqui absorvi talvez as lições mais importantes do Tailwind.
+
+As diretivas são regras CSS ([at-rules](https://developer.mozilla.org/pt-BR/docs/Web/CSS/At-rule)) personalizadas do framework para usar no meu CSS e ter acesso a funcionalidades especiais do Tailwind. As diretivas são três:
+
+### **@tailwind**
+
+Esta é a principal diretiva do Tailwind, responsável por "injetar" os estilos CSS, da base, de componentes, utilitários e variantes do framework. Quando criar uma projeto do zero, você vai precisar registrar esta diretiva para conseguir usar as classes no HTML.
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+### **@layer**
+
+Esta diretiva permiti informar ao Tailwind a qual grupo o conjunto de estilos e classes fazem parte. Por exemplo, você pode querer mudar o padrão de fonte das tags Heading ou definir um estilo padrão para uma classe global que vai representar um componente.
+
+```css
+@layer base {
+  h1 {
+    @apply text-2xl;
+  }
+  h2 {
+    @apply text-xl;
+  }
+}
+
+@layer components {
+  .btn-blue {
+    @apply bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4;
+  }
+}
+```
+
+### @apply
+
+Esta diretiva permiti agrupar as diversas classes do Tailwind em uma classe personalizada, útil por exemplo, quando você quer tornar seu html mais "limpo", quer substituir os estilos de alguma biblioteca ou até mesmo combinar com o CSS modules no seu projeto.
+
+Um exemplo de uso recorrente para mim é agrupar estas classes em uma classe, dentro de um arquivo CSS especifico para o meu componente. Desta forma, consigo usar o framework e ainda organizar meus CSS em módulos menores.
+
+```css
+.btn_blue {
+  @apply bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4;
+}
+```
+
+```jsx
+import Styles from './index.module.css';
+
+export default function({ children }) {
+	return (
+		<button className={Styles.btn_blue}>
+			{children}
+		</button>
+	)
+}
+```
+
+O exemplo anterior é de um projeto Next.js, que por padrão implementa o padrão CSS Modules e me permiti ter classes dentro de um escopo, isto me permiti por exemplo, ter classes com o mesmo nome espalhadas pela aplicação.
+
+Você pode consultar mais detalhes aqui das [convenções de CSS Modules](https://nextjs.org/docs/basic-features/built-in-css-support) do Next.js.
+
+
+## Como instalar
+
+Agora que entendemos um pouco sobre o Tailwind, vamos instalar e usar na prática.
+
+A instalação pode ser feita de muitas formas, [aqui na documentação](https://tailwindcss.com/docs/installation) você encontra o passo a passo de como instalar nos principais frameworks, incluindo o Next.js, Gatsby, Laravel, Create React App e até usando apenas o CDN.
+
+Neste exemplo vamos instalar o Tailwind CSS em um projeto Next.js, seguindo a orientação da documentação.
+
+A primeira etapa é criar nossa aplicação, abra seu terminal e digite:
+
+```bash
+npx create-next-app projeto-exemplo
+cd projeto-exemplo
+```
+
+Agora vamos instalar o TailwindCSS e iniciar a configuração:
+
+```bash
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+```
+
+Agora vamos configurar os caminhos de arquivos que vão ter as classes do Tailwind.
+
+```json
+module.exports = {
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+```
+
+Remove o CSS do arquivo global.css e adicione as diretivas do Tailwind.
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+Atualize seu arquivo index.js onde contém o JSX da página inicial.
+
+```jsx
+export default function Home() {
+  return (
+    <h1 className="text-3xl font-bold underline">
+      Hello world!
+    </h1>
+  )
+}
+```
+
+Por fim, execute o projeto com o comando:
+
+```bash
+npm run dev
+```
+
+A partir de agora, você está com o Tailwind CSS instalado em um projeto Next.js e você pode começar a usar as classes no seu HTML.
+
+## Conclusão
+
+Até o momento estou gostando de trabalhar com o Tailwind CSS e combinar com CSS Module, sem dúvida, tem sido um dos frameworks mais completos e flexíveis que já trabalhei, inclusive recomendo e encorajo outros desenvolvedores a testar.
+
+Espero que este conteúdo tenha sido útil para você, se você gostou e quiser ver mais exemplos de **como usar o Tailwind**, deixa aqui nos comentários. 🙂
+
+Inclusive, se você quiser receber um aviso sempre que novos conteúdos como este forem publicados, quero te convidar a se inscrever na minha newsletter no formulário a seguir.

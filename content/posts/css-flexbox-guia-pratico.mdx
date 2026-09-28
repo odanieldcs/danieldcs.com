@@ -1,0 +1,335 @@
+---
+title: "CSS Flexbox: Guia prático"
+description: "Aprenda o que é CSS Flexbox, como funciona, suas propriedades e valores. Uma guia prático que vai te ajudar do zero."
+date: 2022-02-03
+tags:
+  - css
+  - frontend
+cover: "/media/posts/css-flexbox-guia-pratico/guia-css-flexbox.png"
+language: pt
+---
+
+Neste guia quero te ajudar a entender na prática o que é o CSS Flexbox, por mais que este conceito não seja algo novo, ainda é uma dúvida recorrente de muitos desenvolvedores e quem está chegando agora no desenvolvimento frontend, é importante dominar.
+
+Antes do Flexbox, para tornar um conteúdo minimamente responsivo, usamos percentuais e outros hacks, mas já há alguns anos, passamos a ter a especificação do CSS Flexbox.
+
+## Afinal, o que é CSS Flexbox
+
+A principal ideia do Flexbox é permitir que os elementos de um layout tenham a capacidade de ampliar ou reduzir seu tamanho e se alinhar em um layout sem quebras.
+
+CSS Flexbox é uma forma de organizar elementos em uma página quando o seu tamanho final é desconhecido ou quando possui um conteúdo dinâmico.
+
+Como a grande maioria das aplicações que criamos possui um layout dinâmico, cujo conteúdo pode ampliar ou encolher algum **_contêiner_** a depender do seu conteúdo, usar o **CSS Flexbox** para organizar layouts acaba sendo uma boa escolha.
+
+Mas antes de ir para a prática, vamos conhecer alguns conceitos do Flexbox.
+
+## Conceitos do Flexbox
+
+Quando trabalhamos com Flexbox, o primeiro conceito que precisar entender é que estamos trabalhando com um módulo, e isto quer dizer que, quando definimos que um elemento é flexível, os elementos diretos passam a ser itens flexíveis.
+
+Vamos dar uma analisada nestas imagens:
+
+<figure>
+
+![](/media/posts/css-flexbox-guia-pratico/01-container.svg)
+
+<figcaption>
+
+Container em Roxo
+
+</figcaption>
+
+</figure>
+
+<figure>
+
+![](/media/posts/css-flexbox-guia-pratico/02-items.svg)
+
+<figcaption>
+
+Flex Items em Amaralo
+
+</figcaption>
+
+</figure>
+
+Com este conceito em mente, outro conceito importante é saber que você **precisa definir propriedades e valores também aos itens flexíveis**, só combinando propriedades e valores aos dois elementos é que você conseguirá ajustar seu layout como desejado.
+
+Outro conceito importante para pegar é que os elementos são dispostos na direção definida para duas linhas imaginárias, o que é conhecido por eixos: O eixo principal (main axis) e eixo transversal (cross axis).
+
+A direção dos elementos pode seguir no horizontal ou vertical, o que vai depender é o valor da propriedade **_flex-direction_** definida para **_contêiner_**.
+
+Este é um conceito que pode ser confuso de entender, mas tente se prender a ideia de que os elementos são dispostos seguindo sempre estas linhas, por padrão, da esquerda para a direita, de cima para baixo. Talvez esta imagem te ajude.
+
+![Um diagrama explicando a terminologia flexbox.  O tamanho ao longo do eixo principal do flexbox é chamado de tamanho principal, a outra direção é o tamanho transversal.  Esses tamanhos têm um início principal, um fim principal, um início cruzado e um fim cruzado.](/media/posts/css-flexbox-guia-pratico/00-basic-terminology.svg)
+
+Agora que temos uma base sobre o que é o CSS Flexbox e os principais fundamentos, vamos conhecer as propriedades do Container Flebox e dos Flex Items, com elas atribuidas vamos conseguir dar forma ao nosso layout.
+
+## Como definir um Flex Container
+
+Para definir que um contêiner deve ser flexível, adicione a propriedade `display: flex`.
+
+## Propriedades do Container Flexbox
+
+A primeira coisa que precisamos fazer é definir um **_contêiner_** como um item flexível, para isto basta adicionar a propriedade `display: flex`.
+
+```html
+<div styles="display: flex">
+  Container
+</div>
+```
+
+Vamos conhecer as propriedades possíveis.
+
+### flex-direction
+
+Ajuda a definir a direção dos flex-itens dentro do **_**_contêiner_**_**.
+
+Por padrão, o valor desta propriedade é **_row_**, o que faz alinhar em linha os elementos, mas temos outros valores possíveis nesta propriedade:
+
+- **_column_**: os itens ficam em uma única coluna, de cima para baixo.
+
+- **_column-reverse_**: os itens ficam em uma única coluna, mas baixo para cima.
+
+- **_row-reverse_**: organiza da direita para esquerda
+
+- **_row_**: organiza da esquerda para direita
+
+```css
+.container {
+  flex-direction: column;
+}
+```
+
+### flex-wrap
+
+Ajuda a definir se um **_container_** deve quebrar os itens flexíveis em uma nova linha.
+
+Por padrão, todos os elementos vão ocupar uma única linha, utilizando a largura disponível do **_contêiner_**, em alguns casos, pode ser necessário quebrar os elementos em uma nova linha para distribuir melhor os elementos e para isso, temos alguns valores:
+
+- **_wrap_**: quebra os itens para uma nova linha, de cima para baixo.
+
+- **_no-wrap_**: todos os itens serão mantidos na mesma linha, não haverá quebra.
+
+- **_wrap-reverse_**: quebra os itens para uma nova linha, mas de baixo para cima.
+
+```css
+.container {
+  flex-wrap: wrap;
+}
+```
+
+### flex-flow
+
+Ajuda a definir os valores de **flex-direction** e **flex-wrap** em uma única propriedade.
+
+Esta propriedade é só um atalho, você pode definir as propriedades separadas, mas caso ache útil, pode combinar os valores, primeiro o valor de flex-direction, depois flex-wrap.
+
+```css
+.container {
+  flex-flow: row-reverse wrap;
+}
+```
+
+### justify-content
+
+Ajuda a definir o alinhamento dos itens flex dentro do **_container_** em relação **_flex-direction_**.
+
+Está propriedade é útil para distribuir itens quando temos espaço sobrando, ou precisamos definir que os itens fiquem alinhados no inicio e no fim do **_container_**, no centro ou que tenham um espaço entre eles.
+
+Os principais valores desta propriedade são:
+
+- _**flex-start**_: Os itens são agrupados no início.
+
+- **_flex-end_**: Os itens são agrupados no final.
+
+- **_center_**: Os itens são centralizados.
+
+- **_space-between_**: Adiciona um espaçamento igual entre os itens e posiciona o primeiro elemento no inicio da linha e o último no final, grudados na borda do **_container_**.
+
+- **_space-around_**: Também adiciona um espaçamento entre os itens, mas elementos que ficam ao centro, recebem o dobro do espaçamento.
+
+```css
+.container {
+  justify-content: space-between;
+}
+```
+
+### align-items
+
+Ajuda a definir o alinhamento dos itens em relação ao eixo cruzado do container.
+
+Está propriedade é muito utilizada para alinhar verticalmente um item flex. =)
+
+Os principais valores desta propriedade são:
+
+- **_flex-start_**: Os itens são alinhados no inicio.
+
+- **_flex-end_**: Os itens são alinhados no fim.
+
+- **_center_**: Os itens são alinhados ao centro.
+
+- **_stretch_**: Os itens são esticados de forma igual, preenchendo o container.
+
+- **_baseline_**: Os itens são alinhados seguindo a linha base do seu texto.
+
+```css
+.container {
+  align-items: center;
+}
+```
+
+### align-content
+
+Ajuda a definir o alinhamento das linhas de um **_container_**.
+
+Ao aplicar está propriedade, o **_container_** precisa ter um tamanho maior que a altura das linhas para que o efeito seja percebido.
+
+- **_normal_**: As linhas não recebem nenhum tipo de alinhamento, é o valor padrão.
+
+- **_flex-start_**: As linhas são posicionadas no inicio.
+
+- **_flex-end_**: As linhas são posicionados no fim.
+
+- **stretch**: As linhas são distribuídas de
+
+- **center**: As linhas são posicionadas ao centro.
+
+- **_space-between_**: As linhas são distribuídas com um espaçamento igual. A primeira linha fica posicionada no inicio do container (top) e a última no fim (bottom).
+
+- **_space-around_**: As linhas também ganham um espaçamento igual ao space-between, mas é adicionado um espaçamento dobrado entre os itens.
+
+```css
+.container {
+  align-content: center;
+}
+```
+
+### gap, row-gap e column-gap
+
+Ajuda a definir e controlar o tamanho exato de espaçamento entre os itens Flex.
+
+Um aviso relevante, estas propriedades também funcionam em layouts com CSS Grid.
+
+Vamos aos valores desta propriedade:
+
+- gap: Personaliza o espaçamento para linhas e colunas de um elemento.
+
+- row-gap: Personaliza o espaçamento apenas para linhas.
+
+- column-gap: Personaliza o espaçamento apenas para colunas.
+
+```css
+.container {
+  display: flex;
+  gap: 15px;
+  gap: 15px 30px; /* row-gap e column-gap */
+}
+```
+
+
+## Propriedades do Flex Item
+
+Os Flex Items são elementos os filhos de um elemento Flex.
+
+Como vimos na imagem anterior, quando você defini por exemplo que uma DIV tem display flex, os elementos dentro dela passam a ser os items flexíveis (Flex Items).
+
+Um Flex Item também pode ser definido como um elemento Flex, desta forma os seus elementos diretos também passam a ser Flex Items.
+
+### order
+
+Ajuda a definir a ordem que os elementos aparecem na tela, sempre do menor para o maior.
+
+Por padrão, a ordem dos elementos é a ordem que os elementos foram criados no HTML.
+
+```css
+.item {
+  order: 2;
+}
+```
+
+### flex-grow
+
+Ajuda a definir se um Flex Item pode expandir se necessário.
+
+Por padrão um Flex Item tem o valor 0 definido nesta propriedade, mas você pode atribuir um valor numérico para representar uma proporção.
+
+Por exemplo, um item que tem flex-grow igual a 2 e outro flex-grow 1, vai expandir e ocupar o dobro de espaço do outro item, está regra também pode ser usada para mais itens.
+
+```css
+.item {
+  flex-grow: 2;
+}
+```
+
+### flex-shrink
+
+Ajuda a definir se um item flexbox deve encolher dentro de um container se necessário.
+
+Por padrão, o valor desta propriedade é 0.
+
+```css
+.item {
+  flex-shrink: 3;
+}
+```
+
+### flex-basis
+
+Ajuda a definir o tamanho inicial de um Flex Item antes do espaço sobrando for distribuído.
+
+Por padrão, esta propriedade tem o valor auto, isto indica que o elemento vai ocupar o espaço necessário para seu conteúdo, mas você pode definir um tamanho fixo.
+
+```css
+.item {
+  flex-basis: 100px;
+}
+```
+
+### align-self
+
+Ajuda a definir o alinhamento especifico de um único item dentro do **_container_**.
+
+Por padrão, está propriedade tem o valor auto, os valores possíveis são iguais ao align-items.
+
+- **_flex-start_**: O item é alinhado no inicio.
+
+- **_flex-end_**: O item é alinhado no fim.
+
+- **_center_**: O item é alinhado ao centro.
+
+- **__stretch__**: O item é esticado, preenchendo todo o **_container_**.
+
+- **_baseline_**: O item é alinhado seguindo a linha base do seu texto.
+
+```css
+.item {
+  align-self: center;
+}
+```
+
+### flex
+
+Ajuda a definir os valores de **flex-grow**, **flex-shrink** e **flex-basis** em uma única propriedade.
+
+Por padrão, o valor desta propriedade é none, mas você pode definir da seguinte forma:
+
+```css
+.item1 {
+  flex: 2 3 100px; /* flex-grow: 2, flex-shrink: 3 e flex-basis: 100px */
+}
+
+.item2 {
+  flex: 1; /* flex-grow: 1, flex-shrink: 1 e flex-basis: 0 */
+}
+```
+
+## Finalizando
+
+Espero que eu tenha conseguido te ajudar a esclarecer este conceito tão importante para o desenvolvimento frontend, se você achar que este conteúdo foi útil ou se achar que faltou algo a mais, por favor deixe um comentário para saber.
+
+Agora que você leu mais sobre o CSS Flebox uma dica extra para fixar o conteúdo é praticar, crie algum projeto com HTML e CSS ou se preferir, acesse o [Flexbox Froggy](https://flexboxfroggy.com/) e divirta-se praticando nesta ferramenta online.
+
+Se quiser aprender mais de Frontend, também tenho outros [artigos sobre JavaScript](/categoria/javascript/).
+
+_Créditos: Algumas das imagens e informações foram obtidas do [Guide to Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)._

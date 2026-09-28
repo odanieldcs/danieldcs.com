@@ -81,7 +81,23 @@ function MdxImage({
     return null
   }
 
-  const unoptimized = src.toLowerCase().endsWith('.gif')
+  const lowerSrc = src.toLowerCase()
+  const unoptimized = lowerSrc.endsWith('.gif')
+
+  if (lowerSrc.endsWith('.svg')) {
+    return (
+      <span className="inline-block rounded-md bg-white p-2">
+        {/* biome-ignore lint/performance/noImgElement: SVG diagrams need a native img on a light plate in dark mode. */}
+        <img
+          src={src}
+          alt={alt ?? ''}
+          className={contentImageClassName}
+          width={toPositiveInt(width, FALLBACK_IMAGE_WIDTH)}
+          height={toPositiveInt(height, FALLBACK_IMAGE_HEIGHT)}
+        />
+      </span>
+    )
+  }
 
   return (
     <Image

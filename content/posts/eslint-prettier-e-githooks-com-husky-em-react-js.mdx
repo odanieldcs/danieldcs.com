@@ -1,0 +1,259 @@
+---
+title: "ESLint, Prettier e GitHooks com Husky em React.js"
+description: "Aprenda a validar seu código antes do commit no Git usando GitHooks com Husky, ESLint e Prettier em projetos React.js."
+date: 2021-05-14
+tags:
+  - git
+  - javascript
+  - react
+cover: "/media/posts/eslint-prettier-e-githooks-com-husky-em-react-js/tutorial-eslint-prettier-husky-com-reactjs.png"
+language: pt
+---
+
+Neste post quero compartilhar como **configurar o ESLint e Prettier em projetos React.js** e validar as regras usando os Githooks com Husky. Este setup vai garantir que, antes de fazer um commit, nosso código seja testado, evitando que código ruim ou mal formatado seja enviado em um pull-request para nosso repositório Git.
+
+O foco aqui será o **setup do ESLint, Prettier e Husky** em uma aplicação React.js, mas os mesmos princípios podem ser aplicados em outros projetos JavaScript, uma API Node.js por exemplo.
+
+## ESLint
+
+Se você está começando agora a trabalhar com desenvolvimento de projetos com React.js, talvez tenha percebido que JavaScript nos permiti escrever nossos componentes, funções e propriedades de diferentes formas, no inicio esta flexibilidade é ótima, porquê conseguimos desenvolver com agilidade, mas no longo prazo isso se torna um grande problema.
+
+Falta de padrão, desorganização do projeto e ausência de regras, com o tempo se torna uma grande dor de cabeça para manutenção ou inclusão de novas funcionalidades.
+
+Um fundamento básico e rápido é configurar um Linter no projeto. Para isso temos o ESLint, uma ferramenta já bem conhecida pela comunidade que dispensa apresentações. O ESLint em linhas gerais, é uma ferramenta que garante que nosso código siga um Style Guide, com regras e padrões para o código.
+
+Você pode usar Style Guides populares com regras já pré-definidos, os mais comuns são [Airbnb](https://github.com/airbnb/javascript), [Google](https://github.com/google/eslint-config-google) e [Standard JS](https://github.com/standard/standard), e adicionalmente você pode incluir novas regras [usando qualquer regra do ESlint](https://eslint.org/docs/rules/). Em casos mais específicos, você pode configurar as regras manualmente.
+
+Agora que falamos sobre o que é o ESLint, vamos configurar no nosso projeto React.
+
+Vamos começar criando um novo projeto React.js, usando o template Create React App. Vamos usar o NPX e depois seguiremos usando o Yarn para instalar nossas dependências, execute:
+
+```powershell
+npx create-react-app my-app-reactjs
+```
+
+Após criar o projeto React.js, se você não tiver o Yarn instalado, execute o comando a seguir:
+
+```powershell
+npm install yarn -g
+```
+
+Agora entre no diretório do projeto e execute o comando a seguir para instalar o ESLint:
+
+```powershell
+yarn add eslint -D
+```
+
+Vamos iniciar o setup do ESLint, execute o comando:
+
+```powershell
+yarn eslint --init
+```
+
+Aqui nas perguntas que ele fizer, vamos escolher as seguintes opções:
+
+**How would you like to use ESLint?**  
+Como você gostaria de usar o ESLint? Escolha a terceira opção:  
+To check syntax, find problems, and enforce code style.
+
+**What type of modules does your project use?  
+**Qual tipo de modulo você usa no seu projeto? Escolha a primeira opção:  
+JavaScript modules (import/export)
+
+**Which framework does your project use?  
+**Qual framework você usa no projeto? Escolha a primeira opção:  
+React
+
+**Does your project use TypeScript?  
+**Você usa TypeScript no projeto? Escolha a primeira opção:  
+No
+
+**Where does your code run?  
+**Onde seu código vai executar? Escolha a primeira opção.  
+Browser
+
+**How would you like to define a style for your project?  
+**Como você gostaria de definir um estilo para seu projeto? Vamos escolher a primeira opção:  
+Use a popular style guide
+
+**Which style guide do you want to follow?  
+**Qual guia de estilo você deseja seguir? Escolha Airbnb.
+
+**What format do you want your config file to be in?  
+**Em que formato você deseja que o arquivo de configuração esteja? Escolha a primeira.  
+JSON
+
+Por fim, o ESLint vai verificar as dependências do setup que você escolheu e perguntar:
+
+**Would you like to install them now with npm?  
+**Você gostaria de instalá-los agora com o NPM? Escolha não, faremos isso depois com o Yarn.
+
+Com estas perguntas respondidas, agora temos o básico do ESLint instalado, falta ainda instalar algumas dependências extras para o projeto React.js. Execute o seguinte comando:
+
+```powershell
+yarn add eslint-plugin-react eslint-config-airbnb eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-react-hooks -D
+```
+
+Agora com tudo instalado, vamos configurar o package.json e adicionar dois novos scripts.
+
+```json
+{
+  ...
+  "scripts": {
+    ...
+    "lint": "eslint ./",
+    "lintFix": "eslint ./ --fix"
+  },
+}
+```
+
+O primeiro script, chamado **lint**, vai fazer o ESLint analisar todos os arquivos da aplicação, o segundo script, **lintFix**, vai aplicar correções e atualizar o arquivo automaticamente. Importante reforçar que nem sempre tudo é corrigido, você vai precisar realizar algumas alterações no seu código ou alterar alguma regra do ESLint.
+
+Vamos testar nosso projeto, execute o comando **yarn run lint** no terminal, o seu resultado deve similar ao meu:
+
+![eslint-exemplo-problemas-encontrado](/media/posts/eslint-prettier-e-githooks-com-husky-em-react-js/eslint-exemplo-falha.png)
+
+Para corrigir alguns destes erros, você pode executar **yarn run lintFix**. Neste exemplo de projeto, precisamos adicionar algumas regras extras, para isso abra o arquivo **.eslintrc.json** e atualize conforme o exemplo:
+
+```json
+{
+    ...
+    "ignorePatterns": [ "*.test.js", "*.test.tsx" ],
+    "rules": {
+        ...
+        "react/jsx-filename-extension": [ 1, { "extensions": [".js", ".jsx"] }],
+        "react/react-in-jsx-scope": "off"
+    }
+    ...
+}
+```
+
+O que fizemos nestas regras foi dizer o ESLint o seguinte:
+
+**[react/jsx-filename-extension](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-filename-extension.md):** Aplica as validações em arquivos com extensão .js e .tsx  
+**[react/jsx-in-jsx-scope](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/react-in-jsx-scope.md):** Desabilita a necessidade de ter **_import React_** em todo arquivo.  
+**[ignorePatterns](https://eslint.org/docs/user-guide/configuring/ignoring-code):** Não verifica arquivos com extensão .test.js e .test.tsx.
+
+Executando novamente **yarn run lint**, o ESLint não encontrará mais problemas. Isto é o suficiente por enquanto, agora você pode seguir desenvolvendo e adaptar as regras quando necessário.
+
+
+## Configurando o Prettier
+
+O plugin Prettier tem um papel mais estético, porquê ele vai ajudar a manter estilos de tabulação, padrão de arquivo, quebra de linha, indentação de código, entre outras [regras que podem ser consultadas na documentação](https://prettier.io/docs/en/options.html).
+
+A instalação deste plugin é opcional, mas se você quer ter uma boa legibilidade e manter a qualidade do seu código, recomendo seguir com a instalação.
+
+Vamos começar **instalando o Prettier no projeto React.js**, já com as dependências do ESLint:
+
+```powershell
+yarn add prettier eslint-config-prettier eslint-plugin-prettier -D 
+```
+
+Agora vamos configurar o ESLint para trabalhar junto com Prettier e não ter conflitos. Abra o arquivo **.eslintrc.json** e adicione o Prettier nas extensões e plugins:
+
+```json
+{
+    ...
+    "extends": [
+        ...
+        "prettier"
+    ],
+    "plugins": [
+        ...
+        "prettier"
+    ],
+}
+```
+
+O próximo passo e criar o arquivo **.prettierrc** na raiz do projeto, ele vai conter as configurações que o Prettier deve aplicar. Adicione no arquivo as seguintes propriedades:
+
+```json
+{
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "useTabs": true
+}
+```
+
+O que fizemos nestas regras é dizer ao Prettier:
+
+**singleQuote:** Utilize aspas simples.  
+**trailingComma:** Adicione ponto e virgula.  
+**tabWidth:** Utilize 2 tabs para indentação do código.  
+**useTabs:** Use **_tab_** para indentação.
+
+Outras regras podem ser adicionadas, você pode consultar [mais opções na documentação](https://prettier.io/docs/en/options.html).
+
+Por fim, o que falta é adicionarmos um script para o Prettier fazer esse trabalho para nós. Abra o arquivo package.json e adicione este novo script:
+
+```json
+{
+  ...
+  "scripts": {
+    ...
+    "format": "prettier --write \"**/*.{js,jsx,json,md}\""
+  },
+}
+```
+
+Agora execute o comando **yarn run format**, o Prettier vai passar por todos os arquivos e aquele que alterar, estará em destaque no terminal. Se você executar o comando **yarn run lint**, não haverá qualquer conflito com as regras. Está é uma configuração básica do Prettier com o ESLint, mas o suficiente para nosso projeto.
+
+## Configurando o Husky
+
+Agora com as regras do ESLint definidas, queremos garantir que antes de enviar nosso código para o repositório, ele esteja livre de erros. Para isso vamos usar o [**Husky para acionar os GitHooks**](https://typicode.github.io/husky/#/) em nosso projeto. Neste exemplo vamos usar o hook pre-commit, que é chamado antes do Git registrar um commit, mas você pode adicionar qualquer hook do Git, você pode consultar mais [opções na documentação oficial](https://git-scm.com/docs/githooks).
+
+Para começar, instale o pacote husky com o Yarn, execute o seguinte comando:
+
+```powershell
+yarn add husky -D
+```
+
+Agora vamos instalar o Husky no projeto.
+
+```powershell
+yarn husky install
+```
+
+Ao executar o comando acima, você poderá ver que uma nova pasta foi criada, chamada **.husky**, nela ficará os scripts bash para execução para cada hook, mas não se preocupe com isso agora, a criação de um hook é simples.
+
+Antes, no seu arquivo package.json, adicione um novo script chamado **prepare**:
+
+```json
+{
+  "scripts": {
+    "postinstall": "husky install"
+  }
+}
+```
+
+Agora vamos criar nosso **githook pre-commit** usando o NPX, execute o comando:
+
+```powershell
+npx husky add .husky/pre-commit "npm run lint"
+```
+
+Observe que o nome do hook sempre deve vir depois de .husky/ e entre aspas o comando que deseja executar. Este comando vai criar um novo arquivo do diretório .husky chamado pre-commit, nele podemos ver o comando, inclusive editar e adicionar outras instruções:
+
+![husky-pre-commit-reactjs-diretorio](/media/posts/eslint-prettier-e-githooks-com-husky-em-react-js/husky-pre-commit-reactjs-diretorio.png)
+
+Agora vamos testar o hook, altere seu arquivo **src/App.js** e coloque um import para o index.css, o ESLint vai acusar que este o arquivo não pode ser encontrado:
+
+![reactjs-exemplo-erro-eslint](/media/posts/eslint-prettier-e-githooks-com-husky-em-react-js/reactjs-exemplo-erro-eslint-1024x229.png)
+
+Por fim, para testar se conseguimos fazer o commit no projeto com o erro, no seu terminal tente realizar o commit como normalmente faria:
+
+```powershell
+git add .
+git commit -m "Teste hook"
+```
+
+O resultado será seu commit sendo interrompido, com o resultado do ESLint e a seguinte mensagem do Husky:
+
+**husky - pre-commit hook exited with code 1 (error)**
+
+Este foi um exemplo rápido, agora você pode explorar outros hooks e combinar com outros scripts no seu projeto, integrar com testes automatizados e até incluir no seu pipeline CI/CD, são muitas possibilidades, a criatividade é com você.
+
+Espero que este conteúdo tenha te ajudado de alguma forma, compartilhe com seus amigos e se tiver qualquer dúvida, deixe um comentário que vou te ajudar.
+
+Quer aprender mais exemplos como este e trabalhar com React.js de forma mais eficiente? Cadastre-se na minha newsletter e participe do **[meu grupo de conteúdos exclusivos](/telegram)** para ficar por dentro das novidades.

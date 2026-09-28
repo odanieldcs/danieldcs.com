@@ -1,13 +1,19 @@
 const ALLOWED_HTML_TAG = /^<\/?(figure|figcaption)\b[^>]*>/i
 const FENCE_LINE_PREFIX = /^(`{3,}|~{3,})/
 
-function escapeAngleBracketsInProse(text: string): string {
+function isAlreadyEscaped(text: string, index: number): boolean {
+  return index > 0 && text[index - 1] === '\\'
+}
+
+function escapeMdxSpecialInProse(text: string): string {
   let result = ''
   let index = 0
 
   while (index < text.length) {
-    if (text[index] === '<') {
-      if (index > 0 && text[index - 1] === '\\') {
+    const char = text[index]
+
+    if (char === '<') {
+      if (isAlreadyEscaped(text, index)) {
         result += '<'
         index += 1
         continue
@@ -25,7 +31,18 @@ function escapeAngleBracketsInProse(text: string): string {
       continue
     }
 
-    result += text[index]
+    if (char === '{' || char === '}') {
+      if (isAlreadyEscaped(text, index)) {
+        result += char
+        index += 1
+        continue
+      }
+      result += `\\${char}`
+      index += 1
+      continue
+    }
+
+    result += char
     index += 1
   }
 
@@ -36,7 +53,7 @@ function escapeProseLine(line: string): string {
   const segments = line.split(/(`+[^`]*`+)/)
   return segments
     .map((segment, segmentIndex) =>
-      segmentIndex % 2 === 1 ? segment : escapeAngleBracketsInProse(segment),
+      segmentIndex % 2 === 1 ? segment : escapeMdxSpecialInProse(segment),
     )
     .join('')
 }
@@ -63,7 +80,7 @@ function toggleFence(
   return { inFence, fenceMarker }
 }
 
-/** Escapes raw `<` in prose so MDX does not treat placeholders as JSX. */
+/** Escapes raw `<`, `{`, and `}` in prose so MDX does not parse them as JSX/expressions. */
 export function prepareMdxSource(source: string): string {
   let inFence = false
   let fenceMarker = ''
