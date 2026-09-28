@@ -1,0 +1,198 @@
+---
+title: "Principais comandos Git para dominar, parte 1"
+description: "Configuração e principais comandos Git para você começar a dominar. Melhore seu fluxo de trabalho e otimize tempo durante o desenvolvimento."
+date: 2021-11-16
+tags:
+  - git
+cover: "/media/posts/principais-comandos-git-para-dominar-parte-1/git-guia-comandos-git-parte-1.png"
+language: pt
+---
+
+Neste post reuni os principais **comandos Git** que utilizo diariamente, um mini guia, com exemplos práticos para te ajudar a começar a dominar os principais comandos git. Para ajudar na leitura, organizei este post em duas partes, a primeira focada nos primeiros passos com o Git e uma segunda explicando como trabalhar com branches e repositórios remotos.
+
+Para você que está chegando aqui pela primeira vez, sem saber o que é Git, separei uma primeira explicação para dar contexto ao que vai ler a seguir.
+
+## O que é o Git
+
+O **Git é um sistema de controle de versão distribuído**, que facilita a colaboração entre desenvolvedores, seja para criar, manter e compartilhar arquivos de projetos.
+
+O Git permite que desenvolvedores possam ter uma cópia do projeto (repositório) em sua máquina para trabalhar localmente. Em um dado momento, quando os membros deste projeto (repositório) terminam seu trabalho, eles podem mesclar os arquivos, o que resulta em uma nova base de código, atualizada.
+
+Sendo assim, para realizar estas operações, o Git fornece uma extensa lista de comandos, mas no dia a dia, você não precisa dominar todos para começar. Neste post reuni os principais comandos para ajudar quem quer começar a usar Git.
+
+## Configurando o Git
+
+Uma das primeiras etapas quando começamos a trabalhar com Git é iniciar a configuração no nosso setup, o primeiro passo é instalar o Git, você pode [baixar o instalador neste link](https://git-scm.com/downloads).
+
+### **Como verificar se o Git está instalado?**
+
+Após executar o instalador do Git, você pode consultar as configurações locais do Git no seu sistema, para isso execute o comando a seguir no terminal, o resultado será uma lista de propriedades e valores definidas no seu ambiente.
+
+```bash
+git config --list
+```
+
+### Como configurar meu usuário?
+
+Para identificar o autor das alterações em um projeto, defina seu nome de usuário.
+
+```bash
+git config --global user.name "Daniel"
+```
+
+Após defina também seu endereço de e-mail.
+
+```bash
+git config --global user.email "seuemail@provedor.com"
+```
+
+### Trabalhando com Git
+
+Agora que você tem seu usuário definido para um Git local, podemos começar com nossos primeiros **comandos git**. O primeiro passo é iniciar um repositório Git no diretório raiz de algum projeto ou em um diretório vazio.
+
+#### Como iniciar um repositório git?
+
+Este é o primeiro comando git para iniciar um novo repositório Git localmente.
+
+```bash
+git init
+```
+
+#### Como adicionar um arquivo ao palco (stage)?
+
+Este comando adiciona um arquivo a área de teste, também chamada de stage.
+
+```bash
+git add nome_arquivo
+```
+
+#### Como adicionar todos arquivos ao palco (stage)?
+
+Você pode preferir enviar todos os arquivos que editou de uma só vez ao stage, para isto basta substituir o nome do arquivo por um ponto.
+
+```bash
+git add .
+```
+
+#### Como adicionar alguns arquivos ao palco (stage)?
+
+Você pode precisar adicionar arquivos que começam com alguma palavra ou parte de dela ao stage, por exemplo, adicionar todos arquivos de um repositórios de tests, para isso você pode adicionar asterisco ao nome.
+
+```bash
+git add tests/*
+```
+
+#### Como verificar o status do repositório?
+
+Após trabalhar com seu repositório, adicionando itens no stage ou atualizando arquivos, se você precisar identificar as alterações que existem no repositório pode executar o comando.
+
+```bash
+git status
+```
+
+#### Como fazer backup de alterações e voltar ao repositório no Git?
+
+Se em algum momento você precisar retornar ao estado original do repositório, seja para fazer alguma alteração ou corrigir algum problema, mas não pode perder as alterações que já tinha iniciado, você pode usar o comando stash para lidar com isto.
+
+Ao executar o comando stash o Git cria uma branch temporária com as alterações.
+
+```bash
+git stash
+```
+
+Por padrão, esse comando nomeia o stash com "WIP on main: ID + nome do último commit".
+
+Se você quiser dar um nome ao stach, você pode executando o comando create e depois o comando store para salvar, este comando espera com o id gerado para no commit.
+
+```bash
+git stash create "adicionado arquivo xpto"
+3007b4a5c9d84705f4471794f89bc7a31148add0
+
+git stash store 3007b4a5c9d84705f4471794f89bc7a31148add0
+```
+
+Para retornar as alterações para sua branch, você pode executar o comando apply.
+
+```bash
+git stash apply
+```
+
+Você pode executar quantas vezes for necessário o comando stash, isto vai criando vários stash's, para listar todos que já foram criados, você executar o comando list.
+
+```bash
+git stash list
+```
+
+Se você quiser ver os arquivos de um stash especifico, pode usar o comando show.
+
+```bash
+git stash show stash@{0}
+```
+
+Se você quiser remover um stash, pode executar o comando pop, ele vai remover os itens em pilha, sempre o último item criado.
+
+```bash
+git stash pop
+```
+
+Agora você não quer mais nenhuma alteração, quer remover todos os stash's execute:
+
+```bash
+git stash clear
+```
+
+#### Como enviar alterações no Git?
+
+Quando estiver com seu trabalho pronto para salvar no repositório, você pode executar o comando a seguir, ao executar este comando será exibido um editor de texto no seu terminal para escrever uma mensagem sobre está mudança, geralmente um breve resumo.
+
+```bash
+git commit
+```
+
+#### Como enviar alterações com uma mensagem no Git?
+
+Geralmente está é a forma mais comum de fazer o envio das alterações, você executa o comando commit já com uma mensagem anexada, para isto é necessário adicionar o atributo -m no seu comando, seguido de uma mensagem entre aspas.
+
+```bash
+git commit -m "descreva sua mensagem"
+```
+
+#### Como ver o histórico de commits no Git?
+
+Você pode ver uma lista das alterações que foram realizadas em um repositório digitando o comando a seguir, você pode navegar no terminal com os direcionais do teclado, aperte q para sair da lista.
+
+```bash
+git log
+```
+
+Se você quiser ver todos os arquivos alterados e suas mudanças, utilize o atributo -p.
+
+```bash
+git log -p
+```
+
+Para apenas ver os arquivos alterados com algumas estatísticas, utilize o atributo --stat.
+
+```bash
+git log --stat
+```
+
+Você também pode ver o log de commits como um gráfico no git, para isso, utilize o atributo --graph e para limitar as mensagens em uma única linha use junto o atributo --oneline.
+
+```bash
+git log --graph --oneline
+```
+
+Este comando vai retornar as alterações na branch que estiver no momento, para ver todas as alterações, em todas as branch adicione junto o atributo --all.
+
+```bash
+git log --graph --oneline --all
+```
+
+## Conclusão
+
+Nesta primeira parte focamos no setup do git e como criar os commits, estes comandos git são a base para o nosso próximo post, vamos ver os comandos para trabalhar com branches e repositórios remotos.
+
+Estes são alguns dos comandos mais recorrentes que utilizo diariamente, a lista ficou um pouco grande, mas espero que seja útil.
+
+Caso eu tenha esquecido de algum comando importante, pode comentar aqui post.

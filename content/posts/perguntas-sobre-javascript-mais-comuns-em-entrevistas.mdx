@@ -1,0 +1,184 @@
+---
+title: "Perguntas sobre JavaScript mais comuns em entrevistas"
+description: "Confira as perguntas sobre JavaScript mais comuns que são feitas em entrevistas de programação. Uma lista com perguntas e respostas práticas."
+date: 2022-01-18
+tags:
+  - career
+  - javascript
+cover: "/media/posts/perguntas-sobre-javascript-mais-comuns-em-entrevistas/entrevistas-perguntas-sobre-js.png"
+language: pt
+---
+
+Uma das etapas mais aguardadas de quem está buscando a primeira oportunidade ou está concorrendo a uma vaga é chegar na etapa de entrevista técnica. Se você está participando de uma vaga de Frontend com React ou Backend com Node.js, é provável que você precise realizar alguns testes e responder a perguntas sobre JavaScript e seus fundamentos.
+
+Pensando nisso, resolvi organizar neste artigo algumas das principais **perguntas sobre JavaScript** que já perguntei a candidatos quando ajudei na formação de times e também perguntas que precisei responder em algumas entrevistas que já passei.
+
+É importante dizer que isso não é a regra, algumas empresas optam por inclusive por apenas aplicar testes práticos, fazendo uma sessão de _live coding_ com o candidato e durante essa etapa, o líder técnico geralmente faz perguntas sobre o que você está codificando.
+
+Agora que estamos alinhados, vamos a lista com as perguntas e respostas.
+
+## 1. O que é o JavaScript?
+
+O JavaScript é uma linguagem de script, criada em 1995 por Brendan Eich na Netscape. Inicialmente criada para o popular navegador Netscape Navigator, com o passar dos anos, passou a ser a linguagem padrão dos navegadores e hoje é uma das mais populares do mundo. É possível usar JavaScript para o desenvolvimento web, desenvolvimento de aplicativos mobile, de aplicações de backend e até aplicações de IOT.
+
+## 2. Qual é a diferença entre JavaScript e ECMA Script?
+
+O ECMA Script é uma especificação, contendo diretrizes e regras para padronizar o JavaScript, mantida pela comunidade e gerida pela Mozila Foundation. O JavaScript é uma linguagem de script que segue os padrões sugeridos pelo ECMA Script.
+
+## 3. Qual a diferença entre valor indefinido e nulo?
+
+Um valor indefinido significa que uma variável foi declarada, mas ainda não foi atribuído um valor, já um valor nulo é um valor atribuído ou resultado de um erro que foi gerado.
+
+As variáveis no JavaScript quando inicializadas e não atribuídas tem em seu valor por padrão indefinido. O JavaScript não define um valor como nulo, você precisa definir manualmente.
+
+## 4. Que tipos de dados são suportados pelo JavaScript?
+
+O JavaScript possui 7 tipos de dados primitivos: **String**, **Number**, **Boolean**, **BigInt**, **Null**, **Undefined** e **Symbol**. O tipo de dado **Object** entra na lista como oitavo, embora seja listado como um tipo, um **Object** é uma estrutura de dados.
+
+## 5. O que o operador typeof do JavaScript faz?
+
+O tipo do dado de um operando em formato de string, podendo por exemplo retornar se o valor verificado é uma String, Number, Boolean, Null, Undefined, entre outros.
+
+```javascript
+const mensagem = "Algum texto aqui";
+console.log(typeof mensagem); // output: string
+
+const ano = 2022;
+console.log(typeof ano); // output: number
+```
+
+## 6. O que é uma closure no JavaScript?
+
+Closures são variáveis ou funções que fazem parte do escopo de uma função, possuem acesso limitado ao escopo da função a que pertencem.
+
+## 7. O que é a diretiva use strict do JavaScript?
+
+O modo strict é uma forma de manter a escrita do JavaScript mais rigoroso, proibindo o uso de algumas sintaxes ainda não suportadas ou que provavelmente serão definidas em versões futuras do ECMAScript, além de práticas não recomendas pela linguagem, como atribuição de valores a variáveis não definidas, uso global de variáveis, entre outros pontos.
+
+Ao usar o modo strict, estes erros silenciosos do JavaScript são lançados como exceções.
+
+## 8. Qual a diferença entre == e ===?
+
+A igualdade ampla (==) compara dois valores após converter ambos os valores para um tipo comum, independente do seu tipo. Após as conversões o == verifica a igualdade do valor.
+
+A igualdade estrita (===) compara dois valores para a igualdade antes de realizar qualquer conversão. Este comparador verifica se o tipo e o valor estão iguais. Geralmente é o comparador mais indicado a se utilizar.
+
+## 9. O que são e quando usar template strings?
+
+Uma [Template String](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Template_literals) é uma string que permite criar expressões embutidas, usando acentos graves para envolver a string no lugar de aspas. É possível usar uma expressão com strings multi-linhas ou realizar a interpolação de string usando uma expressão.
+
+É utilizando quando precisamos adicionar em uma string uma ou mais variáveis.
+
+```javascript
+const outraVariavel = 'texto'
+const mensagem = `meu ${outraVariavel} com mais texto`; 
+```
+
+## 10. Como você pode lançar exceções manualmente no JavaScript?
+
+Usando a declaração throw com uma expressão, geralmente uma instância do construtor Error do JavaScript. Ao lançar esta exceção a função será interrompida e o retorno será passado para o primeiro bloco da função catch em um try.
+
+Se nenhum bloco catch estiver definido, a função será interrompida.
+
+## 11. O que faz a declaração debugger no JavaScript?
+
+Quando um depurador de código está ativado, por exemplo, o debugger no Chrome, faz a execução do script pausar no ponto que a declaração está definida, como um breakpoint, para que o código possa ser inspecionado.
+
+```javascript
+function minhaFuncao() {
+  const mensagem = 'Alguma coisa aqui';
+  const resultado = 2 * 8;
+  
+  debugger;
+  // pausa aqui para depurar o código.
+}
+```
+
+## 12. Quais os tipos de erros padrões gerados em exceptions no JavaScript?
+
+Além do construtor genérico para o objeto Error existem os tipos EvalError, ReferenceError, RangeError, SyntaxError, TypeError, URIError e InternalError (não é mais recomendado).
+
+## 13. O que é um callback no JavaScript?
+
+É uma função que é executada só após a execução de outra função. A função de callback é passada como argumento de uma função inicial e será executada na sequência.
+
+```javascript
+function segundaMensagem() {
+  console.log('Mensagem 2.');
+}
+
+function primeiraMensagem(nome, callback) {
+  console.log('Mensagem 1: ', nome);
+  callback();
+}
+
+primeiraMensagem('Daniel', segundaMensagem);
+```
+
+## 14. O que são laços e iterações em JavaScript?
+
+São formas de realizar operações múltiplas vezes. Os tipos de laços e iterações do JavaScript mais comuns são: **while**, **do while**, **for**, **for in** e **for off**.
+
+## 15. O que faz a função map em uma coleção?
+
+A função map permite percorrer uma coleção de itens de um array para fazer alguma operação de transformação ou alteração nos itens, ao final o map retorna uma nova lista com a mesma quantidade de itens da lista inicial.
+
+```javascript
+const cores = ['branco', 'azul', 'vermelho'];
+
+const resultado = cores.map((corAtual) => {
+    console.log(corAtual);
+    return corAtual.toUpperCase();
+})
+
+console.log(resultado) // ['BRANCO', 'AZUL', 'CINZA']
+```
+
+## 16. O que é uma Promise em JavaScript? Quais são seus estados?
+
+Uma Promise em JavaScript é um objeto usado para realizar operações assíncronas, ela contém um valor que poderá estar ou não disponível no futuro. É ideal para controlar um fluxo do sistema, quando várias operações precisam ser realizadas de forma paralela.
+
+Uma promise contém três estados:
+
+**_Pending_**: Quando a promessa é iniciada mas ainda não foi realizada nem rejeitada.  
+**_Fulfilled_**: Quando a promessa é finalizada com sucesso.  
+**_Reject_**: Quando ocorre algum erro e a promessa é encerrada.  
+**_Settled_**: Quando a promessa é encerrada e sabe se foi finalizada com sucesso ou falha.
+
+```javascript
+// Criando uma promise
+const minhaPromessa = new Promise((resolve, reject) => {
+  try {
+    // Faz alguma coisa aqui.
+    const valorInicial = 5;
+    const multiplicador = 7
+    const resultado = multiplicador * valorInicial;
+
+    resolve(resultado)
+  } catch (erro) {
+    reject(erro)
+  }
+})
+                      
+// Executando uma promise
+minhaPromessa
+  .then((parametrosRetornados) => { 
+    /* sucesso */
+    console.log('Promessa realizada com sucesso');
+    console.log(`Resultado: ${parametrosRetornados}`);
+  })
+  .catch((erro) => {
+    console.log('Promessa teve algum erro');
+    console.log(erro.message);
+  })
+```
+
+## Conclusão
+
+Estas são apenas algumas das muitas perguntas sobre JavaScript que podem aparecer em uma entrevista, embora algumas perguntas possam ser mais básicas, já vi muito Dev se embaralhar para explicar.
+
+Caso eu tenha esquecido de alguma pergunta importante ou que gostaria de saber e não leu aqui no artigo, pode deixar nos comentários que atualizo.
+
+Espero que estas perguntas sobre JavaScript te ajudem no seu processo. =)
+
+Se quiser aprender ainda mais sobre JS, também tenho [outros posts sobre JavaScript](https://danieldcs.com/categoria/javascript/).
