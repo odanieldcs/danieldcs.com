@@ -1,0 +1,186 @@
+---
+title: "Desestruturação de arrays em JavaScript"
+description: "Artigo prático sobre desestruturação de arrays em JavaScript. Entenda como usar está funcionalidade e otimizar seus projetos."
+date: 2021-01-19
+tags:
+  - javascript
+cover: "/media/posts/desestruturacao-de-arrays-em-javascript/tutorial-js-destructuring-arrays-blog-2.png"
+language: pt
+---
+
+Continuando nosso conteúdo sobre atribuição via desestruturação, neste artigo vamos falar sobre desestruturação de arrays em JavaScript. Se você ainda não leu meu artigo anterior, onde falei sobre [**desestruturação de objetos**](/blog/desestruturacao-de-objetos-em-javascript), recomendo você conferir, nele começo explicando sobre o básico até o momento deste post.
+
+Mas vamos ao objetivo deste artigo, vamos conhecer alguns recursos bem úteis quando precisamos manipular arrays em JavaScript. Para testar os scripts que veremos a seguir, recomendo que use o [Codepen](https://codepen.io/), [JSFiddle](https://jsfiddle.net/) ou outro editor online da sua preferência.
+
+## Desestruturação de Arrays
+
+Trabalhar com desestruturação de arrays é muito semelhante a desestruturação de objetos, os conceitos apresentados no post anterior, também se aplicam aqui, com algumas possibilidades adicionais.
+
+Na desestruturação de array, você usa um literal de array no lado esquerdo de uma expressão de atribuição. Cada nome de variável no literal da matriz, é mapeado para o item correspondente no mesmo índice do array desestruturado. Vamos a um exemplo prático:
+
+```javascript
+const coords = ['-55', '20'];
+// Desestruturando o Array
+const [lat, lng] = coords;
+console.log(`Latitude: ${lat}, Longitude: ${lng}`); 
+// SAÍDA Latitude: -55, Longitude: 20
+```
+
+Neste exemplo, o que fizemos foi atribuir os valores do nosso array **_coords_** para duas variáveis locais: **lat** e **lng**, usando a desestruturação do array. Note que cada variável é mapeada para o mesmo item correspondente no mesmo índice do array.
+
+### Valores Default
+
+Podemos usar valores default para resolver o seguinte problema: Quando o número de itens do nosso Array é maior que o número de variáveis locais declaradas no novo literal, os itens excedentes não serão mapeados, ou se o número de variáveis declaradas for maior que o número de itens no array, nossas variáveis locais serão atribuídas como **undefined**.
+
+Semelhante ao que fizemos com a desestruturação de objetos, podemos definir valores default para nossas variáveis locais, confira o exemplo:
+
+```javascript
+const coords = ['-55', '20'];
+
+// Definindo o valor default 0 para distance
+const [lat, lng, distance = 0] = coords;
+
+console.log(`Latitude: ${lat}, Longitude: ${lng}, Distance: ${distance}`); 
+// SAÍDA Latitude: -55, Longitude: 20, Distance: 0
+```
+
+Agora veja como realizar a atribuição na desestruturação, semelhante ao que fazemos com objetos, a diferença é que não precisamos colocar a expressão de atribuição entre parênteses.
+
+```javascript
+let lat = 40;
+let lng = 80;
+
+console.log(`Latitude: ${lat}, Longitude: ${lng}`); 
+// SAÍDA: Latitude: 40, Longitude: 80
+
+const coords = ['-55', '20'];
+
+// Atribuindo o valor desestruturado para as variáveis locais
+[lat, lng, distance = 0] = coords;
+
+console.log(`Latitude: ${lat}, Longitude: ${lng}`);
+// SAÍDA Latitude: -55, Longitude: 20
+```
+
+### Trocando variáveis
+
+Este recurso é bem útil quando precisamos realizar a trocar de valores entre duas variáveis, por exemplo, passar o valor de A para B e valor de B para A.
+
+Ao realizar a atribuição via desestruturação, você evita o uso de uma variável temporária para esta operação. Confira no exemplo:
+
+```javascript
+let lat = 40;
+let lng = 70;
+
+console.log(`Latitude: ${lat}, Longitude: ${lng}`); 
+// SAÍDA Latitude: 40, Longitude: 70
+
+// Alterando os valores de variáveis
+
+[ lat, lng ] = [ lng, lat ];
+
+console.log(`Latitude: ${lat}, Longitude: ${lng}`); 
+// SAÍDA Latitude: 70, Longitude: 40
+```
+
+### Pulando itens do array
+
+Você pode pular alguns itens do array que não deseje atribuir a variáveis locais. Confira no exemplo, como podemos pegar apenas **_distance_** do array.
+
+```javascript
+const coords = [ '-55', '40', '1200' ]
+
+// Desconsiderando as duas primeiras posições do array
+const [ ,, distance ] = coords;
+
+console.log(`Distance: ${distance}`); 
+// SAÍDA Distance: 1200
+```
+
+### Desestruturar array aninhado
+
+Assim como fazemos com objetos, podemos realizar a desestruturação de um array aninhado.
+
+No exemplo a seguir, na posição 2 do nosso array, possuímos outro array contendo distância e tempo, veja como podemos extrair apenas estas duas partes:
+
+```javascript
+const coords = [ '-55', '40', [ '18', '55' ], ]
+
+// Desestruturando um array aninhado
+const [ ,, [ distance, minutes] ] = coords;
+
+console.log(`Distance: ${distance}, Minutes: ${minutes}`); 
+// SAÍDA Distance: 18 miles, Minutes: 55
+```
+
+### Iteração e Desestruturação
+
+Este é um recurso bem útil quando nosso array possui uma coleção de objetos e desejamos atribuir variáveis para somente algumas propriedades deste objeto. No exemplo a seguir, o array possui uma lista de endereços, veja como podemos obter apenas algumas partes desse objeto.
+
+```javascript
+const locations = [
+  {
+    state: 'São Paulo',
+    country: 'Brasil',
+    population: {
+      estimate: '44.9 mi',
+      density: '184,99 hab/km2',
+    },
+  },
+  {
+    state: 'Rio Grande do Sul',
+    country: 'Brasil',
+    population: {
+      estimate: '11.377 mi',
+      density: '40,38 ab/km2',
+    },
+  },
+  {
+    state: 'Rio de Janeiro',
+    country: 'Brasil',
+    population: {
+      estimate: '17.366 mi',
+      density: '396,67 hab/km2',
+    },
+  },
+];
+
+for (let { state, population: { estimate } } of locations) {
+  console.log(`State: ${state} - Population ${estimate}`);
+}
+// "State: São Paulo - Population 44.9 mi"
+// "State: Rio Grande do Sul - Population 11.377 mi"
+// "State: Rio de Janeiro - Population 17.366 mi"
+```
+
+### Atribuindo resto do array a uma variável
+
+Ao desestruturar um array, você vai precisar em algum momento, armazenar o resto do array em alguma variável. Para lidar com isto, você pode utilizar a sintaxe de parâmetros Rest, introduzida desde o ES6. Para implementar, basta adicionar o prefixo "..." sempre no fim da desestruturação. Veja no exemplo.
+
+```javascript
+const colors = [ 'red', 'yellow', 'black', 'blue', 'orange', 'green' ];
+const [ red,, black, blue, ...otherColors ] = colors;
+console.log(otherColors); // orange, green
+```
+
+### Clonar array
+
+Para clonar um array com a nova sintaxe do ES6 você pode usar o parâmetro Rest, ao aplicar a sintaxe, você terá um cópia isolada do array. Vamos ver um exemplo:
+
+```javascript
+const colors = [ 'red', 'yellow', 'black', 'blue', 'orange', 'green' ];
+// Clonando o array por desestruturação
+const [ ...othersColors ] = colors;
+// Testando se os arrays são iguais 
+console.log(othersColors === colors); // false
+```
+
+## Próximo Passo
+
+Neste artigo finalizo o tópico **atribuição via desestruturação**, vimos como explorar arrays e no artigo anterior como realizar **[desestruturação de objetos](/blog/desestruturacao-de-objetos-em-javascript)**.
+
+Em breve terei mais artigos sobre JavaScript aqui no Blog, com outros recursos mais avançados e úteis para melhorar a qualidade dos nossos projetos. Se você quiser ficar por dentro das publicações, assine a newsletter e faça parte da nossa turma, novidades e conteúdos exclusivos são enviados semanalmente.
+
+Se você gostou deste artigo, não esqueça de compartilhar com os amigos, quanto mais gente tiver acesso, melhor será nossa comunidade.
+
+Qualquer dúvida ou sugestão, deixa aí nos comentários.

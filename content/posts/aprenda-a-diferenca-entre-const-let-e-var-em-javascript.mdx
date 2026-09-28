@@ -1,0 +1,88 @@
+---
+title: "Aprenda a diferença entre const, let e var em JavaScript"
+description: "Qual a diferença entre const, let e var? Por que isto é importante? O primeiro passo é entendermos sobre Hoisting e como isto nos afeta."
+date: 2018-09-22
+tags:
+  - javascript
+  - nodejs
+language: pt
+---
+
+Quando trabalhamos com JavaScript, é importante entender a diferença entre **const**, **let** e **var**, estes tipos de variáveis, quando usados de forma inadequada, pode trazer comportamentos inesperados em nossa aplicação.
+
+Pode parecer simples o assunto, mas é comum ver códigos com uso de var e let pra todo lado, sem um motivo razoável.
+
+Na maioria das vezes, isto ocorria por desatenção, estamos no automático e desconhecíamos a importância de algo tão trivial. Mas então, qual a diferença e por que isto é importante? 
+
+O primeiro passo é entendermos as características em cada tipo de declaração.
+
+### Declaração de variáveis antes do ES6
+
+É preciso destacar que no EcmaScript 5, para declarar uma variável usamos a palavra-chave **var** ou **const**. A partir do EcmaScript 6, foi incorporado o tipo **let**, como alternativa para resolver o problema de **[hoisting](https://developer.mozilla.org/pt-BR/docs/Glossario/Hoisting)** em **declarações do tipo var,** que elevam qualquer variável para o escopo da função.
+
+Por padrão, o JavaScript eleva nossa variável independente de onde ela for declarada (hoisting). Seja dentro de um laço ou condição, tornando essa variável acessível em toda função, antes ou depois de ser declarada. Isto podemos ser controlável quando temos código pequenos, mas pode se tornar um problema conforme nosso código crescer.
+
+Agora com **declarações let**, este problema de hoisting foi resolvido, porquê passamos a ter uma variável atribuída em um **escopo de bloco**. Desta forma ao declarar dentro de qualquer bloco, está variável será descartada no fim da instrução.
+
+Exemplo até a versão ES5:
+
+```javascript
+var imprimiMensagem = function() {
+     var mensagemForaDoIf = "DANIEL";
+     if(mensagemForaDoIf == "DANIEL") {
+          var mensagemDentroDoIf  = "JS"; // Cria a variável dentro do If
+     }
+     // mensagemDentroDoIf é mais acessível a partir deste ponto
+     console.log(mensagemForaDoIf, mensagemDentroDoIf); // Imprime: DANIEL
+}
+imprimiMensagem(); // Saída: DANIEL JS
+```
+
+Exemplo a partir da versão ES6:
+
+```javascript
+var imprimiMensagem = function() {
+     var mensagemForaDoIf = "DANIEL";
+     if(mensagemForaDoIf == "DANIEL") {
+          let mensagemDentroDoIf  = "JS"; // Cria a variável dentro do If
+     }
+     // mensagemDentroDoIf é mais acessível a partir deste ponto
+    console.log(mensagemDentroDoIf); // Não vai imprimir, ela não existe mais.
+    console.log(mensagemForaDoIf); // Imprime: DANIEL
+}
+imprimiMensagem(); // Saída: DANIEL
+```
+
+### Substitua var por let
+
+Agora que você conhece a diferença entre var e let, consegue notar a que variável ficará restrita ao escopo, talvez seja o momento de você revisar seu código e substituir o que for adequado,
+
+Em nosso exemplo, a variável foi declarada dentro do If, mas poderíamos ter feito logo após a declaração **var mensagemForaDoIf** e apenas atribuir o valor **JS** em nosso If, assim a variável **mensagemDentroIf** também estaria visível no escopo da função.
+
+### Constantes
+
+Em qualquer linguagem de programação podemos declarar constantes, normalmente com a palavra-chave const. Uma **constante é uma variável imutável**, uma vez declarada e atribuído seu valor, não poderá ser sobrescrita.
+
+Em JavaScript uma const também está acessível dentro de um escopo de bloco, assim como temos em uma declaração let, podemos combinar uso de let e const em blocos, tendo as variáveis descartadas após a execução.
+
+Exemplo constantes:
+
+```javascript
+const cep = "90000001";
+console.log(cep) // A saída será 90000001
+cep = "80000002"; // A constante não será alterada
+```
+
+#### Mas e agora, o que usar?
+
+Sempre que possível, use **constantes**!
+
+Parta do princípio que o dado pode ser imutável, ao longo do código se perceber que a variável precisa ser sobrescrita, revise se o que está implementado e se realmente requer a substituição do valor inicial.
+
+Caso seja necessário sobrescrever a variável, mude o tipo para let ou até mesmo para um array, mas sempre evite do tipo var.
+
+Pode parecer irrelevante entender a diferença entre const, let e var, mas o uso adequado vai evitar que sua variável seja sobrescrita em algum momento, sem que você realmente deseje, além de ser descarregada da memória sempre que o bloco de escopo for executado.
+
+Isso é tudo, espero ter ajudado a esclarecer a diferença. Qualquer dúvida ou sugestão, fique a vontade para [**entrar em contato comigo**](https://danieldcs.com/contato/).
+
+Abraço! :)
