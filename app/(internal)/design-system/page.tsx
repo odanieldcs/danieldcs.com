@@ -40,7 +40,7 @@ function greet(name: string) {
 \`\`\``
 
 const EXAMPLE_IMAGE = {
-  src: '/media/posts/hello-world.png',
+  src: '/media/posts/postgresql-e-pgadmin-com-docker-compose/postgresql-pgadmin-docker-compose.jpg',
   width: 800,
   height: 450,
 } as const

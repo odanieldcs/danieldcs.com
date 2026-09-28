@@ -56,26 +56,23 @@ test('blog listing paginates to page 2', async ({ page }) => {
   ).toHaveCount(Math.min(BLOG_PAGE_SIZE, total - BLOG_PAGE_SIZE))
 })
 
-test('content-system article renders without console errors and highlights code', async ({
+test('postgresql pilot article renders without console errors and code blocks', async ({
   page,
 }) => {
   const consoleErrors = collectConsoleErrors(page)
 
-  await page.goto('/blog/content-system')
+  await page.goto('/blog/postgresql-e-pgadmin-com-docker-compose')
 
-  await expect(page).toHaveTitle('Como o content system renderiza um artigo')
+  await expect(page).toHaveTitle('PostgreSQL e pgAdmin com Docker Compose')
   await expect(
     page.getByRole('heading', {
       level: 1,
-      name: 'Como o content system renderiza um artigo',
+      name: 'PostgreSQL e pgAdmin com Docker Compose',
     }),
   ).toBeVisible()
-  await expect(page.locator('pre.shiki')).toHaveCount(2)
+  await expect(page.locator('pre.shiki')).toHaveCount(6)
   await expect(
-    page.locator('pre.shiki[data-language="ts"]').first(),
-  ).toBeVisible()
-  await expect(
-    page.locator('.line[data-highlight="true"]').first(),
+    page.locator('pre.shiki[data-language="yaml"]').first(),
   ).toBeVisible()
   expect(consoleErrors).toEqual([])
 })
@@ -84,4 +81,8 @@ test('missing slug returns 404', async ({ page }) => {
   const response = await page.goto('/blog/slug-inexistente')
 
   expect(response?.status()).toBe(404)
+
+  const removedPlaceholder = await page.goto('/blog/content-system')
+
+  expect(removedPlaceholder?.status()).toBe(404)
 })

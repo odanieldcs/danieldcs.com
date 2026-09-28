@@ -18,41 +18,37 @@ Each file starts with YAML frontmatter validated by [`lib/content/schema.ts`](..
 
    `language` is `pt` or `en`. `date` and `updatedAt` use `YYYY-MM-DD`. Extra keys fail — the schema is strict, so skip `draft` and typos. Validation lives in [`lib/content/schema.ts`](../../lib/content/schema.ts).
 
-3. Cover images go in [`public/media/posts/<slug>/`](../../public/media/posts/). Use an absolute path in frontmatter (`cover: /media/posts/<slug>/meu-artigo.png`) and the same prefix for inline images in the body (`/media/posts/<slug>/<arquivo>`). A bare filename still resolves to `/media/posts/<filename>` for placeholders and [`content-system.mdx`](content-system.mdx).
+3. Cover images go in [`public/media/posts/<slug>/`](../../public/media/posts/). Use an absolute path in frontmatter (`cover: /media/posts/<slug>/capa.png`) and the same prefix for inline images in the body (`/media/posts/<slug>/<arquivo>`). A bare filename still resolves to `/media/posts/<filename>`.
 
 Copy this and change the values:
 
 ````mdx
 ---
-title: Como o content system renderiza um artigo
-description: Um passeio pelo pipeline de ponta a ponta — frontmatter, loaders, MDX, Shiki e a rota /blog/[slug].
+title: Meu artigo
+description: Resumo curto para listagens e SEO.
 date: 2026-09-21
 tags:
-  - content
-  - mdx
-  - nextjs
-cover: /media/posts/content-system/content-system.png
+  - exemplo
+cover: /media/posts/meu-artigo/capa.png
 language: pt
 ---
 
-Este artigo existe para provar que o pipeline de conteúdo funciona: do MDX em `content/posts/` até `/blog/content-system`.
+Texto introdutório do artigo.
 
-## Do arquivo à página
+## Seção
 
-O trecho abaixo é o padrão usado pelos loaders para listar slugs em build time:
+Conteúdo em Markdown ou MDX.
 
 ```ts
-export function getAllPostSlugs(postsDir?: string): string[] {
-  return readdirSync(resolvePostsDir(postsDir))
-    .filter((filename) => filename.endsWith('.mdx'))
-    .map(slugFromFilename)
+export function exemplo(): string {
+  return 'hello'
 }
 ```
 
-![Fluxo simplificado do content system](/media/posts/content-system/content-system-pipeline.png)
+![Legenda opcional](/media/posts/meu-artigo/figura.png)
 ````
 
-The reference article is [`content-system.mdx`](content-system.mdx).
+The reference article is [`postgresql-e-pgadmin-com-docker-compose.mdx`](postgresql-e-pgadmin-com-docker-compose.mdx).
 
 ### Code fences
 
