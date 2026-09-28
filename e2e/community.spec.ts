@@ -34,8 +34,12 @@ test('community opens from the header without console errors', async ({
   ).toBeVisible()
   await expect(
     page
-      .getByRole('heading', { level: 3, name: 'Exemplo de palestra' })
-      .first(),
+      .getByRole('listitem')
+      .filter({ hasText: '23 jun. 2026' })
+      .getByRole('heading', {
+        level: 3,
+        name: 'Além do Swagger: APIs modernas com OpenAPI, Scalar e Node.js',
+      }),
   ).toBeVisible()
 
   expect(consoleErrors).toEqual([])

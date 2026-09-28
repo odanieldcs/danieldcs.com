@@ -8,7 +8,7 @@ The timeline year comes from `date`. Loaders live in [`lib/content/community.ts`
 
 ## Add an entry
 
-1. Create `content/community/<slug>.mdx`. No subfolders. The slug is the filename, for example `exemplo-2026-05-palestra.mdx`. The timeline year is taken from `date`, not from the filename.
+1. Create `content/community/<slug>.mdx`. No subfolders. The slug is the filename, for example `2026-07-23-tdc-floripa-apis-openapi-scalar.mdx`. The timeline year is taken from `date`, not from the filename.
 
 2. Put YAML frontmatter at the top. Validation lives in [`lib/content/community-schema.ts`](../../lib/content/community-schema.ts). The schema is strict.
 
@@ -26,12 +26,11 @@ Copy this and change the values:
 
 ```mdx
 ---
-title: Exemplo de palestra
-description: Entrada de exemplo para exercitar a timeline.
-date: 2026-05-03
+title: Além do Swagger: APIs modernas com OpenAPI, Scalar e Node.js
+description: Palestra sobre APIs modernas com OpenAPI, Scalar e Node.js.
+date: 2026-07-23
 type: talk
-eventName: Encontro de exemplo
-link: https://example.com/community/exemplo-2026-05-palestra
+eventName: TDC Florianópolis
 language: pt
 ---
 ```
