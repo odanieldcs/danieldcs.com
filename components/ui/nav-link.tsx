@@ -9,7 +9,7 @@ type NavLinkOptions = {
 export function navLinkClassName({ active = false }: NavLinkOptions = {}) {
   return [
     'text-nav rounded-sm',
-    'outline-none focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+    'outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
     'transition-colors hover:text-foreground',
     active ? 'text-foreground' : 'text-foreground/70',
   ].join(' ')

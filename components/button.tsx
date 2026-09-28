@@ -26,7 +26,7 @@ const chromeClass = [
   'inline-flex min-h-11 items-center justify-center',
   'text-body font-medium',
   'transition-colors',
-  'outline-none focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+  'outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
   'disabled:cursor-not-allowed',
 ].join(' ')
 

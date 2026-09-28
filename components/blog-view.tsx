@@ -52,7 +52,7 @@ function resolveCoverSrc(cover: string): string {
 }
 
 const focusClassName = [
-  'outline-none focus-visible:ring-2 focus-visible:ring-foreground/35',
+  'outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/35',
   'focus-visible:ring-offset-2 focus-visible:ring-offset-background',
 ].join(' ')
 
@@ -92,10 +92,7 @@ function ListItem({
   )
 }
 
-const postDateMetadataClassName = [
-  'absolute size-px overflow-hidden whitespace-nowrap border-0 p-0',
-  '[clip-path:inset(50%)]',
-].join(' ')
+const postDateMetadataClassName = 'sr-only'
 
 function GridCard({ post }: { post: BlogPostView }) {
   const coverSrc = post.cover ? resolveCoverSrc(post.cover) : undefined
@@ -110,7 +107,7 @@ function GridCard({ post }: { post: BlogPostView }) {
           focusClassName,
         ].join(' ')}
       >
-        <div className="relative aspect-video w-full bg-foreground/[0.06]">
+        <div className="relative aspect-video w-full bg-foreground/6">
           {coverSrc ? (
             <Image
               src={coverSrc}

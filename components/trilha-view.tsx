@@ -85,7 +85,7 @@ function Pillars({ copy }: { copy: TrilhaCopy }) {
 
 function Building({ copy }: { copy: TrilhaCopy }) {
   return (
-    <section className="w-full bg-foreground/[0.03]">
+    <section className="w-full bg-foreground/3">
       <Container
         width="page"
         className={`${sectionYClassName} ${sectionGridClassName}`}

@@ -49,7 +49,7 @@ const sectionGridClassName =
   'grid items-start gap-10 md:grid-cols-[15rem_minmax(0,1fr)] md:gap-16'
 
 const focusClassName = [
-  'outline-none focus-visible:ring-2 focus-visible:ring-foreground/35',
+  'outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/35',
   'focus-visible:ring-offset-2 focus-visible:ring-offset-background',
 ].join(' ')
 
@@ -142,7 +142,7 @@ function ListItem({
     <li className="relative pb-12 pl-8 last:pb-0 sm:pl-10">
       <span
         aria-hidden="true"
-        className="absolute -left-[5px] top-1.5 size-[9px] rounded-full bg-accent ring-4 ring-background"
+        className="absolute -left-1.25 top-1.5 size-2.25 rounded-full bg-accent ring-4 ring-background"
       />
       <EntryFrame
         entry={entry}
