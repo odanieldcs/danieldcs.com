@@ -50,27 +50,27 @@ function formatPostDate(isoDate: string, language: InterfaceLanguage): string {
 const articleCardClassName = [
   'group flex h-full w-full flex-col rounded-lg border border-border p-7',
   'transition-colors hover:border-accent/40 hover:bg-foreground/5',
-  'outline-none focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+  'outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
 ].join(' ')
 
 const quietCtaClassName = [
   'group inline-flex w-fit items-center gap-1.5 text-sm text-foreground/55',
   'rounded-sm transition-colors hover:text-foreground',
-  'outline-none focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+  'outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
 ].join(' ')
 
 function Hero({ copy }: { copy: HomeCopy }) {
   return (
     <section className="grid items-center gap-content-gap md:grid-cols-[minmax(0,1.15fr)_minmax(16rem,0.85fr)] md:gap-section">
-      <figure className="group order-1 w-[90%] justify-self-center md:order-2 md:justify-self-end">
-        <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-foreground/[0.06]">
+      <figure className="group order-1 w-9/10 justify-self-center md:order-2 md:justify-self-end">
+        <div className="relative aspect-3/4 overflow-hidden rounded-lg bg-foreground/6">
           <Image
             src={PORTRAIT_SRC}
             alt={copy.portraitAlt}
             fill
             priority
             sizes="(min-width: 48rem) 24rem, 90vw"
-            className="object-cover object-top motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out motion-safe:group-hover:scale-[1.06] motion-safe:group-hover:rotate-2"
+            className="object-cover object-top motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out motion-safe:group-hover:scale-106 motion-safe:group-hover:rotate-2"
           />
           <figcaption className="absolute inset-x-0 bottom-0 bg-black/90 px-4 py-3 text-xs text-white/90">
             {copy.portraitCaption}

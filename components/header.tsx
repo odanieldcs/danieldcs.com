@@ -12,7 +12,7 @@ import { ThemeToggle } from '@/components/ui/theme-toggle'
 
 const homeLinkClassName = [
   'inline-flex min-w-0 items-center gap-3 rounded-sm text-foreground',
-  'outline-none focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+  'outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
 ].join(' ')
 
 export function Header() {

@@ -26,13 +26,13 @@ const subtitleClassName = 'mt-4 text-sm leading-relaxed text-foreground/55'
 const ctaLinkClassName = [
   'group mt-8 inline-flex items-center gap-2 text-sm font-semibold text-accent',
   'rounded-sm hover:underline',
-  'outline-none focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+  'outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
 ].join(' ')
 
 const quietCtaClassName = [
   'group mt-6 inline-flex w-fit items-center gap-1.5 text-sm text-foreground/55',
   'rounded-sm transition-colors hover:text-foreground',
-  'outline-none focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+  'outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
 ].join(' ')
 
 function joinSectionClassName(...classes: string[]) {
@@ -73,15 +73,15 @@ function SectionLabel({
 function Intro({ copy }: { copy: AboutCopy }) {
   return (
     <section className="grid items-start gap-content-gap md:grid-cols-[minmax(0,1.15fr)_minmax(16rem,0.85fr)] md:gap-section">
-      <figure className="group order-1 w-[90%] justify-self-center overflow-hidden rounded-lg bg-foreground/[0.06] md:order-2 md:justify-self-end">
-        <div className="relative aspect-[3/4] overflow-hidden">
+      <figure className="group order-1 w-9/10 justify-self-center overflow-hidden rounded-lg bg-foreground/6 md:order-2 md:justify-self-end">
+        <div className="relative aspect-3/4 overflow-hidden">
           <Image
             src={PORTRAIT_SRC}
             alt={copy.portraitAlt}
             fill
             priority
             sizes="(min-width: 48rem) 24rem, 90vw"
-            className="object-cover object-[center_30%] motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out motion-safe:group-hover:scale-[1.06] motion-safe:group-hover:rotate-2"
+            className="object-cover object-[center_30%] motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out motion-safe:group-hover:scale-106 motion-safe:group-hover:rotate-2"
           />
         </div>
       </figure>
@@ -136,7 +136,7 @@ function Experience({ copy }: { copy: AboutCopy }) {
                 >
                   <span
                     aria-hidden="true"
-                    className="absolute -left-[5px] top-1.5 size-[9px] rounded-full bg-accent ring-4 ring-background"
+                    className="absolute -left-1.25 top-1.5 size-2.25 rounded-full bg-accent ring-4 ring-background"
                   />
                   <p className="text-xs font-medium uppercase text-foreground/45">
                     {entry.period}
@@ -225,7 +225,7 @@ function Repertoire({ copy }: { copy: AboutCopy }) {
 
 function Personal({ copy }: { copy: AboutCopy }) {
   return (
-    <section className="w-full border-y border-border bg-foreground/[0.04]">
+    <section className="w-full border-y border-border bg-foreground/4">
       <Container
         width="page"
         className={joinSectionClassName('py-14 sm:py-16', sectionGridClassName)}
