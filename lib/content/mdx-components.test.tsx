@@ -1,8 +1,7 @@
-import { compileMDX } from 'next-mdx-remote/rsc'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { expect, test } from 'vitest'
-import { shikiRehypePlugin } from './mdx'
-import { mdxComponents } from './mdx-components'
+import { compileMdxForTest } from './mdx-test-helpers'
+import { prepareMdxSource } from './prepare-mdx-source'
 
 const fixture = `
 # Heading
@@ -21,15 +20,7 @@ const answer = 42
 `
 
 test('renders a mixed MDX fixture with semantic HTML and styled links', async () => {
-  const { content } = await compileMDX({
-    source: fixture,
-    components: mdxComponents,
-    options: {
-      mdxOptions: {
-        rehypePlugins: [shikiRehypePlugin],
-      },
-    },
-  })
+  const { content } = await compileMdxForTest(fixture)
   const html = renderToStaticMarkup(content)
 
   expect(html).toMatch(/<h1[^>]*class="[^"]*text-h1[^"]*"[^>]*>Heading<\/h1>/)
@@ -61,4 +52,30 @@ test('renders a mixed MDX fixture with semantic HTML and styled links', async ()
     /<pre[^>]*class="[^"]*my-content-gap[^"]*overflow-x-auto/,
   )
   expect(html).toMatch(/<code class="block text-code"/)
+}, 15_000)
+
+test('renders figure, figcaption, gif images, and tables', async () => {
+  const source = `
+<figure>
+![](/media/posts/example/animation.gif)
+<figcaption>
+
+Legenda da figura
+
+</figcaption>
+</figure>
+
+| Comando | Descrição |
+| --- | --- |
+| **pm2 stop <nome>** | Para um processo |
+`
+  const { content } = await compileMdxForTest(prepareMdxSource(source))
+  const html = renderToStaticMarkup(content)
+
+  expect(html).toMatch(/<figure[^>]*class="[^"]*my-content-gap/)
+  expect(html).toMatch(/<figcaption[^>]*class="[^"]*text-caption/)
+  expect(html).toContain('src="/media/posts/example/animation.gif"')
+  expect(html).not.toContain('_next/image')
+  expect(html).toMatch(/<table[^>]*class="[^"]*border-collapse/)
+  expect(html).toMatch(/<td[^>]*class="[^"]*border-border/)
 }, 15_000)

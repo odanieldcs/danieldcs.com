@@ -1,0 +1,239 @@
+---
+title: "Simulando AWS local com localstack e Node.js"
+description: "Aprenda a usar o Localstack com Node.js para testar funções serverless e outros serviços da Amazon Web Service direto da sua máquina."
+date: 2020-12-09
+tags:
+  - aws
+  - nodejs
+  - serverless
+cover: "/media/posts/simulando-aws-local-com-localstack-e-node-js/tutorial-aws-localstack-blog.png"
+language: pt
+---
+
+Nesse artigo quero compartilhar como aprendi a trabalhar com o Localstack com Node.js para testar funções serverless e outros serviços da Amazon Web Service. Se você trabalha com desenvolvimento de aplicações na AWS, aprender a testar os serviços como SQS, S3 ou Lambda primeiro na sua máquina, é uma ótima estratégia para acelerar seu fluxo de desenvolvimento.
+
+Recentemente acabei testando pela AWS um projeto que estou em fase de desenvolvendo, embora eu tenha separado meus ambientes (dev, stage e prd), isso me custou quase US$ 100, se considerar que o dólar no momento que escrevo este post passa dos R$ 5,10, imagine minha cara de tristeza quando vi o Billing na AWS, por pura bobeira. :(
+
+Esse artigo foi escrito com exemplos em Node.js e comandos do AWS CLI, se você tiver alguma dificuldade de compreender, deixe um comentário explicando sua dúvida que vou te ajudar.
+
+## Introdução ao Localstack
+
+O **Localstack** é um framework que fornece uma estrutura de testes e simulação de serviços da AWS, direto na sua máquina local. Desta forma se você quer aprender a trabalhar com os serviços da AWS, é uma ótima opção, além de evitar custos desnecessários em sua conta.
+
+O diagrama a baixo ilustra um pipeline de desenvolvimento, integração e implantação, usando o LocalStack, uma clássica imagem vista no site oficial.
+
+![diagrama localstack](/media/posts/simulando-aws-local-com-localstack-e-node-js/diagram-localstack-1024x485.png)
+
+Com o Localstack, você pode executar funções Lambda, armazenar dados em tabelas no DynamoDB, armazenar arquivos no S3, configurar o API Gateway e muito mais. Tudo acontecendo em sua máquina local.
+
+A lista de serviços suportados no momento que escreve este artigo contém 25 serviços, entre eles SQS, Lambda, S3, DynamoDB, API Gateway, SES, Elasticsearch, CloudWatch e Route53. Na versão Pro, você conta com suporte adicional a outras APIs, como CloudFront, ECS, ECR, EKS, ElastiCache e RDS.
+
+## Configurando o Localstack
+
+### Pré-requisitos
+
+Em primeiro lugar, a documentação sugere que o primeiro passo é ter o Python, o Pip e o Docker instalado na maquina local. Os três são pré-requisitos para instalação do Localstack. Para verificar se já estão instalados, execute o comando a seguir no seu terminal:
+
+```bash
+python3 --version && pip3 --version && docker --version
+```
+
+O resultado deve ser parecido com este print do meu ambiente:
+
+![print resultado do python pip docker](/media/posts/simulando-aws-local-com-localstack-e-node-js/print-python-pip-docker.png)
+
+Caso não estejam instalados, você pode baixar [**aqui o Docker**](https://www.docker.com/get-started) e **[aqui Python3](https://www.python.org/downloads/)**, escolha a versão para seu sistema e faça o download do instalador. Após finalizar a instalação, reabra seu terminal e execute o comando anterior novamente. O pip não precisa ser baixado, ele é instalado junto com o Python, assim como o NPM é um gerenciador de pacotes para Node.js, o Pip é para o Python.
+
+### Instalando o Localstack
+
+O segundo passo, após finalizar o setup dos pré-requisitos, é seguir com a instalação do Localstack, execute o seguinte comando:
+
+```bash
+pip3 install localstack
+```
+
+O resultado final é a mensagem de sucesso _Successfully installed localstack-xxx_, onde XXX é a versão instalada. Outra forma de verificar a instalação do localstack é executar o comando **localstack --version** no terminal, o resultado é a versão instalada na sua máquina.
+
+### Como inicializar o Localstack
+
+Por último, com Localstack instalado, podemos inicia-lo executando o comando **start** no terminal, como no script a baixo:
+
+```bash
+localstack start
+```
+
+Com isso, todos os serviços serão iniciados em um container Docker, este é o comportamento padrão. A partir daqui, você pode verificar o status dos serviços acessando: http://localhost:4566/health
+
+Resultado da url de _health_ no meu ambiente:
+
+![localstack health services](/media/posts/simulando-aws-local-com-localstack-e-node-js/localstack-health.png)
+
+### Iniciar Localstack com Docker Compose
+
+Se você quiser personalizar a inicialização do Localstack, definindo quais serviços quer usar, portas, entre outras variáveis de ambiente, você pode configurar um arquivo docker-compose.yml e iniciar a partir dele. As opções possíveis estão descritas na [**documentação oficial**](https://github.com/localstack/localstack).
+
+A baixo um exemplo de docker-compose.yml, configurado para executar apenas os serviços SQS, S3, Lambda e API Gateway.
+
+```yaml
+version: '3.1'
+services:
+  localstack:
+    container_name: "localstack_main"
+    image: localstack/localstack
+    network_mode: bridge
+    ports:
+      - "4566-4583:4566-4583"
+    environment:
+      - SERVICES=s3,lambda,sqs,apigateway
+      - AWS_DEFAULT_REGION=us-east-1
+      - EDGE_PORT=4566
+      - DEBUG=1
+    volumes:
+      - "${TEMPDIR:-/tmp/localstack}:/tmp/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+```
+
+## Usando Localstack
+
+Seguindo nosso tutorial, agora com o **Localstack** em execução, vamos realizar o primeiro teste, criando um Bucket no S3 usando o AWS CLI. Se você ainda não tem ele instalado, pode [baixar aqui o AWS CLI](https://aws.amazon.com/pt/cli/).
+
+Vamos lá, digite no seu terminal o seguinte comando:
+
+```bash
+# Criar um bucket
+aws --endpoint-url=http://localhost:4566 s3 mb s3://danieldcs
+
+# Listar todos os buckets
+aws --endpoint-url=http://localhost:4566 s3 ls
+```
+
+O resultado será um bucket criado e depois a listagem de buckets.
+
+## Usando Localstack com Node.js
+
+Agora chegamos na parte mais importante, vamos ver como usar o Localstack com [Node.js](https://danieldcs.com/categoria/node-js/). Em primeiro lugar, vamos criar nossa aplicação com a dependência do AWS SDK. Execute no terminal:
+
+```bash
+mkdir nodejsLocalAWS
+cd nodejsLocalAWS
+npm init -y
+npm install aws-sdk
+touch sqs-consumer.js sqs-publisher.js
+```
+
+Em segundo lugar, no arquivo sqs-publisher.js adicione o seguinte código:
+
+```javascript
+const AWS = require('aws-sdk');
+const { promisify } = require('util');
+AWS.config.update({ region: 'us-east-1' });
+const sns = new AWS.SNS({ endpoint: '' });
+sns.publish = promisify(sns.publish);
+const TopicArn = '';
+async function publish(msg) {
+  const publishParams = {
+    TopicArn,
+    Message: msg
+  };
+  let topicRes;
+  try {
+    topicRes = await sns.publish(publishParams);
+  } catch (e) {
+    topicRes = e;
+  }
+  console.log('TOPIC Response: ', topicRes);
+}
+for (let i = 0; i < 5; i++) {
+  publish('message #' + i);
+}
+```
+
+Em terceiro lugar, no arquivo sqs-consumer.js adicione o seguinte código:
+
+```javascript
+const AWS = require('aws-sdk');
+const { promisify } = require('util');
+AWS.config.update({ region: 'us-east-1' });
+const sqs = new AWS.SQS({ endpoint: '' });
+sqs.receiveMessage = promisify(sqs.receiveMessage);
+const QueueUrl = '';
+const receiveParams = {
+  QueueUrl,
+  MaxNumberOfMessages: 1
+};
+async function receive() {
+  try {
+    const queueData = await sqs.receiveMessage(receiveParams);
+  if (
+      queueData &&
+      queueData.Messages &&
+      queueData.Messages.length > 0
+    ) {
+      const [firstMessage] = queueData.Messages;
+      console.log('RECEIVED: ', firstMessage);
+      const deleteParams = {
+        QueueUrl,
+        ReceiptHandle: firstMessage.ReceiptHandle
+      };
+      sqs.deleteMessage(deleteParams);
+    } else {
+      console.log('waiting...');
+    }
+  } catch (e) {
+    console.log('ERROR: ', e);
+  }
+}
+setInterval(receive, 500);
+```
+
+A partir de agora, vamos usar o AWS CLI para criar uma fila, um tópico e inscrever nossa fila ao SNS para receber notificações.
+
+Primeiro, digite no seu terminal o seguinte comando para criar a fila:
+
+```bash
+aws sqs create-queue \
+--queue-name local-queue \
+--endpoint-url http://localhost:4566
+--region us-east-1 \
+# deve retornar algo como:
+{
+  "QueueUrl": "http://localhost:4566/000000000/local-queue"
+}
+```
+
+Segundo, crie um tópico no SNS para envio das notificações com este comando:
+
+```bash
+aws sns create-topic \
+--name local-topic \
+--endpoint-url http://localhost:4566 \
+--region us-east-1 
+# deve retornar algo como:
+{
+  "TopicArn": "arn:aws:sns:us-east-1:000000000:local-topic"
+}
+```
+
+Por último, vamos inscrever nossa Fila ao Tópico do SNS:
+
+```bash
+aws sns subscribe \
+--notification-endpoint http://localhost:4566/000000000/local-queue \
+--topic-arn arn:aws:sns:us-east-1:000000000:local-topic \
+--protocol sqs \
+--endpoint-url=http://localhost:4575 \
+--region us-east-1
+```
+
+Finalizado a criação da fila e tópico, vamos atualizar nossos arquivos js, com os valores que foram retornados no terminal.
+
+No arquivo **sqs-publisher.js**, atualize a inicialização do SQS colocando na variável endpoint, a url do Localstack da sua maquina e na variável TopicArn, adicione o ARN gerado ao criar o tópico.
+
+No arquivo **sqs-consumer.js**, também atualize a variável endpoint com a url do Localstack e na variável QueueUrl, adicione a url da fila criada.
+
+Por último, abra o terminal e execute o comando **node sqs-consumer.js**, em outra janela execute **node sqs-publisher.js**. De um lado você verá uma inscrição sendo inserida, do outro, seu consumidor recebendo a mensagem. That's it! :D
+
+A partir daqui, o limite é sua criatividade. Você precisa apenas definir o _endpoint_ na inicialização do serviço, como no nosso exemplo, apontando para o localstack, que o resto vai funcionar normalmente.
+
+Se este artigo te ajudou não deixe de compartilhar, se tiver qualquer dúvida, pode deixar nos comentários, vou tentar te ajudar.
+

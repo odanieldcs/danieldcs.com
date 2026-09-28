@@ -1,0 +1,283 @@
+---
+title: "Como enviar SMS em NodeJS com SNS AWS"
+description: "Aprenda como enviar sms em nodejs, um microserviço simples para envio de notificações, validação de cadastro, senhas ou qualquer outro processo."
+date: 2018-10-07
+tags:
+  - javascript
+  - microservices
+  - nodejs
+cover: "/media/posts/como-enviar-sms-em-nodejs-com-sns-aws/nodejs-sns.jpg"
+language: pt
+---
+
+Hoje quero compartilhar com você **como enviar SMS em NodeJS** usando o serviço SNS da AWS. Esta aplicação é um micro-serviço e você pode utilizar como um componente do seu software atual. Você só precisa subir a app em algum ambiente node e adicionar itens na fila de notificações.
+
+No exemplo estou usando uma base MongoDB, mas você pode adaptar o serviço para uma base MySQL ou uma fila em um RabbitMQ ou SQS.
+
+Atualmente é comum utilizarmos e-mail ou sms para confirmar um cadastro, alterar senha, validar um celular ou até ajudar na validação de acesso.
+
+O Google, Uber, Facebook e tantas outras empresas usam este tipo de funcionalidade em seus apps, é uma maneira eficiente e rápida de confirmar a autenticidade de um usuário. Neste tutorial vou te ajudar aplicar o mesmo recurso em seu software.
+
+## O que você precisa saber
+
+O [Amazon Simple Notification Service](https://aws.amazon.com/pt/sns/) (SNS) é uma solução para envio de sms e notificações push, principalmente para envio de mensagens curtas, promocionais, notícias e avisos de atualizações.
+
+Você pode enviar para mais de 200 países e conta com a escalabilidade e flexibilidade que praticamente todo serviço AWS oferece. Porém, este serviço tem custos, em geral você vai pagar pelo envio da notificação e o tráfego de saída.
+
+No caso do SMS, os preços podem variar também por região e operadora de destino, [consulte a página de pricing](https://aws.amazon.com/pt/sns/sms-pricing/) para não ter surpresas no fim do mês. ;)
+
+Outro ponto importante é os tipos de conteúdo das mensagens, Transacionaos e Promocionais. Para cada também há um pricing diferente e regras de envio que você precisa considerar na integração. Neste exemplo, vamos enviar mensagens transacionais, porque é um shortcode para validar um cadastro.
+
+**_Quer saber mais sobre os serviços da AWS, como usar em seu projeto e por onde começar? Cadastre-se na minha lista de e-mails e receba dicas práticas semanalmente._**
+
+### Criando a aplicação
+
+Vou ser direto neste tutorial, em breve este conteúdo vai estar gravado e disponível no [meu canal no Youtube](https://www.youtube.com/user/danielcastrors/) e lá vou explicar com mais detalhes cada etapa.
+
+#### **Dependências e Setup**
+
+Vamos criar um diretório para nosso app e adicionar as dependências.
+
+```bash
+mkdir bot-sendsms && cd bot-sendsms && npm init -f
+npm i --save aws-sdk dotenv mongoose interval-promise babel babel-cli
+npm i --save-dev babel-preset-env
+```
+
+Agora vamos criar o arquivo _**babel.rc**_ e adicionar o preset env:
+
+```json
+{
+  "presets": ["env"]
+}
+```
+
+Adicione o arquivo _**.env**_ para as variáveis de conexão ao MongoDB e as chaves de acesso ao seu perfil na AWS.
+
+```text
+DB_MONGO_HOSTNAME = 'your_host_mongodb'
+DB_MONGO_USERNAME = 'your_user'
+DB_MONGO_PASSWORD = 'your_pass'
+DB_MONGO_DATABASE = 'your_db_name'
+DB_MONGO_PORT = 00000
+AWS_ACCESS_KEY_ID = 'your_key'
+AWS_SECRET_ACCESS_KEY = 'your_secret_key'
+```
+
+#### **Acessando o MongoDB**
+
+Vamos criar a estrutura do model para manipular nossos dados, no seu MongoDb crie uma collection chamada **notifications**, após crie o diretório _**src**_ e adicione o arquivo _**model.js**_ com o seguinte script:
+
+```javascript
+export default (conn, mongoose) => {
+  return conn.model("notifications", new mongoose.Schema({
+    to: {
+      type: String,
+      required: true,
+    },
+    body: {
+      type: String,
+      required: true,
+    },
+    sended: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
+    createdAt: { 
+      type: Date, 
+      default: Date.now, 
+    },
+    sendedAt: Date,
+  }));
+};
+```
+
+Agora crie o diretório _**util**_ na raiz de sua app e adicione o arquivo _**datasource.js**_ com o seguinte script de conexão.
+
+```javascript
+import dotenv from 'dotenv'
+import mongoose from 'mongoose'
+import model from '../src/model'
+dotenv.config()
+const database = process.env.DB_MONGO_DATABASE
+const username = process.env.DB_MONGO_USERNAME
+const password = process.env.DB_MONGO_PASSWORD
+const hostname = process.env.DB_MONGO_HOSTNAME
+const port = process.env.DB_MONGO_PORT
+let datasource = null;
+export default () => {
+  if (!datasource) {
+    const uri = `mongodb://${hostname}:${port}/${database}`;
+    const options = {
+      user: username,
+      pass: password,
+      useNewUrlParser: true,
+    };
+    const connection = mongoose.createConnection(uri, options);
+    connection.Promise = global.Promise;
+    const models = [];
+    const modelNotifications = model(connection, mongoose);
+    
+    models[modelNotifications.modelName] = modelNotifications;
+    datasource = {
+      connection,
+      mongoose,
+      models,
+    };
+  }
+  return datasource;
+};
+```
+
+#### **Consultando e atualizando o MongoDB**
+
+Crie o arquivo _**service.js**_ em _**src**_ e adicione o script a seguir.
+
+O que fizemos foi criar dois métodos. O getAllToSend retornando a lista de notificações pendentes, limitando a quantidade de itens e ordenando pela data de criação. O updateToSended só atualiza a notificação.
+
+```javascript
+export default (model) => {
+  const service = {
+    getAllToSend(amount) {
+      return new Promise((resolve, reject) => {
+        model.find({ sended: false }).sort({ createdAt: 'asc' }).limit(amount)
+          .then(items => {
+            if (items) { resolve(items) }
+            resolve();
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
+    },
+    updateToSended(id) {
+      return new Promise((resolve, reject) => {
+        model.findById(id)
+          .then(notification => {
+            const update = notification;
+            update.sended = true;
+            update.sendedAt = Date.now()
+            update.save()
+            resolve()
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
+    }
+  }
+  return service;
+}
+```
+
+#### **Enviando o SMS com a API SNS**
+
+Adicione o arquivo _**sms.js**_ em _**/src**_ com o script a seguir.
+
+O que estamos fazendo é publicar nosso SMS no Simple Notification Service (SNS). Você precisa definir a região que vai utilizar, instanciar o serviço passando a versão da API e adicionar o atributo DefaultSMSType com o valor "Transactional".
+
+O conteúdo do SMS é um objeto com os parâmetros PhoneNumber, Message e MessageStructure. Com isto pronto, você chama o método publish.
+
+```javascript
+import AWS from 'aws-sdk'
+AWS.config.update({ region: 'us-west-2' })
+export default () => {
+  const sms = {
+    send(notification) {
+      return new Promise(async(resolve, reject) => {
+        const sns = new AWS.SNS({ apiVersion: '2010-03-31' })
+        sns.setSMSAttributes({
+          attributes: {
+            DefaultSMSType: 'Transactional'
+          },
+          function(error) {
+            if (error) reject(error)
+          }
+        })
+        const params = {
+          PhoneNumber: notification.to,
+          Message: notification.body,
+          MessageStructure: 'string'
+        }
+        sns.publish(params, (err, data) => {
+          if (err) { reject(err) }
+          resolve()
+        })
+      })
+    }
+  }
+  return sms;
+}
+```
+
+
+#### **Unindo todos os eventos**
+
+Agora vamos criar o _**index.js**_ na raiz da app.
+
+Neste arquivo vamos criar um método assíncrono para chamar a função **_getAllToSend_** a cada 5 segundos e publicar o SMS na fila do SNS.
+
+```javascript
+import datasource from './util/datasource'
+import sms from './src/sms'
+import service from './src/service'
+import interval from 'interval-promise'
+const db = datasource()
+const model = db.models.notifications
+const controller = service(model)
+async function main() {
+  try {
+    const notifications = await controller.getAllToSend(5);
+  
+    if (notifications !== undefined &amp;&amp; notifications.length > 0) {
+      console.log(`Sending ${notifications.length} SMS`)
+      for (let index = 0; index &lt; notifications.length; index++) {
+        const notification = notifications[index];
+        
+        await sms().send(notification)
+          .then(() => {
+            controller.updateToSended(notification.id)
+          })
+          .catch(err => {
+            console.log('Could not send.')
+            console.error(err)
+          })
+      }
+    } else {
+      console.log('No SMS to send.')
+    } 
+  } catch (error) {
+    console.error(error)
+  }
+}
+interval(async () => {
+  await main()
+}, 5000)
+```
+
+Você pode alterar o valor passado no método getAllToSend para a quantidade que preferir e também o intervalo de 5 segundos.
+
+No exemplo eu peguei as últimas 5 notificações, percorro o array caso tenha algum item e chamo o evento _**send()**_, função criada no _**src/sms**_. Caso o envio aconteça com sucesso, atualizo a notificação, caso contrário apenas exibo no meu terminal. Nesta exception você pode registrar um log ou adaptar ao que fizer mais sentido para seu contexto.
+
+Agora vamos finalizar, adicione o script para start da sua app no package.json.
+
+```json
+"scripts": {
+  "start": "babel-node index.js"
+},
+```
+
+#### **Pronto!**
+
+Agora é só digitar **npm start** no seu terminal e ver sua app rodar.
+
+![](/media/posts/como-enviar-sms-em-nodejs-com-sns-aws/giphy.gif)
+
+Este tutorial é um micro-serviço para rodar em qualquer ambiente nodejs. Você precisa apenas adicionar itens na fila de envio e deixar em execução. Embora este script apenas envie uma mensagem transacional, você pode customizar. Confira a documentação na AWS e adapte a sua necessidade.
+
+O script não tem regras de negócio, é apenas um sender, a checagem do código ou a criação da mensagem é responsabilidade da sua aplicação. Você apenas vai se conectar no mongo e adicionar o item na fila.
+
+Este micro-serviço pode evoluir para uma **function serverless**, na AWS você tem Lambda Functions, além disso pode integrar com o SQS e Cloud Watch. Seria necessário fazer algumas adaptações, mas o resultado seria ainda mais eficiente.
+
+Espero ter ajudado, o [código fonte deste script está neste repositório](https://github.com/odanieldcs/bot-sendsms), qualquer dúvida ou sugestão deixa nos comentários. :)

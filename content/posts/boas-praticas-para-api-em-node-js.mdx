@@ -1,0 +1,113 @@
+---
+title: "Boas práticas para API em Node.js"
+description: "Boas práticas e dicas para melhorar a qualidade da entrega de API em Node.js, como criar um padrão consistente de código e facilitar a adesão no time."
+date: 2020-04-20
+tags:
+  - microservices
+  - nodejs
+language: pt
+---
+
+Hoje quero compartilhar algumas práticas que considero importante no desenvolvimento de **API em Node.js**, alguns conceitos que tenho aplicado e compartilhado no meu dia a dia de trabalho.
+
+O foco principal é melhorar a qualidade da entrega, criar um padrão consistente de código e facilitar a adesão no time.
+
+Quando estamos desenvolvendo novas aplicações em Node.js, especificamente em Javascript, sabemos que a linguagem oferece uma grande flexibilidade de setup e existem diversas formas de organizar nosso código, mas algumas vezes devido a pressa, falta de prazos adequados e até experiência, a preocupação com qualidade fica em segundo plano.
+
+Posso te garantir, a falta de um padrão logo no inicio do projeto, vai se tornar uma dor de cabeça no futuro. Se você já teve que fazer manutenção em algum projeto criado sem o devido cuidado, talvez saiba do que estou falando e se identifique. :)
+
+## Na prática, o que tenho feito?
+
+Criei um _**codebase para api em node.js**_, reunindo conceitos e boas práticas num único repositório, para simplificar e agilizar meu setup inicial.
+
+O projeto está disponível no meu github. A seguir alguns highlights:
+
+[https://github.com/danielcsrs/nodejs-api-rest](https://github.com/danielcsrs/nodejs-api-rest)
+
+### ES6+ com Babel
+
+Não é uma novidade o uso de ECMAScript 6 nos projetos em Javascript, afinal já estamos na versão 10 e muitas novidades foram adicionadas nos últimos anos.
+
+Você provavelmente já deve ter trabalhado com async await, promises, arrow functions ou desestruturação, features presente na versão mais recentes do Node.
+
+Como eu desejava trabalhar com estas funcionalidades e ainda ter acesso aos recursos mais recentes do Javascript, configurei o **Babel 7** para converter o código da **api em node.js** para versões mais antigas e manter a compatibilidade.
+
+### Eslint + Prettier
+
+Quando falamos em padrão de código em Javascript, é fundamental pensar em algum linter, combinar o Eslint e o Prettier é uma boa abordagem.
+
+O Eslint vai ajudar a validar nosso código e garantir que estamos desenvolvendo de maneira otimizada e mais aderente ao padrão configurado. Para este projeto, escolhi o padrão [Airbnb](https://www.npmjs.com/package/eslint-config-airbnb-base). Com isto definido, configurei alguns scripts no meu [package.json](https://github.com/danielcsrs/nodejs-api-rest/blob/master/package.json) para serem chamadas via command line e inspecionar meu código.
+
+Já o Prettier, vai me ajudar a formatar o código, respeitando as configurações que defini. Para ter um aproveitando ainda melhor, como utilizo o VS Code como editor, instalei a extensão Prettier e o configurei para auto-formatar meu arquivo ao salvar. Isto vai garantir que meu código esteja sempre ajustado aos padrões.
+
+### Express + Middlewares
+
+Express é um framework para desenvolvimento web, nos permiti expor APIs com bastante simplicidade e possui uma estrutura baseada em **Middlewares**. Decidi usar este framework pela sua simplicidade, flexibilidade de extender injetando novos middlewares e pelo grande uso na comunidade.
+
+Você consegue criar uma instância do Router do Express e expor uma api com meia duzia de linhas, a quantidade de pacotes que dão maior poder ao Express é gigante.
+
+Neste projeto por exemplo, além do express instalei o [helmet](https://www.npmjs.com/package/helmet) para ajudar na segurança, o [body-parser](https://www.npmjs.com/package/body-parser) para ajudar no tratamento das requisições e o [morgan](https://www.npmjs.com/package/morgan), para gerar logs de todas as requisições que chegarem até minha API.
+
+Alguns links úteis:  
+[Escrevendo middlewares](https://expressjs.com/en/guide/using-middleware.html)  
+[Roteamento de rotas](https://expressjs.com/pt-br/starter/basic-routing.html)
+
+### Estrutura
+
+Organizei meu projeto seguindo principalmente alguns conceitos de orientação a objeto e MVC. Tenho as Routes (Views), os Controllers onde estão minhas regras de negócio e os Models, com as representações dos meus modelos de dados.
+
+Uma das formas de organizar nosso projeto é separar as responsabilidades e funcionalidades por domínio. Neste exemplo, minha API contém apenas responsabilidades de gerenciar Livros. Se for necessário ampliar as funcionalidades deste domínio, está API pode expandir e ganhar novos controllers, models e routes especificas deste contexto.
+
+Para estrutura de diretórios e arquivos, adotei este padrão:
+
+![Estrutura de pastas e arquivos da API em Node.js](/media/posts/boas-praticas-para-api-em-node-js/estrutura-pastas-api-nodejs.png)
+
+[Aqui você pode ver código fonte completo](https://github.com/danielcsrs/nodejs-api-rest).
+
+### EditorConfig
+
+Se o projeto será compartilhado com um time e poderá ser aberto em um SO Windows e Linux, ou ser utilizado por diferentes IDEs, você poderá ter alguns problemas de codificação dos arquivos.
+
+Para unificar o padrão e evitar estes conflitos, adicionei a extensão EditorConfig no meu VS Code, criei o arquivo .editorconfig e recomendei a instalação da extensão aos outros Devs que fazem parte do time.
+
+Desta forma simples, sempre que um arquivo for criado ou editado, o EditorConfig vai se encarregar de manter o padrão configurado.
+
+### **Testes Unitários e Integração**
+
+Pode parecer básico o uso de testes, mas geralmente isto não é aplicado nos projetos. As razões para não implementar testes são muitas, mas na maioria dos casos o time tem pouca experiência e não tem tempo para desenvolver testes, mas acredito que neste ponto devemos se esforçar para trabalhar mais.
+
+Você já deve ter lido ou escutado alguém falar sobre TDD, é o que chamamos de Test-Driven Development, ou Desenvolvimento orientado a testes. Na prática é pensar primeiro no teste das funcionalidades, se você minimamente aplicar testes unitários, poderá testar o comportamento mais básico das suas funções, colocar testes de integração, poderá testar um cenário real, uma requisição a sua API e validar seu comportamento.
+
+> _Mas isto é importante? Preciso perder tempo criando testes? Vou ficar mais tempo escrevendo testes do que codificando e entregando meu software?_
+> 
+> **SKYWALKER**, luke
+
+Sim, querido Luke. Para todas as perguntas!
+
+Acredite, quanto maior a cobertura de testes da sua aplicação, mais segurança e confiança você terá ao implementar uma nova funcionalidade.
+
+Você poderá testar as funcionalidades existentes, garantindo que a nova implementação não tenha impactado os recursos atuais, e se tiver gerado algum impacto, você saberá antes de fazer seu pull request ou colocar em produção.
+
+Neste meu projeto, implementei testes unitários utilizando o Mocha e Chai, já para os testes de integração também usei o Supertest. Se você observar, cobri os principais recursos da minha incrível API de livros, o que já é um ponto de partida.
+
+### Docker + Docker-compose
+
+Se você está começando agora com desenvolvimento e ainda não conhece Docker, te recomendo fortemente estudar mais sobre o assunto.
+
+Com Docker conseguimos criar ambientes totalmente isolados, com configurações especificas para praticamente qualquer linguagem. Entre os diversos benefícios de se trabalhar com Docker, você terá a possibilidade de subir ambientes inteiros via código.
+
+Neste projeto, por exemplo, realizei o setup da minha API em Node.js e MongoDB no Docker via código.
+
+Para explicar o processo, escrevi o Dockerfile da minha aplicação com algumas regras e passos que o Docker deve realizar para expor minha API em **Node.js**, além disso, criei um arquivo de composição do docker contendo a referência ao meu Dockerfile e as configurações necessárias para executar o MongoDB, neste arquivo deixei as configurações do meu app e banco de dados.
+
+Quando você trabalha com Docker, ele está virtualizando recursos para disponibilizar um ambiente, está é uma definição rasa, mas a ideia central é quase como criar e configurar suas VMs via código.
+
+Adotar Docker ajuda inclusive a acabar com a famosa frase, "_Na minha máquina funciona_". Com Docker não haverá mudanças no ambiente, a não ser que, alguém mude as configurações.
+
+Se você quer aprender mais, recomendo o livro [Docker para desenvolvedores](https://leanpub.com/dockerparadesenvolvedores), produzido pelo [Gomex](https://twitter.com/gomex).
+
+#### Quais os próximos passos?
+
+Com o tempo vou incrementar e melhorar este repositório, então se quiser [acompanhar no Github](https://github.com/danielcsrs/nodejs-api-rest), inclusive comentar, propor melhorias e compartilhar, borá fazer parte! :)
+
+Espero que estes pontos te ajudem de alguma forma, como citei no inicio, a ideia deste projeto e agilizar o meu setup, não é a única maneira de se trabalhar e talvez tenha seus erros, mas é um ponto de partida para ajudar.
