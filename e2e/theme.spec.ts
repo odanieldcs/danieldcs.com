@@ -1,26 +1,14 @@
 import { expect, test } from '@playwright/test'
+import { collectConsoleErrors } from './helpers/console'
+import { getNewestBlogPost } from './helpers/posts'
+
+const blogPostPath = `/blog/${getNewestBlogPost('theme').slug}` as const
 
 // Chromium serializes these oklch backgrounds as lab().
 const lightBackground = 'lab(95.2984 0.174552 4.59245)'
 const darkBackground = 'lab(11.8869 0.301734 4.69313)'
 const lightForeground = 'lab(10.2215 -2.79985 1.40786)'
 const darkForeground = 'rgb(236, 236, 236)'
-
-function collectConsoleErrors(page: import('@playwright/test').Page) {
-  const consoleErrors: string[] = []
-
-  page.on('console', (msg) => {
-    if (msg.type() === 'error') {
-      consoleErrors.push(msg.text())
-    }
-  })
-
-  page.on('pageerror', (error) => {
-    consoleErrors.push(error.message)
-  })
-
-  return consoleErrors
-}
 
 async function expectThemeTokens(
   page: import('@playwright/test').Page,
@@ -45,7 +33,7 @@ async function expectThemeTokens(
   )
 }
 
-for (const path of ['/', '/blog/content-system'] as const) {
+for (const path of ['/', blogPostPath] as const) {
   test(`system light theme tokens on ${path}`, async ({ page }) => {
     const consoleErrors = collectConsoleErrors(page)
 

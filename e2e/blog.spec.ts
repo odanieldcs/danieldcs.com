@@ -1,19 +1,15 @@
 import { expect, test } from '@playwright/test'
+import { BLOG_PAGE_SIZE } from '@/lib/blog/pagination'
+import { collectConsoleErrors } from './helpers/console'
+import { getBlogPostCount, getNewestBlogPost } from './helpers/posts'
 
-test('blog listing shows 12 posts on page 1 without console errors', async ({
+const total = getBlogPostCount('blog listing')
+const newestPost = getNewestBlogPost('blog listing')
+
+test('blog listing shows posts on page 1 without console errors', async ({
   page,
 }) => {
-  const consoleErrors: string[] = []
-
-  page.on('console', (msg) => {
-    if (msg.type() === 'error') {
-      consoleErrors.push(msg.text())
-    }
-  })
-
-  page.on('pageerror', (error) => {
-    consoleErrors.push(error.message)
-  })
+  const consoleErrors = collectConsoleErrors(page)
 
   await page.goto('/blog')
 
@@ -25,24 +21,29 @@ test('blog listing shows 12 posts on page 1 without console errors', async ({
     }),
   ).toBeVisible()
   await expect(
-    page.getByRole('link', {
-      name: 'Como o content system renderiza um artigo',
-    }),
+    page.getByRole('link', { name: newestPost.frontmatter.title }),
   ).toBeVisible()
 
   const postList = page.locator('main ul').first()
-  await expect(postList.locator(':scope > li')).toHaveCount(12)
+  await expect(postList.locator(':scope > li')).toHaveCount(
+    Math.min(total, BLOG_PAGE_SIZE),
+  )
 
   expect(consoleErrors).toEqual([])
 })
 
-test('blog listing opens a post and paginates to page 2', async ({ page }) => {
+test('blog listing opens the newest post', async ({ page }) => {
   await page.goto('/blog')
 
-  await page
-    .getByRole('link', { name: 'Como o content system renderiza um artigo' })
-    .click()
-  await expect(page).toHaveURL('/blog/content-system')
+  await page.getByRole('link', { name: newestPost.frontmatter.title }).click()
+  await expect(page).toHaveURL(`/blog/${newestPost.slug}`)
+})
+
+test('blog listing paginates to page 2', async ({ page }) => {
+  test.skip(
+    total <= BLOG_PAGE_SIZE,
+    'pagination requires more posts than one page',
+  )
 
   await page.goto('/blog')
   await page
@@ -52,23 +53,13 @@ test('blog listing opens a post and paginates to page 2', async ({ page }) => {
   await expect(page).toHaveURL('/blog?page=2')
   await expect(
     page.locator('main ul').first().locator(':scope > li'),
-  ).toHaveCount(2)
+  ).toHaveCount(Math.min(BLOG_PAGE_SIZE, total - BLOG_PAGE_SIZE))
 })
 
 test('content-system article renders without console errors and highlights code', async ({
   page,
 }) => {
-  const consoleErrors: string[] = []
-
-  page.on('console', (msg) => {
-    if (msg.type() === 'error') {
-      consoleErrors.push(msg.text())
-    }
-  })
-
-  page.on('pageerror', (error) => {
-    consoleErrors.push(error.message)
-  })
+  const consoleErrors = collectConsoleErrors(page)
 
   await page.goto('/blog/content-system')
 
