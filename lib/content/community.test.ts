@@ -4,6 +4,8 @@ import path from 'node:path'
 import { afterEach, expect, test } from 'vitest'
 import { getAllCommunityEntries, getAllCommunityEntrySlugs } from './community'
 
+const communityDir = path.join(import.meta.dirname, '__fixtures__', 'community')
+
 const isolatedDirs: string[] = []
 
 afterEach(() => {
@@ -30,15 +32,15 @@ function writeEntry(
   )
 }
 
-test('loads content/community newest first and ignores README.md', () => {
-  const slugs = getAllCommunityEntrySlugs()
-  expect(slugs).toContain('exemplo-2026-09-palestra')
+test('loads fixture community entries newest first and ignores README.md', () => {
+  const slugs = getAllCommunityEntrySlugs(communityDir)
+  expect(slugs).toContain('fixture-2026-09-newest')
   expect(slugs).not.toContain('README')
 
-  const entries = getAllCommunityEntries()
-  expect(entries).toHaveLength(23)
-  expect(entries.map((entry) => entry.slug)[0]).toBe('exemplo-2026-09-palestra')
-  expect(entries.at(-1)?.slug).toBe('exemplo-2023-01-palestra')
+  const entries = getAllCommunityEntries(communityDir)
+  expect(entries).toHaveLength(5)
+  expect(entries.map((entry) => entry.slug)[0]).toBe('fixture-2026-09-newest')
+  expect(entries.at(-1)?.slug).toBe('fixture-2023-01-oldest')
   expect(entries[0]).not.toHaveProperty('content')
 
   const times = entries.map((entry) => entry.frontmatter.date.getTime())
@@ -46,13 +48,6 @@ test('loads content/community newest first and ignores README.md', () => {
 
   const years = entries.map((entry) => entry.frontmatter.date.getUTCFullYear())
   expect(new Set(years)).toEqual(new Set([2026, 2025, 2024, 2023]))
-  expect(
-    entries.every(
-      (entry) =>
-        entry.frontmatter.date.getTime() <=
-        Date.parse('2026-09-23T00:00:00.000Z'),
-    ),
-  ).toBe(true)
   expect(entries.some((entry) => entry.frontmatter.link)).toBe(true)
   expect(entries.some((entry) => entry.frontmatter.link === undefined)).toBe(
     true,
