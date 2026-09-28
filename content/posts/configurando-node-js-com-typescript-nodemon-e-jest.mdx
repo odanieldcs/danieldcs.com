@@ -1,0 +1,279 @@
+---
+title: "Configurando Node.js com TypeScript, nodemon e Jest"
+description: "Aprenda a configurar o Node.js com TypeScript, Jest, Nodemon, Babel e ESLint. Exemplo de um setup prático com Express."
+date: 2020-08-18
+tags:
+  - nodejs
+  - typescript
+  - jest
+  - babel
+cover: "/media/posts/configurando-node-js-com-typescript-nodemon-e-jest/tutorial-nodejs-typescript-nodemon-jest-blog.png"
+language: pt
+---
+
+Dando sequência a serie sobre TypeScript, neste artigo vamos configurar o Node.js com TypeScript, adicionar o nodemon para live-reload, o Jest para testes em ambiente de desenvolvimento e o ESLint para garantir o estilo do código. Para nosso código de produção, vamos configurar o Babel.
+
+Nos artigos anteriores, falei de alguns [**types avançados**](/blog/dicas-avancadas-de-typescript-que-voce-precisa-conhecer/) e os meus [**motivos para usar TypeScript**](/blog/motivos-para-usar-typescript-em-projetos-javascript/), caso não tenha lido, recomendo conferir. Neste exemplo, vamos usar o Express para criar uma rota retornando um Hello World.
+
+Embora este setup seja simples, ele será o ponto de partida para mais implementações desta serie.
+
+## Criando o projeto
+
+Abra seu terminal, criei um diretório para o projeto com o nome que preferir e execute:
+
+```bash
+npm init -y
+```
+
+Após iniciar o projeto e o arquivo package.json ter sido criado, vamos adicionar o TypeScript como dependência de desenvolvimento.
+
+```bash
+npm i typescript -D
+```
+
+Execute o TSC para gerar arquivo tsconfig.json:
+
+```bash
+npx tsc --init
+```
+
+Agora atualize o arquivo tsconfig.json que foi gerado, com as seguintes propriedades:
+
+```json
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "lib": ["ES6"],
+    "strict": true,
+    "esModuleInterop": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}
+```
+
+Para ajudar nosso fluxo de desenvolvimento, vamos adicionar a dependência do nodemon e o ts-node. Estes pacotes vão ajudar a converter nosso TypeScript em JavaScript, sempre que nosso código for atualizado. Para instalar as dependências execute:
+
+```bash
+npm i ts-node nodemon -D
+```
+
+Agora vamos adicionar um script para automatizar a atualização do nosso Javascript. Utilizando a propriedade watch do nodemon, faremos o ts-node converter nosso TypeScript em Javascript. Abra o arquivo package.json e adicione o script:
+
+```json
+"scripts": {
+  "dev": "nodemon --watch 'src/' --exec 'ts-node src/app.ts' -e ts",
+},
+```
+
+O próximo passo é adicionar o Express e os @types nas dependências, para isto execute:
+
+```bash
+npm i express @types/express
+```
+
+Até aqui concluímos nosso setup inicial, como configurar typescript com node.js. Este setup é o essencial para nosso ambiente de desenvolvimento, mas também precisamos criar um script de build, para nosso código de produção.
+
+Antes de avançar, vamos fazer um teste adicionando um primeiro arquivo, crie o diretório src e adicione o arquivo server.ts com o seguinte conteúdo:
+
+```javascript
+import express from "express";
+
+const server = express();
+
+server.get("/", (request, response) => {
+  return response.send("Hello!");
+});
+
+export default server;
+```
+
+Também crie outro arquivo com o nome de app.ts no diretório src, com o seguinte:
+
+```javascript
+import server from "./server";
+
+server.listen(8001);
+```
+
+Por fim, para testar nossa implementação, execute o comando **npm run dev** no seu terminal, a saída deve se parecer com isto:
+
+```bash
+[nodemon] 2.0.4
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): src/**/*
+[nodemon] watching extensions: ts
+[nodemon] starting `ts-node src/server.ts`
+```
+
+Abra seu navegador e acesse http://localhost:8001/ para ver o resultado.
+
+### Configurando o Jest
+
+Se você já trabalhou com Mocha, Chai, Sinon, entre outras ferramentas para testes e cobertura de código, recomendo conhecer o **[Jest](https://jestjs.io/)**, criada no Facebook por Christoph Pojer, atualmente é uma das melhores ferramentas para construção de teste.
+
+Vamos iniciar a instalação do Jest:
+
+```bash
+npm i jest ts-jest @types/jest
+```
+
+Para este exemplo, vamos precisar do Supertest, por que além de realizar a assertação, precisamos simular a requisição da nossa API, o Supertest será responsável por esta tarefa.
+
+Instalando as dependências:
+
+```bash
+npm i supertest @types/supertest
+```
+
+Agora crie o arquivo jest.config.js, este arquivo vai conter as seguintes regras para o Jest:
+
+```javascript
+module.exports = {
+  // Automatically clear mock calls and instances between every test
+  clearMocks: true,
+  // The directory where Jest should output its coverage files
+  coverageDirectory: "coverage",
+  // An array of file extensions your modules use
+  moduleFileExtensions: ["js", "json", "jsx", "ts", "tsx", "node"],
+  // The test environment that will be used for testing
+  testEnvironment: "node",
+  // A preset that is used as a base for Jest's configuration
+  preset: 'ts-jest',
+};
+```
+
+Por último, vamos adicionar no package.json o script para executar o Jest, os scripts devem ficar assim:
+
+```json
+"scripts": {
+  "dev": "nodemon --watch 'src/' --exec 'ts-node src/app.ts' -e ts",
+  "test": "jest"
+},
+```
+
+Agora você pode executar o comando **npm run dev** e obter este resultado:
+
+![Resultado do teste após o Jest executar.](/media/posts/configurando-node-js-com-typescript-nodemon-e-jest/output-jest.png)
+
+### Configuração para Produção
+
+Agora precisamos transpilar nosso código TypeScript em Javascript para produção. No lugar do TSC vamos utilizar o Babel, pois é a ferramenta que oferece maior compatibilidade e performance, mas adianto que existem inúmeros outros benefícios, se tiver interesse em saber todos eles, confira mais detalhes neste artigo.
+
+Vamos instalar as seguintes dependências do Babel:
+
+```bash
+npm i -D @babel/cli @babel/core @babel/node @babel/preset-env @babel/preset-typescript
+```
+
+Feito a instalação, vamos configurar o babel, crie um arquivo chamado babel.rc e adicione as seguintes configurações:
+
+```javascript
+module.exports = {
+  presets: [
+    [
+      '@babel/preset-env',
+      {
+        targets: {
+          node: 'current'
+        }
+      }
+    ],
+    '@babel/preset-typescript'
+  ],
+  ignore: [
+    '**/*.test.ts'
+  ]
+}
+```
+
+O que fizemos neste arquivo de configuração foi dizer ao Babel para utilizar a versão LTS do node, aplicar o preset-env, o preset-typescript e ignorar qualquer arquivo de teste. Com as configurações aplicadas, o que resta é adicionar um script para **build** e **start** da nossa aplicação node no package.json.
+
+```json
+"scripts": {
+  "start": "node dist/app.js",
+  "build": "babel src --out-dir dist --no-copy-ignored",
+  "dev": "nodemon --watch 'src/' --exec 'ts-node src/app.ts' -e ts",
+  "test": "jest"
+},
+```
+
+Agora você pode executar o comando npm run build, ele vai gerar os arquivos de saída e após você pode executar o comando npm start para iniciar a aplicação.
+
+### Configuração do ESLint
+
+Um ajuste importante para nosso setup é adicionar o ESLint, este pacote vai se encarregar de manter a qualidade do nosso código, garantindo o estilo, apontando possíveis problemas e aplicando correções.
+
+Vamos ao primeiro passo, instale a dependência do ESLint:
+
+```bash
+npm i eslint -D
+```
+
+Execute o comando eslint --init para iniciar a configuração, escolha as seguintes opções:
+
+How would you like to use ESLint?  
+❯ To check syntax, find problems, and enforce code style
+
+What type of modules does your project use?  
+❯ JavaScript modules (import/export)
+
+Which framework does your project use?  
+❯ None of these
+
+Does your project use TypeScript?  
+❯ Yes
+
+Where does your code run?  
+Aperte espaço para desmarcar Browser, mova para Node e aperte espaço para selecionar.
+
+How would you like to define a style for your project?  
+❯ Use a popular style guide  
+❯ Standard: https://github.com/standard/standard
+
+What format do you want your config file to be in?  
+❯ JSON
+
+Would you like to install them now with npm?  
+❯ Yes
+
+Pronto, se você aplicou estas respostas, teremos este arquivo .eslintrc.json:
+
+```javascript
+{
+    "env": {
+        "es2020": true,
+        "node": true
+    },
+    "extends": [
+        "standard"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": 11,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "@typescript-eslint"
+    ],
+    "rules": {
+    }
+}
+```
+
+Para finalizar, adicione o arquivo .eslintignore, vamos informar ao ESLint alguns tipos de arquivos e diretório que ele deve ignorar.
+
+```text
+dist
+/*.js
+/*.json
+```
+
+A partir de agora, você pode implementar seu código e pacotes, com um setup completo aproveitando todos os benefícios do TypeScript com Node.js, Jest, Babel, Nodemon e Eslint, mas lembre-se para usar o ESLint você precisa ter o plugin instalado no seu VSCode. Se quiser ver o código fonte final, **[está disponível aqui no meu github](https://github.com/danielcsrs/nodejs-typescript-jest)**.
+
+O que achou deste setup com TypeScript, fez sentido pra você? Ficou interessado em aplicar nos seus projetos? Deixe um comentário e me conte o que pensa, espero que te ajude a ver mais valor no TypeScript com Node.js. :)
+
+Obrigado pela leitura, até logo!

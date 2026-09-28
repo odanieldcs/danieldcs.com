@@ -1,0 +1,63 @@
+---
+title: "Motivos para usar TypeScript em projetos JavaScript"
+description: "Motivos para usar TypeScript, a ferramenta ideal para construir e manter sistemas complexos baseado em Javascript, garantindo uma arquitetura escalável."
+date: 2020-07-28
+tags:
+  - nodejs
+  - react-native
+  - react
+  - typescript
+language: pt
+---
+
+Trabalho com JavaScript para desenvolvimento web, backend e mobile há um certo tempo, recentemente comecei a usar TypeScrit nos meus projetos e fiquei muito satisfeito com o resultado. Agora resolvi escrever este post para compartilhar os meus **motivos para usar TypeScript** em Node.js, React.js e React Native, talvez eu possa te ajudar.
+
+Se você desenvolve em JavaScript, sabe que é muito fácil iniciar um app em Node.js, React ou React Native. Rapidamente nosso projeto JavaScript cresce, aumenta a complexidade e mais casos precisamos prever e cobrir em nossos testes. Algo até normal.
+
+Inicialmente está abordagem é eficiente para micro-serviços, pequenos componentes e SPAs. Quando temos uma aplicação com mais responsabilidades, outras pessoas contribuindo, não ter uma arquitetura e patterns adequados, fatalmente vamos começar a ter problemas. Só cobrir testes ou adotar linters, não é suficiente.
+
+A prática e academia ensina que, a ausência de padrões e uma arquitetura adequada, vai se manifestar em bugs, dificuldade para identificar um erro, indisponibilidade, erros de compatibilidade, logs e depurações intermináveis, até prejuízos financeiros.
+
+Muito dos erros de softwares podem ser evitados durante o desenvolvimento, e aí que entra o TypeScript. Se o desenvolvedor dispõe de um padrão de código e uma arquitetura bem definida, implementar uma nova feature, passa a ser uma tarefa trivial.
+
+## Porque preciso do TypeScript?
+
+Tenho alguns motivos para sugerir, mas talvez alguém diga:
+
+> Você pode ampliar seu Coverage, aplicar Code Review, implementar um Linter e tantas outras práticas, mas TypeScript não, não gosto de Orientação a Objetos.
+>
+> Algum Dev, por aí
+
+Entendo que talvez exista uma resistência, mas o TypeScript nasceu para facilitar nosso trabalho durante o desenvolvimento. Ele nos fornece informação para escrever um código mais limpo, organizado, seguindo padrões, nos ajudando a desenvolver de forma eficiente.
+
+Criado por **Anders Hejlsberg** em 2012 (criador do Delphi e Turbo pascal) e hoje mantido pela Microsoft, o TypeScript é um **superset JavaScript**. O TS ajuda desenvolvedores a criar e manter aplicações complexas em JavaScript, trazendo inúmeros facilidades para nossa IDE.
+
+Quando instalado, nossa IDE passa a contar com um **superset JavaScript poderoso**. Aqui estão pelo menos **9 motivos para usar TypeScript**:
+
+1. Integra recursos do ECMAScript 6.
+2. O compilador se encarrega de testar os tipos do nosso código durante o desenvolvimento, exibindo mensagens de erro e ajuda, antes de gerar o bundle do nosso app.
+3. Facilita o refactoring de códigos. No VSCode por exemplo, aperto F2 e altero nomes de métodos ou propriedades em todos arquivos de uma vez.
+4. Amplia o Intelisense do editor, com autocomplete de código, exibindo parâmetros esperados e descrições dos métodos.
+5. Garante consistência e padronização de código com o time.
+6. Permiti a construção de uma aplicação escalável, usando patterns avançados como Intersections Types, Generics, Unions, etc.
+7. Permiti programar Orientado a Objetos, criando classes, interfaces, enums e métodos.
+8. Oferece maior segurança para o time de desenvolvimento, ao manter uma tipagem forte.
+9. Facilita o onboarding de novos membros, o código herda princípios básicos de programação.
+
+## TypeScript e Babel
+
+Quando usamos TypeScript em projetos Node.js ou React, precisamos de um transpilador de código, ele é responsável por converter o TS em JavaScript, gerando o Bundle da nossa aplicação.
+
+Para gerar nosso JS, geralmente usamos Babel ou Sucrase, ambos resolvem o problema, mas existem algumas diferenças que podem interferir na sua escolha.
+
+[**O Sucrase**](https://github.com/alangpierce/sucrase) tem a vantagem de transpilar o código com muita velocidade, chega a ser 20 vezes mais rápido que o Babel. Ele assume que você está escrevendo um código JavaScript válido, ignorando a checagem de tipos, adicionalmente você vai precisar configurar um linter.
+
+Além disso, também não oferece suporte a navegadores antigos, como o Internet Explorer, e não é indicado para gerar bundle de produção, inclusive eles não recomendam.
+
+**[O Babel](https://babeljs.io/docs/en/)** é mais lento, no entanto, oferece uma compatibilidade maior com os navegadores mais antigos. Também gera um bundle mais otimizado, suportando os recursos mais recentes do ECMAScript, realiza a checagem de tipos durante o build. Sua arquitetura é baseada em plugins, inclusive você pode escrever os seus próprios e de longe, é amplamente utilizado pela comunidade e usado em produção.
+
+Na dúvida sobre o Babel ou Sucrase, recomendo que use Babel para projetos que serão publicados em produção. Utilize o Sucrase para seus estudos.
+
+Para minha realidade, estes **motivos para usar TypeScript** foram suficientes. Estou trabalhando com TS e em breve vou compartilhar mais percepções. Se quiser saber mais, sobre como tenho usado, fique a vontade em [entrar em contato](https://danieldcs.com/contato/).
+
+Obrigado pela leitura!
