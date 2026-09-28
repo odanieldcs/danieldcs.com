@@ -24,6 +24,7 @@
     "postcss": "^8.5.28",
     "react": "19.2.8",
     "react-dom": "19.2.8",
+    "remark-gfm": "^4.0.1",
     "tailwindcss": "^4.3.3",
     "zod": "^4.6.5"
   },

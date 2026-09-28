@@ -1,0 +1,255 @@
+---
+title: "Docker: Introdução e primeiros passos para Devs"
+description: "Artigo pratico com os primeiros passos com Docker, o que é o Docker, as vantagens, desvantagens e quando devemos usar containers."
+date: 2023-04-15
+tags:
+  - docker
+cover: "/media/posts/docker-introducao-e-primeiros-passos-para-devs/guia-docker-para-iniciantes.jpg"
+language: pt
+---
+
+Se você está desenvolvendo aplicações há algum tempo e já ouviu falar sobre Docker, mas ainda não entendeu muito bem **o que é o Docker**, **quando deve usar** ou quer saber **como começar com o Docker**, neste artigo quero ajudar a responder estas dúvidas.
+
+Já faz um tempo que falo de desenvolvimento frontend, agora chegou o momento de compartilhar também um pouco mais sobre backend, e para começar vamos conhecer essa tecnologia tão importante para Devs, seja você Frontend ou Backend.
+
+Caso prefira navegar para um ponto específico, deixei este indíce:
+
+[Qual problema Docker resolve?](#problema)  
+[O que é o Docker?  
+](#o-que-e-o-docker)[Quais as vantagens de usar Docker?  
+](#vantagens-docker)[Desvantagens de usar Docker?  
+](#desvantagens-docker)[Como começar a usar Docker?](#comecar-com-docker)
+
+## O problema
+
+Antes de explicar o **que é o Docker**, é bom lembrar que quando estamos desenvolvendo um software, é comum existir múltiplos ambientes para nossa aplicação, alguns exemplos:
+
+- **Desenvolvimento**: _Seu ambiente local, sua máquina._
+
+- **Teste**: _Ambiente para testar nossa aplicação._
+
+- **Homologação**: _Ambiente para o time de negócio testar a aplicação._
+
+- **Produção**: _Ambiente utilizado pelo o cliente final._
+
+Geralmente, estes são os ambientes mais comuns nas empresas.
+
+É comum que configurações de segurança, variáveis de ambiente, permissões e até o sistema operacional seja diferente nestes ambientes.
+
+É bem provavel que hoje você esteja programando no Windows, mas o servidor que você vai publicar a aplicação esteja em um ambiente Linux.
+
+Infelizmente, estas **diferenças de ambiente**, acabam sendo motivo para o código apresentar algum problema. Quem nunca escutou, "Na minha máquina esta funcionando"?
+
+Outro cenário comum é quando você tem uma aplicação e precisa ter **réplicas em execução**, isto é bastante comum, para suportar grandes volumes de requisições, mas agora imagine lançar uma atualização nestas replicas, indo máquina por máquina.
+
+Para minizar estes problemas **podemos usar containers**.
+
+Os **containers são ambientes isolados, independentes e aut**ô**nomos** para sua aplicação ficar em execução. Isso permiti padronizar e otimizar a publicação de uma aplicação. Usando containers você pode gerar um único artefato (imagem) e publicar onde precisar.
+
+E estes são apenas alguns cenários, containers estão aí para nos ajudar a otimizar nosso fluxo de trabalho e uma das soluções mais populares é o Docker.
+
+Agora, vamos adiante, conhecer mais sobre Docker.
+
+## O que é o Docker?
+
+O Docker é uma plataforma de código aberto, que ajuda na criação e administração de aplicações em ambientes isolados, chamados de containers.
+
+A partir de uma imagem da sua aplicação, você pode copiar, migrar e implantar a aplicação em containers de um ambiente para outro que tenha Docker instalado.
+
+A **imagem Docker é um pacote executável e autônomo** que contém o código da sua aplicação, com configurações, bibliotecas e dependências. Essa imagem é gerada a partir de um arquivo Dockerfile e pode ser armazenada para reuso e replicação.
+
+Essa flexibilidade existe porque a imagem é colocada em execução em um Container Docker, um ambiente isolado do host, ainda assim com acesso compartilhado ao sistema de arquivos, interfaces de rede e portas do Host.
+
+Containers se parecerem muito com uma Máquina Virtual, mas possuem algumas diferenças na sua concepção que os tornam mais portáteis, leves e autônomo do que uma VM, veja:
+
+![Docker Containers e VM](/media/posts/docker-introducao-e-primeiros-passos-para-devs/docker-container-vs-vm-1024x448.png)
+
+Conceitualmente, Máquinas Virtuais são abstrações do hardwre físico de um servidor, a partir de um Hypervisor que transforma o host em muitos servidores. Isso permiti, por exemplo, que você tenha múltiplos sistemas operacionais usando o mesmo Hardware.
+
+Já os containers, são a abstração da camada de aplicação do host, do Sistema Operacional. O container compartilha o mesmo kernel do SO entre os containers, mas cada um é executado em um processo isolado.
+
+Embora ambas soluções sejam boas, containers levam vantagem, vamos ver mais abaixo.
+
+Aqui cabe um contexto histórico, os containers já eram realidade antes do Docker com os Linux Containers (LXC), foi a partir de alguns desafios com essa abordagem que o Docker foi apresentado na [PyCon de 2013](https://www.youtube.com/watch?v=9xciauwbsuo) pelo Solomon Hykes.
+
+Vamos adiante conhecer as vantagens e desvatangens de usar containers Docker.
+
+### **Vantagens** de usar Docker
+
+- **Portabilidade**: os containers são leves, menores e portáteis, você consegue executar em qualquer ambiente com Docker instalado.  
+      
+    
+
+- **Agilidade na implantação e execução**: como os containers são menores e independentes, o processo de implantação se torna mais fácil e consistente, é uma excelente ferramenta para ambientes de Microsserviços, que precisam ser lançados isoladamente e serem independentes.  
+      
+    
+
+- **Isolamento do ambiente**: ao utilizar Docker, você tem um ambiente isolado para seu aplicativo, evitando interferência de outros. Um container terá apenas a sua imagem em execução e vai garantir o isolamento no host.  
+      
+    
+
+- **Escalabilidade**: com containers, você pode dimensionar sua aplicação verticalmente ou horizontalmente, adicionando ou removendo recursos como memória e cpu ou replicando cópias do seu container conforme a necessidade.  
+      
+    
+
+- **Segurança**: os containers por oferecer um ambiente isolado, possuem privilégios mínimos para execução da aplicação e apenas dentro do seu container.  
+      
+    
+
+- **Compartilhamento**: ao trabalhar com containers é possível compartilhar com outros membros da equipe de desenvolvimento o mesmo ambiente, todos passam a manter a mesma estrutura que a aplicação está executando, garantindo mais consistência no desenvolvimento e testes para todos envolvidos.
+
+### Desvantagens do Docker
+
+- **Complexidade**: o uso de Docker vai exigir uma curva de aprendizado para dominar os conceitos, fundamentos e principais comandos para configurar e gerenciar o ambiente.  
+      
+    
+
+- **Dependência**: embora o Docker seja amplamente utilizado, se usar containers Docker, você vai ficar refém do seu ecossistema. É importante considerar que existem outras alternativas de containers, entre elas Podman, LXC e OpenShift.  
+      
+    
+
+- **Compatibilidade**: é possível usar containers Docker com muitos sistemas operacionais e tecnologias, mas algumas aplicações podem acabar não funcionando bem com containers e você vai precisar de configurações adicionais.  
+      
+    
+
+- **Único SO por Host**: diferente de máquinas virtuais, que o hypervisor abstrai o hardware inteiro e você pode ter o sistema operacional que for necessário na sua VM, a imagem do seu container Docker precisa ser baseada no sistema operacional do Host.  
+      
+    Se o Host é Linux, você poderá executar apenas imagens Linux, se o Host for Windows, será possível executar somente imagens Windows.  
+      
+    Mas, isso não se aplica no seu ambiente de desenvolvimento, ao usar Docker Desktop, ele cria uma VM e ali você pode executar diferentes tipos de contêineres.  
+      
+    
+
+- **Consumo de recursos**: um ambiente Docker com muitos containers simultâneos pode consumir muito recurso, especialmente memória e CPU, dependendo do tipo de operação que seu sistema realiza, usar Docker talvez não seja uma boa decisão.  
+      
+    
+
+- **Segurança**: o kernel do sistema operacional é compartilhado, logo, caso algum código malicioso tenha acesso ao Host, isto poderá oferecer risco a segurança do ambiente.
+
+## Quando devo utilizar Docker
+
+Não é regra, mas se você tem uma aplicação distribuída (microsserviços), usar containers pode ser uma boa prática, vai te ajudar a padronizar o ambiente, implantar e replicar com agilidade novas replicas do serviço quando necessário.
+
+Mas Docker não é restrito a **microsserviços**, também é possível conteinerizar uma aplicação monolítica, o que poderá ser necessário é alguma configuração adicional.
+
+O nível de compatibilidade do Docker é muito grande, você encontra imagens de ambientes no [Docker Hub](https://hub.docker.com/) para executar praticamente qualquer linguagem ou tecnologia, como Node.js, Python, Go, PHP, .NET, MySQL, Redis, PostgreSQL ou RabbitMQ.
+
+O principal questionamento que você deve fazer é: Será que o projeto que estou desenvolvendo é compátivel com containers e como isto vai otimizar meu fluxo de trabalho?
+
+Hoje tem sido uma escolha quase certa em muitos projetos, justamente por trazer mais vantagens do que desvantagens. Mais do que nunca, nós como Pessoas Desenvolvedoras precisamos conhecer mais sobre esta tecnologia e inserir no nosso dia a dia.
+
+## Como começar a usar o Docker
+
+Agora sim, vamos há um exemplo e alguns comandos básicos:
+
+### 1\. Instalar o Docker
+
+Para começar, vamos instalar o Docker Desktop na máquina.
+
+O Docker Desktop é o instalador e inteface gráfica (UI) para visualizar containers, imagens, volumes, entre outras configurações no seu ambiente local.
+
+O Docker está disponível para Windows, Linux e Mac.
+
+Baixe o instalador em [https://docs.docker.com/get-docker/](https://docs.docker.com/get-docker/) e siga as instruções.
+
+### 2\. Verificar a instalação e criar conta no Docker Hub
+
+Para verificar se o Docker foi instalado, abra um terminal e execute o seguinte comando:
+
+```vim
+docker --version
+```
+
+Isso deve retornar a versão do Docker em sua máquina.
+
+Após confirmar a instalação, abra o Docker Desktop e clique no botão Sign-in, caso você ainda não tenha um Docker ID, recomendo que crie sua conta e realize o login.
+
+A criação do seu Docker ID vai te dar acesso as imagens públicas no Docker Hub, você poderá carregar suas imagens de containers para compartilhar com outros Devs e ter acesso a [outros recursos](https://docs.docker.com/docker-hub/) para você ter uma experiência mais completa.
+
+### 3\. Executar um container
+
+Agora vamos executar um container. Neste primeiro artigo, vamos executar o container "hello-world" fornecido pelo Docker.
+
+Execute o seguinte comando para executar o container:
+
+```vim
+docker run hello-world
+```
+
+O comando run fará o download da imagem hello-world para executar. O resultado esperado é uma mensagem de boas-vindas similar a imagem abaixo.
+
+![resultado do docker run hello world](/media/posts/docker-introducao-e-primeiros-passos-para-devs/docker-hello-world.png "resultado do docker run hello world")
+
+### 4\. Listar imagens
+
+Após executar o container, uma imagem foi baixada para seu ambiente e isto sempre vai acontecer quando você executar algum container.
+
+Agora vamos visualizar todas as imagens baixadas, execute o comando a seguir:
+
+```vim
+docker images
+```
+
+O resultado será uma lista das imagens com algumas informações úteis, veja no print abaixo que temos o **hello-world** na lista, além de outras imagens que eu já tinha baixado.
+
+![resultado comando docker images](/media/posts/docker-introducao-e-primeiros-passos-para-devs/docker-images.png "resultado comando docker images")
+
+### 5\. Listar containers
+
+Agora o próximo comando que vamos testar é para listar os containers que estão em execução no nosso ambiente, para isso execute este comando:
+
+```vim
+docker ps
+```
+
+Neste nosso primeiro teste, o resultado será vazio, porque o container hello-world não ficou em execução, apenas gerou uma saída no terminal.
+
+![resultado comando docker ps](/media/posts/docker-introducao-e-primeiros-passos-para-devs/docker-ps-containers.png "resultado comando docker ps")
+
+### 6\. Pausar um container
+
+Agora, caso o container estivesse em execução, poderíamos pausar nosso container executando o seguinte comando com o seu ID ou o nome de container:
+
+```vim
+docker stop <ID ou nome do container>
+```
+
+Nos próximos exemplos vamos conseguir usar estes e outros comandos. :)
+
+### 7\. Remover um container
+
+Após pausar o container, você também poderá remove-lo, para isso você pode executar o comando abaixo junto com o ID ou nome de container:
+
+```vim
+docker rm <ID ou nome do container>
+```
+
+### 8\. Remover uma imagem
+
+Por fim, vamos aprender a remover a imagem utilizada pelo nosso container, isto vai liberar espaço do nosso ambiente. Utilize o comando abaixo com o ID o nome da imagem:
+
+```vim
+docker image rm <ID ou nome da imagem>
+```
+
+### 9\. Mais comandos Docker
+
+Estes são apenas alguns comandos básicos, você pode descobrir mais comandos e suas opções usando a propriedade \--help no terminal.
+
+Vou deixar aqui alguns exemplos para você explorar:
+
+```vim
+docker --help
+docker images --help
+docker ps --help
+```
+
+## Próximos passos
+
+Agora, os próximos passos é explorar mais o Docker conteinerizando algumas aplicações, para isso temos uma outra forma de configurar nossa aplicação, usando um arquivo de configuração chamado Dockerfile, ao invés de executar via terminal.
+
+No próximo artigo vamos ver sobre isso. Neste primeiro artigo meu objetivo era te apresentar o Docker, as suas vantagens, desvantagens, fazer um hello-world e apresentar alguns comandos básicos para começarmos.
+
+Espero ter conseguido te ajudar, agora além de falar de [frontend e desenvolvimento web](https://danieldcs.com/categoria/desenvolvimento/), vamos ter mais artigos sobre backend e DevOps também por aqui. Caso tenha curtido o artigo e tenha outras sugestões, pode deixar seu feedback nos comentário aqui abaixo, ficarei muito feliz em saber sua opnião.
+
+Até mais!

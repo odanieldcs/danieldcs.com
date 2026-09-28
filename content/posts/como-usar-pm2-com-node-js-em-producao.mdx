@@ -1,0 +1,305 @@
+---
+title: "Como usar PM2 com Node.js em Produção"
+description: "Confira os principais comandos sobre como usar o PM2 com Node.js para monitorar e gerenciar aplicações em produção."
+date: 2022-07-20
+tags:
+  - javascript
+  - microservices
+  - nodejs
+cover: "/media/posts/como-usar-pm2-com-node-js-em-producao/pm2-com-nodejs.jpg"
+language: pt
+---
+
+Se você desenvolve aplicações em Node.js, precisa controlar quando iniciar, monitorar e gerenciar vários aspectos destas aplicações, neste post quero compartilhar com você sobre o PM2, uma excelente ferramenta para gerenciar processos do Node.js em produção.
+
+Caso ainda não conheça esta ferramenta, o [**PM2 é um Gerenciador de Processos**](https://pm2.io/), ideal para **Monitorar e Gerenciar aplicações em Node.js em Produção**, uma ferramenta extremamente útil e poderosa para ambientes que precisem de alta disponibilidade.
+
+Com uma CLI bem completa, está ferramenta permite que você gerencie e monitore diversas informações dos processos, inclusive, caso algum falhe, a ferramenta trata de reiniciar o processo para você, evitando qualquer tempo de indisponibilidade.
+
+Dentre os **recursos oferecidos no PM2**, vale destacar o **monitoramento de recursos**, **logs**, **hot reload**, persistência de aplicação, estratégias de restart e o modo cluster.
+
+Além disso, existe o **PM2 Plus**, um Dashbard Web que apresentar as informações dos seus processos em uma interface bem intuitiva e em realtime.
+
+![PM2 Plus Web Dashboard](/media/posts/como-usar-pm2-com-node-js-em-producao/pm2-plus-dashboard-1024x547.png)
+
+Neste artigo pretendo te apresentar o essencial e cobrir os principais comandos para você começar a usar esta ferramenta tão importante, diferente do que já escrevi [neste tutorial](/blog/configurando-node-js-com-typescript-nodemon-e-jest) onde mostro como usar o nodemon para manter a aplicação rodando em desenvolvimento, neste artigo vamos ver como usar um recurso semelhante mas em Produção.
+
+Espero que te ajude como uma referência para ampliar sua "caixa de ferramentas dev". 🚀
+
+Bora para o Terminal.
+
+## Instalando o PM2
+
+O primeiro passo é instalar o PM2 globalmente, execute o seguinte comando:
+
+```bash
+npm install pm2@latest -g
+```
+
+Agora execute o seguinte comando para se certificar verificar a versão que está instalado:
+
+```bash
+pm2 --version
+```
+
+O resultado deve conter o logo do PM2 em caracteres e na última linha a versão.
+
+Agora para testarmos os comandos do PM2, precisamos ter uma API Node.js, na etapa seguinte vamos criar uma API com Express bem simples.
+
+## Criando a API Node.js
+
+Para podermos publicar uma API Node.js, precisamos ter alguma desenvolvida, para este tutorial vamos desenvolver uma rota simples com um Hello World com [Express](https://expressjs.com/).
+
+Execute os seguintes comandos a seguir no seu terminal:
+
+```powershell
+mkdir tutorial-nodejs-aws-ssl && cd tutorial-nodejs-aws-ssl
+```
+
+Agora vamos criar o Package.json e instalar o Express:
+
+```powershell
+npm init -y && npm install express
+```
+
+Agora abra o projeto no VS Code, crie o arquivo app.js e adicione o seguinte:
+
+```javascript
+const express = require("express");
+const app = express();
+const port = 3000;
+
+app.get("/", (req, res) => res.send("Hello World!"));
+
+app.listen(port, () => console.log(`App listening on port ${port}!`));
+```
+
+Agora para executar a aplicação execute no terminal:
+
+```powershell
+node app.js
+```
+
+Para testar, você pode acessar a aplicação em: [http://localhost:3000/](http://localhost:3000/)
+
+A ideia até aqui foi apenas criar uma rota e executar o processo com o Node.js, agora vamos pausar o processo e iniciar ele com o PM2.
+
+## Utilizando o PM2
+
+**Para iniciar a aplicação com PM2 execute:**
+
+```powershell
+pm2 start app.js
+```
+
+A saída deve ser semelhante a esta imagem:
+
+![PM2 outuput após start](/media/posts/como-usar-pm2-com-node-js-em-producao/pm2-output-start-1024x102.png)
+
+Este é um resumo das informações do nosso app, perceba que temos informações bem interessantes aqui e algumas delas podemos customizar na inicialização do processo.
+
+Agora vamos adicionar uma nova rota no arquivo app.js, com o seguinte código:
+
+```javascript
+const express = require("express");
+const app = express();
+const port = 3000;
+
+app.get("/", (req, res) => res.send("Hello World!"));
+
+app.get("/health", (req, res) => res.send("OK"));
+
+app.listen(port, () => console.log(`App listening on port ${port}!`));
+```
+
+Se você tentar acessar a rota **/health** deverá ver a mensagem **_Cannot GET /health_**, isto acontece porquê o processo já está em execução com os arquivos antigos, sem as novas alterações, mas vamos resolver isso adicionando uma propriedade na inicialização.
+
+**Primeiro, para testar as alterações, execute o comando de restart do PM2:**
+
+```powershell
+pm2 restart app
+```
+
+Ao acessar a rota **/health** será possível ler a mensagem **OK**.
+
+Agora, vamos configurar o PM2 para reiniciar nosso processo sempre que algum arquivo for alterado, primeiro execute este comando para parar a aplicação no PM2:
+
+```powershell
+pm2 stop app
+```
+
+**Execute o seguinte comando para iniciar a aplicação com watch habilitado no PM2.**
+
+```powershell
+pm2 start app.js --watch
+```
+
+Agora, a saída no terminal deve ser como está imagem, com o modo Watching **_enabled_**.
+
+![](/media/posts/como-usar-pm2-com-node-js-em-producao/pm2-output-start-w-1024x98.png)
+
+Vamos adicionar uma nova rota no código para testar se está funcionando como esperado.
+
+Altere o código do app.js para o seguinte:
+
+```javascript
+const express = require("express");
+const app = express();
+const port = 3000;
+
+app.get("/", (req, res) => res.send("Hello World!"));
+
+app.get("/health", (req, res) => res.send("OK"));
+
+app.get("/timestamp", (req, res) => res.send(Date.now().toString()));
+
+app.listen(port, () => console.log(`App listening on port ${port}!`));
+```
+
+Agora acessando a rota /timestamp você verá as alterações aplicadas sem precisar reiniciar manualmente a aplicação. Para ver que o serviço foi reiniciado, você pode abrir os logs.
+
+**Execute este comando para ver os logs no PM2:**
+
+```powershell
+pm2 logs app
+```
+
+Você deve ver duas linhas com a mensagem: App listening on port 3000!
+
+Inclusive, quando algum erro acontecer na aplicação, você poderá inspecionar a mensagem que sair no terminal com este comando, a baixo um exemplo de mensagem, forcei um erro na rota /timestamp e instantes depois o PM2 reiniciou o processo.
+
+![](/media/posts/como-usar-pm2-com-node-js-em-producao/pm2-output-logs-1024x389.png)
+
+Caso você tenha muitas linhas sendo retornadas, você pode limitar a quantidade de linhas usando a propriedade --lines <quantidade>, ficando assim:
+
+```powershell
+pm2 logs app --lines 100
+```
+
+**Um ponto importante até aqui:** Estamos usando o **_name_** do processo para executar os comandos, este name é o nome do arquivo que foi informado na inicialização do processo, se o arquivo estive nomeado como **_index.js_**, o nome do processo seria **index**.
+
+Caso você use o mesmo nome de arquivo para seus apps Node.js**, você pode usar o ID do processo** para executar os comandos do PM2, o comando `pm2 logs 0` seria o equivalente neste tutorial e cada novo processo iniciado terá o ID incrementado.
+
+Porém, utilizar o ID ou o nome do arquivo pode acabar não sendo uma boa ideia caso você tenha muitos processos em execução, pare o processo no PM2 e vamos melhorar isso.
+
+Agora execute este comando para iniciar o processo nomeado no PM2:
+
+```powershell
+pm2 start app.js --watch --name app-a01
+```
+
+A partir de agora na listagem o **_name_** do processo será **_app-01_**.
+
+Vamos agora iniciar outra aplicação com o PM2, para isso vamos criar um novo arquivo no projeto chamado app02.js com o seguinte código:
+
+```javascript
+const express = require("express");
+const app = express();
+const port = 3001;
+
+app.get("/", (req, res) => res.send("Hello World App 02!"));
+
+app.listen(port, () => console.log(`App listening on port ${port}!`));
+```
+
+Inicie o processo com o comando:
+
+```powershell
+pm2 start app02.js --watch --name app-02
+```
+
+A partir de agora você deverá ter dois processos em execução como nesta imagem:
+
+![](/media/posts/como-usar-pm2-com-node-js-em-producao/pm2-output-logs-2process-1024x113.png)
+
+Algo que também pode ser útil para limitar o consumo de memória de um processo é atribuir um limite de uso, com o PM2 é possível definir o máximo de memória que o processo pode usar do servidor, quando este limite é atingido, o processo é reiniciado.
+
+Pare o processo e use este comando para iniciar o processo com limite de memória:
+
+```powershell
+pm2 start app02.js --watch --name app-02 --max-memory-restart 256
+```
+
+Isto pode ser útil em alguns cenários onde você tem muitos processos concorrentes em um ambientes com recursos limitados, mas tome cuidado, sempre avalie o motivo de uma requisição consumir muita memória e tempo de execução, e até mesmo qual o impacto no seu sistema ao interromper uma requisição.
+
+Agora que temos duas aplicações em execução, podemos visualizar os processos usando o comando pm2 list, pm2 ls ou pm2 status, a saída será exatamente igual a da imagem anterior, porém você pode ver os processos e os logs juntos.
+
+Execute o seguinte comando para visualizar os processos e logs no PM2:
+
+```powershell
+pm2 monit
+```
+
+Agora podemos remover este segundo processo que criamos, ele serviu apenas de exemplo.
+
+Execute este comando para remover um processo no PM2:
+
+```powershell
+pm2 delete app-02
+```
+
+### Modo Cluster do PM2
+
+Outro recurso muito útil do PM2 que você precisa conhecer é o modo cluster.
+
+**O modo cluster do PM2 permite que aplicações Node.js utilizem todas as CPUs disponíveis sem nenhuma modificação no código**. O PM2 inclui um balanceador de carga automático que compartilha todas as conexões HTTP, HTTPS, Websocket, TCP e UDP entre cada processo gerado.
+
+Desta forma, ao inciar um processo no modo cluster, o PM2 vai se encarregar de verificar a quantidade de CPUs disponíveis e iniciar os processos usando todas as threads. Por debaixo dos panos, o PM2 está usando o [módulo cluster](https://nodejs.org/api/cluster.html) do próprio Node.js.
+
+Você poderá acionar sua aplicação usando a mesma porta que o balanceador de carga do PM2 vai distribuir a requisição entre os processos.
+
+**Para iniciar o aplicativo Node.js no modo cluster no PM2 execute:**
+
+```powershell
+pm2 start app.js --watch --name app-01 -i <numero>|max
+```
+
+Você pode especificar a quantidade de CPUs que o processo vai usar <numero> ou o **max**, para utilizar todos as CPUs disponíveis.
+
+<figure>
+
+![](/media/posts/como-usar-pm2-com-node-js-em-producao/pm2-output-start-cluster-1024x154.png)
+
+<figcaption>
+
+Resultado ao iniciar o processo com 4 CPUs
+
+</figcaption>
+
+</figure>
+
+Nem preciso dizer que a principal vantagem desse modo é ampliar o desempenho do app. :)
+
+## Resumo dos Comandos
+
+Para resumir, vimos neste tutorial os seguintes comandos e propriedades:
+
+| **pm2 start arquivo.js** | Inicia um novo processo |
+| --- | --- |
+| **pm2 stop <nome>** | Para um processo em execução |
+| **pm2 restart <nome>** | Reinicia um processo |
+| **pm2 delete <nome>** | Remove um processo |
+| **pm2 logs <nome>** | Exibe os logs de um processo |
+| **pm2 logs <nome> --lines 100** | Exibe as últimas 100 linhas de logs de um processo |
+| **pm2 monit** | Exibe um Dashboard no Terminal com informações dos processos |
+| **\--watch** | Reinicia o processo quando um arquivo é alterado: |
+| **\--name <nome>** | Define um nome para o processo |
+| **\--max-memory-restart <numero>** | Define um limite de memória para o processo |
+| \-i <numero> | Inicia no modo cluster com a quantidade de CPUs informada |
+| \-i max | Inicia no modo cluster com todas as CPUs disponíveis |
+
+Adicionalmente você pode usar também estes comandos:
+
+| **pm2 list   pm2 ls   pm2 status** | Lista todos os processo em Execução |
+| --- | --- |
+| **pm2 stop all** | Para todos os processos em execução |
+| **pm2 start all** | Inicia todos os processos |
+| **pm2 restart all** | Reinicia todos os processos |
+| **pm2 delete all** | Remove todos os processos |
+| **pm2 flush** | Limpa todos os arquivos de logs |
+
+Bem, estes são alguns comandos e possibilidades que temos ao usar o PM2 com Node.js, se você ainda não utiliza PM2 com Node.js em Produção, recomendo considerar o uso desta ferramenta para ter um melhorar o Monitoramento e Gerenciamento dos processos, de longe, é uma das ferramentas mais utilizadas em aplicações profissionais.
+
+Espero que o conteúdo tenha te ajudado, caso tenha curtido me deixe saber comentando aqui e não esqueça de compartilhar este conteúdo com outros Devs.
+
+Até mais!

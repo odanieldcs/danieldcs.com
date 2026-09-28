@@ -81,6 +81,8 @@ function MdxImage({
     return null
   }
 
+  const unoptimized = src.toLowerCase().endsWith('.gif')
+
   return (
     <Image
       src={src}
@@ -89,6 +91,7 @@ function MdxImage({
       height={toPositiveInt(height, FALLBACK_IMAGE_HEIGHT)}
       className={contentImageClassName}
       sizes="(min-width: 48rem) 42rem, 100vw"
+      unoptimized={unoptimized}
     />
   )
 }
@@ -101,6 +104,8 @@ const inlineCodeClassName = [
   'rounded-sm bg-muted/15 px-1.5 py-0.5',
   'font-mono text-code align-baseline',
 ].join(' ')
+
+const tableCellClassName = 'border border-border px-inline py-1 text-body'
 
 function MdxPre({
   className,
@@ -219,6 +224,32 @@ export const mdxComponents: NonNullable<MDXRemoteProps['components']> = {
   ),
   a: MdxLink,
   img: MdxImage,
+  MdxFigure: ({ className, ...props }) => (
+    <figure className={joinClasses('my-content-gap', className)} {...props} />
+  ),
+  MdxFigcaption: ({ className, ...props }) => (
+    <figcaption
+      className={joinClasses('text-caption text-muted [&_p]:mb-0', className)}
+      {...props}
+    />
+  ),
+  table: ({ className, ...props }) => (
+    <div className="my-content-gap overflow-x-auto">
+      <table
+        className={joinClasses('w-full border-collapse text-body', className)}
+        {...props}
+      />
+    </div>
+  ),
+  th: ({ className, ...props }) => (
+    <th
+      className={joinClasses(`${tableCellClassName} text-left`, className)}
+      {...props}
+    />
+  ),
+  td: ({ className, ...props }) => (
+    <td className={joinClasses(tableCellClassName, className)} {...props} />
+  ),
   pre: MdxPre,
   code: MdxCode,
 }
