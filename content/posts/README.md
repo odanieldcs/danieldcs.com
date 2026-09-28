@@ -18,7 +18,7 @@ Each file starts with YAML frontmatter validated by [`lib/content/schema.ts`](..
 
    `language` is `pt` or `en`. `date` and `updatedAt` use `YYYY-MM-DD`. Extra keys fail — the schema is strict, so skip `draft` and typos. Validation lives in [`lib/content/schema.ts`](../../lib/content/schema.ts).
 
-3. Cover images go in [`public/media/posts/`](../../public/media/posts/). In frontmatter, use just the filename (`cover: meu-artigo.png`); the route resolves it to `/media/posts/<filename>`.
+3. Cover images go in [`public/media/posts/<slug>/`](../../public/media/posts/). Use an absolute path in frontmatter (`cover: /media/posts/<slug>/meu-artigo.png`) and the same prefix for inline images in the body (`/media/posts/<slug>/<arquivo>`). A bare filename still resolves to `/media/posts/<filename>` for placeholders and [`content-system.mdx`](content-system.mdx).
 
 Copy this and change the values:
 
@@ -31,7 +31,7 @@ tags:
   - content
   - mdx
   - nextjs
-cover: content-system.png
+cover: /media/posts/content-system/content-system.png
 language: pt
 ---
 
@@ -49,7 +49,7 @@ export function getAllPostSlugs(postsDir?: string): string[] {
 }
 ```
 
-![Fluxo simplificado do content system](/media/posts/content-system-pipeline.png)
+![Fluxo simplificado do content system](/media/posts/content-system/content-system-pipeline.png)
 ````
 
 The reference article is [`content-system.mdx`](content-system.mdx).

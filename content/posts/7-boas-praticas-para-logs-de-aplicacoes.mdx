@@ -1,0 +1,368 @@
+---
+title: "7 boas práticas para logs de aplicações"
+description: "Imagine um quebra-cabeças complexo, onde cada peça representa uma interação, um evento ou uma transação dentro do seu sistema."
+date: 2025-01-19
+tags:
+  - architecture
+  - logging
+cover: "/media/posts/7-boas-praticas-para-logs-de-aplicacoes/post-boas-praticas-logs.png"
+language: pt
+---
+
+Imagine um quebra-cabeças complexo, onde cada peça representa uma interação, um evento ou uma transação dentro do seu sistema. Os logs são como as pistas que guiam o desenvolvedor na resolução desse enigma, permitindo decifrar o fluxo de informações e solucionar problemas de forma eficiente.
+
+Ao desenvolver uma aplicação, é essencial gerar logs eficazes, que capturem erros, registrem informações relevantes e forneçam insights valiosos sobre o funcionamento do sistema.
+
+Muitas vezes, nós, desenvolvedores, cometemos o erro de registrar informações em excesso, na esperança de facilitar a depuração. Entretanto, essa prática pode gerar um volume excessivo de dados, tornando a análise lenta, complexa e cara.
+
+Ao longo da minha carreira, aprendi a importância de adotar boas práticas para otimizar o processo de logging, transformando essa tarefa em uma ferramenta poderosa para o desenvolvimento e a manutenção de softwares.
+
+Com base nessa experiência, resolvi escrever neste artigo 7 dicas valiosas para registrar logs de forma eficiente e econômica.
+
+## 1. Níveis de log
+
+O nível de log é um dos aspectos mais básicos e importantes de qualquer sistema, é a chave para uma análise eficiente, pois indica a gravidade do evento registrado. Utilizar o nível correto é crucial para facilitar a análise e a resolução de problemas.
+
+Confira os diferentes níveis de logs e seus usos:
+
+- **INFO**
+    - Eventos significativos relacionados a regras de negócio.
+    
+    - Exemplo: "Usuário 'fulano' realizou login no sistema."  
+        
+
+- **WARN**
+    - Comportamentos anormais no sistema, que podem indicar problemas futuros.
+    
+    - Exemplo: "Número de conexões ao banco de dados excedeu o limite recomendado."  
+        
+
+- **ERROR**
+    - Erros irrecuperáveis que afetam uma transação específica.
+    
+    - Exemplo: "Erro ao processar pagamento do pedido #1234."  
+        
+
+- **FATAL**
+    - Erros críticos que afetam todo o programa.
+    
+    - Exemplo: "Falha na conexão com o servidor principal."  
+        
+
+- **DEBUG**
+    - Mensagens detalhadas para auxiliar no desenvolvimento e na resolução de problemas.
+    
+    - Exemplo: "Variável 'x' com valor inesperado: 5."  
+        
+
+- **TRACE**
+    - Rastreamento detalhado do fluxo de execução do código, geralmente usado apenas em ambiente de desenvolvimento.
+    
+    - Exemplo: "Método 'calcularValorTotal' chamado com os parâmetros 10 e 20."
+
+**Exemplos de Mensagem**
+
+```text
+INFO: "Pedido #12345 criado com sucesso"
+INFO: "Nova conta criada: user_id=789"
+INFO: "Sistema iniciado na porta 8080"
+
+WARN: "Tentativa de login falhou 3 vezes para o usuário 'john_doe'"
+WARN: "Espaço em disco está em 85% da capacidade"
+WARN: "API externa respondendo com latência alta (2000ms)"
+
+ERROR: "Falha ao processar pagamento: conexão com gateway timeout"
+ERROR: "Serviço de email fora do ar - 500 emails na fila"
+ERROR: "Falha ao processar arquivo: formato inválido em upload_id=456"
+```
+
+## 2\. Estrutura de Logs
+
+Ainda é comum, encontrarmos logs escritos em formato de texto, com diversas informações exibidas em uma ou duas linhas, algo parecido com isto:
+
+```powershell
+[2024-07-13 08:00:13,255] ERROR: Payment Service may become unstable.
+```
+
+O grande problema deste formato é a falta de uniformidade e detalhes do contexto em que o log está sendo gerado. Consequetemente, realizar a análise e classificação de logs neste formato se torna um processo dificil.
+
+Uma solução para isto é adotar logs no formato JSON, isso permite que as informações fiquem mais estruturadas, com mais detalhes e o contexto da ocorrência. Além disso, facilita a interpretação e classificação por sistemas de monitoramento de forma mais eficiente.
+
+É como organizar um armário: cada item em seu lugar, etiquetado e pronto para ser encontrado quando necessário.
+
+Um bom exemplo deste mesmo log, mas agora com um pouco mais de contexto.
+
+```json
+{
+  "timestamp": "2025-01-13T10:15:30.000Z",
+  "level": "ERROR",
+  "service": "payment-service",
+  "trace_id": "abc-123-xyz",
+  "message": "Payment processing failed",
+  "context": {
+    "order_id": "12345",
+    "error_code": "PAY_001",
+    "details": "Invalid Token"
+  }
+}
+```
+
+## 3\. Objetivos dos logs
+
+Entender os níveis e a estrutura dos logs é essencial, mas um dos maiores desafios é decidir o que realmente deve ser registrado.
+
+A lição mais cara que aprendi é evitar o excesso de informações nos logs.
+
+Uma boa estratégia para definir os objetivos dos seus logs é envolver as áreas de negócio da sua empresa e responder a perguntas como: Qual é o propósito do sistema? Quais metas ele precisamos alcançar? Onde não podemos permitir falhas?
+
+Ao responder estas perguntas, você começará a entender quais métricas são relevantes acompanhar no sistema. Com isso será mais fácil planejar os objetivos dos seus logs, quais eventos e informações priorizar ao registrar.
+
+Essas são apenas algumas ideias iniciais. Sugiro que realize esse exercício com sua equipe, discutindo detalhadamente como o sistema deve funcionar. Uma conversa abrangente sobre sobre todos aspectos de negócio e operacionais ajudará a identificar métricas relevantes.
+
+Lembre-se: registrar erros não é o suficiente. Inclua o contexto, os eventos que levaram ao erro e crie uma narrativa que facilite o diagnóstico e a resolução do problema. Soluções eficazes surgem mais rapidamente quando a causa da falha é bem compreendida.
+
+Um exemplo prático: imagine uma empresa de e-commerce como o Mercado Livre.
+
+Os principais objetivos de um sistema como esse podem incluir:
+
+- Aumentar as vendas.
+
+- Melhorar a experiência do cliente.
+
+- Garantir a segurança das transações.
+
+KPIs relevantes podem abranger o número de pedidos, a taxa de conversão, o tempo de carregamento das páginas e o número de tentativas de login malsucedidas.
+
+Com base nesses KPIs, a empresa pode decidir registrar eventos como:
+
+- Compras concluídas.
+
+- Produtos adicionados ao carrinho.
+
+- Erros no processamento de pagamentos.
+
+- Acessos suspeitos ou falhas de autenticação.
+
+## 4\. Logs significativos
+
+A utilidade dos logs está diretamente ligada à qualidade das informações.
+
+Em outras palavras, otimizar mensagens e dar contexto será crucial para seu log ser realmente relevante. Entendemos anteriormente a importância dos níveis de logs, estrutura e objetivos, agora entramos no contexto e mensagem.
+
+Ao criar logs, priorize mensagens claras e com contexto.
+
+Por exemplo, inclua dados contextuais amplos em cada entrada de log para fornecer uma visão completa do evento registrado. Informações como IDs de solicitação, IDs de usuário, IDs de transações, nomes de serviços ou até nomes de tabelas de banco de dados podem te ajudar a identificar rapidamente a origem de problemas.
+
+Isso é especialmente valioso para oferecer suporte eficiente quando um cliente relata falhas.
+
+Vamos pegar o exemplo de log estruturado, mas com pouco contexto:
+
+```json
+{
+  "timestamp": "2025-01-13T10:15:30.000Z",
+  "level": "ERROR",
+  "message": "Payment processing failed",
+}
+```
+
+Observe, se o log anterior for registrado desta forma, o máximo que você tem de informação é quando o erro aconteceu e nada mais.
+
+O que seria realmente útil:
+
+```json
+{
+  "timestamp": "2025-01-13T10:15:30.000Z",
+  "level": "ERROR",
+  "service": "payment-service",
+  "trace_id": "abc-123-xyz",
+  "message": "Payment processing failed",
+  "context": {
+    "order_id": "12345",
+    "error_code": "PAY_001",
+    "details": "Invalid Token"
+  }
+}
+```
+
+Agora, com **trace_id**, **context.order_id** e **context.details** será mais rápido compreender quem é o cliente afetado e podemos buscar mais detalhes da transação.
+
+## 5\. Canonical Log Lines
+
+Aqui uma técnica bastante útil. Uma Canonical Log Line é **uma entrada de log única e abrangente** gerada ao final de cada solicitação ao serviço. Seu propósito é fornecer um resumo condensado com todas as informações essenciais sobre a solicitação, permitindo uma visão clara e imediata do que aconteceu.
+
+Esse tipo de registro centraliza dados relevantes em um único ponto, eliminando a necessidade de correlacionar informações dispersas entre várias entradas de log.
+
+Isso facilita o monitoramento do comportamento do sistema, a identificação de problemas e a análise de desempenho, tornando as investigações mais rápidas e eficientes.
+
+Aqui um exemplo prático:
+
+```json
+{
+  "metadata": {
+    "timestamp": "2025-01-13T15:23:45.123Z",
+    "service": "order-processing",
+    "instance": "prod-worker-01",
+    "trace_id": "abc123xyz789",
+    "span_id": "span456def",
+    "version": "2.3.4"
+  },
+  "level": "INFO",
+  "event": "order_processed",
+  "message": "Order successfully processed and payment confirmed",
+  "data": {
+    "order_id": "ORD-2025-0123456",
+    "customer_id": "CUS789012",
+    "transaction": {
+      "id": "TRX-98765",
+      "status": "completed",
+      "amount": 159.90,
+      "currency": "BRL",
+      "payment_method": "credit_card",
+      "payment_info": {
+        "card_brand": "visa",
+        "last_digits": "4242"
+      }
+    },
+    "metrics": {
+      "processing_time_ms": 234,
+      "queue_time_ms": 45,
+      "total_items": 3
+    }
+  },
+  "context": {
+    "environment": "production",
+    "region": "sa-east-1",
+    "client_ip": "192.168.1.1",
+    "user_agent": "Mozilla/5.0...",
+    "request_id": "req-567890"
+  },
+  "tags": [
+    "order",
+    "payment",
+    "success"
+  ]
+}
+```
+
+## 6\. Tenha uma política de retenção
+
+Mais do que registrar logs, é fundamental que você defina uma política de retenção, do contrário você corre o risco de armazenar milhares de logs e ocupar recursos desnecessários do seu ambiente.
+
+Uma forma de determinar o tempo de retenção é analisar o contexto de negócio que a aplicação é executada, converse com seus pares e a área de negócio. Um exemplo, para algumas empresas, um log de erro crítico precisa ser armazenado por 1 ano, para uma eventual auditória.
+
+No geral, esta é a política de retenção de logs que eu mais utilizo:
+
+- Logs críticos, retenção por 1 ano.
+
+- Logs de erro, retenção por 6 meses.
+
+- Logs de alertas, retenção por 3 meses.
+
+- Logs de informativos, retenção por 1 mês.
+
+## 7\. **Proteja dados sensíveis**
+
+É muito comum precisarmos adicionar detalhes do usuário ou do contexto durante a criação do log, isso serve para conseguir analisar a requisição e entender o usuário que foi impacto, onde aconteceu o problema ou em qual contexto, porém, neste registro podemos acabar expondo dados sensíveis.
+
+Algumas boas práticas que podem te salvar no futuro:
+
+- Substitua dados de usuários pelo seu identificador.
+
+- Substitua números completos de documentos por alguns dígitos.
+
+- Referêncie entidades por ID (Empresa, Endereço, Pagamento, etc).
+
+- Criptografe tokens, números de transações ou qualquer outro dado muito sensível.
+
+- Jamais armazene dados de pagamento do cliente no log (eu já presenciei isto).
+
+Exemplo de log problemático:
+
+```json
+{
+  "timestamp": "2025-01-13T14:30:00.000Z",
+  "level": "INFO",
+  "event": "user_payment_processed",
+  "data": {
+    "user": {
+      "id": "123456",
+      "name": "João Silva",
+      "email": "joao.silva@email.com",
+      "cpf": "123.456.789-00",
+      "phone": "+5511999887766",
+      "address": {
+        "street": "Rua das Flores, 123",
+        "city": "São Paulo",
+        "state": "SP",
+        "zipcode": "01234-567"
+      }
+    },
+    "payment": {
+      "card_number": "4532678912345678",
+      "cvv": "123",
+      "expiry": "12/26",
+      "card_holder": "JOAO M SILVA"
+    },
+    "transaction": {
+      "amount": 1500.00,
+      "authorization_code": "AUTH123456",
+      "password": "Senha@123",
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    }
+  }
+}
+```
+
+Exemplo do mesmo log, agora mais otimizado:
+
+```json
+{
+  "timestamp": "2025-01-13T14:30:00.000Z",
+  "level": "INFO",
+  "event": "user_payment_processed",
+  "data": {
+    "user": {
+      "id": "usr_123456",
+      "location": {
+        "city_code": "SP-SAO",
+        "state": "SP",
+        "country": "BR"
+      }
+    },
+    "payment": {
+      "payment_method_id": "pm_4532xxxxxx5678",
+      "card_brand": "visa",
+      "last_four": "5678",
+      "tokenized_card": "tok_Vk82AxZJn9"
+    },
+    "transaction": {
+      "transaction_id": "tx_789012",
+      "amount": 1500.00,
+      "status": "completed",
+      "auth_reference": "ref_AUTH123456",
+      "session_id": "sess_abc123xyz"
+    }
+  },
+  "metadata": {
+    "trace_id": "trace_987654321",
+  }
+}
+```
+
+## Extra: Logs não substituem ferramentas de monitoramento
+
+Embora logs sejam indispensáveis para diagnosticar e resolver problemas no sistema, eles não foram projetados para substituir ferramentas de observabilidade. **Logs capturam eventos específicos**, mas não oferecem a visão abrangente necessária para monitorar a saúde da aplicação e do ambiente em tempo real.
+
+Invista em ferramentas de monitoramento que complementem seus logs, oferecendo métricas, alertas e insights detalhados. Considere avaliar ferramentas como [New Relic](https://newrelic.com/), [Dynatrace](https://www.dynatrace.com/), [Prometheus](https://prometheus.io/), [Zabbix](https://www.zabbix.com/), entre outras.
+
+Juntas, estas abordagens garantem um sistema mais robusto, facilitando a detecção proativa de falhas e a manutenção sempre que necessária.
+
+## Considerações finais
+
+Apesar de ter apresentado 7 boas práticas de logging, elas estão longe de ser as únicas. O universo dos logs é vasto, e há muitas outras técnicas e abordagens que podem enriquecer suas estratégias. Por isso, recomendo que você continue explorando e se aprofundando no assunto.
+
+Se ainda não utiliza nenhuma dessas práticas, considere aplicá-las gradualmente. Uma abordagem incremental permite que você adapte as práticas às necessidades do seu sistema de forma eficiente e sustentável.
+
+Por fim, se você conhece outras boas práticas ou tem sugestões adicionais, ficarei muito feliz em saber! Compartilhe suas ideias nos comentários.
+
+Obrigado por dedicar seu tempo à leitura!

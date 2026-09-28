@@ -1,0 +1,263 @@
+---
+title: "Tags HTML5 que você precisa conhecer"
+description: "Uma lista de tags HTML5 com exemplos práticos para você dominar e aprender ainda mais sobre desenvolvimento frontend para web."
+date: 2022-02-16
+tags:
+  - frontend
+  - html
+cover: "/media/posts/tags-html5-que-voce-precisa-conhecer/tags-html5-html.png"
+language: pt
+---
+
+Para quem trabalha com desenvolvimento web, conhecer tags HTML5, CSS e JavaScript é fundamental, embora existam muitas ferramentas, frameworks e bibliotecas que agilizam o trabalho, como por exemplo [Bootstrap](https://getbootstrap.com/), [TailwindCSS](https://tailwindcss.com/) ou [Bulma](https://bulma.io/), não podemos ficar dependentes destas ferramentas, em muitos cenários, não faz sentido utilizar.
+
+Neste artigo resolvi reunir algumas tags HTML5 muito úteis para quem trabalha com desenvolvimento web, não será uma lista com todas as tags possíveis, mas sim uma lista prática com tags html5 que recomendo você conhecer.
+
+Conhecer a fundo HTML é algo muito importante para qualquer desenvolvedor frontend, embora HTML tenha sido criado lá em 1991, por Tim Berners-Lee, ao longo dos anos essa linguagem de marcação tem evoluído, com novas especificações para suportar as necessidades da web moderna.
+
+Então vamos a lista. Depois comenta no fim da página se conhecia estas tags html.
+
+## datalist
+
+O **elemento HTML Datalist**, permite que você defina uma lista de opções possíveis para um elemento input. É muito útil quando você quer exibir sugestões para um usuário.
+
+```html
+<input list="fruits" />
+<datalist id="fruits">
+  <option value="Apple">
+  <option value="Orange">
+  <option value="Lemon">
+</datalist>
+```
+
+## wbr
+
+O **elemento HTML WBR** define em um texto um ponto para quebra de linha opcional, o browser se encarrega de verificar se o texto precisa sofrer o ajuste, comportamento diferente do que a **tag HTML BR**, que adiciona de forma obrigatória a quebra de linha.
+
+```html
+<p>Algum texto que<wbr> precise quebrar a linha.</p>
+```
+
+## mark
+
+O **elemento HTML Mark** adiciona um destaque a um trecho de um texto, como um marca texto. Muito útil quando precisamos destacar uma palavra ou frase em um uma página.
+
+```html
+<p>Aqui um exemplo de texto com a <mark>palavra</mark> destacada.</p>
+```
+
+## time
+
+O **elemento HTML Time** ajuda a representar datas e horas, no formato de 24 horas ou como uma data precisa no calendário. Este elemento possui dois atributos especificos.
+
+**datetime:** Especifica uma data e hora no elemento.
+
+**pubdate:** Indica que é a data e hora da publicação de um artigo.
+
+```html
+<p>Temos um encontro marcado às <time>20:00</time>.</p>
+```
+
+```html
+<article>
+  <p>Este artigo foi criado em <time pubdate>2022-02-16</time>.</p>
+</article>
+```
+
+## nav
+
+O **elemento HTML Nav** ajuda a definir uma seção de uma página que aponta para outras páginas, muito útil para indicar links de navegação em um menu.
+
+Você pode envolver uma lista de links como neste exemplo:
+
+```html
+<nav>
+  <ul>
+    <li><a href="/">Ínicio</a></li>
+    <li><a href="/sobre">Sobre</a></li>
+    <li><a href="/contato">Contato</a></li>
+  </ul>
+</nav>
+```
+
+## figure
+
+O **elemento HTML Figure** é usado para representar uma imagem na página, opcionalmente, é possível incluir uma legenda para a imagem usando a **tag HTML figcaption**.
+
+```html
+<figure>
+	<img src="minha-imagem.jpg" alt="Descrição da imagem">
+	<figcaption>Legenda da imagem</figcaption>
+</figure>
+```
+
+## video
+
+O **elemento HTML Video** permiti incorporar um conteúdo de vídeo há uma página HTML. Este elemento possui uma serie de atributos para você customizar, incluindo:
+
+**src**: Defini a URL do vídeo.
+
+**poster**: Defini uma imagem para ser a capa do vídeo, antes de iniciar a reprodução.
+
+**muted**: Defini que o vídeo deve iniciar por padrão com o áudio mudo.
+
+**autoplay**: Inicia o vídeo automaticamente após carregamento da página.
+
+**controls**: Permiti que o usuário controle a reprodução do vídeo, como reproduzir/pausar, etc.
+
+**loop**: Indica que o vídeo deve recomeçar quando chegar ao fim.
+
+**width**: Defini a largura da área de exibição do vídeo
+
+**height**: Defini a altura da área de exibição do vídeo.
+
+```html
+<video src="video.ogg" controls autoplay poster="previa.jpg">
+  O seu navegador não suporta vídeos incorporados.
+</video>
+```
+
+Você também pode especificar o caminho do arquivo de vídeo usando a **tag HTML source** e também pode incluir legendas ao vídeo usando a **tag HTML track**.
+
+```html
+<video autoplay poster="previa.jpg">
+  <source src="video.ogg" type="video/ogg">
+  <source src="video.mov" type="video/quicktime">
+  <track kind="subtitles" src="video.pt.vtt" srclang="pt" label="Portuguese">
+  <track kind="subtitles" src="video.en.vtt" srclang="sv" label="English">
+</video>
+```
+
+## section
+
+O **elemento HTML Section** representa uma seção genérica de conteúdo em uma página, geralmente acompanhada de um título. É muito útil para dar semântica a estrutura de uma página, evitando o uso da tag DIV.
+
+```html
+<section>
+  <h2>Seu título</h2>
+  <p>Algum conteúdo aqui</p>
+</section>
+```
+
+## footer
+
+O **elemento HTML Footer** permiti definir um conteúdo de rodapé para uma seção de conteúdo ou página. Útil para exibir informações do autor, direitos autorais ou links.
+
+```html
+<footer>
+  <nav>
+    <a href="/sobre">Sobre</a>
+  </nav>
+  <p>Todos os direitos reservados © 2022 DanielDCS</p>
+</footer>
+```
+
+## header
+
+O **elemento HTML Header** ajuda a definir um conteúdo de cabeçalho para uma seção de conteúdo ou página. Você adicionar em qualquer lugar do body, exceto dentro dos elementos address, footer ou dentro de outro header.
+
+```html
+<header>
+  <h1>Título da Página</h1>
+  <p>Algum conteúdo da página.</p>
+</header>
+```
+
+## main
+
+O elemento HTML Main representa onde o conteúdo principal da página está localizado.
+
+```html
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <title>Exemplo de página</title>
+</head>
+<body>
+  <header>
+    <h1>Título principal</h1>
+  </header>
+  <main>
+    <h2>Core Web Technologies</h2>
+    <p>Conteúdo da página</p>
+    <article>
+      <h3>Artigo</h3>
+      <p>Conteúdo do artigo.</p>
+    </article>
+  </main>
+  <footer>
+    <p>Todos os direitos reservados © 2022 DanielDCS</p>
+  </footer>
+</body>
+</html>
+```
+
+## Outras tags HTML
+
+Além destas **tags HTML5**, temos também algumas tags HTML muito úteis para organizar nosso conteúdo de forma mais semântica, se você ainda não conhece, confira a seguir.
+
+### dl, dt e dd
+
+O **elemento HTML DL** ajuda a representar uma lista de termos e descrições, muito útil para representar glossários. O elemento DT representa o termo e o DD a descrição.
+
+```html
+<dl>
+  <dt>Frontend</dt>
+  <dd>Uma área da programação com mais enfase no UX.</dd>
+  <dt>CSS</dt>
+  <dd>Conjunto de regras para estilização de marcações HTML.</dd>
+</dl>
+```
+
+### optgroup
+
+O **elemento HTML Optgroup** é utilizado em formulários para organizar opções dentro de um grupo em um elemento select. Este elemento possui dois atributos.
+
+**label**: Você usar para definir um nome para o grupo.
+
+**disabled**: Você usa para desabilitar a seleção do grupo.
+
+```html
+<select>
+  <optgroup label="Séries Netflix">
+    <option>The Witcher</option>
+    <option>Stranger Things</option>
+  </optgroup>
+  <optgroup label="Séries HBO">
+    <option>Silicon Valley</option>
+  </optgroup>
+  <optgroup label="Série Amazon Prime" disabled>
+    <option>The Office</option>
+  </optgroup>
+</select>
+```
+
+### address
+
+O **elemento HTML Address** ajuda a demarcar informações de contato para um artigo ou a página inteira. O conteúdo do elemento address pode incluir qualquer informação de contato, como exemplo telefone, endereço, urls, coordenadas geográficas ou redes sociais.
+
+```html
+<address>
+  Fale comigo em <a href="http://www.danieldcs.com/contato">danieldcs.com/contato</a>.<br>
+  Para correspondências, envie para:<br>
+  1981 Landings Drive<br>
+  Building K<br>
+  Mountain View, CA 94043-0801<br>
+  USA
+</address>
+```
+
+### abbr
+
+O **elemento HTML Abbr** representa uma abreviação e opcionalmente, pode fornecer uma descrição completa usando o atributo title.
+
+```html
+<p>Bons projetos de frontend usam tags <abbr title="Linguagem de Marcação de HiperTexto">HTML</abbr> apropriadas.</p>
+```
+
+## Finalizando
+
+Estas são apenas algumas das tags HTML5 mais usadas, se você quiser conhecer a lista completa com todas as tags possíveis, pode [verificar aqui no MDN](https://developer.mozilla.org/pt-BR/docs/Web/HTML). Espero que o conteúdo te ajude e sirva de inspiração para aprender ainda mais sobre frontend.
+
+Agora me comenta aqui se já conhecia estas tags e se tem alguma outra sugestão. 🤟🏼
