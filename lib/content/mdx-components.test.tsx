@@ -79,3 +79,14 @@ Legenda da figura
   expect(html).toMatch(/<table[^>]*class="[^"]*border-collapse/)
   expect(html).toMatch(/<td[^>]*class="[^"]*border-border/)
 }, 15_000)
+
+test('renders svg images on a white plate with a native img', async () => {
+  const { content } = await compileMdxForTest(
+    '![](/media/posts/example/diagram.svg)',
+  )
+  const html = renderToStaticMarkup(content)
+
+  expect(html).toMatch(/<span[^>]*class="[^"]*bg-white/)
+  expect(html).toContain('src="/media/posts/example/diagram.svg"')
+  expect(html).not.toContain('_next/image')
+}, 15_000)
