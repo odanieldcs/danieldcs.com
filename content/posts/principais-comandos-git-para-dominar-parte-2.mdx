@@ -1,0 +1,205 @@
+---
+title: "Principais comandos Git para dominar, parte 2"
+description: "Aprende a trabalhar com branches e repositórios remotos com os principais comandos Git. Melhore seu fluxo de trabalho e otimize tempo."
+date: 2021-11-22
+tags:
+  - git
+cover: "/media/posts/principais-comandos-git-para-dominar-parte-2/git-guia-comandos-git-parte-2.png"
+language: pt
+---
+
+Neste post vamos ver os principais **comandos Git** para trabalhar com branches e repositórios remotos. Se você está chegando aqui pela primeira vez, recomendo ler meu [primeiro post onde começamos](/blog/principais-comandos-git-para-dominar-parte-1) pela configuração do Git e trabalho local.
+
+Agora se você já está acompanhando a serie de comandos git, vá em frente com a leitura. :)
+
+## Trabalhando com Branches
+
+As branches são as ramificações do seu repositório, quando um projeto git é iniciando, por padrão é criado uma branch (ramo) chamado main. Todo o trabalho começa nela.
+
+Conforme você realiza alterações no projeto você vai realizando commits nessa branch main, porém, em algum momento, pode ser importante separar e organizar as alterações em branches isoladas.
+
+Isto ajuda a separar o código que está em desenvolvimento, daquele que já está pronto. Podemos assumir, por exemplo, que a branch main nunca deve ser alterada e toda alteração que estiver sendo feita, deve ficar na branch dev, quando as mudanças estiverem prontas, podemos fazer o merge (mesclar) com a branch main.
+
+No entanto, essa organização depende de cada time, uma branch pode representar uma funcionalidade, uma história de usuário e por aí vai. É um acordo importante que o time deve discutir e decidir em conjunto.
+
+Vamos aos comandos trabalhando com branches.
+
+### Como criar um novo branch no Git?
+
+Quando iniciamos um novo repositório, por padrão, você começa na branch main (principal), mas caso precise criar um nova branch, talvez para separar suas alterações da branch main,
+
+```bash
+git branch nome_branch
+```
+
+### Como mudar para um branch no Git?
+
+Após criar uma branch com o comando anterior, qualquer alteração que fizer, ainda será refletida na branch main, para que as alterações fiquem associadas a nova branch, você precisa mudar para ela com este comando:
+
+```bash
+git checkout nome_branch
+```
+
+### Como criar um novo branch e mudar imediatamente?
+
+Para evitar de trocar manualmente de branch, com um único comando, você pode criar a branch e mudar imediatamente, usando o atributo -b.
+
+```bash
+git checkout -b nome_branch_nova
+```
+
+### Como listar branches no Git?
+
+Para retornar uma lista com todas as branches criadas no repositório, execute o comando a seguir. A branch que você estiver em uso, será destacada em verde e com um asterisco.
+
+```bash
+git branch
+```
+
+### Como mesclar dois branch no Git?
+
+Para mesclar duas branch, você pode usar o comando a seguir, neste exemplo, o branch que você estiver será mesclada com a branch main.
+
+```bash
+git merge main
+```
+
+### Como reverter um merge com conflito no Git?
+
+Caso você tenha conflitos entre as branc e prefira abortar o merge, você pode reverter ao estado anterior com o seguinte comando.
+
+```bash
+git merge --abort
+```
+
+### Como remover um branch no Git?
+
+Quando você terminar de trabalhar em uma branch e tiver mesclado o código dela com a branch main, poderá remove-lá executando o comando a seguir.
+
+```bash
+git branch -d nome_branch
+```
+
+## Trabalhando com repositórios remotos no Git
+
+O próximo passo depois de trabalhar com Git local é integrar seu repositório local com algum repositório remoto. Existem diversas empresas que fornecem hospedagem de repositórios Git, os mais populares são GitHub, Gitlab e Bitbucket da Atlassian.
+
+Para este nosso artigo, recomendo que [crie uma conta no GitHub](https://github.com/signup).
+
+### Configurando a autenticação do meu usuário no Git
+
+Quando estamos trabalho via linha de comando, existem dois protocolos de comunicação e autenticação com o Github que podemos escolher, HTTPS ou SSH.
+
+Na primeira opção, você deverá baixar os repositórios a partir da url HTTPS disponível para cada repositório. A estrutura de url é composto pelo domínio do GitHub, seu usuário e o nome do repositório, exemplo:
+
+**https://github.com/usuario/repositorio.git**
+
+A segunda alternativa, por SSH, também segue uma estrutura semelhante, mas com o protocolo SSH, você vai precisar baixar os repositórios a partir da url SSH. A url SSH é composta da seguinte estrutura:
+
+**git@github.com:usuario/repositorio.git**
+
+A principal diferença que existe entre as duas opções é que ao optar por SSH, o CLI já cria ou herda uma chave SSH armazenada localmente no seu ambiente. Ao usar uma chave SSH, você pode re-aproveitar em mais de uma ferramenta, por exemplo no GitHub e no Gitlab.
+
+Para configurar a autenticação com o GitHub, recomendo que você instale a ferramenta de linha de comando deles, o [Github CLI](https://github.com/cli/cli#installation), ele é um utilitário que auxilia em diversas tarefas Git, mas nosso foco agora será a autenticação.
+
+Digite o seguinte o comando para responder algumas perguntas e se autenticar.
+
+```bash
+gh auth login
+```
+
+### Como adicionar um repositório remoto no Git?
+
+Agora que você está autenticado, pode adicionar um repositório remoto ao repositório local, deste modo, todas atualizações poderão ser mantidas na sua conta do GitHub.
+
+Recomendo criar um repositório na sua conta e vincular com seu repositório local para avançar nos próximos comandos.
+
+Para adicionar um repositório remoto ao repositório local digite:
+
+```bash
+git add remote https://github.com/usuario/repositorio.git
+```
+
+### Como clonar um repositório remoto?
+
+Se você quiser utilizar um repositório existente, você pode clonar, este comando vai baixar o repositório para sua máquina. Para isto, clone um repositório em uma pasta vazia com o comando a seguir:
+
+```bash
+git clone git@github.com:usuario/repositorio.git
+```
+
+### Como ver URLs de repositórios remotos?
+
+Você pode listar os repositórios remotos vinculados ao repositório local com o comando:
+
+```bash
+git remote -v
+```
+
+Agora, se você precisa ver todos os detalhes do repositório remoto, digite o comando:
+
+```bash
+git remote show origin
+```
+
+### Como enviar alterações para um repositório remoto?
+
+Agora que seu trabalho local está pronto, você pode enviar as alterações para salvar no seu repositório remoto, para isto, use o seguinte comando
+
+```bash
+git push
+```
+
+Se você estiver trabalhando com uma branch precisar enviar somente ela, use o comando:
+
+```bash
+git push -u origin sua_branch
+```
+
+### Como obter alterações de um repositório remoto?
+
+Se você estiver trabalhando com outras pessoas no mesmo repositório, você pode baixar as alterações da branch atual com o comando:
+
+```bash
+git pull
+```
+
+Agora se você quiser baixar as alterações e evitar que seu branch local seja mesclado com o branch remoto, como é feito com o comando anterior, você pode usar o seguinte comando:
+
+```bash
+git fetch
+```
+
+Se você quiser verificar o log que foi criado commit a commit no repositório remoto, você também pode executar o seguinte comando antes do seu pull ou fetch.
+
+```bash
+git log origin/main
+```
+
+### Como mesclar um repositório remoto e com o local?
+
+Quando você precisar mesclar seu repositório remoto com o seu local, unindo em uma única base de código, use o seguinte comando.
+
+```bash
+git merge origin/main
+```
+
+Agora se você quiser obter alterações e branches do seu repositório remoto, sem fazer um merge automático, você pode executar o comando a seguir.
+
+```bash
+git remote update
+```
+
+### Como remover um branch remoto no Git?
+
+Se você precisar remover um branch remoto, utilize o comando abaixo.
+
+```bash
+git push --delete origin nome_branch
+```
+
+## Conclusão
+
+Com esta segunda parte, focada em branches e repositórios remotos, temos o essencial para trabalhar com um fluxo Git em nossos projetos, os comandos git que você viu aqui são a base para conseguir versionar seu código de forma segura.
+
+Espero que este conteúdo tenha sido útil à você, e caso eu tenha esquecido de algum comando git importante, por favor, me corrija nos comentários. :)

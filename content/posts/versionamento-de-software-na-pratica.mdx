@@ -1,0 +1,44 @@
+---
+title: "Versionamento de Software, como apliquei na prática"
+description: "Ao gerenciar o desenvolvimento de softwares, um cuidado para termos sistemas com mais qualidade é, adotar boas práticas no versionamento de software."
+date: 2017-07-11
+cover: "/media/posts/versionamento-de-software-na-pratica/versionamento-semantico-de-softwares.jpg"
+language: pt
+---
+
+Ao gerenciar o desenvolvimento de softwares, um cuidado para termos sistemas com mais qualidade, é adotar boas práticas no **versionamento de software**.
+
+Quando temos softwares complexos, com inúmeras dependências e um grande risco de quebrar no lançamento de algum novo release, este cuidado ajuda todo o time envolvido, poupando todos de rollbacks e dores de cabeça intermináveis.
+
+Durante [minhas experiências](https://www.danieldcs.com.br/sobre/), sempre busquei adotar algum padrão de versionamento para meus códigos, algum padrão que refletisse as novas funcionalidades conforme eram adicionadas ou bugs corrigidos.
+
+Adotei um formato simples, X e Y, sem muitas regras X representava o conjunto de features, Y o bugfix aplicado na versão corrente. Isto me ajudou por um bom tempo, até meus softwares começarem a crescer.
+
+Diante do problema, busquei uma alternativa para deixar meu versionamento mais eficiente e legível, passei a utilizar o [Semantic Versioning](http://semver.org/), uma especificação bastante utilizada na industria de Softwares, criada por [Thom Preston Werner](http://tom.preston-werner.com/), criador do Gravatars e Co-Fundador do Github.
+
+A especificação sugere adotarmos uma sequência mais semântica, representando nosso versionamento no formato MAJOR.MINOR.PATCH, (X.Y.Z). Este formato diz que devemos respeitar os seguintes aspectos:
+
+### Estrutura da Semantic Versioning
+
+- **(x) major:** Muda quando temos incompatibilidade com versões anteriores.
+- **(y) minor:** Muda quando temos novas funcionalidades em nosso software.
+- **(z) patch:** Muda quando temos correções de bugs lançadas.
+
+### Especificações que devemos respeitar
+
+- O Software deve **declarar uma API pública.**
+- O Software deve possuir uma **documentação**, precisa e compreensiva.
+- O número de versão deve ter o **formato X.Y.Z**. Os números devem ser inteiros, não negativos, não conter zeros à esquerda e sempre incrementados.
+- O conteúdo de uma versão, **não deve ser modificada**. Qualquer modificação deve ser lançado como uma nova versão.
+- No inicio do desenvolvimento, a versão **Major deve ser maior que zero**.
+- A API pública não deve ser considerada estável. **Qualquer coisa pode mudar, a qualquer momento**.
+- Uma versão de Patch, deve ser incrementado **apenas se mantiver compatibilidade** e introduzir correção de bugs.
+- Uma versão Minor, **deve ser incrementada se uma funcionalidade nova e compatível for introduzida na API pública**. Inclusive deve ser incrementada se qualquer funcionalidade da API pública for descontinuada.
+- Uma versão Major, **deve ser incrementada se forem introduzidas mudanças incompatíveis na API pública**.
+- Uma versão de **pré-lançamento pode ser identificada com um hífen e uma serie de identificadores,** imediatamente após a versão de correção, contendo caracteres alfanuméricos. Por exemplo: 1.0.0-alpha.1, 1.0.0-beta-1.0.
+
+Como desenvolvedor, talvez você não queira burocratizar seu trabalho e se questione, por que usar o Semantic Versioning. Bem, posso lhe garantir que o padrão me ajudou a ter versões mais coerentes, garantiu o controle das minhas dependências e a visibilidade do estado do meu Software.
+
+Poupou meu tempo. ;)
+
+Se este padrão faz sentido para você, adote e compartilhe com seus colegas, a curva de aprendizado é pequena.
