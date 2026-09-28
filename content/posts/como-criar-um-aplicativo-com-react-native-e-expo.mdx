@@ -1,0 +1,241 @@
+---
+title: "Como criar um aplicativo com React Native e Expo"
+description: "Aprenda o que você precisa para dar os primeiros passos em como criar um aplicativo com React Native e Expo neste artigo direto ao ponto."
+date: 2022-01-13
+tags:
+  - javascript
+  - react-native
+  - react
+  - typescript
+cover: "/media/posts/como-criar-um-aplicativo-com-react-native-e-expo/primeiros-passos-com-expo.png"
+language: pt
+---
+
+Se você está querendo aprender a desenvolver aplicativos mobile e ganhar experiência prática de forma mais ágil, quero te apresentar o Expo, uma ferramenta que tem me ajudado a criar aplicativos com React Native, aproveitando os conhecimentos de React, JavaScript e TypeScript que já tenho.
+
+Primeiro de tudo, aqui vai um disclaimer: O Expo é ideal para quem tem pouca experiência com desenvolvimento mobile, quer dar os primeiros passos no **desenvolvimento de aplicativos híbridos** ou até criar aplicativos que não dependam de tantos recursos nativos e específicos de um dispositivo.
+
+E faço esse aviso com base nas minhas experiências. Como nunca busquei me especializar em desenvolvimento mobile, sempre tive experiências com desenvolvimento híbrido, usando o React Native CLI, Ionic e lá no passado com Cordova e PhoneGap. Agora ao usar o Expo encontrei algumas vantagens que me chamaram a atenção.
+
+Uma das vantagens é a agilidade de realizar a compilação do projeto usando a plataforma deles, seja para iOS ou Android.
+
+Só isso me fez economizar um bom tempo em etapas que antes eram manuais com o React Native CLI, algumas no XCode e outras no Android Studio.
+
+Se você, já teve belas dores de cabeça pra instalar algum pacote, configurar algum **_pod_** novo ou teve que ficar minutos esperando o build do XCode, vai curtir saber que o Expo **já tem muitos pacotes compilados** para quase todas as APIs necessárias para aplicativos.
+
+Talvez até não tenha tudo, posso estar exagerando, mas você pode consultar alguns dos recursos disponíveis nesta [lista de APIs](https://docs.expo.dev/versions/latest/) deles.
+
+Assim como no Node.js, instalar um pacote no Expo é igual, basta executar um comando e em alguns pacotes mais específicos, realizar etapas adicionais para o setup.
+
+Um exemplo para você ver é a [API de acesso a câmera](https://docs.expo.dev/versions/latest/sdk/camera/) do celular.
+
+Para conseguir ter acesso ao recurso, você vai precisar adicionar duas permissões no arquivo de configurações do Expo e executar o comando `expo install expo-camera` para instalar o pacote de dependências.
+
+Com isto feito, você já tem acesso a câmera do dispositivo iOS ou Android.
+
+Legal né? Mas por quê usar o Expo?
+
+## Um pouco de contexto
+
+No mundo do desenvolvimento mobile, temos duas plataformas principais: Android e iOS.
+
+Cada uma das plataformas tem suas vantagens e desvantagens, uma linguagem de programação específica, um conjunto de APIs e recursos que você precisa se aprofundar, para conseguir criar aplicativos.
+
+A fim de referência, ao escolher a plataforma Android, você vai precisar estudar e se aprofundar na linguagem Java e Kotlin, aprender como usar o Android Studio, como preparar o aplicativo para publicação, para testes e por aí vai. O mesmo se aplica para iOS, você vai precisar estudar a linguagem Objective-C e Swift, aprender a trabalhar com o XCode e todas as particularidades desse ambiente, além de precisar de um Mac para desenvolver.
+
+Ambas plataformas são excelentes, com muitas oportunidades para desenvolvedores e em constante crescimento. Se você deseja se focar apenas em **desenvolvimento mobile nativo**, qualquer uma das plataformas sem dúvida é uma ótima escolha.
+
+Embora o desenvolvimento nativo ainda seja o caminho mais utilizado e principalmente quando é necessários acessar recursos nativos específicos, muitas empresas já tem optado por desenvolver seus aplicativos de forma híbrida.
+
+O **desenvolvimento híbrido** nada mais é do que utilizar de alguma ferramenta que consiga fazer a compilação de uma única base de código para ambas plataformas. Na lista das tecnologias disponíveis, o **React Native** é uma das muito utilizadas.
+
+## O tal do React Native
+
+Se você ainda não esta familiarizado com o React Native, vou tentar simplificar.
+
+Ele é como o React, porém preparado e "tunado" para desenvolvimento mobile. Todo o código que você escreve em JSX, o React Native se encarrega de converter e comunicar com recursos nativos da plataforma a partir de uma ponte (**_bridge_**).
+
+Todos os conhecimentos que você tem sobre Props, State, Components, entre outros de React, você consegue re-aproveitar em React Native, é necessário pequenas mudanças e uso de componentes nativos no lugar de componentes web.
+
+Veja um exemplo de código:
+
+```jsx
+import React from 'react';
+import { Text, View } from 'react-native';
+
+const SeuApp = () => {
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Text>
+        Seu texto aqui! 🎉
+      </Text>
+    </View>
+  );
+}
+
+export default SeuApp;
+```
+
+Neste exemplo o componente **View** seria uma **Div** e o **Text** um **P**. Para muitos dos elementos web, temos componentes nativos, você pode conferir aqui [a lista completa dos componentes](https://reactnative.dev/docs/components-and-apis).
+
+Esta é uma explicação bem objetiva sobre **React Native**, vou deixar para um próximo post uma explicação mais ampla sobre sua arquitetura, incluindo as diferenças do React.
+
+Vamos adiante e começar com o React Native no Expo.
+
+
+## Começando com React Native e Expo
+
+Quando começamos a trabalhar com React Native, temos duas formas de configurar nosso ambiente de desenvolvimento: Usando o React Native CLI ou Expo.
+
+Se você já é um desenvolvedor mobile com experiência e quer conhecer o React Native, talvez fique mais a vontade com **React Native CLI**.
+
+A partir do React Native CLI é possível ter mais controle sobre dependências e códigos nativos, o problema de trabalhar desta forma é que será necessário ter o Xcode ou Android Studio instalado e todo processo de construção e build vai depender do seu SO.
+
+No entanto, se você está **começando agora com desenvolvimento mobile**, ainda tem pouca ou até nenhuma experiência, a maneira mais fácil de iniciar é com o Expo CLI.
+
+O Expo é um framework e uma plataforma para desenvolvimento de aplicações React que fornece um conjunto de ferramentas e serviços construídos em torno de plataformas nativas e do React Native, para ajudar você a desenvolver, implantar e iterar rapidamente em aplicativos iOS, Android e web a partir de uma mesma base de código JavaScript e TypeScript.
+
+Entre as vantagens de trabalhar com o [Expo](https://expo.dev/), como cite no inicio, é a possibilidade de você usar a plataforma deles para realizar o compilação (_**build**_) nativo, isto me permite, por exemplo, trabalhar em um Linux ou Windows, sem depender inicialmente de um Mac.
+
+Você verá muitas discussões sobre usar ou não Expo, o que de fato para alguns casos talvez não seja a melhor alternativa, porém, para começar rápido e dar os primeiros passos, lançar um MVP e fazer os primeiros projetos, escolher o Expo é uma ótima opção.
+
+Vamos a prática e aprender como criar um aplicativo com React Native e Expo.
+
+## Preparando o ambiente de desenvolvimento
+
+Antes de criar nosso projeto com Expo, precisamos instalar o expo-cli no nosso ambiente de desenvolvimento. Para realizar esta instalação você precisa ter as seguintes dependências:
+
+### Node.js (versão LTS)
+
+Você pode baixar o instalador do Node.js LTS [aqui no site oficial](https://nodejs.org/en/) e executar o instalador.
+
+_Uma boa prática é instalar o Node.js a partir do NVM, você pode ver mais sobre este assunto neste post sobre [como ter múltiplas versões do Node.js](/blog/instalando-multiplas-versoes-do-nodejs-com-nvm) no ambiente de desenvolvimento._
+
+### Git
+
+Você pode encontrar o instalador do Git [aqui no site oficial](https://git-scm.com/).
+
+### Watchman
+
+Você pode baixar o instalador [aqui no site oficial](https://facebook.github.io/watchman/docs/install#buildinstall).
+
+_Caso você utilize Linux ou MacOs, é possível usar o gerenciador de pacotes Homebrew para instalar o Watchman, basta executar o comando: **`brew install watchman`**_
+
+Finalizado as instalações, execute o seguinte comando no seu terminal para **instalar o expo**.
+
+```powershell
+npm install --global expo-cli
+```
+
+Para testar se tudo está funcionando, execute o comando: `expo whoami` .
+
+Você deve receber a mensagem **Not logged in**.
+
+Nesta etapa recomendo que você [crie uma conta no Expo](https://expo.dev/) ou se autentique com as suas credenciais para finalizar esta etapa.
+
+Para se autenticar execute o comando: `expo login`
+
+## Criando o projeto Expo
+
+Agora com o ambiente pronto, vamos criar o projeto com o Expo CLI, no seu terminal navegue até o diretório de sua preferência e execute o comando:
+
+```powershell
+expo init app-exemplo
+```
+
+No lugar de app-exemplo você pode colocar o nome do seu projeto.
+
+Após executar o comando você precisa escolher o template que deseja aplicar no projeto.
+
+<figure>
+
+![](/media/posts/como-criar-um-aplicativo-com-react-native-e-expo/image.png)
+
+<figcaption>
+
+Templates disponíveis ao criar um projeto novo com Expo.
+
+</figcaption>
+
+</figure>
+
+Ao criar um novo projeto com Expo você pode escolher entre duas opções de fluxos de trabalho. A primeira opção é chamada de **Managed Workflow**, ou Fluxo de Trabalho Gerenciado e a segunda é a **Bare Workflow**, ou Fluxo de Trabalho Básico.
+
+Na opção **Managed Workflow**, todo processo de compilação do aplicativo para iOS e Android, serviços de Push Notification, entre outras configurações são gerenciadas pelo Expo, você apenas precisa se preocupar em escrever seu código JavaScript.
+
+Nesta forma de gerenciamento, você tem 3 templates de projeto disponíveis:
+
+- **Blank:** Contém as configurações mínimas com JavaScript.
+
+- **Blank (TypeScript):** Contém as configurações mínimas com TypeScript. ❤️
+
+- **Tabs:** Contém um template com a navegação em abas usando o react-navigation.
+
+Já na opção a **Bare Workflow**, você tem um tema com a configuração mínima e todo o processo de compilação e configuração do aplicativo é gerenciado por você. Está geralmente acaba sendo a opção escolhida para quem precisa adicionar códigos nativos no projeto.
+
+Ainda que você comece um projeto com a opção gerenciada, se por algum motivo o Expo não atender aos requisitos do aplicativo ou travar em alguma limitação, você pode desvincular o projeto do Expo.
+
+Caso ainda tenha dúvidas sobre qual fluxo de trabalho escolher, aqui você encontra uma [tabela comparativa com as limitações](https://docs.expo.dev/introduction/managed-vs-bare/#workflow-comparison) dos fluxos de trabalho.
+
+Para avançar em nossa demo, **escolha a opção blank (TypeScript)**.
+
+Após finalizar a execução do script você deve ver uma tela como esta:
+
+![](/media/posts/como-criar-um-aplicativo-com-react-native-e-expo/image-1.png)
+
+Agora para abrir o projeto, vamos seguir as instruções, execute `cd app-exemplo` e depois o comando `yarn start`. Você deve ver um resumo da sua aplicação em execução, um qr-code e uma lista de comandos úteis.
+
+## Como abrir o aplicativo no simulador
+
+Uma das formas mais rápidas de você testar o projeto é usar o **[client Expo Go](https://expo.dev/client)**.
+
+Este client fornecido pela Expo, é um aplicativo disponível para iOS e Android, com ele instalado você pode carregar todo JavaScript do seu projeto e testar direto no seu celular, usando um dispositivo real.
+
+Para testar, seu celular e computador devem estar conectado a mesma rede local, aqui no meu ambiente de trabalho, meu celular fica na rede Wifi e o computador na rede via cabo.
+
+Após executar o comando `yarn start` será exibido um QR Code, você ler esta imagem exibida no terminal com a sua câmera do celular ou se preferir,
+
+Outra alternativa para testar sem um dispositivo físico é abrir no seu navegador, para isso **aperte w**, conforme orienta o terminal. Neste caso, se você precisar usar algum recurso nativo, não conseguirá emular totalmente. Esta opção é útil para testes mais básicos.
+
+
+## Compartilhando o aplicativo
+
+Um recurso muito útil quando estamos desenvolvendo um aplicativo é poder compartilhar com outros desenvolvedores o app para teste, antes mesmo de gerar uma versão beta.
+
+Ao invés de você gerar um build, preparar um release e distribuir com a ajuda de alguma ferramenta como **App Distribution** do Firebase, com o **Expo Go** você pode gerar uma URL pública do seu projeto em execução no seu ambiente de desenvolvimento.
+
+Para fazer isto o processo é bem simples. Após colocar seu projeto em execução **aperte a tecla d** para abrir as ferramentas do desenvolvedor, você deve ver esta imagem:
+
+![Ferramentas do Desenvolvedor React Native com Expo](/media/posts/como-criar-um-aplicativo-com-react-native-e-expo/image-2.png)
+
+Veja que temos várias opções interessantes, primeiro clique no botão **Tunel** ao lado da opção **connection**, ao fazer isto o Expo vai gerar uma URL para acesso remoto ao aplicativo em execução no seu ambiente.
+
+Agora você pode clicar na opção Send link with email e informar o e-mail do destinatário que deverá receber o link para acesso ao aplicativo.
+
+Mas reforçando, a pessoa precisa ter o **Expo Go** instalado no seu celular.
+
+## Editando o código fonte do aplicativo
+
+Agora que passamos pelos comandos essenciais do Expo, vamos editar o código fonte.
+
+Para isso, abra no seu VSCode o projeto e edite como um projeto React. Você pode arrastar a pasta do projeto para o VSCode ou apertar CTRL+D para interromper a execução.
+
+Para abrir a pasta no VSCode via terminal, digite: `code .`
+
+A estrutura deste template do Expo deve se parecer com esta imagem:
+
+![](/media/posts/como-criar-um-aplicativo-com-react-native-e-expo/image-3-1024x777.png)
+
+O arquivo **App.tsx** é o ponto de inicio do seu aplicativo. Para teste, altere o texto que veio junto com este template e inicie novamente o expo no seu terminal.
+
+A partir de agora, qualquer alteração que você fizer, será refletido automaticamente no aplicativo que está em execução, você pode manter o app aberto no seu celular e ir realizando as alterações para ver a alteração na hora.
+
+Outro recurso útil do Expo é **apertar r** para recarregar o aplicativo. Pode acontecer de alguma alteração feita no código não refletir no app, para resolver isso, você pode tentar recarregar o **_bundle_** (pacote) gerado do aplicativo.
+
+## Conclusão
+
+Espero ter conseguido te ajudar com esta introdução ao Expo. Ainda tem muito a ser compartilhado, mas para não tornar este post ainda maior, aqui a ideia principal é entender como criar um aplicativo com React Native e Expo.
+
+Se quiser aprender mais sobre React Native, comente a baixo e me deixe saber o que você está procurando, sempre que eu tiver algo novo, será publicado aqui no blog.
+
+Há e não esquece de marcar se gostou do conteúdo e compartilhar por aí. Obrigado! :)

@@ -1,0 +1,409 @@
+---
+title: "A base para começar com React.js"
+description: "Artigo prático, explicando os primeiros fundamentos React.js para iniciantes: Componentes e Propriedades, Composição e Estilização CSS."
+date: 2022-02-26
+tags:
+  - frontend
+  - react
+cover: "/media/posts/reactjs-para-iniciantes/react-iniciantes.png"
+language: pt
+---
+
+Se você está iniciando com React e ainda tem dúvidas, não entendeu muito bem como ele funciona, talvez esteja se perguntando o que estudar primeiro, neste artigo quero te ajudar respondendo estas dúvidas e descomplicar alguns conceitos de React para iniciantes.
+
+Este conteúdo será apresentado com exemplos praticos, é recomendável que você tenha conhecimentos de JavaScript, HTML e CSS.
+
+Nesta primeira parte, vamos **criar uma aplicação React JS com Vite**.
+
+## O que é o React
+
+**O React é uma biblioteca JavaScript para desenvolvimento front-end**, criada pelo time de desenvolvimento do Facebook e lançada em 2013. Desde então, se tornou uma das bibliotecas mais utilizadas nos últimos anos por conta da sua proposta.
+
+O principal objetivo do React é fornecer aos desenvolvedores a capacidade de desenvolver interfaces ricas e complexas de forma declarativa, baseadas em componentes, permitindo que cada componente controle seu próprio estado, estilos e regras de negócio.
+
+Com está abordagem é possível ter maior maior controle sobre as partes que compõem uma interface, é possível testar cada parte isoladamente, encapsular as responsabilidades e principalmente, facilitar a depuração de algum problema.
+
+## O que aprender para começar com React
+
+Está talvez seja a principal pergunta de muitos desenvolvedores que estão estudando ou querendo iniciar com React. Um bom ponto de partida, é focar nestes fundamentos.
+
+1. Componentes e Propriedades
+
+3. Composição de Componentes
+
+5. Estilização
+
+7. Estados (useState)
+
+9. Efeitos colaterais (useEffect)
+
+11. Formulários
+
+13. Roteamento de páginas
+
+Neste artigo, vamos explorar os 3 primeiros da lista.
+
+## Começando um projeto React
+
+O primeiro passo para nosso estudo é criar um projeto do zero, para isso, nós temos algumas abordagens para iniciar um projeto React.
+
+**A primeira alternativa**, não muito popular, é adicionar o React há um projeto existente de forma manual. Isso pode ser necessário em algum contexto de projeto, mas não vou focar nela aqui, se quiser saber mais, recomendo ver **[aqui na documentação](https://pt-br.reactjs.org/docs/add-react-to-a-website.html)**.
+
+**A segunda alternativa**, mais popular, é criar um projeto React usando o **[Create React App](https://create-react-app.dev/)**. Nesta abordagem, o **CRA** gera um projeto com as ferramentas de compilação de JavaScript configuradas e com livereload.
+
+**A terceira alternativa**, mais moderna e recomendada, é criar um projeto [**React com Vite**](https://vitejs.dev/). Assim como o CRA, o Vite cria e configura um projeto React, mas de forma resumida, usando ferramentas mais modernas e rápidas para compilação do JavaScript.
+
+> Vite é muito mais do que essa minha definição, e não se aplica apenas a React.  
+> Se você quiser ler sobre este _Tooling_, recomendo [**ver este artigo**](https://vitejs.dev/guide/why.html).
+
+Vamos começar criando nosso **projeto React com Vite** executando no terminal:
+
+```bash
+yarn create vite
+```
+
+Agora algumas perguntas vão aparecer, responda conforme a sugestão.
+
+**_Project name_**: Digite **react-iniciantes**.  
+**_Select a framework_**: Selecione **react**.  
+**_Select a variant_**: Selecione apenas **react**, TypeScript veremos depois.
+
+Se tudo estiver certo, você verá uma mensagem de sucesso e orientações.
+
+Entre na pasta, execute o comando `yarn` para instalar as dependências e abra no seu VSCode digitando `code .`. Com o VSCode aberto, abra o terminal e execute o comando `yarn dev` para iniciar a aplicação.
+
+Você deve ver essa estrutura no VS Code.
+
+![Estrutura do projeto React com Vite](/media/posts/reactjs-para-iniciantes/app-react-com-vite.png)
+
+## Componentes e Propriedades
+
+Aqui é o coração do React e para entendermos o que é um Componente e Propriedades, vamos analisar a imagem a seguir e reproduzir no projeto.
+
+![Card com estatísticas](/media/posts/reactjs-para-iniciantes/react-exemplo-componente.png)
+
+Esta imagem é um contêiner contendo estatísticas de usuários ativos em um Dashboard qualquer, vamos escrever esse componente no React.
+
+Primeiro, vamos remover os arquivos css, favicon e svg da nossa pasta src, remover a importação do index.css no arquivo main.jsx e atualizar o arquivo App.jsx para o seguinte:
+
+```jsx
+function App() {
+  return <h2>Dashboard</h2>;
+}
+
+export default App;
+```
+
+Agora criei um arquivo chamado **_Card.js_x** dentro da pasta **_src_** adicione o seguinte código.
+
+```jsx
+export function Card() {
+  return (
+    <div>
+      <h2>Total de Usuários Ativos</h2>
+      <p>+ 2.6%</p>
+      <h3>18.765</h3>
+    </div>
+  );
+}
+```
+
+Por fim, vamos adicionar esse componente Card ao arquivo App.jsx.
+
+```jsx
+import { Card } from "./Card";
+
+function App() {
+  return (
+    <div>
+      <h2>Dashboard</h2>
+      <Card />
+    </div>
+  );
+}
+
+export default App;
+```
+
+Vamos a algumas explicações. O que fizemos aqui foi criar um componente React, e como pode observar, **um componente representa uma função JavaScript** que retorna um HTML.
+
+Essa sintaxe que combina HTML e JavaScript no retorno da função, é chamada de JSX. 🎉
+
+Você usará com bastante frequência JSX, adicionando variáveis, expressões, verificações condicionais, loops e até outros componentes aninhados no retorno das funções.
+
+Sempre que for retornar um JSX na função, saiba que você **deve retornar um único elemento** ou então, devem ser **envolvidos num único elemento ou Fragmento** do React.
+
+Se você estiver com o app rodando, ao acessar localhost:3001, deve ver este resultado:
+
+![Screenshot da aplicação React e componente](/media/posts/reactjs-para-iniciantes/componente-react-browser.png)
+
+Agora como podemos deixar estas informações do Card dinâmicas?
+
+Passando Propriedades ao componente. Uma propriedade é adicionada da mesma forma que um atributo HTML em um Tag, como um src, href ou style.
+
+Vamos adicionar no componente <Card /> as propriedades título, percentual, o indicador de oscilação e o total de usuários, altere o código do seu App.tsx para o seguinte:
+
+```jsx
+import { Card } from "./Card";
+
+function App() {
+  return (
+    <div>
+      <h2>Dashboard</h2>
+      <Card
+        title="Total de usuários ativos"
+        oscillation="+"
+        percentage="2.6"
+        total="18.765"
+      />
+    </div>
+  );
+}
+
+export default App;
+```
+
+Agora para conseguirmos ler estas informações no componente, vamos acessar as propriedades no parâmetro **_props_** da função. Por padrão, um componente React sempre receberá um parâmetro chamado **_props_** que contém todas as propriedades passadas.
+
+O parâmetro **props** da função é um objeto, para acessar os valores das propriedades, você deve incluir o nome **_props_** como um parâmetro da função do componente e acessar o valor neste objeto com a sintaxe **props.\[suaPropriedade\]**.
+
+Agora altere seu componente **_Card.jsx_** para o seguinte:
+
+```jsx
+export function Card(props) {
+  return (
+    <div>
+      <h2>{props.title}</h2>
+      <p>
+        {props.oscillation} {props.percentage}%
+      </p>
+      <h3>{props.total}</h3>
+    </div>
+  );
+}
+```
+
+Agora ao acessar seu browser, você deve ver este resultado.
+
+![Screenshot da aplicação React e componente](/media/posts/reactjs-para-iniciantes/componente-com-props-browser.png)
+
+Agora vamos supor que você não queria passar o título desse Card como um propriedade, mas sim como um filho do componente Card, semelhante ao que fazemos com um elemento HTML, como nossa DIV neste App.tsx.
+
+Para aplicar esta mudança, basta abrir e fechar o componente Card e adicionar seu texto dentro do contêiner como uma tag HTML:
+
+```jsx
+import { Card } from "./Card";
+
+function App() {
+  return (
+    <div>
+      <h2>Dashboard</h2>
+      <Card oscillation="+" percentage="4.2" total="12.645">
+        Total de usuários ativos
+      </Card>
+    </div>
+  );
+}
+
+export default App;
+```
+
+Se você tentar acessar o browser agora, o título deve estar faltando.
+
+![Screenshot da aplicação React e componente](/media/posts/reactjs-para-iniciantes/componente-sem-children-browser.png)
+
+Isto acontece porquê agora não temos mais a propriedade title, para acessar essa string passada como um filho do componente, você vai precisar usar a propriedade **children**. para acessar o children, basta informar props.children.
+
+```jsx
+export function Card(props) {
+  return (
+    <div>
+      <h2>{props.children}</h2>
+      <p>
+        {props.oscillation} {props.percentage}%
+      </p>
+      <h3>{props.total}</h3>
+    </div>
+  );
+}
+```
+
+A partir de agora você verá o título no Card.
+
+
+## Composição de Componentes
+
+Um conceito muito importante ao trabalhar com componentes é a capacidade de compor componentes a partir de outros. Vamos rever o componente que estamos criando.
+
+![Card com estatísticas](/media/posts/reactjs-para-iniciantes/react-exemplo-componente.png)
+
+Observando a imagem, poderíamos extrair a parte que exibi o percentual em um componente e a motivação para isso, é que esta parte do nosso componente Card, poderia ser reutilizada em outros contêiners da aplicação.
+
+Vamos extrair e ver na pratica, crie um novo componente criando um arquivo chamado CardOscillation.jsx e adicione o seguinte código:
+
+```jsx
+export function CardOscillation(props) {
+  return (
+    <p>
+      {props.oscillation} {props.percentage}%
+    </p>
+  );
+}
+```
+
+Agora, no seu arquivo Card.jsx, altere o código para isso:
+
+```jsx
+import { CardOscillation } from "./CardOscillation";
+
+export function Card(props) {
+  return (
+    <div>
+      <h2>{props.children}</h2>
+      <CardOscillation
+        oscillation={props.oscillation}
+        percentage={props.percentage}
+        total={props.total}
+      />
+      <h3>{props.total}</h3>
+    </div>
+  );
+}
+```
+
+O resultado visual é exatamente o mesmo, porém, agora você tem partes separadas que podem ser reutilizadas e você pode usar para compor outros componentes. O mesmo pode ser aplicado para Botões, Inputs de formulários, Títulos e elementos que se repetem.
+
+## Estilização no React
+
+Agora chegou o momento de adicionar cor e estilo ao nosso projeto React, aqui temos algumas formas bem interessantes de aplicar estilização em React.
+
+**A primeira abordagem** é usar CSS igual ao que fazemos com HTML, criando um arquivo e importando na aplicação. Você pode definir estilos por tags, criar classes e tudo que o CSS permite. A diferença é só na importação, que deve ser feita via JavaScript.
+
+Vamos criar o arquivo **_App.css_** e adicionar o seguinte código.
+
+```css
+body {
+  background-color: #0e1318;
+  color: #ffffff;
+}
+
+.card {
+  background-color: #212b36;
+  padding: 1rem;
+  max-width: 420px;
+}
+```
+
+Agora no arquivo App.jsx, adicione a importação do CSS com o import do JavaScript.
+
+```jsx
+import { Card } from "./Card";
+
+import "./App.css";
+
+function App() {
+  return (
+    <div>
+      <h2>Dashboard</h2>
+      <Card oscillation="+" percentage="4.2" total="12.645">
+        Total de usuários ativos
+      </Card>
+    </div>
+  );
+}
+
+export default App;
+```
+
+Por último, vamos adicionar a classe **_card_** no contêiner principal no arquivo Card.jsx.
+
+Aqui, a diferença que existe do HTML para o React é que, no lugar de definir uma classe CSS usando a propriedade **class** usaremos **className**.
+
+```jsx
+import { CardOscillation } from "./CardOscillation";
+
+export function Card(props) {
+  return (
+    <div className="card">
+      <h2>{props.children}</h2>
+      <CardOscillation
+        oscillation={props.oscillation}
+        percentage={props.percentage}
+        total={props.total}
+      />
+      <h3>{props.total}</h3>
+    </div>
+  );
+}
+```
+
+Pronto! Agora abra no seu browser e você deverá ver este resultado.
+
+![Screenshot da aplicação React e componente com estilo CSS aplicado](/media/posts/reactjs-para-iniciantes/componente-react-com-css-browser.png)
+
+**A Segunda abordagem** é o que chamamos de **CSS-in-JS**, que consiste em adicionar estilos no nosso HTML via JavaScript, passando um objeto para o atributo style, semelhante ao que fazemos com o atributo style no HTML.
+
+Na prática, se quisermos customizar um elemento, podemos fazer isso:
+
+```jsx
+<h2 style={{ fontSize: "2rem" }}>{props.children}</h2>
+```
+
+Todas as propriedades do CSS podem ser usadas neste objeto que é passado para a propriedade style, basta você usar no formato camelCase.
+
+Inclusive, ao usar CSS-in-JS, recomendo que você utilize libs auxiliares, uma muito boa e que permiti usar as propriedades do componente junto com o CSS é a [**Styled-Components**](https://styled-components.com/).
+
+Não vou me aprofundar sobre Styled-Components aqui, mas se você quiser saber mais, comenta aqui no post para saber.
+
+Já a terceira **abordagem para usar CSS no React** é com **CSS Module**.
+
+O legal de trabalhar com CSS Module é que você pode restringir o CSS ao componente, desta forma se você tiver classes CSS com o mesmo nome, em arquivos diferentes, não haverá sobreposição dos estilos.
+
+Vamos aplicar na pratica. Crie um arquivo **_Card.module.css_** e adicione o seguinte CSS.
+
+```css
+.card {
+  background-color: #212b36;
+  padding: 1rem;
+  max-width: 420px;
+}
+```
+
+No componente Card.jsx, vamos adicionar a importação deste arquivo CSS, agora nomeado como Styles e atualizar o className do card para Styles.card.
+
+```jsx
+import { CardOscillation } from "./CardOscillation";
+import Styles from "./Card.module.css";
+
+export function Card(props) {
+  return (
+    <div className={Styles.card}>
+      <h2>{props.children}</h2>
+      <CardOscillation
+        oscillation={props.oscillation}
+        percentage={props.percentage}
+        total={props.total}
+      />
+      <h3>{props.total}</h3>
+    </div>
+  );
+}
+```
+
+Visualmente o resultado é o mesmo, mas ao inspecionar o HTML, vamos notar a diferença:
+
+![](/media/posts/reactjs-para-iniciantes/react-css-module-html-gerado.png)
+
+Esta classe **\_card\_1wwp0\_1** voi gerada durante a compilação do JavaScript.
+
+Agora, desta forma conseguimos garantir que o CSS será exclusivo a cada componente e ainda assim, podemos combinar a importação de um CSS global com CSS Module.
+
+Uma dica extra, se você quiser aprender mais sobre CSS e HTML, tenho um artigo exclusivo sobre [**CSS Flexbox**](/blog/css-flexbox-guia-pratico) e [**Tags HTML5**](/blog/tags-html5-que-voce-precisa-conhecer) muito úteis para conhecer e usar no frontend.
+
+## Finalizando
+
+Estes são apenas 3 conceitos para quem está começando com React. Se você conseguir aprender bem estes três pilares, praticando e testando, já é um ótimo passo para avançar aos próximos conceitos e ampliar sua experiência com React.
+
+Espero ter te ajudado com este conteúdo e caso queira ser avisado das próximas partes desta serie ou mais sobre React, cadastre-se na minha lista de e-mails a seguir.
+
+Nos vemos em breve!  🤟🏼

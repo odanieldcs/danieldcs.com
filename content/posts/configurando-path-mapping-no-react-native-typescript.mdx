@@ -1,0 +1,106 @@
+---
+title: "Configurando Custom Path Mapping no React Native"
+description: "Aprenda a configurar Path Mapping em um projeto React Native com TypeScript. Otimize a importação de arquivos e deixe seu código organizado."
+date: 2020-08-29
+tags:
+  - babel
+  - react-native
+  - typescript
+cover: "/media/posts/configurando-path-mapping-no-react-native-typescript/tutorial-typescript-react-native-blog.png"
+language: pt
+---
+
+A medida que um projeto mobile é desenvolvido, novas estruturas de pastas são criadas para organizar componentes, contextos, serviços e diversas outras partes relevantes do aplicativo. Preocupar-se com a legibilidade do código e manutenção do projeto, é fundamental, neste post vou falar sobre Custom Path Mapping do TypeScript, aliases que podemos criar para pastas do projeto, neste post para React Native.
+
+Em grandes projetos, quanto mais funcionalidades temos, mais amplo é o código do nosso aplicativo e maior será a dificuldade de rastrear as referências entres os arquivos em caso de manutenção. Caso você utilize algum padrão como DDD ou Clean Architecture, isto pode se tornar ainda mais complicado de manter.
+
+Veja este exemplo, com este aninhamento:
+
+![Exemplo ruim de importação de arquivo](/media/posts/configurando-path-mapping-no-react-native-typescript/path-nesting-react-native.png)
+
+Podemos arrumar isto! Criando um alias, um Path Mapping customizado neste projeto em React Native, vamos ver a seguir como criar este alias e ter este resultado nas importações de arquivos:
+
+![Exemplo usando Path Mapping](/media/posts/configurando-path-mapping-no-react-native-typescript/path-mapping-typescript-react-native.png)
+
+Ao trabalhar com um **Path Mapping** customizado, se você precisar mover sua pasta de componentes para outro diretório, o esforço de revisão as referências é nulo. Você apenas altera o caminho deste Path na configuração do Babel e no TypeScript, que toda a mágica acontece.
+
+Vamos a prática!
+
+## Configurando o Path Mapping
+
+Para configurar o Path Mapping, vamos usar o plugin [**Module Resolver**](https://www.npmjs.com/package/babel-plugin-module-resolver), antes de instalar, vamos criar um projeto React Native usando o CLI com o template TypeScript.
+
+```bash
+npx react-native init tutorialAlieases --template react-native-template-typescript
+```
+
+Depois de criar o projeto, vamos instalar a dependência Module Resolver:
+
+```bash
+npm install babel-plugin-module-resolver --save-dev
+```
+
+Você pode instalar com o Yarn, se preferir:
+
+```bash
+yarn add --dev babel-plugin-module-resolver
+```
+
+Após instalar o plugin, vamos editar o arquivo **.babel.config.js**, adicionando o "module-resolver" conforme o exemplo:
+
+```javascript
+module.exports = {
+  presets: ['module:metro-react-native-babel-preset'],
+  plugins: [
+    [
+      'module-resolver',
+      {
+        root: ['./src'],
+        extensions: [
+          '.ts',
+          '.tsx',
+          '.jsx',
+          '.js',
+          '.json',
+        ],
+        alias: {
+          '@components': './src/components',
+          '@configs': './src/configs',
+        },
+      },
+    ],
+  ],
+};
+```
+
+Para ficar mais claro, vamos entender o que significa cada configuração que defimos:
+
+**root:** Defini o diretório inicial do nosso app, geralmente organiza os arquivos dos meus aplicativos a partir da pasta src.
+
+**extensions:** Permiti definir os tipos de extensões que podem ser suportadas pelo plugin.
+
+**alias:** Defini o nome do alias e o caminho que ele está, no exemplo, configurei um alias para meus componentes e configurações globais do app.
+
+Agora vamos aplicar a configuração no nosso arquivo **tsconfig.json**, localize a propriedade **baseUrl** e **paths**, remova o comentário e configure como este exemplo:
+
+```json
+{
+  "compilerOptions": {
+    ...
+    "baseUrl": "./",
+    "paths": {
+      "@components/*": ["./src/components/*"],
+      "@configs/*": ["./src/config/*"],
+    },
+    ...
+}
+```
+
+Agora que finalizamos nossa configuração, você pode referenciar os arquivos como exibido no exemplo da imagem.
+
+Um aviso importante, você deve colocar o caminho completo dos arquivos no tsconfig.json, caso contrário, o TypeScript não vai localizar o arquivo corretamente.
+
+O código fonte desta dica está disponível [**aqui no meu github**](https://github.com/odanieldcs/tutorial-react-native-custom-path), se quiser ler mais sobre sobre mapping de módulos, você conferir [**na documentação oficial**](https://www.typescriptlang.org/docs/handbook/module-resolution.html).
+
+E se você quiser aprender mais sobre TypeScript, confira meu outro artigo com **[dicas avançadas de TypeScript](/blog/dicas-avancadas-de-typescript-que-voce-precisa-conhecer).** Obrigado pela leitura, qualquer dúvida ou sugestão de novo conteúdo, deixe seu comentário ou [entre em contato comigo](/contato).
+
