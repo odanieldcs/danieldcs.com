@@ -1,13 +1,7 @@
-import type { Metadata } from 'next'
 import { SiteShell } from '@/components/site-shell'
+import { baseMetadata } from '@/lib/metadata'
 
-export const metadata: Metadata = {
-  title: 'danieldcs.com',
-  description: 'Personal website of Daniel Castro',
-  icons: {
-    icon: '/media/icons/logo-ddev.png',
-  },
-}
+export const metadata = baseMetadata
 
 export default function RootLayout({ children }: LayoutProps<'/en'>) {
   return <SiteShell language="en">{children}</SiteShell>

@@ -5,7 +5,7 @@ import { getAllPosts } from '@/lib/content/posts'
 const RECENT_POST_LIMIT = 2
 
 export const metadata: Metadata = {
-  description: 'Building software products and running long distances.',
+  description: 'Construindo produtos de software e correndo longas distâncias.',
 }
 
 export default async function Home() {
