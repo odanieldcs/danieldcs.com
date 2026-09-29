@@ -25,13 +25,12 @@ afterEach(() => {
   cleanup()
   localStorage.clear()
   document.documentElement.className = ''
-  document.documentElement.lang = ''
 })
 
 function renderToggle(language: InterfaceLanguage = 'en') {
   return render(
     <ThemeProvider>
-      <InterfaceLanguageProvider initialLanguage={language}>
+      <InterfaceLanguageProvider language={language}>
         <ThemeToggle />
       </InterfaceLanguageProvider>
     </ThemeProvider>,

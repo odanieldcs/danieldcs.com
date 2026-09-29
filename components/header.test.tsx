@@ -2,7 +2,6 @@ import { cleanup, render, screen } from '@testing-library/react'
 import type { ReactNode } from 'react'
 import { afterEach, expect, test, vi } from 'vitest'
 import { InterfaceLanguageProvider } from '@/components/interface-language-provider'
-import { INTERFACE_LANGUAGE_COOKIE_NAME } from '@/lib/i18n/types'
 import { Header } from './header'
 
 const navigation = vi.hoisted(() => ({
@@ -45,14 +44,11 @@ vi.mock('@/components/ui/theme-toggle', () => ({
 afterEach(() => {
   cleanup()
   navigation.pathname = '/'
-  // biome-ignore lint/suspicious/noDocumentCookie: test cleanup of the jsdom cookie jar
-  document.cookie = `${INTERFACE_LANGUAGE_COOKIE_NAME}=; Path=/; Max-Age=0`
-  document.documentElement.lang = ''
 })
 
 function renderHeader(language: 'pt' | 'en' = 'pt') {
   return render(
-    <InterfaceLanguageProvider initialLanguage={language}>
+    <InterfaceLanguageProvider language={language}>
       <Header />
     </InterfaceLanguageProvider>,
   )
@@ -93,7 +89,7 @@ test('identity links home and desktop nav lists the public items', () => {
   expect(mobileSlot?.contains(menuButton)).toBe(true)
   expect(mobileSlot?.contains(themeButton)).toBe(false)
   expect(screen.getByRole('button', { name: 'Theme' })).toBeTruthy()
-  expect(screen.getByRole('button', { name: 'Switch to English' })).toBeTruthy()
+  expect(screen.getByRole('link', { name: 'Switch to English' })).toBeTruthy()
 })
 
 test('marks the current route and nested paths as active', () => {

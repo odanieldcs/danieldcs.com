@@ -1,10 +1,6 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, expect, test, vi } from 'vitest'
-import {
-  InterfaceLanguageProvider,
-  useInterfaceLanguage,
-} from '@/components/interface-language-provider'
-import { INTERFACE_LANGUAGE_COOKIE_NAME } from '@/lib/i18n/types'
+import { InterfaceLanguageProvider } from '@/components/interface-language-provider'
 import { contactEmail, linkedInProfileUrl } from '@/lib/site'
 import { AboutView } from './about-view'
 
@@ -16,14 +12,11 @@ vi.mock('next/image', () => ({
 
 afterEach(() => {
   cleanup()
-  // biome-ignore lint/suspicious/noDocumentCookie: test cleanup of the jsdom cookie jar
-  document.cookie = `${INTERFACE_LANGUAGE_COOKIE_NAME}=; Path=/; Max-Age=0`
-  document.documentElement.lang = ''
 })
 
 function renderAbout(language: 'pt' | 'en' = 'pt') {
   return render(
-    <InterfaceLanguageProvider initialLanguage={language}>
+    <InterfaceLanguageProvider language={language}>
       <AboutView />
     </InterfaceLanguageProvider>,
   )
@@ -166,51 +159,4 @@ test('renders English copy when the interface language is en', () => {
   expect(contact.getAttribute('href')).toBe(`mailto:${contactEmail}`)
   expect(contact.getAttribute('href')).not.toContain('subject')
   expect(screen.queryByRole('heading', { name: 'Experiência' })).toBeNull()
-})
-
-function LanguageToggle() {
-  const { setLanguage } = useInterfaceLanguage()
-
-  return (
-    <button type="button" onClick={() => setLanguage('en')}>
-      Switch to English
-    </button>
-  )
-}
-
-test('updates About copy when the interface language changes', () => {
-  render(
-    <InterfaceLanguageProvider initialLanguage="pt">
-      <LanguageToggle />
-      <AboutView />
-    </InterfaceLanguageProvider>,
-  )
-
-  expect(
-    screen.getByRole('heading', { level: 2, name: 'Experiência' }),
-  ).toBeTruthy()
-  expect(
-    screen.getByRole('link', { name: 'Entre em contato' }).getAttribute('href'),
-  ).toBe(`mailto:${contactEmail}`)
-
-  fireEvent.click(screen.getByRole('button', { name: 'Switch to English' }))
-
-  expect(
-    screen.getByRole('heading', {
-      level: 1,
-      name: 'Between code, product and people.',
-    }),
-  ).toBeTruthy()
-  expect(
-    screen.getByRole('heading', { level: 2, name: 'Experience' }),
-  ).toBeTruthy()
-  expect(
-    screen.getByRole('link', { name: 'Get in touch' }).getAttribute('href'),
-  ).toBe(`mailto:${contactEmail}`)
-  expect(
-    screen.getByRole('img', {
-      name: 'Portrait of Daniel Castro at the Golden Gate Bridge',
-    }),
-  ).toBeTruthy()
-  expect(screen.queryByRole('heading', { name: 'Como contribuo' })).toBeNull()
 })

@@ -1,24 +1,17 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, expect, test } from 'vitest'
-import {
-  InterfaceLanguageProvider,
-  useInterfaceLanguage,
-} from '@/components/interface-language-provider'
+import { InterfaceLanguageProvider } from '@/components/interface-language-provider'
 import { getTrilhaCopy } from '@/lib/i18n/pages'
-import { INTERFACE_LANGUAGE_COOKIE_NAME } from '@/lib/i18n/types'
 import { trilhaWhatsAppUrl } from '@/lib/site'
 import { TrilhaView } from './trilha-view'
 
 afterEach(() => {
   cleanup()
-  // biome-ignore lint/suspicious/noDocumentCookie: test cleanup of the jsdom cookie jar
-  document.cookie = `${INTERFACE_LANGUAGE_COOKIE_NAME}=; Path=/; Max-Age=0`
-  document.documentElement.lang = ''
 })
 
 function renderTrilha(language: 'pt' | 'en' = 'pt') {
   return render(
-    <InterfaceLanguageProvider initialLanguage={language}>
+    <InterfaceLanguageProvider language={language}>
       <TrilhaView />
     </InterfaceLanguageProvider>,
   )
@@ -72,27 +65,8 @@ test('renders English copy and the English WhatsApp message', () => {
   expect(container.querySelector('input')).toBeNull()
 })
 
-function LanguageToggle() {
-  const { setLanguage } = useInterfaceLanguage()
-
-  return (
-    <button type="button" onClick={() => setLanguage('en')}>
-      Switch to English
-    </button>
-  )
-}
-
-test('updates Trilha copy when the interface language changes', () => {
-  render(
-    <InterfaceLanguageProvider initialLanguage="pt">
-      <LanguageToggle />
-      <TrilhaView />
-    </InterfaceLanguageProvider>,
-  )
-
-  expect(screen.getByText('A Trilha · Em construção')).toBeTruthy()
-
-  fireEvent.click(screen.getByRole('button', { name: 'Switch to English' }))
+test('renders the English eyebrow when the interface language is en', () => {
+  renderTrilha('en')
 
   expect(screen.getByText('The Trilha · In progress')).toBeTruthy()
   expect(

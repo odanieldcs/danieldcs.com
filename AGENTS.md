@@ -15,10 +15,11 @@ Operational context for this repo. Commands, scripts, and folder layout live in 
 - Static-first. Server Components by default. Keep client JavaScript minimal.
 - No CMS, database, or authentication.
 - Do not reintroduce React Router, Vite, Fly.io, or Docker.
+- Interface language comes from the route, not from cookies: PT lives at the root in `app/(pt)` (no prefix, no `/pt` route) and EN lives under `/en` in `app/(en)/en`. Each group has its own root layout rendering `components/site-shell.tsx` with its `lang`. No `Accept-Language` detection or automatic redirects.
 
 ## Out of V1
 
-Do not add these unless the current ticket asks for them: PostHog, custom domain `danieldcs.com`, MDX loaders, i18n/redirects, CMS, required PR reviews, CODEOWNERS.
+Do not add these unless the current ticket asks for them: PostHog, custom domain `danieldcs.com`, MDX loaders, CMS, required PR reviews, CODEOWNERS.
 
 ## Workflow
 

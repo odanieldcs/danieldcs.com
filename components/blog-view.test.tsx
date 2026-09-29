@@ -1,10 +1,7 @@
 import { cleanup, render, screen, within } from '@testing-library/react'
 import { afterEach, expect, test } from 'vitest'
-import {
-  InterfaceLanguageProvider,
-} from '@/components/interface-language-provider'
+import { InterfaceLanguageProvider } from '@/components/interface-language-provider'
 import { BLOG_PAGE_SIZE } from '@/lib/blog/pagination'
-import { INTERFACE_LANGUAGE_COOKIE_NAME } from '@/lib/i18n/types'
 import { type BlogPostView, BlogView } from './blog-view'
 
 const posts: BlogPostView[] = [
@@ -33,9 +30,6 @@ const posts: BlogPostView[] = [
 
 afterEach(() => {
   cleanup()
-  // biome-ignore lint/suspicious/noDocumentCookie: test cleanup of the jsdom cookie jar
-  document.cookie = `${INTERFACE_LANGUAGE_COOKIE_NAME}=; Path=/; Max-Age=0`
-  document.documentElement.lang = ''
 })
 
 function renderBlog(
@@ -55,7 +49,7 @@ function renderBlog(
   } = props
 
   return render(
-    <InterfaceLanguageProvider initialLanguage={language}>
+    <InterfaceLanguageProvider language={language}>
       <BlogView
         posts={nextPosts}
         view={view}

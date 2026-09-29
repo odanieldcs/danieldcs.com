@@ -1,44 +1,24 @@
 'use client'
 
-import {
-  createContext,
-  type ReactNode,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-} from 'react'
-import { writeInterfaceLanguageCookie } from '@/lib/i18n/cookie'
+import { createContext, type ReactNode, useContext, useMemo } from 'react'
 import { getDictionary, type UiDictionary } from '@/lib/i18n/dictionary'
 import type { InterfaceLanguage } from '@/lib/i18n/types'
 
 type InterfaceLanguageContextValue = {
   language: InterfaceLanguage
-  setLanguage: (lang: InterfaceLanguage) => void
 }
 
 const InterfaceLanguageContext =
   createContext<InterfaceLanguageContextValue | null>(null)
 
 export function InterfaceLanguageProvider({
-  initialLanguage,
+  language,
   children,
 }: {
-  initialLanguage: InterfaceLanguage
+  language: InterfaceLanguage
   children: ReactNode
 }) {
-  const [language, setLanguageState] = useState(initialLanguage)
-
-  const setLanguage = useCallback((lang: InterfaceLanguage) => {
-    setLanguageState(lang)
-    writeInterfaceLanguageCookie(lang)
-    document.documentElement.lang = lang
-  }, [])
-
-  const value = useMemo(
-    () => ({ language, setLanguage }),
-    [language, setLanguage],
-  )
+  const value = useMemo(() => ({ language }), [language])
 
   return (
     <InterfaceLanguageContext.Provider value={value}>

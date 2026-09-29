@@ -1,13 +1,12 @@
 import { GeistMono } from 'geist/font/mono'
-import type { Metadata } from 'next'
 import { Fraunces, Inter } from 'next/font/google'
-import { cookies } from 'next/headers'
+import type { ReactNode } from 'react'
 import { Footer } from '@/components/footer'
 import { Header } from '@/components/header'
 import { InterfaceLanguageProvider } from '@/components/interface-language-provider'
 import { ThemeProvider } from '@/components/theme-provider'
-import { getInterfaceLanguageFromCookieStore } from '@/lib/i18n/cookie'
-import './globals.css'
+import { htmlLang, type InterfaceLanguage } from '@/lib/i18n/types'
+import '@/app/globals.css'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -22,26 +21,22 @@ const fraunces = Fraunces({
   display: 'swap',
 })
 
-export const metadata: Metadata = {
-  title: 'danieldcs.com',
-  description: 'Personal website of Daniel Castro',
-  icons: {
-    icon: '/media/icons/logo-ddev.png',
-  },
-}
-
-export default async function RootLayout({ children }: LayoutProps<'/'>) {
-  const initialLanguage = getInterfaceLanguageFromCookieStore(await cookies())
-
+export function SiteShell({
+  language,
+  children,
+}: {
+  language: InterfaceLanguage
+  children: ReactNode
+}) {
   return (
     <html
-      lang={initialLanguage}
+      lang={htmlLang[language]}
       className={`${inter.variable} ${GeistMono.variable} ${fraunces.variable}`}
       suppressHydrationWarning
     >
       <body className="bg-background font-sans text-foreground">
         <ThemeProvider>
-          <InterfaceLanguageProvider initialLanguage={initialLanguage}>
+          <InterfaceLanguageProvider language={language}>
             <Header />
             {children}
             <Footer />

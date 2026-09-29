@@ -1,6 +1,6 @@
 'use client'
 
-import { Button } from '@/components/button'
+import { ButtonLink } from '@/components/button'
 import { useInterfaceLanguage } from '@/components/interface-language-provider'
 import { Tooltip } from '@/components/ui/tooltip'
 import { getDictionary } from '@/lib/i18n/dictionary'
@@ -8,6 +8,10 @@ import type { InterfaceLanguage } from '@/lib/i18n/types'
 
 function nextLanguage(language: InterfaceLanguage): InterfaceLanguage {
   return language === 'pt' ? 'en' : 'pt'
+}
+
+function languageHomeHref(language: InterfaceLanguage): string {
+  return nextLanguage(language) === 'en' ? '/en' : '/'
 }
 
 function languageSwitchLabel(language: InterfaceLanguage): string {
@@ -37,21 +41,22 @@ function GlobeIcon() {
 }
 
 export function LanguageSwitch() {
-  const { language, setLanguage } = useInterfaceLanguage()
+  const { language } = useInterfaceLanguage()
   const label = languageSwitchLabel(language)
 
   return (
     <Tooltip label={label} align="end">
       {(tooltipId) => (
-        <Button
+        <ButtonLink
           variant="ghost"
           className="peer min-w-11 px-0"
+          href={languageHomeHref(language)}
+          prefetch={false}
           aria-describedby={tooltipId}
           aria-label={label}
-          onClick={() => setLanguage(nextLanguage(language))}
         >
           <GlobeIcon />
-        </Button>
+        </ButtonLink>
       )}
     </Tooltip>
   )
