@@ -13,7 +13,7 @@ test('blog listing shows posts on page 1 without console errors', async ({
 
   await page.goto('/blog')
 
-  await expect(page).toHaveTitle('Blog')
+  await expect(page).toHaveTitle('Blog · Daniel Castro')
   await expect(
     page.getByRole('heading', {
       level: 1,
@@ -63,7 +63,9 @@ test('postgresql pilot article renders without console errors and code blocks', 
 
   await page.goto('/blog/postgresql-e-pgadmin-com-docker-compose')
 
-  await expect(page).toHaveTitle('PostgreSQL e pgAdmin com Docker Compose')
+  await expect(page).toHaveTitle(
+    'PostgreSQL e pgAdmin com Docker Compose · Daniel Castro',
+  )
   await expect(
     page.getByRole('heading', {
       level: 1,

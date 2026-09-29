@@ -22,7 +22,7 @@ test('community opens from the header without console errors', async ({
     .click()
 
   await expect(page).toHaveURL('/community')
-  await expect(page).toHaveTitle('Comunidade')
+  await expect(page).toHaveTitle('Comunidade · Daniel Castro')
   await expect(
     page.getByRole('heading', {
       level: 1,
