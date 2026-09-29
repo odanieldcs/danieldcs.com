@@ -1,24 +1,45 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
-import { afterEach, expect, test } from 'vitest'
+import { cleanup, render, screen } from '@testing-library/react'
+import type { ReactNode } from 'react'
+import { afterEach, expect, test, vi } from 'vitest'
 import { InterfaceLanguageProvider } from '@/components/interface-language-provider'
-import { INTERFACE_LANGUAGE_COOKIE_NAME } from '@/lib/i18n/types'
 import { LanguageSwitch } from './language-switch'
+
+vi.mock('next/link', () => ({
+  default: function MockLink({
+    children,
+    href,
+    className,
+    ...rest
+  }: {
+    children: ReactNode
+    href: string
+    className?: string
+  }) {
+    return (
+      <a href={href} className={className} {...rest}>
+        {children}
+      </a>
+    )
+  },
+}))
 
 afterEach(() => {
   cleanup()
-  // biome-ignore lint/suspicious/noDocumentCookie: test cleanup of the jsdom cookie jar
-  document.cookie = `${INTERFACE_LANGUAGE_COOKIE_NAME}=; Path=/; Max-Age=0`
-  document.documentElement.lang = ''
 })
 
-test('shows the destination language label and toggles pt and en', () => {
-  render(
-    <InterfaceLanguageProvider initialLanguage="pt">
+function renderSwitch(language: 'pt' | 'en' = 'pt') {
+  return render(
+    <InterfaceLanguageProvider language={language}>
       <LanguageSwitch />
     </InterfaceLanguageProvider>,
   )
+}
 
-  const toEnglish = screen.getByRole('button', { name: 'Switch to English' })
+test('links to the English home when the language is pt', () => {
+  renderSwitch()
+
+  const toEnglish = screen.getByRole('link', { name: 'Switch to English' })
+  expect(toEnglish.getAttribute('href')).toBe('/en')
   expect(toEnglish.className).toContain('min-w-11')
   expect(toEnglish.className).toContain('min-h-11')
   expect(toEnglish.textContent).not.toContain('Switch to English')
@@ -30,18 +51,14 @@ test('shows the destination language label and toggles pt and en', () => {
   expect(toEnglish.getAttribute('aria-describedby')).toBe(
     screen.getByRole('tooltip').id,
   )
+})
 
-  fireEvent.click(toEnglish)
+test('links to the Portuguese home when the language is en', () => {
+  renderSwitch('en')
 
-  expect(
-    screen.getByRole('button', { name: 'Mudar para português' }),
-  ).toBeTruthy()
-  expect(document.documentElement.lang).toBe('en')
-
-  fireEvent.click(screen.getByRole('button', { name: 'Mudar para português' }))
-
-  expect(
-    screen.getByRole('button', { name: 'Switch to English' }),
-  ).toBeTruthy()
-  expect(document.documentElement.lang).toBe('pt')
+  const toPortuguese = screen.getByRole('link', {
+    name: 'Mudar para português',
+  })
+  expect(toPortuguese.getAttribute('href')).toBe('/')
+  expect(screen.getByRole('tooltip').textContent).toBe('Mudar para português')
 })

@@ -1,11 +1,7 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { cleanup, render, screen } from '@testing-library/react'
 import type { ReactNode } from 'react'
 import { afterEach, expect, test, vi } from 'vitest'
-import {
-  InterfaceLanguageProvider,
-  useInterfaceLanguage,
-} from '@/components/interface-language-provider'
-import { INTERFACE_LANGUAGE_COOKIE_NAME } from '@/lib/i18n/types'
+import { InterfaceLanguageProvider } from '@/components/interface-language-provider'
 import { type HomePostSummary, HomeView } from './home-view'
 
 vi.mock('next/image', () => ({
@@ -46,14 +42,11 @@ const posts: HomePostSummary[] = [
 
 afterEach(() => {
   cleanup()
-  // biome-ignore lint/suspicious/noDocumentCookie: test cleanup of the jsdom cookie jar
-  document.cookie = `${INTERFACE_LANGUAGE_COOKIE_NAME}=; Path=/; Max-Age=0`
-  document.documentElement.lang = ''
 })
 
 function renderHome(language: 'pt' | 'en' = 'pt', nextPosts = posts) {
   return render(
-    <InterfaceLanguageProvider initialLanguage={language}>
+    <InterfaceLanguageProvider language={language}>
       <HomeView posts={nextPosts} />
     </InterfaceLanguageProvider>,
   )
@@ -186,48 +179,4 @@ test('omits the tag label when the post has no tag', () => {
 
   expect(screen.queryByText('content')).toBeNull()
   expect(document.querySelector('time')).toBeTruthy()
-})
-
-function LanguageToggle() {
-  const { setLanguage } = useInterfaceLanguage()
-
-  return (
-    <button type="button" onClick={() => setLanguage('en')}>
-      Switch to English
-    </button>
-  )
-}
-
-test('updates Home copy when the interface language changes', () => {
-  render(
-    <InterfaceLanguageProvider initialLanguage="pt">
-      <LanguageToggle />
-      <HomeView posts={posts} />
-    </InterfaceLanguageProvider>,
-  )
-
-  expect(
-    screen.getByRole('heading', { level: 2, name: 'Escrita recente' }),
-  ).toBeTruthy()
-  expect(screen.getByText('Engenheiro Full-Stack')).toBeTruthy()
-
-  fireEvent.click(screen.getByRole('button', { name: 'Switch to English' }))
-
-  expect(
-    screen.getByRole('heading', {
-      level: 1,
-      name: 'Creating and sharing, from dev to dev.',
-    }),
-  ).toBeTruthy()
-  expect(screen.getByText('Engineer · Builder · Runner')).toBeTruthy()
-  expect(
-    screen.getByRole('heading', { level: 2, name: 'Recent writing' }),
-  ).toBeTruthy()
-  expect(screen.getByText('Full-Stack Engineer')).toBeTruthy()
-  expect(
-    screen.getByRole('img', {
-      name: 'Daniel Castro speaking on stage at TDC Floripa in 2026, holding a microphone',
-    }),
-  ).toBeTruthy()
-  expect(screen.queryByRole('link', { name: 'See the Trilha' })).toBeNull()
 })

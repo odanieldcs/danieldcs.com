@@ -38,7 +38,7 @@ test('home loads without console errors', async ({ page }) => {
     header.getByRole('button', { name: 'Modo escuro' }),
   ).toBeVisible()
   await expect(
-    header.getByRole('button', { name: 'Switch to English' }),
+    header.getByRole('link', { name: 'Switch to English' }),
   ).toBeVisible()
 
   const footer = page.getByRole('contentinfo')
@@ -47,4 +47,14 @@ test('home loads without console errors', async ({ page }) => {
   }
 
   expect(consoleErrors).toEqual([])
+})
+
+test('serves the html lang attribute from the server, without JavaScript', async ({
+  request,
+}) => {
+  const response = await request.get('/')
+
+  expect(response.ok()).toBe(true)
+  const html = await response.text()
+  expect(html).toContain('<html lang="pt-BR"')
 })

@@ -4,7 +4,11 @@ export type InterfaceLanguage = (typeof interfaceLanguages)[number]
 
 export const DEFAULT_INTERFACE_LANGUAGE: InterfaceLanguage = 'pt'
 
-export const INTERFACE_LANGUAGE_COOKIE_NAME = 'interface-language'
+/** Value for the `<html lang>` attribute of each interface language. */
+export const htmlLang: Record<InterfaceLanguage, string> = {
+  pt: 'pt-BR',
+  en: 'en',
+}
 
 export function isInterfaceLanguage(
   value: unknown,

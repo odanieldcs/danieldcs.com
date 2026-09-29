@@ -1,10 +1,6 @@
 import { cleanup, fireEvent, render, screen, within } from '@testing-library/react'
 import { afterEach, expect, test } from 'vitest'
-import {
-  InterfaceLanguageProvider,
-  useInterfaceLanguage,
-} from '@/components/interface-language-provider'
-import { INTERFACE_LANGUAGE_COOKIE_NAME } from '@/lib/i18n/types'
+import { InterfaceLanguageProvider } from '@/components/interface-language-provider'
 import { type CommunityEntryView, CommunityView } from './community-view'
 
 const entries: CommunityEntryView[] = [
@@ -56,9 +52,6 @@ const entries: CommunityEntryView[] = [
 
 afterEach(() => {
   cleanup()
-  // biome-ignore lint/suspicious/noDocumentCookie: test cleanup of the jsdom cookie jar
-  document.cookie = `${INTERFACE_LANGUAGE_COOKIE_NAME}=; Path=/; Max-Age=0`
-  document.documentElement.lang = ''
 })
 
 function renderCommunity(
@@ -66,7 +59,7 @@ function renderCommunity(
   nextEntries = entries,
 ) {
   return render(
-    <InterfaceLanguageProvider initialLanguage={language}>
+    <InterfaceLanguageProvider language={language}>
       <CommunityView entries={nextEntries} />
     </InterfaceLanguageProvider>,
   )
@@ -179,30 +172,8 @@ test('renders an empty state when there are no entries', () => {
   expect(screen.queryByRole('group', { name: 'Formato' })).toBeNull()
 })
 
-function LanguageToggle() {
-  const { setLanguage } = useInterfaceLanguage()
-
-  return (
-    <button type="button" onClick={() => setLanguage('en')}>
-      Switch to English
-    </button>
-  )
-}
-
-test('updates Community chrome when the interface language changes', () => {
-  render(
-    <InterfaceLanguageProvider initialLanguage="pt">
-      <LanguageToggle />
-      <CommunityView entries={entries} />
-    </InterfaceLanguageProvider>,
-  )
-
-  expect(screen.getByText('Palestra')).toBeTruthy()
-  expect(screen.getAllByText('Ano').length).toBeGreaterThan(0)
-  expect(screen.getAllByRole('link')).toHaveLength(2)
-  expect(screen.getByRole('button', { name: 'Lista' })).toBeTruthy()
-
-  fireEvent.click(screen.getByRole('button', { name: 'Switch to English' }))
+test('renders English chrome when the interface language is en', () => {
+  renderCommunity('en')
 
   expect(
     screen.getByRole('heading', {
