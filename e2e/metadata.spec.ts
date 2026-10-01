@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { siteUrl } from '@/lib/site'
 import { getNewestBlogPost } from './helpers/posts'
 
 const pages = [
@@ -8,6 +9,15 @@ const pages = [
   { path: '/community', title: 'Comunidade · Daniel Castro' },
 ]
 
+function tagAttr(html: string, tag: RegExp, attr: string) {
+  const element = html.match(tag)?.[0]
+  return element?.match(new RegExp(`${attr}="([^"]+)"`))?.[1]
+}
+
+function expectAbsoluteSiteUrl(url: string | undefined) {
+  expect(url?.startsWith(`${siteUrl}/`)).toBe(true)
+}
+
 function expectBaseMetadata(html: string) {
   expect(html).toContain(
     '<meta property="og:site_name" content="Daniel Castro"',
@@ -16,6 +26,16 @@ function expectBaseMetadata(html: string) {
   expect(html).toContain('<meta property="og:locale" content="pt_BR"')
   expect(html).toContain(
     '<meta name="twitter:card" content="summary_large_image"',
+  )
+  expectAbsoluteSiteUrl(tagAttr(html, /<link\b[^>]*rel="icon"[^>]*>/, 'href'))
+  expectAbsoluteSiteUrl(
+    tagAttr(html, /<link\b[^>]*rel="apple-touch-icon"[^>]*>/, 'href'),
+  )
+  expectAbsoluteSiteUrl(
+    tagAttr(html, /<meta\b[^>]*property="og:image"[^>]*>/, 'content'),
+  )
+  expectAbsoluteSiteUrl(
+    tagAttr(html, /<meta\b[^>]*name="twitter:image"[^>]*>/, 'content'),
   )
 }
 
