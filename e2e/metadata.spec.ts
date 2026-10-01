@@ -18,6 +18,11 @@ function expectAbsoluteSiteUrl(url: string | undefined) {
   expect(url?.startsWith(`${siteUrl}/`)).toBe(true)
 }
 
+/** Next.js file-convention icons stay root-relative; the browser resolves them. */
+function expectFileConventionIcon(url: string | undefined, name: string) {
+  expect(url).toMatch(new RegExp(`^/${name}-[a-z0-9]+\\.png`))
+}
+
 function expectBaseMetadata(html: string) {
   expect(html).toContain(
     '<meta property="og:site_name" content="Daniel Castro"',
@@ -27,9 +32,13 @@ function expectBaseMetadata(html: string) {
   expect(html).toContain(
     '<meta name="twitter:card" content="summary_large_image"',
   )
-  expectAbsoluteSiteUrl(tagAttr(html, /<link\b[^>]*rel="icon"[^>]*>/, 'href'))
-  expectAbsoluteSiteUrl(
+  expectFileConventionIcon(
+    tagAttr(html, /<link\b[^>]*rel="icon"[^>]*>/, 'href'),
+    'icon',
+  )
+  expectFileConventionIcon(
     tagAttr(html, /<link\b[^>]*rel="apple-touch-icon"[^>]*>/, 'href'),
+    'apple-icon',
   )
   expectAbsoluteSiteUrl(
     tagAttr(html, /<meta\b[^>]*property="og:image"[^>]*>/, 'content'),

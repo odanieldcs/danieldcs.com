@@ -7,7 +7,8 @@ export const defaultDescription =
 /**
  * Metadata shared by both root layouts. Per-page canonicals land in ENG-118.
  * Icons and the default share image come from the file conventions beside
- * each root layout. `metadataBase` resolves relative URLs to the production origin.
+ * each root layout. `metadataBase` makes `og:image` and `twitter:image`
+ * absolute. Next keeps icon link hrefs root-relative.
  */
 export const baseMetadata = {
   metadataBase: new URL(siteUrl),
