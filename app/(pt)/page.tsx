@@ -1,24 +1,11 @@
 import type { Metadata } from 'next'
-import { type HomePostSummary, HomeView } from '@/components/home-view'
-import { getAllPosts } from '@/lib/content/posts'
-
-const RECENT_POST_LIMIT = 2
+import { HomeView } from '@/components/home-view'
+import { getHomePosts } from '@/lib/page-data'
 
 export const metadata: Metadata = {
   description: 'Construindo produtos de software e correndo longas distâncias.',
 }
 
-export default async function Home() {
-  const posts: HomePostSummary[] = getAllPosts()
-    .slice(0, RECENT_POST_LIMIT)
-    .map((post) => ({
-      slug: post.slug,
-      title: post.frontmatter.title,
-      date: post.frontmatter.date.toISOString(),
-      description: post.frontmatter.description,
-      language: post.frontmatter.language,
-      tag: post.frontmatter.tags[0],
-    }))
-
-  return <HomeView posts={posts} />
+export default function Home() {
+  return <HomeView posts={getHomePosts()} />
 }

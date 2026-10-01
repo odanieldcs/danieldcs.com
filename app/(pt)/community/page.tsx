@@ -1,9 +1,6 @@
 import type { Metadata } from 'next'
-import {
-  type CommunityEntryView,
-  CommunityView,
-} from '@/components/community-view'
-import { getAllCommunityEntries } from '@/lib/content/community'
+import { CommunityView } from '@/components/community-view'
+import { getCommunityEntryViews } from '@/lib/page-data'
 
 export const metadata: Metadata = {
   title: 'Comunidade',
@@ -11,19 +8,5 @@ export const metadata: Metadata = {
 }
 
 export default function CommunityPage() {
-  const entries: CommunityEntryView[] = getAllCommunityEntries().map(
-    (entry) => ({
-      slug: entry.slug,
-      title: entry.frontmatter.title,
-      description: entry.frontmatter.description,
-      date: entry.frontmatter.date.toISOString(),
-      type: entry.frontmatter.type,
-      language: entry.frontmatter.language,
-      eventName: entry.frontmatter.eventName,
-      link: entry.frontmatter.link,
-      cover: entry.frontmatter.cover,
-    }),
-  )
-
-  return <CommunityView entries={entries} />
+  return <CommunityView entries={getCommunityEntryViews()} />
 }
