@@ -9,27 +9,32 @@ import {
 } from '@/components/header-nav'
 import { LanguageSwitch } from '@/components/ui/language-switch'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
+import { localizePath } from '@/lib/i18n/routes'
+import type { InterfaceLanguage } from '@/lib/i18n/types'
 
 const homeLinkClassName = [
   'inline-flex min-w-0 items-center gap-3 rounded-sm text-foreground',
   'outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
 ].join(' ')
 
-export function Header() {
+export function Header({ language }: { language: InterfaceLanguage }) {
   return (
     <header className="relative z-20 bg-background">
       <Container
         width="page"
         className="grid grid-cols-[1fr_auto_1fr] items-center gap-content-gap py-inline"
       >
-        <Link href="/" className={`${homeLinkClassName} justify-self-start`}>
+        <Link
+          href={localizePath('/', language)}
+          className={`${homeLinkClassName} justify-self-start`}
+        >
           <span className="flex size-8 shrink-0 items-center justify-center rounded-md bg-[#212121]">
             <Image
               src="/media/icons/logo-ddev.png"
               alt=""
               width={145}
               height={150}
-              priority
+              loading="eager"
               className="h-5 w-auto"
             />
           </span>
