@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
-import { notFound } from 'next/navigation'
 import { cache } from 'react'
 import { Container } from '@/components/container'
 import { MdxContent } from '@/lib/content/mdx'
@@ -15,16 +14,7 @@ import { getAllPostSlugs, getPostBySlug } from '@/lib/content/posts'
 const COVER_WIDTH = 800
 const COVER_HEIGHT = 450
 
-const getPost = cache((slug: string) => {
-  try {
-    return getPostBySlug(slug)
-  } catch (error) {
-    if (error instanceof Error && error.message.startsWith('Post not found:')) {
-      return null
-    }
-    throw error
-  }
-})
+const getPost = cache((slug: string) => getPostBySlug(slug))
 
 function resolveCoverSrc(cover: string): string {
   if (cover.startsWith('/') && !cover.startsWith('//')) {
@@ -38,9 +28,9 @@ function formatPostDate(date: Date): string {
   return date.toISOString().slice(0, 10)
 }
 
-// With two root layouts, a notFound() thrown while rendering renders Next's bare
-// error document. Unknown slugs must 404 at routing so app/global-not-found.tsx
-// handles them.
+// With two root layouts, a notFound() thrown while rendering yields Next's bare
+// error document. Unknown slugs must 404 at routing, where
+// app/global-not-found.tsx handles them.
 export const dynamicParams = false
 
 export function generateStaticParams() {
@@ -53,10 +43,6 @@ export async function generateMetadata({
   const { slug } = await params
   const post = getPost(slug)
 
-  if (!post) {
-    notFound()
-  }
-
   return {
     title: post.frontmatter.title,
     description: post.frontmatter.description,
@@ -68,10 +54,6 @@ export default async function BlogPostPage({
 }: PageProps<'/blog/[slug]'>) {
   const { slug } = await params
   const post = getPost(slug)
-
-  if (!post) {
-    notFound()
-  }
 
   const { frontmatter, content } = post
   const coverSrc = frontmatter.cover

@@ -46,18 +46,19 @@ test('normalizeBlogPage clamps to the valid range', () => {
 })
 
 test('buildBlogListingHref omits default query values', () => {
-  expect(buildBlogListingHref({})).toBe('/blog')
-  expect(buildBlogListingHref({ page: 1 })).toBe('/blog')
-  expect(buildBlogListingHref({ view: 'list' })).toBe('/blog')
-  expect(buildBlogListingHref({ page: 2 })).toBe('/blog?page=2')
-  expect(buildBlogListingHref({ view: 'grid' })).toBe('/blog?view=grid')
-  expect(buildBlogListingHref({ page: 2, view: 'grid' })).toBe(
+  expect(buildBlogListingHref({ language: 'pt' })).toBe('/blog')
+  expect(buildBlogListingHref({ language: 'pt', page: 1 })).toBe('/blog')
+  expect(buildBlogListingHref({ language: 'pt', view: 'list' })).toBe('/blog')
+  expect(buildBlogListingHref({ language: 'pt', page: 2 })).toBe('/blog?page=2')
+  expect(buildBlogListingHref({ language: 'pt', view: 'grid' })).toBe(
+    '/blog?view=grid',
+  )
+  expect(buildBlogListingHref({ language: 'pt', page: 2, view: 'grid' })).toBe(
     '/blog?view=grid&page=2',
   )
 })
 
 test('buildBlogListingHref prefixes the EN listing with /en', () => {
-  expect(buildBlogListingHref({ language: 'pt', page: 2 })).toBe('/blog?page=2')
   expect(buildBlogListingHref({ language: 'en' })).toBe('/en/blog')
   expect(buildBlogListingHref({ language: 'en', page: 2, view: 'grid' })).toBe(
     '/en/blog?view=grid&page=2',

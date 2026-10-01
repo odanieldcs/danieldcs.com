@@ -30,7 +30,7 @@ export function getHomePosts(): HomePostSummary[] {
     }))
 }
 
-export type BlogListing = {
+type BlogListing = {
   posts: BlogPostView[]
   view: BlogViewMode
   page: number

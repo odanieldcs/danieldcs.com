@@ -83,7 +83,7 @@ export function normalizeBlogPage(page: number, pageCount: number): number {
 export function buildBlogListingHref(options: {
   page?: number
   view?: BlogViewMode
-  language?: InterfaceLanguage
+  language: InterfaceLanguage
 }): string {
   const params = new URLSearchParams()
 
@@ -96,7 +96,7 @@ export function buildBlogListingHref(options: {
   }
 
   const query = params.toString()
-  const path = localizePath('/blog', options.language ?? 'pt')
+  const path = localizePath('/blog', options.language)
 
   return query ? `${path}?${query}` : path
 }

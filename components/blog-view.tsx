@@ -190,7 +190,11 @@ function ViewSwitch({
     >
       {options.map((option) => {
         const pressed = view === option.id
-        const href = buildBlogListingHref({ page, view: option.id, language })
+        const href = buildBlogListingHref({
+          page,
+          view: option.id,
+          language,
+        })
 
         return (
           <Link
