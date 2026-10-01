@@ -40,7 +40,7 @@ test('has a Portuguese default description and leaves icons to the file conventi
   expect(baseMetadata.description).toBe(
     'Daniel Castro, engenheiro de software. Artigos, palestras e aprendizados de Dev para Dev.',
   )
-  expect(baseMetadata.icons).toBeUndefined()
+  expect('icons' in baseMetadata).toBe(false)
 })
 
 test('ships the same static icons and share image from both root layouts', () => {
