@@ -87,7 +87,8 @@ function Intro({
             src={PORTRAIT_SRC}
             alt={copy.portraitAlt}
             fill
-            priority
+            loading="eager"
+            fetchPriority="high"
             sizes="(min-width: 48rem) 24rem, 90vw"
             className="object-cover object-[center_30%] motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out motion-safe:group-hover:scale-106 motion-safe:group-hover:rotate-2"
           />

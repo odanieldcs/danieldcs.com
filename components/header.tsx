@@ -34,7 +34,7 @@ export function Header({ language }: { language: InterfaceLanguage }) {
               alt=""
               width={145}
               height={150}
-              priority
+              loading="eager"
               className="h-5 w-auto"
             />
           </span>
