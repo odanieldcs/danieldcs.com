@@ -604,3 +604,29 @@ export function getAboutCopy(lang: InterfaceLanguage): AboutCopy {
 export function getTrilhaCopy(lang: InterfaceLanguage): TrilhaCopy {
   return trilhaCopy[lang]
 }
+
+export type NotFoundCopy = {
+  eyebrow: string
+  title: string
+  paragraph: string
+  homeCta: string
+}
+
+const notFoundCopy: Record<InterfaceLanguage, NotFoundCopy> = {
+  pt: {
+    eyebrow: 'Erro 404',
+    title: 'Página não encontrada.',
+    paragraph: 'O endereço pode ter mudado ou não existe mais.',
+    homeCta: 'Voltar para o início',
+  },
+  en: {
+    eyebrow: 'Error 404',
+    title: 'Page not found.',
+    paragraph: 'The address may have changed or no longer exists.',
+    homeCta: 'Back to home',
+  },
+}
+
+export function getNotFoundCopy(lang: InterfaceLanguage): NotFoundCopy {
+  return notFoundCopy[lang]
+}

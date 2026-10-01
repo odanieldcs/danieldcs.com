@@ -38,6 +38,11 @@ function formatPostDate(date: Date): string {
   return date.toISOString().slice(0, 10)
 }
 
+// With two root layouts, a notFound() thrown while rendering renders Next's bare
+// error document. Unknown slugs must 404 at routing so app/global-not-found.tsx
+// handles them.
+export const dynamicParams = false
+
 export function generateStaticParams() {
   return getAllPostSlugs().map((slug) => ({ slug }))
 }
