@@ -10,6 +10,7 @@ import {
   type HomeCopy,
   type HomeHighlight,
 } from '@/lib/i18n/pages'
+import { localizePath } from '@/lib/i18n/routes'
 import type { InterfaceLanguage } from '@/lib/i18n/types'
 
 const PORTRAIT_SRC = '/media/personal/daniel_castro_profile_3.jpg'
@@ -59,7 +60,13 @@ const quietCtaClassName = [
   'outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
 ].join(' ')
 
-function Hero({ copy }: { copy: HomeCopy }) {
+function Hero({
+  copy,
+  language,
+}: {
+  copy: HomeCopy
+  language: InterfaceLanguage
+}) {
   return (
     <section className="grid items-center gap-content-gap md:grid-cols-[minmax(0,1.15fr)_minmax(16rem,0.85fr)] md:gap-section">
       <figure className="group order-1 w-9/10 justify-self-center md:order-2 md:justify-self-end">
@@ -85,7 +92,10 @@ function Hero({ copy }: { copy: HomeCopy }) {
             <p key={paragraph}>{paragraph}</p>
           ))}
         </div>
-        <Link href="/about" className={quietCtaClassName}>
+        <Link
+          href={localizePath('/about', language)}
+          className={quietCtaClassName}
+        >
           {copy.aboutCta}
           <ArrowRightIcon />
         </Link>
@@ -187,7 +197,7 @@ export function HomeView({ posts }: { posts: HomePostSummary[] }) {
   return (
     <main className="flex w-full flex-col gap-section py-section">
       <Container width="page">
-        <Hero copy={copy} />
+        <Hero copy={copy} language={language} />
       </Container>
       <section className="w-full border-y border-border">
         <Container width="page">

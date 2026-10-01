@@ -152,7 +152,7 @@ test('renders English copy when the interface language is en', () => {
     ),
   ).toBeTruthy()
   expect(screen.getByRole('link', { name: 'Learn more' }).getAttribute('href')).toBe(
-    '/about',
+    '/en/about',
   )
   expect(screen.getByText('Engineering notes')).toBeTruthy()
   expect(

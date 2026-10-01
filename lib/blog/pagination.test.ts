@@ -55,3 +55,11 @@ test('buildBlogListingHref omits default query values', () => {
     '/blog?view=grid&page=2',
   )
 })
+
+test('buildBlogListingHref prefixes the EN listing with /en', () => {
+  expect(buildBlogListingHref({ language: 'pt', page: 2 })).toBe('/blog?page=2')
+  expect(buildBlogListingHref({ language: 'en' })).toBe('/en/blog')
+  expect(buildBlogListingHref({ language: 'en', page: 2, view: 'grid' })).toBe(
+    '/en/blog?view=grid&page=2',
+  )
+})

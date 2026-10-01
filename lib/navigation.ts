@@ -1,3 +1,4 @@
+import { localizePath } from '@/lib/i18n/routes'
 import type { InterfaceLanguage } from '@/lib/i18n/types'
 
 export type MainNavHref = '/blog' | '/community' | '/about'
@@ -22,7 +23,7 @@ export function getMainNavLabel(
 
 export function getMainNavigationForLanguage(lang: InterfaceLanguage) {
   return mainNavigation.map((item) => ({
-    href: item.href,
+    href: localizePath(item.href, lang),
     label: getMainNavLabel(item, lang),
   }))
 }
