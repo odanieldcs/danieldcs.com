@@ -104,9 +104,13 @@ test('/en/blog opens posts at /en/blog/[slug] with the EN shell', async ({
   await expect(
     page.getByRole('heading', { level: 1, name: newestPost.frontmatter.title }),
   ).toBeVisible()
-  await expect(page.getByRole('note')).toHaveText(
-    'Content available only in Portuguese.',
-  )
+  const note = page.getByRole('note')
+  await expect(note).toContainText('Content available only in Portuguese.')
+  const backLink = note.getByRole('link', { name: 'Read in Portuguese' })
+  await expect(backLink).toHaveAttribute('href', `/blog/${newestPost.slug}`)
+  await backLink.click()
+  await expect(page).toHaveURL(`/blog/${newestPost.slug}`)
+  await expect(page.getByRole('note')).toHaveCount(0)
 })
 
 test('a PT post read in PT shows no language notice', async ({ page }) => {

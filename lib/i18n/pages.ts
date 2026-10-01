@@ -634,6 +634,8 @@ export function getNotFoundCopy(lang: InterfaceLanguage): NotFoundCopy {
 export type PostCopy = {
   /** Notice for a post read in an interface language it is not written in. */
   onlyAvailableIn: Record<InterfaceLanguage, string>
+  /** CTA to the same post in the language it is written in. */
+  readIn: Record<InterfaceLanguage, string>
 }
 
 const postCopy: Record<InterfaceLanguage, PostCopy> = {
@@ -642,11 +644,19 @@ const postCopy: Record<InterfaceLanguage, PostCopy> = {
       pt: 'Conteúdo disponível apenas em português.',
       en: 'Conteúdo disponível apenas em inglês.',
     },
+    readIn: {
+      pt: 'Ler em português',
+      en: 'Ler em inglês',
+    },
   },
   en: {
     onlyAvailableIn: {
       pt: 'Content available only in Portuguese.',
       en: 'Content available only in English.',
+    },
+    readIn: {
+      pt: 'Read in Portuguese',
+      en: 'Read in English',
     },
   },
 }
