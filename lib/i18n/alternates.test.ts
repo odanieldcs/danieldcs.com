@@ -1,78 +1,70 @@
 import { readdirSync } from 'node:fs'
 import path from 'node:path'
-import { describe, expect, test } from 'vitest'
+import { expect, test } from 'vitest'
+import { mainNavigation } from '@/lib/navigation'
 import {
   getAlternates,
   getLanguageSwitchHref,
+  homePath,
   localizedPages,
-  normalizePathname,
 } from './alternates'
-import { interfaceLanguages } from './types'
+import { htmlLang, type InterfaceLanguage, interfaceLanguages } from './types'
 
 const indexablePages = localizedPages.filter((page) => page.indexable)
 const switchOnlyPages = localizedPages.filter((page) => !page.indexable)
+const unpairedPathnames = ['/blog/hello-world', '/design-system', '/en/unknown']
 
-describe('getAlternates', () => {
-  test.each(indexablePages)('$pt ↔ $en has canonical and hreflang', (page) => {
-    const languages = { 'pt-BR': page.pt, en: page.en, 'x-default': page.pt }
+test.each(indexablePages)('$pt ↔ $en has canonical and hreflang', (page) => {
+  const languages = {
+    [htmlLang.pt]: page.pt,
+    [htmlLang.en]: page.en,
+    'x-default': page.pt,
+  }
 
-    expect(getAlternates(page.pt)).toEqual({ canonical: page.pt, languages })
-    expect(getAlternates(page.en)).toEqual({ canonical: page.en, languages })
-  })
-
-  test.each(switchOnlyPages)(
-    '$pt ↔ $en (noindex) has only the canonical',
-    (page) => {
-      expect(getAlternates(page.pt)).toEqual({ canonical: page.pt })
-      expect(getAlternates(page.en)).toEqual({ canonical: page.en })
-    },
-  )
-
-  test.each(['/blog/hello-world', '/design-system', '/en/unknown'])(
-    '%s has no pair and returns only the canonical',
-    (pathname) => {
-      expect(getAlternates(pathname)).toEqual({ canonical: pathname })
-    },
-  )
-
-  test('normalizes the pathname before resolving', () => {
-    expect(getAlternates('/blog/?page=2#top')).toEqual(getAlternates('/blog'))
-    expect(getAlternates('/en/')).toEqual(getAlternates('/en'))
-  })
+  expect(getAlternates(page.pt)).toEqual({ canonical: page.pt, languages })
+  expect(getAlternates(page.en)).toEqual({ canonical: page.en, languages })
 })
 
-describe('getLanguageSwitchHref', () => {
-  test.each(localizedPages)('$pt ↔ $en is reciprocal', (page) => {
-    expect(getLanguageSwitchHref(page.pt, 'en')).toBe(page.en)
-    expect(getLanguageSwitchHref(page.en, 'pt')).toBe(page.pt)
-    expect(
-      getLanguageSwitchHref(getLanguageSwitchHref(page.pt, 'en'), 'pt'),
-    ).toBe(page.pt)
-    expect(getLanguageSwitchHref(page.pt, 'pt')).toBe(page.pt)
-    expect(getLanguageSwitchHref(page.en, 'en')).toBe(page.en)
-  })
+test.each(switchOnlyPages)(
+  '$pt ↔ $en (noindex) has only the canonical',
+  (page) => {
+    expect(getAlternates(page.pt)).toEqual({ canonical: page.pt })
+    expect(getAlternates(page.en)).toEqual({ canonical: page.en })
+  },
+)
 
-  test.each(['/blog/hello-world', '/design-system', '/en/unknown'])(
-    '%s falls back to the home of the target language',
-    (pathname) => {
-      expect(getLanguageSwitchHref(pathname, 'en')).toBe('/en')
-      expect(getLanguageSwitchHref(pathname, 'pt')).toBe('/')
-    },
-  )
+test.each(unpairedPathnames)(
+  '%s has no pair and returns only the canonical',
+  (pathname) => {
+    expect(getAlternates(pathname)).toEqual({ canonical: pathname })
+  },
+)
 
-  test('normalizes the pathname before resolving', () => {
-    expect(getLanguageSwitchHref('/about/?ref=nav', 'en')).toBe('/en/about')
-  })
+test.each(localizedPages)('$pt ↔ $en switch is reciprocal', (page) => {
+  expect(getLanguageSwitchHref(page.pt, 'en')).toBe(page.en)
+  expect(getLanguageSwitchHref(page.en, 'pt')).toBe(page.pt)
+  expect(getLanguageSwitchHref(page.pt, 'pt')).toBe(page.pt)
+  expect(getLanguageSwitchHref(page.en, 'en')).toBe(page.en)
 })
+
+test.each(unpairedPathnames)(
+  '%s switch falls back to the home of the target language',
+  (pathname) => {
+    expect(getLanguageSwitchHref(pathname, 'en')).toBe(homePath.en)
+    expect(getLanguageSwitchHref(pathname, 'pt')).toBe(homePath.pt)
+  },
+)
 
 test.each([
-  ['/', '/'],
   ['/blog/', '/blog'],
   ['/blog?page=2&view=list', '/blog'],
   ['/about#contact', '/about'],
   ['/en//', '/en'],
-])('normalizePathname(%s) is %s', (input, expected) => {
-  expect(normalizePathname(input)).toBe(expected)
+])('%s resolves like %s', (pathname, expected) => {
+  expect(getAlternates(pathname)).toEqual(getAlternates(expected))
+  expect(getLanguageSwitchHref(pathname, 'pt')).toBe(
+    getLanguageSwitchHref(expected, 'pt'),
+  )
 })
 
 test('pages are unique and each language keeps its own prefix', () => {
@@ -80,6 +72,7 @@ test('pages are unique and each language keeps its own prefix', () => {
     const paths = localizedPages.map((page) => page[language])
     expect(new Set(paths).size).toBe(paths.length)
   }
+
   const enPrefix = /^\/en(\/|$)/
   for (const page of localizedPages) {
     expect(page.pt).not.toMatch(enPrefix)
@@ -87,12 +80,19 @@ test('pages are unique and each language keeps its own prefix', () => {
   }
 })
 
-const appDir = path.join(process.cwd(), 'app')
+test('every main navigation page has a PT/EN pair', () => {
+  const ptPaths = localizedPages.map((page) => page.pt)
+
+  for (const { href } of mainNavigation) {
+    expect(ptPaths).toContain(href)
+  }
+})
+
+const appDir = path.resolve(import.meta.dirname, '../../app')
 
 /** Routes served by the `app/(<language>)` group, with route groups removed. */
-function routesOf(language: string): Set<string> {
-  const groupDir = path.join(appDir, `(${language})`)
-  const pageFiles = readdirSync(groupDir, {
+function routesOf(language: InterfaceLanguage): Set<string> {
+  const pageFiles = readdirSync(path.join(appDir, `(${language})`), {
     recursive: true,
     encoding: 'utf8',
   }).filter((file) => path.basename(file) === 'page.tsx')
