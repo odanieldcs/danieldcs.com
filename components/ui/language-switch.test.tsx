@@ -4,6 +4,14 @@ import { afterEach, expect, test, vi } from 'vitest'
 import { InterfaceLanguageProvider } from '@/components/interface-language-provider'
 import { LanguageSwitch } from './language-switch'
 
+const navigation = vi.hoisted(() => ({
+  pathname: '/',
+}))
+
+vi.mock('next/navigation', () => ({
+  usePathname: () => navigation.pathname,
+}))
+
 vi.mock('next/link', () => ({
   default: function MockLink({
     children,
@@ -25,9 +33,11 @@ vi.mock('next/link', () => ({
 
 afterEach(() => {
   cleanup()
+  navigation.pathname = '/'
 })
 
-function renderSwitch(language: 'pt' | 'en' = 'pt') {
+function renderSwitch(language: 'pt' | 'en' = 'pt', pathname = '/') {
+  navigation.pathname = pathname
   return render(
     <InterfaceLanguageProvider language={language}>
       <LanguageSwitch />
@@ -54,11 +64,34 @@ test('links to the English home when the language is pt', () => {
 })
 
 test('links to the Portuguese home when the language is en', () => {
-  renderSwitch('en')
+  renderSwitch('en', '/en')
 
   const toPortuguese = screen.getByRole('link', {
     name: 'Mudar para português',
   })
   expect(toPortuguese.getAttribute('href')).toBe('/')
   expect(screen.getByRole('tooltip').textContent).toBe('Mudar para português')
+})
+
+test('links to the equivalent page in the other language', () => {
+  renderSwitch('pt', '/about')
+  expect(
+    screen.getByRole('link', { name: 'Switch to English' }).getAttribute('href'),
+  ).toBe('/en/about')
+  cleanup()
+
+  renderSwitch('en', '/en/blog')
+  expect(
+    screen
+      .getByRole('link', { name: 'Mudar para português' })
+      .getAttribute('href'),
+  ).toBe('/blog')
+})
+
+test('links a post to the English listing, since posts are PT-only', () => {
+  renderSwitch('pt', '/blog/hello-world')
+
+  expect(
+    screen.getByRole('link', { name: 'Switch to English' }).getAttribute('href'),
+  ).toBe('/en/blog')
 })

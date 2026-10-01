@@ -126,3 +126,24 @@ test('/en/blog clamps an out-of-range page within /en/blog', async ({
   await page.goto('/en/blog?page=999')
   await expect(page).toHaveURL(/\/en\/blog(\?page=\d+)?$/)
 })
+
+const languageSwitchCases = [
+  { from: '/about', label: 'Switch to English', to: '/en/about' },
+  { from: '/en/about', label: 'Mudar para português', to: '/about' },
+  { from: '/en/blog', label: 'Mudar para português', to: '/blog' },
+  { from: '/community', label: 'Switch to English', to: '/en/community' },
+  {
+    from: `/blog/${newestPost.slug}`,
+    label: 'Switch to English',
+    to: '/en/blog',
+  },
+]
+
+for (const { from, label, to } of languageSwitchCases) {
+  test(`language switch on ${from} opens ${to}`, async ({ page }) => {
+    await page.goto(from)
+
+    await page.getByRole('banner').getByRole('link', { name: label }).click()
+    await expect(page).toHaveURL(to)
+  })
+}

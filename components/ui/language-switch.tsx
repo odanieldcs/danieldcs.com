@@ -1,18 +1,15 @@
 'use client'
 
+import { usePathname } from 'next/navigation'
 import { ButtonLink } from '@/components/button'
 import { useInterfaceLanguage } from '@/components/interface-language-provider'
 import { Tooltip } from '@/components/ui/tooltip'
 import { getDictionary } from '@/lib/i18n/dictionary'
-import { localizePath } from '@/lib/i18n/routes'
+import { equivalentPath } from '@/lib/i18n/routes'
 import type { InterfaceLanguage } from '@/lib/i18n/types'
 
 function nextLanguage(language: InterfaceLanguage): InterfaceLanguage {
   return language === 'pt' ? 'en' : 'pt'
-}
-
-function languageHomeHref(language: InterfaceLanguage): string {
-  return localizePath('/', nextLanguage(language))
 }
 
 function languageSwitchLabel(language: InterfaceLanguage): string {
@@ -43,6 +40,7 @@ function GlobeIcon() {
 
 export function LanguageSwitch() {
   const { language } = useInterfaceLanguage()
+  const pathname = usePathname()
   const label = languageSwitchLabel(language)
 
   return (
@@ -51,7 +49,7 @@ export function LanguageSwitch() {
         <ButtonLink
           variant="ghost"
           className="peer min-w-11 px-0"
-          href={languageHomeHref(language)}
+          href={equivalentPath(pathname, nextLanguage(language))}
           prefetch={false}
           aria-describedby={tooltipId}
           aria-label={label}
