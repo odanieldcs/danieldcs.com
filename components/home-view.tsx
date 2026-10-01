@@ -160,7 +160,10 @@ function RecentWriting({
       <ul className="grid list-none gap-content-gap md:grid-cols-2">
         {posts.map((post) => (
           <li key={post.slug} className="flex">
-            <Link href={`/blog/${post.slug}`} className={articleCardClassName}>
+            <Link
+              href={localizePath(`/blog/${post.slug}`, language)}
+              className={articleCardClassName}
+            >
               <p className="text-xs font-medium uppercase text-foreground/45">
                 {post.tag ? (
                   <>

@@ -77,24 +77,45 @@ test('header navigation keeps the visitor under /en', async ({ page }) => {
   await expect(footerInternalLinks).toHaveCount(0)
 })
 
-test('/en home links recent posts to the PT article', async ({ page }) => {
+test('/en home links recent posts under /en/blog', async ({ page }) => {
   await page.goto('/en')
 
   await expect(
     page.getByRole('main').getByRole('link', { name: 'Learn more' }),
   ).toHaveAttribute('href', '/en/about')
-  const postLinks = page.getByRole('main').locator('a[href^="/blog/"]')
-  await expect(postLinks).not.toHaveCount(0)
   await expect(
     page.getByRole('main').locator('a[href^="/en/blog/"]'),
-  ).toHaveCount(0)
+  ).not.toHaveCount(0)
+  await expect(page.getByRole('main').locator('a[href^="/blog/"]')).toHaveCount(
+    0,
+  )
 })
 
-test('/en/blog opens posts at /blog/[slug]', async ({ page }) => {
-  await page.goto('/en/blog')
+test('/en/blog opens posts at /en/blog/[slug] with the EN shell', async ({
+  page,
+  request,
+}) => {
+  const html = await (await request.get(`/en/blog/${newestPost.slug}`)).text()
+  expect(html).toContain('<html lang="en"')
 
+  await page.goto('/en/blog')
   await page.getByRole('link', { name: newestPost.frontmatter.title }).click()
-  await expect(page).toHaveURL(`/blog/${newestPost.slug}`)
+  await expect(page).toHaveURL(`/en/blog/${newestPost.slug}`)
+  await expect(
+    page.getByRole('heading', { level: 1, name: newestPost.frontmatter.title }),
+  ).toBeVisible()
+  await expect(page.getByRole('note')).toHaveText(
+    'Content available only in Portuguese.',
+  )
+})
+
+test('a PT post read in PT shows no language notice', async ({ page }) => {
+  await page.goto(`/blog/${newestPost.slug}`)
+
+  await expect(
+    page.getByRole('heading', { level: 1, name: newestPost.frontmatter.title }),
+  ).toBeVisible()
+  await expect(page.getByRole('note')).toHaveCount(0)
 })
 
 test('/en/blog view switch stays under /en/blog', async ({ page }) => {
@@ -135,7 +156,17 @@ const languageSwitchCases = [
   {
     from: `/blog/${newestPost.slug}`,
     label: 'Switch to English',
-    to: '/en/blog',
+    to: `/en/blog/${newestPost.slug}`,
+  },
+  {
+    from: `/en/blog/${newestPost.slug}`,
+    label: 'Mudar para português',
+    to: `/blog/${newestPost.slug}`,
+  },
+  {
+    from: '/blog?view=grid',
+    label: 'Switch to English',
+    to: '/en/blog?view=grid',
   },
 ]
 

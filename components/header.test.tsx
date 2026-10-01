@@ -35,6 +35,7 @@ vi.mock('next/link', () => ({
 
 vi.mock('next/navigation', () => ({
   usePathname: () => navigation.pathname,
+  useSearchParams: () => new URLSearchParams(),
 }))
 
 vi.mock('@/components/ui/theme-toggle', () => ({

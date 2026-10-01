@@ -630,3 +630,27 @@ const notFoundCopy: Record<InterfaceLanguage, NotFoundCopy> = {
 export function getNotFoundCopy(lang: InterfaceLanguage): NotFoundCopy {
   return notFoundCopy[lang]
 }
+
+export type PostCopy = {
+  /** Notice for a post read in an interface language it is not written in. */
+  onlyAvailableIn: Record<InterfaceLanguage, string>
+}
+
+const postCopy: Record<InterfaceLanguage, PostCopy> = {
+  pt: {
+    onlyAvailableIn: {
+      pt: 'Conteúdo disponível apenas em português.',
+      en: 'Conteúdo disponível apenas em inglês.',
+    },
+  },
+  en: {
+    onlyAvailableIn: {
+      pt: 'Content available only in Portuguese.',
+      en: 'Content available only in English.',
+    },
+  },
+}
+
+export function getPostCopy(lang: InterfaceLanguage): PostCopy {
+  return postCopy[lang]
+}

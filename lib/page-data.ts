@@ -1,4 +1,6 @@
+import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
+import { cache } from 'react'
 import type { BlogPostView } from '@/components/blog-view'
 import type { CommunityEntryView } from '@/components/community-view'
 import type { HomePostSummary } from '@/components/home-view'
@@ -12,7 +14,11 @@ import {
   sliceBlogPage,
 } from '@/lib/blog/pagination'
 import { getAllCommunityEntries } from '@/lib/content/community'
-import { getAllPosts } from '@/lib/content/posts'
+import {
+  getAllPostSlugs,
+  getAllPosts,
+  getPostBySlug,
+} from '@/lib/content/posts'
 import type { InterfaceLanguage } from '@/lib/i18n/types'
 
 const RECENT_POST_LIMIT = 2
@@ -75,4 +81,19 @@ export function getCommunityEntryViews(): CommunityEntryView[] {
     link: entry.frontmatter.link,
     cover: entry.frontmatter.cover,
   }))
+}
+
+export const getPost = cache((slug: string) => getPostBySlug(slug))
+
+export function getPostStaticParams(): { slug: string }[] {
+  return getAllPostSlugs().map((slug) => ({ slug }))
+}
+
+export function getPostMetadata(slug: string): Metadata {
+  const { frontmatter } = getPost(slug)
+
+  return {
+    title: frontmatter.title,
+    description: frontmatter.description,
+  }
 }

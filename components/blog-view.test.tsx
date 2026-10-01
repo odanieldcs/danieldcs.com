@@ -128,7 +128,7 @@ test('pagination links preserve view and mark the current page', () => {
   )
 })
 
-test('EN listing keeps view and pagination under /en/blog and posts at /blog', () => {
+test('EN listing keeps view, pagination and posts under /en/blog', () => {
   renderBlog('en', { view: 'grid', page: 2, pageCount: 3 })
 
   expect(
@@ -145,7 +145,7 @@ test('EN listing keeps view and pagination under /en/blog and posts at /blog', (
     screen
       .getByRole('link', { name: /Como o content system renderiza um artigo/i })
       .getAttribute('href'),
-  ).toBe('/blog/content-system')
+  ).toBe('/en/blog/content-system')
 })
 
 test('empty state hides the view switch and pagination', () => {

@@ -28,8 +28,12 @@ test('maps an EN page back to the same PT page', () => {
   expect(equivalentPath('/en/trilha', 'pt')).toBe('/trilha')
 })
 
-test('maps PT-only pages to the closest EN page', () => {
-  expect(equivalentPath('/blog/hello-world', 'en')).toBe('/en/blog')
+test('maps a post to the same post in the other language', () => {
+  expect(equivalentPath('/blog/hello-world', 'en')).toBe('/en/blog/hello-world')
+  expect(equivalentPath('/en/blog/hello-world', 'pt')).toBe('/blog/hello-world')
+})
+
+test('maps PT-only pages to the EN home', () => {
   expect(equivalentPath('/design-system', 'en')).toBe('/en')
   expect(equivalentPath('/qualquer', 'en')).toBe('/en')
   expect(equivalentPath('/en/qualquer', 'en')).toBe('/en')

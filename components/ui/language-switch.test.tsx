@@ -6,10 +6,12 @@ import { LanguageSwitch } from './language-switch'
 
 const navigation = vi.hoisted(() => ({
   pathname: '/',
+  search: '',
 }))
 
 vi.mock('next/navigation', () => ({
   usePathname: () => navigation.pathname,
+  useSearchParams: () => new URLSearchParams(navigation.search),
 }))
 
 vi.mock('next/link', () => ({
@@ -34,10 +36,16 @@ vi.mock('next/link', () => ({
 afterEach(() => {
   cleanup()
   navigation.pathname = '/'
+  navigation.search = ''
 })
 
-function renderSwitch(language: 'pt' | 'en' = 'pt', pathname = '/') {
+function renderSwitch(
+  language: 'pt' | 'en' = 'pt',
+  pathname = '/',
+  search = '',
+) {
   navigation.pathname = pathname
+  navigation.search = search
   return render(
     <InterfaceLanguageProvider language={language}>
       <LanguageSwitch />
@@ -88,10 +96,25 @@ test('links to the equivalent page in the other language', () => {
   ).toBe('/blog')
 })
 
-test('links a post to the English listing, since posts are PT-only', () => {
+test('keeps an open post on the same post in the other language', () => {
   renderSwitch('pt', '/blog/hello-world')
+  expect(
+    screen.getByRole('link', { name: 'Switch to English' }).getAttribute('href'),
+  ).toBe('/en/blog/hello-world')
+  cleanup()
+
+  renderSwitch('en', '/en/blog/hello-world')
+  expect(
+    screen
+      .getByRole('link', { name: 'Mudar para português' })
+      .getAttribute('href'),
+  ).toBe('/blog/hello-world')
+})
+
+test('keeps the current query string', () => {
+  renderSwitch('pt', '/blog', 'view=grid&page=2')
 
   expect(
     screen.getByRole('link', { name: 'Switch to English' }).getAttribute('href'),
-  ).toBe('/en/blog')
+  ).toBe('/en/blog?view=grid&page=2')
 })

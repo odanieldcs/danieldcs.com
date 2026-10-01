@@ -1,6 +1,11 @@
 import { expect, test } from '@playwright/test'
 
-const unmatchedPaths = ['/qualquer', '/en/qualquer', '/blog/slug-inexistente']
+const unmatchedPaths = [
+  '/qualquer',
+  '/en/qualquer',
+  '/blog/slug-inexistente',
+  '/en/blog/slug-inexistente',
+]
 
 for (const path of unmatchedPaths) {
   test(`${path} renders the global 404 inside the PT site shell`, async ({

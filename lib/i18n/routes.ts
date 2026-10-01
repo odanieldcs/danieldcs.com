@@ -2,7 +2,7 @@ import type { InterfaceLanguage } from './types'
 
 const EN_PREFIX = '/en'
 
-/** PT paths that also exist under /en. Posts are PT-only for now. */
+/** PT paths that also exist under /en, besides each post at /blog/[slug]. */
 const enEquivalentPaths = new Set([
   '/',
   '/blog',
@@ -32,18 +32,19 @@ function toPtPath(pathname: string): `/${string}` {
 }
 
 /**
- * Path of the page equivalent to `pathname` in `language`. EN has no post
- * pages, so a post maps to the EN listing; other PT-only pages map to the home.
+ * Path of the page equivalent to `pathname` in `language`. PT-only pages such
+ * as /design-system map to the EN home.
  */
 export function equivalentPath(
   pathname: string,
   language: InterfaceLanguage,
 ): string {
   const ptPath = toPtPath(pathname)
+  const hasEnEquivalent =
+    enEquivalentPaths.has(ptPath) || ptPath.startsWith('/blog/')
 
-  if (language === 'pt' || enEquivalentPaths.has(ptPath)) {
-    return localizePath(ptPath, language)
-  }
-
-  return localizePath(ptPath.startsWith('/blog/') ? '/blog' : '/', language)
+  return localizePath(
+    language === 'pt' || hasEnEquivalent ? ptPath : '/',
+    language,
+  )
 }

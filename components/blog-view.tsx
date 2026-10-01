@@ -7,6 +7,7 @@ import { Container } from '@/components/container'
 import { useInterfaceLanguage } from '@/components/interface-language-provider'
 import { buildBlogListingHref, type BlogViewMode } from '@/lib/blog/pagination'
 import { type BlogCopy, getBlogCopy } from '@/lib/i18n/pages'
+import { localizePath } from '@/lib/i18n/routes'
 import type { InterfaceLanguage } from '@/lib/i18n/types'
 
 export type BlogPostView = {
@@ -77,7 +78,10 @@ function ListItem({
 }) {
   return (
     <li>
-      <Link href={`/blog/${post.slug}`} className={listLinkClassName}>
+      <Link
+        href={localizePath(`/blog/${post.slug}`, language)}
+        className={listLinkClassName}
+      >
         <h2 className="min-w-0 font-display text-xl font-medium transition-colors group-hover:text-accent sm:text-2xl">
           {post.title}
         </h2>
@@ -94,13 +98,19 @@ function ListItem({
 
 const postDateMetadataClassName = 'sr-only'
 
-function GridCard({ post }: { post: BlogPostView }) {
+function GridCard({
+  post,
+  language,
+}: {
+  post: BlogPostView
+  language: InterfaceLanguage
+}) {
   const coverSrc = post.cover ? resolveCoverSrc(post.cover) : undefined
 
   return (
     <li className="flex">
       <Link
-        href={`/blog/${post.slug}`}
+        href={localizePath(`/blog/${post.slug}`, language)}
         className={[
           'group flex h-full w-full flex-col overflow-hidden',
           interactiveSurfaceClassName,
@@ -340,7 +350,7 @@ export function BlogView({
             ) : (
               <ul className="grid list-none gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
                 {posts.map((post) => (
-                  <GridCard key={post.slug} post={post} />
+                  <GridCard key={post.slug} post={post} language={language} />
                 ))}
               </ul>
             )}
