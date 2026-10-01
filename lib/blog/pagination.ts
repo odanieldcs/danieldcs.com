@@ -1,3 +1,6 @@
+import { localizePath } from '@/lib/i18n/routes'
+import type { InterfaceLanguage } from '@/lib/i18n/types'
+
 export const BLOG_PAGE_SIZE = 12
 
 export type BlogViewMode = 'list' | 'grid'
@@ -80,6 +83,7 @@ export function normalizeBlogPage(page: number, pageCount: number): number {
 export function buildBlogListingHref(options: {
   page?: number
   view?: BlogViewMode
+  language: InterfaceLanguage
 }): string {
   const params = new URLSearchParams()
 
@@ -92,6 +96,7 @@ export function buildBlogListingHref(options: {
   }
 
   const query = params.toString()
+  const path = localizePath('/blog', options.language)
 
-  return query ? `/blog?${query}` : '/blog'
+  return query ? `${path}?${query}` : path
 }

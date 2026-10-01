@@ -7,6 +7,7 @@ import { Container } from '@/components/container'
 import { useInterfaceLanguage } from '@/components/interface-language-provider'
 import { buildBlogListingHref, type BlogViewMode } from '@/lib/blog/pagination'
 import { type BlogCopy, getBlogCopy } from '@/lib/i18n/pages'
+import { localizePath } from '@/lib/i18n/routes'
 import type { InterfaceLanguage } from '@/lib/i18n/types'
 
 export type BlogPostView = {
@@ -77,7 +78,10 @@ function ListItem({
 }) {
   return (
     <li>
-      <Link href={`/blog/${post.slug}`} className={listLinkClassName}>
+      <Link
+        href={localizePath(`/blog/${post.slug}`, language)}
+        className={listLinkClassName}
+      >
         <h2 className="min-w-0 font-display text-xl font-medium transition-colors group-hover:text-accent sm:text-2xl">
           {post.title}
         </h2>
@@ -94,13 +98,19 @@ function ListItem({
 
 const postDateMetadataClassName = 'sr-only'
 
-function GridCard({ post }: { post: BlogPostView }) {
+function GridCard({
+  post,
+  language,
+}: {
+  post: BlogPostView
+  language: InterfaceLanguage
+}) {
   const coverSrc = post.cover ? resolveCoverSrc(post.cover) : undefined
 
   return (
     <li className="flex">
       <Link
-        href={`/blog/${post.slug}`}
+        href={localizePath(`/blog/${post.slug}`, language)}
         className={[
           'group flex h-full w-full flex-col overflow-hidden',
           interactiveSurfaceClassName,
@@ -166,10 +176,12 @@ function ViewSwitch({
   copy,
   view,
   page,
+  language,
 }: {
   copy: BlogCopy
   view: BlogViewMode
   page: number
+  language: InterfaceLanguage
 }) {
   const options: Array<{
     id: BlogViewMode
@@ -188,7 +200,11 @@ function ViewSwitch({
     >
       {options.map((option) => {
         const pressed = view === option.id
-        const href = buildBlogListingHref({ page, view: option.id })
+        const href = buildBlogListingHref({
+          page,
+          view: option.id,
+          language,
+        })
 
         return (
           <Link
@@ -217,13 +233,17 @@ function Pagination({
   view,
   page,
   pageCount,
+  language,
 }: {
   copy: BlogCopy
   view: BlogViewMode
   page: number
   pageCount: number
+  language: InterfaceLanguage
 }) {
   const pages = Array.from({ length: pageCount }, (_, index) => index + 1)
+  const pageHref = (target: number) =>
+    buildBlogListingHref({ page: target, view, language })
 
   return (
     <nav
@@ -232,7 +252,7 @@ function Pagination({
     >
       {page > 1 ? (
         <Link
-          href={buildBlogListingHref({ page: page - 1, view })}
+          href={pageHref(page - 1)}
           className={[
             'rounded-md border border-border px-3 py-1.5 text-sm transition-colors hover:border-accent/40',
             focusClassName,
@@ -248,7 +268,7 @@ function Pagination({
           return (
             <li key={pageNumber}>
               <Link
-                href={buildBlogListingHref({ page: pageNumber, view })}
+                href={pageHref(pageNumber)}
                 aria-current={current ? 'page' : undefined}
                 className={[
                   'inline-flex min-w-9 items-center justify-center rounded-md border px-2 py-1.5 text-sm transition-colors',
@@ -266,7 +286,7 @@ function Pagination({
       </ul>
       {page < pageCount ? (
         <Link
-          href={buildBlogListingHref({ page: page + 1, view })}
+          href={pageHref(page + 1)}
           className={[
             'rounded-md border border-border px-3 py-1.5 text-sm transition-colors hover:border-accent/40',
             focusClassName,
@@ -311,7 +331,12 @@ export function BlogView({
           <Container width="page" className="h-0">
             <div className="relative h-0">
               <div className="absolute right-0 top-0 z-10 -translate-y-1/2">
-                <ViewSwitch copy={copy} view={view} page={page} />
+                <ViewSwitch
+                  copy={copy}
+                  view={view}
+                  page={page}
+                  language={language}
+                />
               </div>
             </div>
           </Container>
@@ -325,7 +350,7 @@ export function BlogView({
             ) : (
               <ul className="grid list-none gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
                 {posts.map((post) => (
-                  <GridCard key={post.slug} post={post} />
+                  <GridCard key={post.slug} post={post} language={language} />
                 ))}
               </ul>
             )}
@@ -335,6 +360,7 @@ export function BlogView({
                 view={view}
                 page={page}
                 pageCount={pageCount}
+                language={language}
               />
             ) : null}
           </Container>

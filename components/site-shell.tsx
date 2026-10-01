@@ -37,7 +37,7 @@ export function SiteShell({
       <body className="bg-background font-sans text-foreground">
         <ThemeProvider>
           <InterfaceLanguageProvider language={language}>
-            <Header />
+            <Header language={language} />
             {children}
             <Footer />
           </InterfaceLanguageProvider>

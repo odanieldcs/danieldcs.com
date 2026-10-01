@@ -15,15 +15,15 @@ test('does not include a Home item', () => {
   expect(hrefs).not.toContain('/')
 })
 
-test('resolves labels for a language without exposing the other locale', () => {
+test('resolves labels and localized hrefs for a language', () => {
   expect(getMainNavigationForLanguage('pt')).toEqual([
     { href: '/blog', label: 'Blog' },
     { href: '/community', label: 'Comunidade' },
     { href: '/about', label: 'Sobre' },
   ])
   expect(getMainNavigationForLanguage('en')).toEqual([
-    { href: '/blog', label: 'Writing' },
-    { href: '/community', label: 'Community' },
-    { href: '/about', label: 'About' },
+    { href: '/en/blog', label: 'Writing' },
+    { href: '/en/community', label: 'Community' },
+    { href: '/en/about', label: 'About' },
   ])
 })
