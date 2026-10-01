@@ -6,7 +6,7 @@ import { ButtonLink } from '@/components/button'
 import { useInterfaceLanguage } from '@/components/interface-language-provider'
 import { Tooltip } from '@/components/ui/tooltip'
 import { getDictionary } from '@/lib/i18n/dictionary'
-import { equivalentPath } from '@/lib/i18n/routes'
+import { getLanguageSwitchHref } from '@/lib/i18n/alternates'
 import type { InterfaceLanguage } from '@/lib/i18n/types'
 
 function nextLanguage(language: InterfaceLanguage): InterfaceLanguage {
@@ -43,7 +43,7 @@ function LanguageSwitchLink({ search }: { search: string }) {
   const { language } = useInterfaceLanguage()
   const pathname = usePathname()
   const label = languageSwitchLabel(language)
-  const path = equivalentPath(pathname, nextLanguage(language))
+  const path = getLanguageSwitchHref(pathname, nextLanguage(language))
 
   return (
     <Tooltip label={label} align="end">

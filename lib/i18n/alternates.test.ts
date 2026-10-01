@@ -3,6 +3,7 @@ import path from 'node:path'
 import { expect, test } from 'vitest'
 import { mainNavigation } from '@/lib/navigation'
 import {
+  dynamicSegment,
   getAlternates,
   getLanguageSwitchHref,
   homePath,
@@ -10,9 +11,20 @@ import {
 } from './alternates'
 import { htmlLang, type InterfaceLanguage, interfaceLanguages } from './types'
 
-const indexablePages = localizedPages.filter((page) => page.indexable)
-const switchOnlyPages = localizedPages.filter((page) => !page.indexable)
-const unpairedPathnames = ['/blog/hello-world', '/design-system', '/en/unknown']
+const samplePages = localizedPages.map((page) => ({
+  ...page,
+  pt: page.pt.replace(dynamicSegment, 'hello-world'),
+  en: page.en.replace(dynamicSegment, 'hello-world'),
+}))
+const indexablePages = samplePages.filter((page) => page.indexable)
+const switchOnlyPages = samplePages.filter((page) => !page.indexable)
+const unpairedPathnames = [
+  '/design-system',
+  '/en/unknown',
+  '/blog/hello-world/extra',
+  // Starts with "en" but is not under /en.
+  '/entrevistas',
+]
 
 test.each(indexablePages)('$pt ↔ $en has canonical and hreflang', (page) => {
   const languages = {
@@ -26,7 +38,7 @@ test.each(indexablePages)('$pt ↔ $en has canonical and hreflang', (page) => {
 })
 
 test.each(switchOnlyPages)(
-  '$pt ↔ $en (noindex) has only the canonical',
+  '$pt ↔ $en (switch only) has only the canonical',
   (page) => {
     expect(getAlternates(page.pt)).toEqual({ canonical: page.pt })
     expect(getAlternates(page.en)).toEqual({ canonical: page.en })
@@ -40,7 +52,7 @@ test.each(unpairedPathnames)(
   },
 )
 
-test.each(localizedPages)('$pt ↔ $en switch is reciprocal', (page) => {
+test.each(samplePages)('$pt ↔ $en switch is reciprocal', (page) => {
   expect(getLanguageSwitchHref(page.pt, 'en')).toBe(page.en)
   expect(getLanguageSwitchHref(page.en, 'pt')).toBe(page.pt)
   expect(getLanguageSwitchHref(page.pt, 'pt')).toBe(page.pt)
@@ -60,6 +72,8 @@ test.each([
   ['/blog?page=2&view=list', '/blog'],
   ['/about#contact', '/about'],
   ['/en//', '/en'],
+  ['/blog/hello-world/', '/blog/hello-world'],
+  ['/en/blog/hello-world?ref=feed#top', '/en/blog/hello-world'],
 ])('%s resolves like %s', (pathname, expected) => {
   expect(getAlternates(pathname)).toEqual(getAlternates(expected))
   expect(getLanguageSwitchHref(pathname, 'pt')).toBe(
@@ -67,7 +81,7 @@ test.each([
   )
 })
 
-test('pages are unique and each language keeps its own prefix', () => {
+test('pages are unique, keep their language prefix, and share dynamic segments', () => {
   for (const language of interfaceLanguages) {
     const paths = localizedPages.map((page) => page[language])
     expect(new Set(paths).size).toBe(paths.length)
@@ -77,6 +91,7 @@ test('pages are unique and each language keeps its own prefix', () => {
   for (const page of localizedPages) {
     expect(page.pt).not.toMatch(enPrefix)
     expect(page.en).toMatch(enPrefix)
+    expect(page.en.match(dynamicSegment)).toEqual(page.pt.match(dynamicSegment))
   }
 })
 

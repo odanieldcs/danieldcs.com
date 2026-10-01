@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { localizePath } from './routes'
 import {
   DEFAULT_INTERFACE_LANGUAGE,
   htmlLang,
@@ -16,41 +17,64 @@ export const localizedPages = [
   { pt: '/community', en: '/en/community', indexable: true },
   { pt: '/about', en: '/en/about', indexable: true },
   { pt: '/trilha', en: '/en/trilha', indexable: false },
+  // `[slug]` matches one segment and carries over to the other language.
+  // Posts are PT-only for now; flip to indexable once they are translated.
+  { pt: '/blog/[slug]', en: '/en/blog/[slug]', indexable: false },
 ] as const satisfies readonly LocalizedPage[]
 
-export type LocalizedPath<L extends InterfaceLanguage = InterfaceLanguage> =
-  (typeof localizedPages)[number][L]
+export const homePath: Readonly<Record<InterfaceLanguage, string>> = {
+  pt: localizePath('/', 'pt'),
+  en: localizePath('/', 'en'),
+}
 
-export const homePath: { readonly [L in InterfaceLanguage]: LocalizedPath<L> } =
-  {
-    pt: '/',
-    en: '/en',
-  }
+export const dynamicSegment = /\[[^\]]+\]/g
+
+const routeMatchers = localizedPages.map((page) => ({
+  page,
+  patterns: [page.pt, page.en].map(
+    (route) => new RegExp(`^${route.replace(dynamicSegment, '([^/]+)')}$`),
+  ),
+}))
 
 function normalizePathname(pathname: string): string {
   return pathname.replace(/[?#].*$/, '').replace(/\/+$/, '') || '/'
 }
 
-function findLocalizedPage(path: string) {
-  return localizedPages.find((page) => page.pt === path || page.en === path)
+function matchLocalizedPage(path: string) {
+  for (const { page, patterns } of routeMatchers) {
+    for (const pattern of patterns) {
+      const match = pattern.exec(path)
+      if (match) {
+        return { page, params: match.slice(1) }
+      }
+    }
+  }
+}
+
+function fillRoute(route: string, params: string[]): string {
+  let index = 0
+
+  return route.replace(dynamicSegment, () => params[index++] ?? '')
 }
 
 export function getAlternates(
   pathname: string,
 ): NonNullable<Metadata['alternates']> {
   const canonical = normalizePathname(pathname)
-  const page = findLocalizedPage(canonical)
+  const match = matchLocalizedPage(canonical)
 
-  if (!page?.indexable) {
+  if (!match?.page.indexable) {
     return { canonical }
   }
+
+  const { page, params } = match
 
   return {
     canonical,
     languages: {
-      [htmlLang.pt]: page.pt,
-      [htmlLang.en]: page.en,
-      'x-default': page[DEFAULT_INTERFACE_LANGUAGE],
+      [htmlLang.pt]: fillRoute(page.pt, params),
+      [htmlLang.en]: fillRoute(page.en, params),
+      'x-default': fillRoute(page[DEFAULT_INTERFACE_LANGUAGE], params),
     },
   }
 }
@@ -59,8 +83,8 @@ export function getAlternates(
 export function getLanguageSwitchHref(
   pathname: string,
   target: InterfaceLanguage,
-): LocalizedPath {
-  const page = findLocalizedPage(normalizePathname(pathname))
+): string {
+  const match = matchLocalizedPage(normalizePathname(pathname))
 
-  return page ? page[target] : homePath[target]
+  return match ? fillRoute(match.page[target], match.params) : homePath[target]
 }
