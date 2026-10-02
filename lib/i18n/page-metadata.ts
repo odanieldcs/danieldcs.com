@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, ResolvingMetadata } from 'next'
 import { parseBlogPage } from '@/lib/blog/pagination'
 import { getAlternates } from '@/lib/i18n/alternates'
 import { getPageSeo, type SeoPageId } from '@/lib/i18n/pages'
@@ -19,9 +19,12 @@ const pagePath = {
   trilha: '/trilha',
 } as const satisfies Record<SeoPageId, `/${string}`>
 
+type ParentOpenGraph = Awaited<ResolvingMetadata>['openGraph']
+
 export function getLocalizedPageMetadata(
   page: SeoPageId,
   language: InterfaceLanguage,
+  parentOpenGraph?: ParentOpenGraph,
 ): Metadata {
   const pathname = localizePath(pagePath[page], language)
   const seo = getPageSeo(page, language)
@@ -30,7 +33,10 @@ export function getLocalizedPageMetadata(
   return {
     ...(seo.seoTitle ? { title: seo.seoTitle } : {}),
     description,
+    // Page `openGraph` replaces the layout object, so keep its image and site name.
     openGraph: {
+      ...baseMetadata.openGraph,
+      ...parentOpenGraph,
       title: seo.seoTitle ?? baseMetadata.title.default,
       description,
       url: pathname,
@@ -47,8 +53,9 @@ export function getLocalizedPageMetadata(
 export function getBlogListingMetadata(
   searchParams: Record<string, string | string[] | undefined>,
   language: InterfaceLanguage,
+  parentOpenGraph?: ParentOpenGraph,
 ): Metadata {
-  const metadata = getLocalizedPageMetadata('blog', language)
+  const metadata = getLocalizedPageMetadata('blog', language, parentOpenGraph)
   const page = parseBlogPage(searchParams.page)
   const languages = metadata.alternates?.languages
 

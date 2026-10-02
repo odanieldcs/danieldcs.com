@@ -128,7 +128,7 @@ function expectAbsoluteSiteUrl(url: string | undefined) {
 }
 
 function absoluteUrl(path: string) {
-  return `${siteUrl}${path}`
+  return path === '/' ? siteUrl : `${siteUrl}${path}`
 }
 
 function linkTags(html: string) {
@@ -159,9 +159,9 @@ function hreflangMap(html: string) {
   return map
 }
 
-/** Next.js file-convention icons stay root-relative; the browser resolves them. */
+/** Next.js file-convention icons stay relative to the route segment. */
 function expectFileConventionIcon(url: string | undefined, name: string) {
-  expect(url).toMatch(new RegExp(`^/${name}-[a-z0-9]+\\.png`))
+  expect(url).toMatch(new RegExp(`^(?:/en)?/${name}-[a-z0-9]+\\.png`))
 }
 
 function expectBaseMetadata(html: string, locale: Locale = 'pt_BR') {
