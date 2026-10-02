@@ -1,4 +1,9 @@
 import type { CommunityEntryType } from '@/lib/content/community-schema'
+import {
+  getMainNavItem,
+  getMainNavLabel,
+  type MainNavHref,
+} from '@/lib/navigation'
 import type { InterfaceLanguage } from './types'
 
 export type HomeHighlight = {
@@ -663,4 +668,77 @@ const postCopy: Record<InterfaceLanguage, PostCopy> = {
 
 export function getPostCopy(lang: InterfaceLanguage): PostCopy {
   return postCopy[lang]
+}
+
+export type SeoPageId = 'home' | 'blog' | 'community' | 'about' | 'trilha'
+
+export type PageSeo = {
+  /** Omitted on the home page so the document title stays the site default. */
+  seoTitle?: string
+  seoDescription: string
+}
+
+const pageSeo: Record<SeoPageId, Record<InterfaceLanguage, PageSeo>> = {
+  home: {
+    pt: {
+      seoDescription:
+        'Construindo produtos de software e correndo longas distâncias.',
+    },
+    en: {
+      seoDescription: 'Building software products and running long distances.',
+    },
+  },
+  blog: {
+    pt: { seoDescription: 'Artigos e notas de engenharia de Daniel Castro.' },
+    en: { seoDescription: 'Articles and engineering notes by Daniel Castro.' },
+  },
+  community: {
+    pt: {
+      seoDescription: 'Palestras, workshops e encontros de Daniel Castro.',
+    },
+    en: {
+      seoDescription: 'Talks, workshops, and gatherings by Daniel Castro.',
+    },
+  },
+  about: {
+    pt: {
+      seoDescription: 'Trajetória, repertório e contato de Daniel Castro.',
+    },
+    en: { seoDescription: 'Path, repertoire, and contact for Daniel Castro.' },
+  },
+  trilha: {
+    pt: {
+      seoTitle: 'Trilha',
+      seoDescription:
+        'Guiado por quem aplica no dia a dia, em engenharia de software.',
+    },
+    en: {
+      seoTitle: 'Trilha',
+      seoDescription:
+        'Guided by someone who applies it every day, in software engineering.',
+    },
+  },
+}
+
+const navSeoHref = {
+  blog: '/blog',
+  community: '/community',
+  about: '/about',
+} as const satisfies Record<'blog' | 'community' | 'about', MainNavHref>
+
+function isNavSeoPage(page: SeoPageId): page is keyof typeof navSeoHref {
+  return page in navSeoHref
+}
+
+export function getPageSeo(page: SeoPageId, lang: InterfaceLanguage): PageSeo {
+  const seo = pageSeo[page][lang]
+
+  if (!isNavSeoPage(page)) {
+    return seo
+  }
+
+  return {
+    ...seo,
+    seoTitle: getMainNavLabel(getMainNavItem(navSeoHref[page]), lang),
+  }
 }
