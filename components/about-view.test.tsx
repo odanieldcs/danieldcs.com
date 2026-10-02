@@ -122,7 +122,7 @@ test('renders English copy when the interface language is en', () => {
   ).toBeTruthy()
   expect(
     screen.getByRole('link', { name: 'Read the blog' }).getAttribute('href'),
-  ).toBe('/blog')
+  ).toBe('/en/blog')
   expect(
     screen.getByRole('heading', { level: 2, name: 'Experience' }),
   ).toBeTruthy()

@@ -152,7 +152,7 @@ test('renders English copy when the interface language is en', () => {
     ),
   ).toBeTruthy()
   expect(screen.getByRole('link', { name: 'Learn more' }).getAttribute('href')).toBe(
-    '/about',
+    '/en/about',
   )
   expect(screen.getByText('Engineering notes')).toBeTruthy()
   expect(
@@ -160,7 +160,7 @@ test('renders English copy when the interface language is en', () => {
   ).toBeTruthy()
   expect(document.querySelector('time')?.textContent).toBe('21 Sep. 2026')
   const articleLink = screen.getByRole('link', { name: /Read article/ })
-  expect(articleLink.getAttribute('href')).toBe('/blog/content-system')
+  expect(articleLink.getAttribute('href')).toBe('/en/blog/content-system')
   expect(articleLink.querySelector('svg')).toBeTruthy()
   expect(screen.queryByRole('link', { name: 'See the Trilha' })).toBeNull()
   expect(screen.queryByRole('heading', { name: 'Escrita recente' })).toBeNull()

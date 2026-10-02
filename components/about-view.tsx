@@ -6,6 +6,8 @@ import { ArrowRightIcon } from '@/components/arrow-right-icon'
 import { Container } from '@/components/container'
 import { useInterfaceLanguage } from '@/components/interface-language-provider'
 import { type AboutCopy, getAboutCopy } from '@/lib/i18n/pages'
+import { localizePath } from '@/lib/i18n/routes'
+import type { InterfaceLanguage } from '@/lib/i18n/types'
 import { contactEmail, linkedInProfileUrl } from '@/lib/site'
 
 const PORTRAIT_SRC = '/media/personal/daniel_castro_profile_2.jpg'
@@ -70,7 +72,13 @@ function SectionLabel({
   )
 }
 
-function Intro({ copy }: { copy: AboutCopy }) {
+function Intro({
+  copy,
+  language,
+}: {
+  copy: AboutCopy
+  language: InterfaceLanguage
+}) {
   return (
     <section className="grid items-start gap-content-gap md:grid-cols-[minmax(0,1.15fr)_minmax(16rem,0.85fr)] md:gap-section">
       <figure className="group order-1 w-9/10 justify-self-center overflow-hidden rounded-lg bg-foreground/6 md:order-2 md:justify-self-end">
@@ -79,7 +87,8 @@ function Intro({ copy }: { copy: AboutCopy }) {
             src={PORTRAIT_SRC}
             alt={copy.portraitAlt}
             fill
-            priority
+            loading="eager"
+            fetchPriority="high"
             sizes="(min-width: 48rem) 24rem, 90vw"
             className="object-cover object-[center_30%] motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out motion-safe:group-hover:scale-106 motion-safe:group-hover:rotate-2"
           />
@@ -95,7 +104,10 @@ function Intro({ copy }: { copy: AboutCopy }) {
             <p key={paragraph}>{paragraph}</p>
           ))}
         </div>
-        <Link href="/blog" className={quietCtaClassName}>
+        <Link
+          href={localizePath('/blog', language)}
+          className={quietCtaClassName}
+        >
           {copy.blogCta}
           <ArrowRightIcon />
         </Link>
@@ -281,7 +293,7 @@ export function AboutView() {
   return (
     <main>
       <Container width="page" className="pb-20 pt-10 sm:pb-28 sm:pt-16">
-        <Intro copy={copy} />
+        <Intro copy={copy} language={language} />
       </Container>
       <Experience copy={copy} />
       <Container width="page" className={sectionYClassName}>

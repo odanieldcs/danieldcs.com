@@ -1,17 +1,16 @@
 'use client'
 
+import { usePathname, useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
 import { ButtonLink } from '@/components/button'
 import { useInterfaceLanguage } from '@/components/interface-language-provider'
 import { Tooltip } from '@/components/ui/tooltip'
 import { getDictionary } from '@/lib/i18n/dictionary'
+import { getLanguageSwitchHref } from '@/lib/i18n/alternates'
 import type { InterfaceLanguage } from '@/lib/i18n/types'
 
 function nextLanguage(language: InterfaceLanguage): InterfaceLanguage {
   return language === 'pt' ? 'en' : 'pt'
-}
-
-function languageHomeHref(language: InterfaceLanguage): string {
-  return nextLanguage(language) === 'en' ? '/en' : '/'
 }
 
 function languageSwitchLabel(language: InterfaceLanguage): string {
@@ -40,9 +39,11 @@ function GlobeIcon() {
   )
 }
 
-export function LanguageSwitch() {
+function LanguageSwitchLink({ search }: { search: string }) {
   const { language } = useInterfaceLanguage()
+  const pathname = usePathname()
   const label = languageSwitchLabel(language)
+  const path = getLanguageSwitchHref(pathname, nextLanguage(language))
 
   return (
     <Tooltip label={label} align="end">
@@ -50,7 +51,7 @@ export function LanguageSwitch() {
         <ButtonLink
           variant="ghost"
           className="peer min-w-11 px-0"
-          href={languageHomeHref(language)}
+          href={search ? `${path}?${search}` : path}
           prefetch={false}
           aria-describedby={tooltipId}
           aria-label={label}
@@ -59,5 +60,19 @@ export function LanguageSwitch() {
         </ButtonLink>
       )}
     </Tooltip>
+  )
+}
+
+function LanguageSwitchWithSearch() {
+  return <LanguageSwitchLink search={useSearchParams().toString()} />
+}
+
+export function LanguageSwitch() {
+  // useSearchParams() opts out of prerendering up to the nearest Suspense
+  // boundary; the fallback keeps the link in the static HTML.
+  return (
+    <Suspense fallback={<LanguageSwitchLink search="" />}>
+      <LanguageSwitchWithSearch />
+    </Suspense>
   )
 }

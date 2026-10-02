@@ -35,6 +35,7 @@ vi.mock('next/link', () => ({
 
 vi.mock('next/navigation', () => ({
   usePathname: () => navigation.pathname,
+  useSearchParams: () => new URLSearchParams(),
 }))
 
 vi.mock('@/components/ui/theme-toggle', () => ({
@@ -49,7 +50,7 @@ afterEach(() => {
 function renderHeader(language: 'pt' | 'en' = 'pt') {
   return render(
     <InterfaceLanguageProvider language={language}>
-      <Header />
+      <Header language={language} />
     </InterfaceLanguageProvider>,
   )
 }
@@ -115,12 +116,22 @@ test('marks the current route and nested paths as active', () => {
   )
 })
 
-test('uses English nav labels when the interface language is en', () => {
-  navigation.pathname = '/about'
+test('uses English nav labels and /en links when the interface language is en', () => {
+  navigation.pathname = '/en/about'
   renderHeader('en')
 
-  expect(screen.getByRole('link', { name: 'Writing' })).toBeTruthy()
-  expect(screen.getByRole('link', { name: 'Community' })).toBeTruthy()
+  expect(
+    screen.getByRole('link', { name: 'Daniel Castro' }).getAttribute('href'),
+  ).toBe('/en')
+  expect(
+    screen.getByRole('link', { name: 'Writing' }).getAttribute('href'),
+  ).toBe('/en/blog')
+  expect(
+    screen.getByRole('link', { name: 'Community' }).getAttribute('href'),
+  ).toBe('/en/community')
+  expect(
+    screen.getByRole('link', { name: 'About' }).getAttribute('href'),
+  ).toBe('/en/about')
   expect(
     screen.getByRole('link', { name: 'About' }).className.split(/\s+/),
   ).toContain('text-foreground')

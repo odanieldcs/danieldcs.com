@@ -604,3 +604,63 @@ export function getAboutCopy(lang: InterfaceLanguage): AboutCopy {
 export function getTrilhaCopy(lang: InterfaceLanguage): TrilhaCopy {
   return trilhaCopy[lang]
 }
+
+export type NotFoundCopy = {
+  eyebrow: string
+  title: string
+  paragraph: string
+  homeCta: string
+}
+
+const notFoundCopy: Record<InterfaceLanguage, NotFoundCopy> = {
+  pt: {
+    eyebrow: 'Erro 404',
+    title: 'Página não encontrada.',
+    paragraph: 'O endereço pode ter mudado ou não existe mais.',
+    homeCta: 'Voltar para o início',
+  },
+  en: {
+    eyebrow: 'Error 404',
+    title: 'Page not found.',
+    paragraph: 'The address may have changed or no longer exists.',
+    homeCta: 'Back to home',
+  },
+}
+
+export function getNotFoundCopy(lang: InterfaceLanguage): NotFoundCopy {
+  return notFoundCopy[lang]
+}
+
+export type PostCopy = {
+  /** Notice for a post read in an interface language it is not written in. */
+  onlyAvailableIn: Record<InterfaceLanguage, string>
+  /** CTA to the same post in the language it is written in. */
+  readIn: Record<InterfaceLanguage, string>
+}
+
+const postCopy: Record<InterfaceLanguage, PostCopy> = {
+  pt: {
+    onlyAvailableIn: {
+      pt: 'Conteúdo disponível apenas em português.',
+      en: 'Conteúdo disponível apenas em inglês.',
+    },
+    readIn: {
+      pt: 'Ler em português',
+      en: 'Ler em inglês',
+    },
+  },
+  en: {
+    onlyAvailableIn: {
+      pt: 'Content available only in Portuguese.',
+      en: 'Content available only in English.',
+    },
+    readIn: {
+      pt: 'Read in Portuguese',
+      en: 'Read in English',
+    },
+  },
+}
+
+export function getPostCopy(lang: InterfaceLanguage): PostCopy {
+  return postCopy[lang]
+}
