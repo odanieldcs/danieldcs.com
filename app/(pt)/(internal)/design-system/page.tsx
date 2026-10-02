@@ -13,11 +13,13 @@ import { NavLink } from '@/components/ui/nav-link'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { MdxContent } from '@/lib/content/mdx'
 import { contentImageClassName } from '@/lib/content/mdx-components'
+import { getAlternates } from '@/lib/i18n/alternates'
 import { linkClassName } from '@/lib/link-styles'
 
 export const metadata: Metadata = {
   title: 'Design System (internal)',
   robots: { index: false, follow: false },
+  alternates: getAlternates('/design-system'),
 }
 
 const colorTokens = [

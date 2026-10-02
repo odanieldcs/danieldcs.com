@@ -1,10 +1,7 @@
-import type { Metadata } from 'next'
 import { AboutView } from '@/components/about-view'
+import { getLocalizedPageMetadata } from '@/lib/i18n/page-metadata'
 
-export const metadata: Metadata = {
-  title: 'Sobre',
-  description: 'Trajetória, repertório e contato de Daniel Castro.',
-}
+export const metadata = getLocalizedPageMetadata('about', 'pt')
 
 export default function AboutPage() {
   return <AboutView />

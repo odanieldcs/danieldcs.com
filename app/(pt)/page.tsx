@@ -1,10 +1,8 @@
-import type { Metadata } from 'next'
 import { HomeView } from '@/components/home-view'
+import { getLocalizedPageMetadata } from '@/lib/i18n/page-metadata'
 import { getHomePosts } from '@/lib/page-data'
 
-export const metadata: Metadata = {
-  description: 'Construindo produtos de software e correndo longas distâncias.',
-}
+export const metadata = getLocalizedPageMetadata('home', 'pt')
 
 export default function Home() {
   return <HomeView posts={getHomePosts()} />

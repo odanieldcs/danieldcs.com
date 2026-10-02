@@ -1,9 +1,7 @@
-import type { Metadata } from 'next'
 import { TrilhaView } from '@/components/trilha-view'
+import { getLocalizedPageMetadata } from '@/lib/i18n/page-metadata'
 
-export const metadata: Metadata = {
-  robots: { index: false, follow: false },
-}
+export const metadata = getLocalizedPageMetadata('trilha', 'en')
 
 export default function TrilhaPage() {
   return <TrilhaView />
