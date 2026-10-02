@@ -6,10 +6,21 @@ import {
   type InterfaceLanguage,
 } from './types'
 
-type LocalizedPage = Readonly<Record<InterfaceLanguage, string>> & {
-  /** `false` keeps the pair for the language switch only, with no hreflang. */
-  readonly indexable: boolean
+type LocalizedPaths = Readonly<Record<InterfaceLanguage, string>>
+
+type IndexablePage = LocalizedPaths & {
+  /** Both URLs are canonical and expose hreflang. */
+  readonly indexable: true
 }
+
+type SwitchOnlyPage = LocalizedPaths & {
+  /** Keeps the pair for the language switch only, with no hreflang. */
+  readonly indexable: false
+  /** Both URLs canonicalize to this language. Omit it to keep each URL canonical. */
+  readonly canonical?: InterfaceLanguage
+}
+
+type LocalizedPage = IndexablePage | SwitchOnlyPage
 
 export const localizedPages = [
   { pt: '/', en: '/en', indexable: true },
@@ -18,8 +29,14 @@ export const localizedPages = [
   { pt: '/about', en: '/en/about', indexable: true },
   { pt: '/trilha', en: '/en/trilha', indexable: false },
   // `[slug]` matches one segment and carries over to the other language.
-  // Posts are PT-only for now; flip to indexable once they are translated.
-  { pt: '/blog/[slug]', en: '/en/blog/[slug]', indexable: false },
+  // Posts are PT-only: both URLs canonicalize to the PT path, with no hreflang.
+  // When posts are translated, drop `canonical` and set `indexable: true`.
+  {
+    pt: '/blog/[slug]',
+    en: '/en/blog/[slug]',
+    indexable: false,
+    canonical: 'pt',
+  },
 ] as const satisfies readonly LocalizedPage[]
 
 export const homePath: Readonly<Record<InterfaceLanguage, string>> = {
@@ -60,23 +77,39 @@ function fillRoute(route: string, params: string[]): string {
 export function getAlternates(
   pathname: string,
 ): NonNullable<Metadata['alternates']> {
-  const canonical = normalizePathname(pathname)
-  const match = matchLocalizedPage(canonical)
+  const normalized = normalizePathname(pathname)
+  const match = matchLocalizedPage(normalized)
 
-  if (!match?.page.indexable) {
-    return { canonical }
+  if (!match) {
+    return { canonical: normalized }
   }
 
   const { page, params } = match
 
+  if (!page.indexable) {
+    return {
+      canonical:
+        'canonical' in page
+          ? fillRoute(page[page.canonical], params)
+          : normalized,
+    }
+  }
+
   return {
-    canonical,
+    canonical: normalized,
     languages: {
       [htmlLang.pt]: fillRoute(page.pt, params),
       [htmlLang.en]: fillRoute(page.en, params),
       'x-default': fillRoute(page[DEFAULT_INTERFACE_LANGUAGE], params),
     },
   }
+}
+
+/** False when the URL canonicalizes elsewhere, so the sitemap can omit it. */
+export function isCanonicalUrl(pathname: string): boolean {
+  const normalized = normalizePathname(pathname)
+
+  return getAlternates(normalized).canonical === normalized
 }
 
 /** Equivalent page in `target`, or the `target` home when there is no pair. */

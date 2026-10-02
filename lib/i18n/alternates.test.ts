@@ -7,6 +7,7 @@ import {
   getAlternates,
   getLanguageSwitchHref,
   homePath,
+  isCanonicalUrl,
   localizedPages,
 } from './alternates'
 import { htmlLang, type InterfaceLanguage, interfaceLanguages } from './types'
@@ -17,7 +18,13 @@ const samplePages = localizedPages.map((page) => ({
   en: page.en.replace(dynamicSegment, 'hello-world'),
 }))
 const indexablePages = samplePages.filter((page) => page.indexable)
-const switchOnlyPages = samplePages.filter((page) => !page.indexable)
+const selfCanonicalPages = samplePages.filter(
+  (page) => !page.indexable && !('canonical' in page),
+)
+const crossCanonicalPages = samplePages.filter(
+  (page): page is typeof page & { canonical: InterfaceLanguage } =>
+    'canonical' in page,
+)
 const unpairedPathnames = [
   '/design-system',
   '/en/unknown',
@@ -37,11 +44,21 @@ test.each(indexablePages)('$pt ↔ $en has canonical and hreflang', (page) => {
   expect(getAlternates(page.en)).toEqual({ canonical: page.en, languages })
 })
 
-test.each(switchOnlyPages)(
-  '$pt ↔ $en (switch only) has only the canonical',
+test.each(selfCanonicalPages)(
+  '$pt ↔ $en (switch only) has only its own canonical',
   (page) => {
     expect(getAlternates(page.pt)).toEqual({ canonical: page.pt })
     expect(getAlternates(page.en)).toEqual({ canonical: page.en })
+  },
+)
+
+test.each(crossCanonicalPages)(
+  '$pt ↔ $en canonicalizes to $canonical without hreflang',
+  (page) => {
+    const canonical = page[page.canonical]
+
+    expect(getAlternates(page.pt)).toEqual({ canonical })
+    expect(getAlternates(page.en)).toEqual({ canonical })
   },
 )
 
@@ -49,6 +66,23 @@ test.each(unpairedPathnames)(
   '%s has no pair and returns only the canonical',
   (pathname) => {
     expect(getAlternates(pathname)).toEqual({ canonical: pathname })
+  },
+)
+
+test.each([
+  ...indexablePages.flatMap((page) => [page.pt, page.en]),
+  ...selfCanonicalPages.flatMap((page) => [page.pt, page.en]),
+  ...unpairedPathnames,
+])('%s is its own canonical URL', (pathname) => {
+  expect(isCanonicalUrl(pathname)).toBe(true)
+})
+
+test.each(crossCanonicalPages)(
+  'only the $canonical URL of $pt ↔ $en is canonical',
+  (page) => {
+    for (const language of interfaceLanguages) {
+      expect(isCanonicalUrl(page[language])).toBe(language === page.canonical)
+    }
   },
 )
 
@@ -79,6 +113,7 @@ test.each([
   expect(getLanguageSwitchHref(pathname, 'pt')).toBe(
     getLanguageSwitchHref(expected, 'pt'),
   )
+  expect(isCanonicalUrl(pathname)).toBe(isCanonicalUrl(expected))
 })
 
 test('pages are unique, keep their language prefix, and share dynamic segments', () => {
