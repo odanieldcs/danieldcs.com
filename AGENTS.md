@@ -16,6 +16,7 @@ Operational context for this repo. Commands, scripts, and folder layout live in 
 - No CMS, database, or authentication.
 - Do not reintroduce React Router, Vite, Fly.io, or Docker.
 - Interface language comes from the route, not from cookies: PT lives at the root in `app/(pt)` (no prefix, no `/pt` route) and EN lives under `/en` in `app/(en)/en`. Each group has its own root layout rendering `components/site-shell.tsx` with its `lang`. No `Accept-Language` detection or automatic redirects.
+- `/alunos` is the interim certificate check for certificates already issued. It stays PT-only, `noindex`, outside `localizedPages` (no hreflang), and out of any sitemap. When the Trilha certificate lookup exists, replace this route with a redirect to that lookup.
 
 ## Out of V1
 

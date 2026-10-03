@@ -9,6 +9,7 @@
     "ignoreUnknown": false,
     "includes": [
       "app/**",
+      "content/**/*.ts",
       "lib/**",
       "next.config.ts",
       "vitest.config.*",
