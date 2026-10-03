@@ -7,7 +7,11 @@ export async function generateMetadata(
   { searchParams }: PageProps<'/blog'>,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  return getBlogListingMetadata(await searchParams, 'pt', (await parent).openGraph)
+  return getBlogListingMetadata(
+    await searchParams,
+    'pt',
+    (await parent).openGraph,
+  )
 }
 
 export default async function BlogPage({ searchParams }: PageProps<'/blog'>) {
