@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { cache } from 'react'
+import defaultOpenGraphImage from '@/app/(pt)/opengraph-image.png'
 import type { BlogPostView } from '@/components/blog-view'
 import type { CommunityEntryView } from '@/components/community-view'
 import type { HomePostSummary } from '@/components/home-view'
@@ -20,6 +21,7 @@ import {
   getPostBySlug,
 } from '@/lib/content/posts'
 import type { InterfaceLanguage } from '@/lib/i18n/types'
+import { buildPostMetadata } from '@/lib/seo/post-metadata'
 
 const RECENT_POST_LIMIT = 2
 
@@ -90,10 +92,5 @@ export function getPostStaticParams(): { slug: string }[] {
 }
 
 export function getPostMetadata(slug: string): Metadata {
-  const { frontmatter } = getPost(slug)
-
-  return {
-    title: frontmatter.title,
-    description: frontmatter.description,
-  }
+  return buildPostMetadata(getPost(slug), defaultOpenGraphImage)
 }

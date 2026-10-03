@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { Container } from '@/components/container'
 import { useInterfaceLanguage } from '@/components/interface-language-provider'
 import { buildBlogListingHref, type BlogViewMode } from '@/lib/blog/pagination'
+import { resolveCoverSrc } from '@/lib/content/cover'
 import { type BlogCopy, getBlogCopy } from '@/lib/i18n/pages'
 import { localizePath } from '@/lib/i18n/routes'
 import type { InterfaceLanguage } from '@/lib/i18n/types'
@@ -42,14 +43,6 @@ function formatPostMonthYear(
   const monthLabel = month.endsWith('.') ? month : `${month}.`
 
   return `${monthLabel} ${year}`
-}
-
-function resolveCoverSrc(cover: string): string {
-  if (cover.startsWith('/') && !cover.startsWith('//')) {
-    return cover
-  }
-
-  return `/media/posts/${cover}`
 }
 
 const focusClassName = [

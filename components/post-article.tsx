@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Container } from '@/components/container'
+import { resolveCoverSrc } from '@/lib/content/cover'
 import { MdxContent } from '@/lib/content/mdx'
 import {
   articleDateClassName,
@@ -16,14 +17,6 @@ import { linkClassName } from '@/lib/link-styles'
 
 const COVER_WIDTH = 800
 const COVER_HEIGHT = 450
-
-function resolveCoverSrc(cover: string): string {
-  if (cover.startsWith('/') && !cover.startsWith('//')) {
-    return cover
-  }
-
-  return `/media/posts/${cover}`
-}
 
 function formatPostDate(date: Date): string {
   return date.toISOString().slice(0, 10)
