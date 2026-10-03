@@ -617,7 +617,7 @@ const footerResourceLinks: Record<
 > = {
   pt: [
     { href: '/blog/livros-recomendados', label: 'Leituras recentes' },
-    { href: '/blog/o-que-uso-no-dia-a-dia', label: 'Usos' },
+    { href: '/blog/ferramentas-apps-e-setup', label: 'Usos' },
   ],
   en: [],
 }

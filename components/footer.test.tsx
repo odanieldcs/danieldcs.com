@@ -43,7 +43,7 @@ test('renders social links, tagline, privacy link, and the current year', () => 
   expect(leituras.getAttribute('target')).toBeNull()
 
   const setup = screen.getByRole('link', { name: 'Usos' })
-  expect(setup.getAttribute('href')).toBe('/blog/o-que-uso-no-dia-a-dia')
+  expect(setup.getAttribute('href')).toBe('/blog/ferramentas-apps-e-setup')
 
   expect(
     screen.getByText(`© ${new Date().getFullYear()} ${siteName}`),
