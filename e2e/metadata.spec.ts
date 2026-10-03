@@ -226,6 +226,31 @@ for (const page of pages) {
   })
 }
 
+function expectPostMetadata(html: string, slug: string, title: string) {
+  const canonicalUrl = absoluteUrl(`/blog/${slug}`)
+
+  expect(html).toContain(`<title>${title} · Daniel Castro</title>`)
+  expect(canonicalHref(html)).toBe(canonicalUrl)
+  expect(tagAttr(html, /<meta\b[^>]*property="og:url"[^>]*>/, 'content')).toBe(
+    canonicalUrl,
+  )
+  expect(html).toContain('<meta property="og:type" content="article"')
+  expect(html).toContain(
+    '<meta property="og:site_name" content="Daniel Castro"',
+  )
+  expect(html).toContain('<meta property="og:locale" content="pt_BR"')
+  expect(html).toContain(
+    '<meta name="twitter:card" content="summary_large_image"',
+  )
+  expectAbsoluteSiteUrl(
+    tagAttr(html, /<meta\b[^>]*property="og:image"[^>]*>/, 'content'),
+  )
+  expectAbsoluteSiteUrl(
+    tagAttr(html, /<meta\b[^>]*name="twitter:image"[^>]*>/, 'content'),
+  )
+  expect(hreflangMap(html)).toEqual({})
+}
+
 const noindexPages = [
   {
     path: '/trilha',
@@ -297,14 +322,22 @@ test('english blog page 2 points hreflang back at the portuguese page', async ({
   expect(languages['x-default']).toBe(absoluteUrl('/blog?page=2'))
 })
 
-test('a blog post follows the title template', async ({ request }) => {
+test('a blog post exposes article metadata and a self canonical', async ({
+  request,
+}) => {
   const post = getNewestBlogPost('metadata.spec')
   const response = await request.get(`/blog/${post.slug}`)
 
   expect(response.ok()).toBe(true)
-  const html = await response.text()
-  expect(html).toContain(
-    `<title>${post.frontmatter.title} · Daniel Castro</title>`,
-  )
-  expectBaseMetadata(html)
+  expectPostMetadata(await response.text(), post.slug, post.frontmatter.title)
+})
+
+test('the /en blog post canonicalizes to the PT url with no hreflang', async ({
+  request,
+}) => {
+  const post = getNewestBlogPost('metadata.spec')
+  const response = await request.get(`/en/blog/${post.slug}`)
+
+  expect(response.ok()).toBe(true)
+  expectPostMetadata(await response.text(), post.slug, post.frontmatter.title)
 })
