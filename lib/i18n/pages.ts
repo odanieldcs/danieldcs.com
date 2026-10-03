@@ -607,7 +607,7 @@ export function getAboutCopy(lang: InterfaceLanguage): AboutCopy {
 }
 
 export type FooterResourceLink = {
-  href: string
+  href: `/${string}`
   label: string
 }
 
