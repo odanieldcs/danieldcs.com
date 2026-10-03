@@ -14,6 +14,13 @@ test('escapes less-than outside tags in prose', () => {
   expect(prepareMdxSource('Emoji de coração <3')).toBe('Emoji de coração \\<3')
 })
 
+test('preserves BookPick and BookGrid shortcode tags', () => {
+  const source = `<BookGrid>
+<BookPick cover="/media/reading/livro-ddd.jpg" href="https://amzn.to/x" title="DDD" />
+</BookGrid>`
+  expect(prepareMdxSource(source)).toBe(source)
+})
+
 test('preserves figure and figcaption tags', () => {
   const source = `<figure>
 ![](/media/example.png)

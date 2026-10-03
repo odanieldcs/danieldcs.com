@@ -6,6 +6,9 @@ import {
   isValidElement,
   type ReactNode,
 } from 'react'
+import { MdxBookGrid } from '@/components/mdx-book-grid'
+import { MdxBookPick } from '@/components/mdx-book-pick'
+import { externalLinkRel } from '@/lib/external-link'
 import { linkClassName } from '@/lib/link-styles'
 
 function containsShikiLine(node: ReactNode): boolean {
@@ -30,6 +33,9 @@ const FALLBACK_IMAGE_HEIGHT = 450
 
 /** Responsive content images — reuse on blog cover (`app/blog/[slug]/page.tsx`). */
 export const contentImageClassName = 'h-auto w-full rounded-md'
+
+const readingCoverImageClassName =
+  'h-auto w-[6.5rem] max-w-full rounded-sm ring-1 ring-border'
 
 function joinClasses(...parts: (string | undefined)[]) {
   return parts.filter(Boolean).join(' ')
@@ -60,12 +66,14 @@ function MdxLink({ href, className, ...props }: ComponentPropsWithoutRef<'a'>) {
     return <Link href={href} className={classes} {...props} />
   }
 
+  const externalHref = typeof href === 'string' ? href : ''
+
   return (
     <a
       href={href}
       className={classes}
       target="_blank"
-      rel="noopener noreferrer"
+      rel={externalLinkRel(externalHref)}
       {...props}
     />
   )
@@ -82,7 +90,22 @@ function MdxImage({
   }
 
   const lowerSrc = src.toLowerCase()
-  const unoptimized = lowerSrc.endsWith('.gif')
+  const unoptimized =
+    lowerSrc.endsWith('.gif') || lowerSrc.includes('/media/reading/')
+
+  if (lowerSrc.includes('/media/reading/')) {
+    return (
+      <Image
+        src={src}
+        alt={alt ?? ''}
+        width={104}
+        height={160}
+        className={readingCoverImageClassName}
+        sizes="104px"
+        unoptimized
+      />
+    )
+  }
 
   if (lowerSrc.endsWith('.svg')) {
     return (
@@ -268,4 +291,6 @@ export const mdxComponents: NonNullable<MDXRemoteProps['components']> = {
   ),
   pre: MdxPre,
   code: MdxCode,
+  BookPick: MdxBookPick,
+  BookGrid: MdxBookGrid,
 }

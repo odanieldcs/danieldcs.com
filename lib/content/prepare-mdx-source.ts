@@ -1,4 +1,5 @@
-const ALLOWED_HTML_TAG = /^<\/?(figure|figcaption)\b[^>]*>/i
+const ALLOWED_HTML_TAG =
+  /^<\/?(figure|figcaption|BookPick|BookGrid)\b[^>]*\/?>/i
 const FENCE_LINE_PREFIX = /^(`{3,}|~{3,})/
 
 function isAlreadyEscaped(text: string, index: number): boolean {
