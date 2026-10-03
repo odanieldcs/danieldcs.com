@@ -80,6 +80,23 @@ Legenda da figura
   expect(html).toMatch(/<td[^>]*class="[^"]*border-border/)
 }, 15_000)
 
+test('renders BookGrid cards with sponsored affiliate links', async () => {
+  const source = prepareMdxSource(`
+<BookGrid>
+<BookPick cover="/media/reading/livro-ddd.jpg" href="https://amzn.to/3P67QGZ" title="Domain-Driven Design" subtitle="Atacando as complexidades no coração do software" />
+</BookGrid>
+`)
+  const { content } = await compileMdxForTest(source)
+  const html = renderToStaticMarkup(content)
+
+  expect(html).toContain('href="https://amzn.to/3P67QGZ"')
+  expect(html).toContain('rel="sponsored noopener"')
+  expect(html).toMatch(/divide-y/)
+  expect(html).toMatch(/items-center/)
+  expect(html).toContain('Domain-Driven Design')
+  expect(html).toContain('Atacando as complexidades')
+}, 15_000)
+
 test('renders svg images on a white plate with a native img', async () => {
   const { content } = await compileMdxForTest(
     '![](/media/posts/example/diagram.svg)',

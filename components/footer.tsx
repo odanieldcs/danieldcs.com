@@ -1,58 +1,80 @@
-import { Container } from '@/components/container';
-import { linkClassName } from '@/lib/link-styles';
-import { linkedInProfileUrl, siteName } from '@/lib/site';
+'use client'
+
+import Link from 'next/link'
+import { Container } from '@/components/container'
+import { useInterfaceLanguage } from '@/components/interface-language-provider'
+import { getFooterResourceLinks } from '@/lib/i18n/pages'
+import { localizePath } from '@/lib/i18n/routes'
+import { linkClassName } from '@/lib/link-styles'
+import { linkedInProfileUrl, siteName } from '@/lib/site'
 
 const socialLinks = [
-	{
-		label: 'LinkedIn',
-		href: linkedInProfileUrl,
-	},
-	{
-		label: 'GitHub',
-		href: 'https://github.com/odanieldcs',
-	},
-	{
-		label: 'YouTube',
-		href: 'https://www.youtube.com/@odanieldcs',
-	},
-	{
-		label: 'Instagram',
-		href: 'https://www.instagram.com/odanieldcs',
-	},
-] as const;
+  {
+    label: 'LinkedIn',
+    href: linkedInProfileUrl,
+  },
+  {
+    label: 'GitHub',
+    href: 'https://github.com/odanieldcs',
+  },
+  {
+    label: 'YouTube',
+    href: 'https://www.youtube.com/@odanieldcs',
+  },
+  {
+    label: 'Instagram',
+    href: 'https://www.instagram.com/odanieldcs',
+  },
+] as const
 
-const footerLinkClassName = linkClassName.replace('text-link', 'text-muted');
+const footerLinkClassName = linkClassName.replace('text-link', 'text-muted')
 
 export function Footer() {
-	const year = new Date().getFullYear();
+  const { language } = useInterfaceLanguage()
+  const year = new Date().getFullYear()
+  const privacyLabel = language === 'pt' ? 'Privacidade' : 'Privacy'
+  const resourceLinks = getFooterResourceLinks(language)
 
-	return (
-		<footer className="border-t border-border py-4">
-			<Container
-				width="page"
-				className="flex flex-col items-center gap-content-gap py-section text-center"
-			>
-				<ul className="flex list-none flex-wrap justify-center gap-content-gap text-caption">
-					{socialLinks.map((link) => (
-						<li key={link.href}>
-							<a
-								href={link.href}
-								className={footerLinkClassName}
-								target="_blank"
-								rel="noopener noreferrer"
-							>
-								{link.label}
-							</a>
-						</li>
-					))}
-				</ul>
-				<p className="flex flex-wrap justify-center gap-x-content-gap text-caption text-muted">
-					<span>
-						© {year} {siteName}
-					</span>
-					<span>Made with love in Gravataí 🇧🇷</span>
-				</p>
-			</Container>
-		</footer>
-	);
+  return (
+    <footer className="border-t border-border py-4">
+      <Container
+        width="page"
+        className="flex flex-col items-center gap-content-gap py-section text-center"
+      >
+        <ul className="flex list-none flex-wrap justify-center gap-content-gap text-caption">
+          {socialLinks.map((link) => (
+            <li key={link.href}>
+              <a
+                href={link.href}
+                className={footerLinkClassName}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+          {resourceLinks.map((link) => (
+            <li key={link.href}>
+              <Link
+                href={localizePath(link.href, language)}
+                className={footerLinkClassName}
+              >
+                {link.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <p className="flex flex-wrap items-center justify-center gap-x-content-gap text-caption text-muted">
+          <span>
+            © {year} {siteName}
+          </span>
+          <Link href="/privacy" className={footerLinkClassName}>
+            {privacyLabel}
+          </Link>
+          <span>Made with love in Gravataí 🇧🇷</span>
+        </p>
+      </Container>
+    </footer>
+  )
 }

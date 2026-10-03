@@ -73,7 +73,7 @@ test('header navigation keeps the visitor under /en', async ({ page }) => {
 
   const footerInternalLinks = page
     .getByRole('contentinfo')
-    .locator('a[href^="/"]:not([href^="/en"])')
+    .locator('a[href^="/"]:not([href^="/en"]):not([href="/privacy"])')
   await expect(footerInternalLinks).toHaveCount(0)
 })
 

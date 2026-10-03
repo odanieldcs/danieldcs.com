@@ -606,6 +606,28 @@ export function getAboutCopy(lang: InterfaceLanguage): AboutCopy {
   return aboutCopy[lang]
 }
 
+export type FooterResourceLink = {
+  href: `/${string}`
+  label: string
+}
+
+const footerResourceLinks: Record<
+  InterfaceLanguage,
+  ReadonlyArray<FooterResourceLink>
+> = {
+  pt: [
+    { href: '/blog/livros-recomendados', label: 'Leituras recentes' },
+    { href: '/blog/ferramentas-apps-e-setup', label: 'Usos' },
+  ],
+  en: [],
+}
+
+export function getFooterResourceLinks(
+  lang: InterfaceLanguage,
+): ReadonlyArray<FooterResourceLink> {
+  return footerResourceLinks[lang]
+}
+
 export function getTrilhaCopy(lang: InterfaceLanguage): TrilhaCopy {
   return trilhaCopy[lang]
 }

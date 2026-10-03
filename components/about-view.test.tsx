@@ -39,6 +39,8 @@ test('renders the about page in Portuguese', () => {
   expect(screen.getByRole('link', { name: 'Ler o blog' }).getAttribute('href')).toBe(
     '/blog',
   )
+  expect(screen.queryByRole('link', { name: 'Leituras recentes' })).toBeNull()
+  expect(screen.queryByRole('link', { name: 'Usos' })).toBeNull()
   expect(screen.getByText('AI-Assisted Development')).toBeTruthy()
   expect(screen.queryByText('Tecnologia, aprendizado e troca.')).toBeNull()
   expect(
@@ -123,6 +125,8 @@ test('renders English copy when the interface language is en', () => {
   expect(
     screen.getByRole('link', { name: 'Read the blog' }).getAttribute('href'),
   ).toBe('/en/blog')
+  expect(screen.queryByRole('link', { name: 'Leituras recentes' })).toBeNull()
+  expect(screen.queryByRole('link', { name: 'Usos' })).toBeNull()
   expect(
     screen.getByRole('heading', { level: 2, name: 'Experience' }),
   ).toBeTruthy()

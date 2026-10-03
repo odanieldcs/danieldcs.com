@@ -1,7 +1,20 @@
-import { render, screen } from '@testing-library/react'
-import { expect, test } from 'vitest'
+import { cleanup, render, screen } from '@testing-library/react'
+import { afterEach, expect, test } from 'vitest'
+import { InterfaceLanguageProvider } from '@/components/interface-language-provider'
 import { linkedInProfileUrl, siteName } from '@/lib/site'
 import { Footer } from './footer'
+
+afterEach(() => {
+  cleanup()
+})
+
+function renderFooter(language: 'pt' | 'en' = 'pt') {
+  return render(
+    <InterfaceLanguageProvider language={language}>
+      <Footer />
+    </InterfaceLanguageProvider>,
+  )
+}
 
 const socialLinks = [
   ['LinkedIn', linkedInProfileUrl],
@@ -10,8 +23,8 @@ const socialLinks = [
   ['Instagram', 'https://www.instagram.com/odanieldcs'],
 ] as const
 
-test('renders social links, tagline, and the current year', () => {
-  render(<Footer />)
+test('renders social links, tagline, privacy link, and the current year', () => {
+  renderFooter()
 
   expect(screen.queryByRole('link', { name: 'hi@danieldcs.com' })).toBeNull()
   expect(screen.queryByText(/mailto:/)).toBeNull()
@@ -25,9 +38,20 @@ test('renders social links, tagline, and the current year', () => {
     expect(link.className).not.toContain('text-link')
   }
 
+  const leituras = screen.getByRole('link', { name: 'Leituras recentes' })
+  expect(leituras.getAttribute('href')).toBe('/blog/livros-recomendados')
+  expect(leituras.getAttribute('target')).toBeNull()
+
+  const setup = screen.getByRole('link', { name: 'Usos' })
+  expect(setup.getAttribute('href')).toBe('/blog/ferramentas-apps-e-setup')
+
   expect(
     screen.getByText(`© ${new Date().getFullYear()} ${siteName}`),
   ).toBeTruthy()
+  const privacy = screen.getByRole('link', { name: 'Privacidade' })
+  expect(privacy.getAttribute('href')).toBe('/privacy')
+  expect(privacy.getAttribute('target')).toBeNull()
+
   expect(screen.getByText('Made with love in Gravataí 🇧🇷')).toBeTruthy()
 
   const shell = document.querySelector('footer > div')
@@ -37,4 +61,13 @@ test('renders social links, tagline, and the current year', () => {
   const links = document.querySelector('footer ul')
   expect(links?.className).toContain('text-caption')
   expect(links?.className).not.toContain('text-body')
+})
+
+test('labels the privacy link in English', () => {
+  renderFooter('en')
+
+  expect(screen.getByRole('link', { name: 'Privacy' }).getAttribute('href')).toBe(
+    '/privacy',
+  )
+  expect(screen.queryByRole('link', { name: 'Leituras recentes' })).toBeNull()
 })
