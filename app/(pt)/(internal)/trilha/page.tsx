@@ -1,11 +1,12 @@
-import type { Metadata } from 'next'
+import type { Metadata, ResolvingMetadata } from 'next'
 import { TrilhaView } from '@/components/trilha-view'
+import { getLocalizedPageMetadata } from '@/lib/i18n/page-metadata'
 
-export const metadata: Metadata = {
-  title: 'Trilha',
-  description:
-    'Guiado por quem aplica no dia a dia, em engenharia de software.',
-  robots: { index: false, follow: false },
+export async function generateMetadata(
+  _props: PageProps<'/trilha'>,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  return getLocalizedPageMetadata('trilha', 'pt', (await parent).openGraph)
 }
 
 export default function TrilhaPage() {

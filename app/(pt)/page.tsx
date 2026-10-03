@@ -1,9 +1,13 @@
-import type { Metadata } from 'next'
+import type { Metadata, ResolvingMetadata } from 'next'
 import { HomeView } from '@/components/home-view'
+import { getLocalizedPageMetadata } from '@/lib/i18n/page-metadata'
 import { getHomePosts } from '@/lib/page-data'
 
-export const metadata: Metadata = {
-  description: 'Construindo produtos de software e correndo longas distâncias.',
+export async function generateMetadata(
+  _props: PageProps<'/'>,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  return getLocalizedPageMetadata('home', 'pt', (await parent).openGraph)
 }
 
 export default function Home() {
