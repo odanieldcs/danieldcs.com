@@ -26,6 +26,7 @@ const crossCanonicalPages = samplePages.filter(
     'canonical' in page,
 )
 const unpairedPathnames = [
+  '/alunos',
   '/design-system',
   '/en/unknown',
   '/blog/hello-world/extra',

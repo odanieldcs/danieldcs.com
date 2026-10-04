@@ -67,6 +67,42 @@ export function transformerDataLanguage(): ShikiTransformer {
   }
 }
 
+const inlineColorDecl = /(?:^|;)\s*color:\s*([^;]+)/i
+
+function shikiStyleWithoutInlineColor(style: string): string {
+  const colorMatch = inlineColorDecl.exec(style)
+  if (!colorMatch) {
+    return style
+  }
+  const withoutColor = style
+    .replace(/(?:^|;)\s*color:\s*[^;]+;?/i, ';')
+    .replace(/^;+/, '')
+  if (/--shiki-light:/i.test(withoutColor)) {
+    return withoutColor
+  }
+  return `--shiki-light:${colorMatch[1]};${withoutColor}`
+}
+
+function transformerShikiTokenColors(): ShikiTransformer {
+  return {
+    name: 'shiki-token-colors',
+    pre(node) {
+      const style = node.properties.style
+      if (typeof style !== 'string') {
+        return
+      }
+      node.properties.style = shikiStyleWithoutInlineColor(style)
+    },
+    span(node) {
+      const style = node.properties.style
+      if (typeof style !== 'string') {
+        return
+      }
+      node.properties.style = shikiStyleWithoutInlineColor(style)
+    },
+  }
+}
+
 /** Drop Shiki theme backgrounds so DS tokens in CSS control the container. */
 export function transformerStripInlineBackground(): ShikiTransformer {
   return {
@@ -95,5 +131,6 @@ export const shikiTransformers: ShikiTransformer[] = [
   transformerLineNumberDataAttr(),
   transformerRemoveLineBreak(),
   transformerDataLanguage(),
+  transformerShikiTokenColors(),
   transformerStripInlineBackground(),
 ]

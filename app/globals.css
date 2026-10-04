@@ -22,7 +22,7 @@
   }
 }
 
-/* Shiki dual-theme (class strategy via next-themes `.dark`) */
+/* Shiki dual-theme (next-themes `.dark`; token colors via shiki-transformers). */
 pre.shiki {
   --code-block-bg: color-mix(in srgb, var(--muted) 5%, var(--background));
   --code-line-highlight-wash: color-mix(
@@ -51,9 +51,12 @@ pre.shiki code {
   padding-right: var(--space-inline);
 }
 
-/* Shiki dual-theme: tokens use inline `color` in light; override in `.dark` (Shiki docs). */
+.shiki .line > span {
+  color: var(--shiki-light);
+}
+
 .dark .shiki .line > span {
-  color: var(--shiki-dark) !important;
+  color: var(--shiki-dark);
 }
 
 pre.shiki[data-line-numbers] .line[data-line-number]::before {
