@@ -6,7 +6,13 @@ import { useInterfaceLanguage } from '@/components/interface-language-provider'
 import { getFooterResourceLinks } from '@/lib/i18n/pages'
 import { localizePath } from '@/lib/i18n/routes'
 import { linkClassName } from '@/lib/link-styles'
-import { linkedInProfileUrl, siteName } from '@/lib/site'
+import {
+  gitHubProfileUrl,
+  instagramProfileUrl,
+  linkedInProfileUrl,
+  siteName,
+  youTubeProfileUrl,
+} from '@/lib/site'
 
 const socialLinks = [
   {
@@ -15,15 +21,15 @@ const socialLinks = [
   },
   {
     label: 'GitHub',
-    href: 'https://github.com/odanieldcs',
+    href: gitHubProfileUrl,
   },
   {
     label: 'YouTube',
-    href: 'https://www.youtube.com/@odanieldcs',
+    href: youTubeProfileUrl,
   },
   {
     label: 'Instagram',
-    href: 'https://www.instagram.com/odanieldcs',
+    href: instagramProfileUrl,
   },
 ] as const
 

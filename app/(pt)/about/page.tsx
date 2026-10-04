@@ -1,6 +1,8 @@
 import type { Metadata, ResolvingMetadata } from 'next'
 import { AboutView } from '@/components/about-view'
+import { JsonLd } from '@/components/json-ld'
 import { getLocalizedPageMetadata } from '@/lib/i18n/page-metadata'
+import { getAboutJsonLd } from '@/lib/page-data'
 
 export async function generateMetadata(
   _props: PageProps<'/about'>,
@@ -10,5 +12,10 @@ export async function generateMetadata(
 }
 
 export default function AboutPage() {
-  return <AboutView />
+  return (
+    <>
+      <JsonLd data={getAboutJsonLd('pt')} />
+      <AboutView />
+    </>
+  )
 }

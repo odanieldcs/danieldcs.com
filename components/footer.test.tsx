@@ -1,7 +1,13 @@
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, expect, test } from 'vitest'
 import { InterfaceLanguageProvider } from '@/components/interface-language-provider'
-import { linkedInProfileUrl, siteName } from '@/lib/site'
+import {
+  gitHubProfileUrl,
+  instagramProfileUrl,
+  linkedInProfileUrl,
+  siteName,
+  youTubeProfileUrl,
+} from '@/lib/site'
 import { Footer } from './footer'
 
 afterEach(() => {
@@ -18,9 +24,9 @@ function renderFooter(language: 'pt' | 'en' = 'pt') {
 
 const socialLinks = [
   ['LinkedIn', linkedInProfileUrl],
-  ['GitHub', 'https://github.com/odanieldcs'],
-  ['YouTube', 'https://www.youtube.com/@odanieldcs'],
-  ['Instagram', 'https://www.instagram.com/odanieldcs'],
+  ['GitHub', gitHubProfileUrl],
+  ['YouTube', youTubeProfileUrl],
+  ['Instagram', instagramProfileUrl],
 ] as const
 
 test('renders social links, tagline, privacy link, and the current year', () => {

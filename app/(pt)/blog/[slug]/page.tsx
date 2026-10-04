@@ -1,6 +1,12 @@
 import type { Metadata } from 'next'
+import { JsonLd } from '@/components/json-ld'
 import { PostArticle } from '@/components/post-article'
-import { getPost, getPostMetadata, getPostStaticParams } from '@/lib/page-data'
+import {
+  getPost,
+  getPostJsonLd,
+  getPostMetadata,
+  getPostStaticParams,
+} from '@/lib/page-data'
 
 // With two root layouts, a notFound() thrown while rendering yields Next's bare
 // error document. Unknown slugs must 404 at routing, where
@@ -20,5 +26,12 @@ export async function generateMetadata({
 export default async function BlogPostPage({
   params,
 }: PageProps<'/blog/[slug]'>) {
-  return <PostArticle post={getPost((await params).slug)} language="pt" />
+  const post = getPost((await params).slug)
+
+  return (
+    <>
+      <JsonLd data={getPostJsonLd(post)} />
+      <PostArticle post={post} language="pt" />
+    </>
+  )
 }

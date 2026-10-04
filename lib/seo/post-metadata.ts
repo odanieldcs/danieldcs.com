@@ -1,18 +1,20 @@
 import type { Metadata } from 'next'
 import type { StaticImageData } from 'next/image'
-import { resolveCoverSrc } from '@/lib/content/cover'
 import type { PostSummary } from '@/lib/content/posts'
 import { getAlternates } from '@/lib/i18n/alternates'
 import type { InterfaceLanguage } from '@/lib/i18n/types'
 import { baseMetadata } from '@/lib/metadata'
+import { getPostCanonicalPath } from '@/lib/seo/post-canonical'
+import {
+  type PostShareImage,
+  resolvePostShareImage,
+} from '@/lib/seo/share-image'
 
 /** Open Graph `og:locale` value for each content language. */
 const ogLocale: Record<InterfaceLanguage, string> = {
   pt: 'pt_BR',
   en: 'en_US',
 }
-
-type OpenGraphImage = { url: string; width?: number; height?: number }
 
 /**
  * Pure metadata builder for a blog post, derived entirely from frontmatter.
@@ -27,19 +29,13 @@ export function buildPostMetadata(
 ): Metadata {
   const { frontmatter } = post
 
-  // Canonical is owned by getAlternates: /en/blog/<slug> resolves to the PT
-  // /blog/<slug>, with no hreflang while posts are PT-only.
   const alternates = getAlternates(`/blog/${post.slug}`)
-  const canonical =
-    typeof alternates.canonical === 'string' ? alternates.canonical : undefined
+  const canonical = getPostCanonicalPath(post.slug)
 
-  const image: OpenGraphImage = frontmatter.cover
-    ? { url: resolveCoverSrc(frontmatter.cover) }
-    : {
-        url: fallbackImage.src,
-        width: fallbackImage.width,
-        height: fallbackImage.height,
-      }
+  const image: PostShareImage = resolvePostShareImage(
+    frontmatter.cover,
+    fallbackImage,
+  )
 
   return {
     title: frontmatter.title,

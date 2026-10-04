@@ -131,6 +131,26 @@ function absoluteUrl(path: string) {
   return path === '/' ? siteUrl : `${siteUrl}${path}`
 }
 
+function jsonLdScripts(html: string): unknown[] {
+  const scripts =
+    html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g) ??
+    []
+
+  return scripts.map((block) => {
+    const json = block.match(
+      /<script type="application\/ld\+json">([\s\S]*?)<\/script>/,
+    )?.[1]
+    return JSON.parse(json ?? '{}')
+  })
+}
+
+function graphNode(
+  document: { '@graph'?: Array<Record<string, unknown>> } | undefined,
+  type: string,
+): Record<string, unknown> | undefined {
+  return document?.['@graph']?.find((node) => node['@type'] === type)
+}
+
 function linkTags(html: string) {
   return html.match(/<link\b[^>]*>/g) ?? []
 }
@@ -340,4 +360,85 @@ test('the /en blog post canonicalizes to the PT url with no hreflang', async ({
 
   expect(response.ok()).toBe(true)
   expectPostMetadata(await response.text(), post.slug, post.frontmatter.title)
+})
+
+test('home pages emit WebSite and Person JSON-LD with stable ids', async ({
+  request,
+}) => {
+  for (const [path, inLanguage] of [
+    ['/', 'pt-BR'],
+    ['/en', 'en'],
+  ] as const) {
+    const html = await (await request.get(path)).text()
+    const document = jsonLdScripts(html)[0] as
+      | { '@graph': Array<Record<string, unknown>> }
+      | undefined
+
+    expect(document?.['@graph']).toHaveLength(2)
+    const person = graphNode(document, 'Person')
+    const website = graphNode(document, 'WebSite')
+
+    expect(person?.['@id']).toBe(`${siteUrl}/#person`)
+    expect(website?.['@id']).toBe(`${siteUrl}/#website`)
+    expect(website?.inLanguage).toBe(inLanguage)
+    expect(website?.publisher).toEqual({ '@id': `${siteUrl}/#person` })
+  }
+})
+
+test('blog posts emit BlogPosting JSON-LD with PT canonical url', async ({
+  request,
+}) => {
+  const post = getNewestBlogPost('metadata.spec-jsonld')
+  const canonicalUrl = absoluteUrl(`/blog/${post.slug}`)
+
+  for (const path of [`/blog/${post.slug}`, `/en/blog/${post.slug}`] as const) {
+    const html = await (await request.get(path)).text()
+    const document = jsonLdScripts(html)[0] as
+      | { '@graph': Array<Record<string, unknown>> }
+      | undefined
+    const posting = graphNode(document, 'BlogPosting')
+
+    expect(posting?.url).toBe(canonicalUrl)
+    expect(posting?.mainEntityOfPage).toBe(canonicalUrl)
+    expect(posting?.author).toEqual({ '@id': `${siteUrl}/#person` })
+    expect(posting?.headline).toBe(post.frontmatter.title)
+  }
+})
+
+test('about pages emit AboutPage JSON-LD with stable Person @id', async ({
+  request,
+}) => {
+  for (const [path, inLanguage, canonicalPath] of [
+    ['/about', 'pt-BR', '/about'],
+    ['/en/about', 'en', '/en/about'],
+  ] as const) {
+    const html = await (await request.get(path)).text()
+    const document = jsonLdScripts(html)[0] as
+      | { '@graph': Array<Record<string, unknown>> }
+      | undefined
+
+    expect(document?.['@graph']).toHaveLength(2)
+    const person = graphNode(document, 'Person')
+    const page = graphNode(document, 'AboutPage')
+
+    expect(person?.['@id']).toBe(`${siteUrl}/#person`)
+    expect(page?.url).toBe(absoluteUrl(canonicalPath))
+    expect(page?.inLanguage).toBe(inLanguage)
+    expect(page?.isPartOf).toEqual({ '@id': `${siteUrl}/#website` })
+    expect(page?.about).toEqual({ '@id': `${siteUrl}/#person` })
+  }
+})
+
+test('excluded routes do not emit JSON-LD', async ({ request }) => {
+  for (const path of [
+    '/trilha',
+    '/en/trilha',
+    '/design-system',
+    '/alunos',
+    '/community',
+    '/en/community',
+  ] as const) {
+    const html = await (await request.get(path)).text()
+    expect(jsonLdScripts(html)).toEqual([])
+  }
 })
