@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test'
 import { BLOG_PAGE_SIZE } from '@/lib/blog/pagination'
+import { homePath, localizedPages } from '@/lib/i18n/alternates'
 import { collectConsoleErrors } from './helpers/console'
 import { getBlogPostCount, getNewestBlogPost } from './helpers/posts'
 
@@ -154,10 +155,13 @@ test('/en/blog clamps an out-of-range page within /en/blog', async ({
 })
 
 const languageSwitchCases = [
-  { from: '/about', label: 'Switch to English', to: '/en/about' },
-  { from: '/en/about', label: 'Mudar para português', to: '/about' },
-  { from: '/en/blog', label: 'Mudar para português', to: '/blog' },
-  { from: '/community', label: 'Switch to English', to: '/en/community' },
+  ...localizedPages
+    .filter((page) => !page.pt.includes('['))
+    .flatMap((page) => [
+      { from: page.pt, label: 'Switch to English', to: page.en },
+      { from: page.en, label: 'Mudar para português', to: page.pt },
+    ]),
+  { from: '/alunos', label: 'Switch to English', to: homePath.en },
   {
     from: `/blog/${newestPost.slug}`,
     label: 'Switch to English',
@@ -169,9 +173,9 @@ const languageSwitchCases = [
     to: `/blog/${newestPost.slug}`,
   },
   {
-    from: '/blog?view=grid',
+    from: '/blog?page=2&view=list',
     label: 'Switch to English',
-    to: '/en/blog?view=grid',
+    to: '/en/blog?page=2&view=list',
   },
 ]
 

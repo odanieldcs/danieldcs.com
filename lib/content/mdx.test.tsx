@@ -17,7 +17,8 @@ test('highlights a ts code fence with Shiki tokens', async () => {
   const html = renderToStaticMarkup(content)
 
   expect(html).toContain('shiki')
-  expect(html).toMatch(/style=/)
+  expect(html).toContain('--shiki-light:')
+  expect(html).not.toMatch(/\bcolor:#/)
   expect(html).toContain('data-language="ts"')
   expect(html).toContain('data-line-number="1"')
   expect(html).toContain('data-line-numbers="true"')
