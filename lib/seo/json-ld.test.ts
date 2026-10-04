@@ -12,12 +12,13 @@ import {
   websiteId,
 } from '@/lib/site'
 import {
+  buildAboutPage,
   buildBlogPosting,
   buildPerson,
   buildWebSite,
   serializeJsonLd,
 } from './json-ld'
-import { getHomeJsonLd, getPostJsonLd } from './page-json-ld'
+import { getAboutJsonLd, getHomeJsonLd, getPostJsonLd } from './page-json-ld'
 import { buildPostMetadata } from './post-metadata'
 import { absolutePostShareImageUrl, resolvePostShareImage } from './share-image'
 
@@ -51,6 +52,26 @@ test('buildWebSite references Person only by @id', () => {
   expect(website['@id']).toBe(websiteId)
   expect(website.inLanguage).toBe('pt-BR')
   expect(website.publisher).toEqual({ '@id': personId })
+})
+
+test('buildAboutPage references WebSite and Person by @id', () => {
+  const url = absoluteSiteUrl('/about')
+  const page = buildAboutPage({ url, inLanguage: 'pt-BR' })
+
+  expect(page['@id']).toBe(`${url}#webpage`)
+  expect(page.url).toBe(url)
+  expect(page.isPartOf).toEqual({ '@id': websiteId })
+  expect(page.about).toEqual({ '@id': personId })
+  expect(page.inLanguage).toBe('pt-BR')
+})
+
+test('english about keeps stable Person @id and localized AboutPage url', () => {
+  const data = getAboutJsonLd('en')
+  const page = graphNode(data, 'AboutPage')
+
+  expect(graphNode(data, 'Person')?.['@id']).toBe(personId)
+  expect(page?.url).toBe(absoluteSiteUrl('/en/about'))
+  expect(page?.inLanguage).toBe('en')
 })
 
 test('english home keeps stable @id values and sets WebSite.inLanguage', () => {

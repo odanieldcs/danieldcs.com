@@ -31,6 +31,15 @@ export type JsonLdWebSite = {
   publisher: JsonLdIdRef
 }
 
+export type JsonLdAboutPage = {
+  '@type': 'AboutPage'
+  '@id': string
+  url: string
+  isPartOf: JsonLdIdRef
+  about: JsonLdIdRef
+  inLanguage: string
+}
+
 export type JsonLdBlogPosting = {
   '@type': 'BlogPosting'
   headline: string
@@ -46,7 +55,9 @@ export type JsonLdBlogPosting = {
 
 export type JsonLdDocument = {
   '@context': 'https://schema.org'
-  '@graph': ReadonlyArray<JsonLdPerson | JsonLdWebSite | JsonLdBlogPosting>
+  '@graph': ReadonlyArray<
+    JsonLdPerson | JsonLdWebSite | JsonLdAboutPage | JsonLdBlogPosting
+  >
 }
 
 export function buildPerson(): JsonLdPerson {
@@ -99,6 +110,29 @@ export function buildBlogPosting(
     mainEntityOfPage: url,
     image,
     inLanguage: frontmatter.language,
+  }
+}
+
+export type BuildAboutPageInput = {
+  url: string
+  inLanguage: string
+}
+
+export function buildAboutPage(input: BuildAboutPageInput): JsonLdAboutPage {
+  return {
+    '@type': 'AboutPage',
+    '@id': `${input.url}#webpage`,
+    url: input.url,
+    isPartOf: { '@id': websiteId },
+    about: { '@id': personId },
+    inLanguage: input.inLanguage,
+  }
+}
+
+export function buildAboutJsonLd(input: BuildAboutPageInput): JsonLdDocument {
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [buildPerson(), buildAboutPage(input)],
   }
 }
 

@@ -405,12 +405,38 @@ test('blog posts emit BlogPosting JSON-LD with PT canonical url', async ({
   }
 })
 
+test('about pages emit AboutPage JSON-LD with stable Person @id', async ({
+  request,
+}) => {
+  for (const [path, inLanguage, canonicalPath] of [
+    ['/about', 'pt-BR', '/about'],
+    ['/en/about', 'en', '/en/about'],
+  ] as const) {
+    const html = await (await request.get(path)).text()
+    const document = jsonLdScripts(html)[0] as
+      | { '@graph': Array<Record<string, unknown>> }
+      | undefined
+
+    expect(document?.['@graph']).toHaveLength(2)
+    const person = graphNode(document, 'Person')
+    const page = graphNode(document, 'AboutPage')
+
+    expect(person?.['@id']).toBe(`${siteUrl}/#person`)
+    expect(page?.url).toBe(absoluteUrl(canonicalPath))
+    expect(page?.inLanguage).toBe(inLanguage)
+    expect(page?.isPartOf).toEqual({ '@id': `${siteUrl}/#website` })
+    expect(page?.about).toEqual({ '@id': `${siteUrl}/#person` })
+  }
+})
+
 test('excluded routes do not emit JSON-LD', async ({ request }) => {
   for (const path of [
     '/trilha',
     '/en/trilha',
     '/design-system',
     '/alunos',
+    '/community',
+    '/en/community',
   ] as const) {
     const html = await (await request.get(path)).text()
     expect(jsonLdScripts(html)).toEqual([])

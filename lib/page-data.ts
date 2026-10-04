@@ -21,7 +21,11 @@ import {
   getPostBySlug,
 } from '@/lib/content/posts'
 import type { InterfaceLanguage } from '@/lib/i18n/types'
-import { getHomeJsonLd, getPostJsonLd } from '@/lib/seo/page-json-ld'
+import {
+  getAboutJsonLd,
+  getHomeJsonLd,
+  getPostJsonLd,
+} from '@/lib/seo/page-json-ld'
 import { buildPostMetadata } from '@/lib/seo/post-metadata'
 
 const RECENT_POST_LIMIT = 2
@@ -96,4 +100,4 @@ export function getPostMetadata(slug: string): Metadata {
   return buildPostMetadata(getPost(slug), defaultOpenGraphImage)
 }
 
-export { getHomeJsonLd, getPostJsonLd }
+export { getAboutJsonLd, getHomeJsonLd, getPostJsonLd }
