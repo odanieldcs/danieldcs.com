@@ -1,4 +1,5 @@
 import type { NextConfig } from 'next'
+import { flattenRedirects, redirectGroups } from './lib/redirects'
 
 const nextConfig: NextConfig = {
   agentRules: false,
@@ -6,13 +7,7 @@ const nextConfig: NextConfig = {
     globalNotFound: true,
   },
   async redirects() {
-    return [
-      {
-        source: '/blog/o-que-uso-no-dia-a-dia',
-        destination: '/blog/ferramentas-apps-e-setup',
-        permanent: true,
-      },
-    ]
+    return flattenRedirects(redirectGroups)
   },
 }
 
