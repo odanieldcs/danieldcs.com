@@ -1,7 +1,8 @@
 import type { Metadata, ResolvingMetadata } from 'next'
 import { HomeView } from '@/components/home-view'
+import { JsonLd } from '@/components/json-ld'
 import { getLocalizedPageMetadata } from '@/lib/i18n/page-metadata'
-import { getHomePosts } from '@/lib/page-data'
+import { getHomeJsonLd, getHomePosts } from '@/lib/page-data'
 
 export async function generateMetadata(
   _props: PageProps<'/en'>,
@@ -11,5 +12,10 @@ export async function generateMetadata(
 }
 
 export default function Home() {
-  return <HomeView posts={getHomePosts()} />
+  return (
+    <>
+      <JsonLd data={getHomeJsonLd('en')} />
+      <HomeView posts={getHomePosts()} />
+    </>
+  )
 }
