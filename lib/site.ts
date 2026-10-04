@@ -3,6 +3,10 @@ export const siteName = 'danieldcs.com'
 /** Canonical origin of the site, including in previews before the launch. */
 export const siteUrl = 'https://danieldcs.com'
 
+export function absoluteSiteUrl(pathname: string): string {
+  return new URL(pathname, siteUrl).href
+}
+
 /**
  * Placeholder inbox for `/about` mailto links.
  * Confirm or replace before this ships live — the Footer still has no public email.

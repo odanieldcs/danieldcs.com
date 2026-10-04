@@ -35,6 +35,9 @@ test('/alunos lists issued certificates without indexing', async ({
 test('/alunos is absent from the sitemap and has no english route', async ({
   request,
 }) => {
-  expect((await request.get('/sitemap.xml')).status()).toBe(404)
+  const response = await request.get('/sitemap.xml')
+  expect(response.ok()).toBe(true)
+  const body = await response.text()
+  expect(body).not.toContain('/alunos')
   expect((await request.get('/en/alunos')).status()).toBe(404)
 })

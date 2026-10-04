@@ -4,7 +4,7 @@ import { contactEmail } from '@/lib/site'
 import { PrivacyView } from './privacy-view'
 
 test('shows the last updated date and contact email', () => {
-  render(<PrivacyView />)
+  render(<PrivacyView language="pt" />)
 
   expect(screen.getByText(/Última atualização: 3 de outubro de 2026/)).toBeTruthy()
   const mailLinks = screen.getAllByRole('link', { name: contactEmail })

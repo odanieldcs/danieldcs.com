@@ -27,6 +27,7 @@ export const localizedPages = [
   { pt: '/blog', en: '/en/blog', indexable: true },
   { pt: '/community', en: '/en/community', indexable: true },
   { pt: '/about', en: '/en/about', indexable: true },
+  { pt: '/privacy', en: '/en/privacy', indexable: true },
   { pt: '/trilha', en: '/en/trilha', indexable: false },
   // `[slug]` matches one segment and carries over to the other language.
   // Posts are PT-only: both URLs canonicalize to the PT path, with no hreflang.

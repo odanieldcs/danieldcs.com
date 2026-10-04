@@ -15,6 +15,7 @@ const enRoutes = [
     path: '/en/trilha',
     heading: 'Guided by someone who applies it every day.',
   },
+  { path: '/en/privacy', heading: 'Privacy Policy' },
 ]
 
 for (const { path, heading } of enRoutes) {
@@ -73,7 +74,7 @@ test('header navigation keeps the visitor under /en', async ({ page }) => {
 
   const footerInternalLinks = page
     .getByRole('contentinfo')
-    .locator('a[href^="/"]:not([href^="/en"]):not([href="/privacy"])')
+    .locator('a[href^="/"]:not([href^="/en"])')
   await expect(footerInternalLinks).toHaveCount(0)
 })
 
