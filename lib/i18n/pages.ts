@@ -692,7 +692,13 @@ export function getPostCopy(lang: InterfaceLanguage): PostCopy {
   return postCopy[lang]
 }
 
-export type SeoPageId = 'home' | 'blog' | 'community' | 'about' | 'trilha'
+export type SeoPageId =
+  | 'home'
+  | 'blog'
+  | 'community'
+  | 'about'
+  | 'privacy'
+  | 'trilha'
 
 export type PageSeo = {
   /** Omitted on the home page so the document title stays the site default. */
@@ -727,6 +733,18 @@ const pageSeo: Record<SeoPageId, Record<InterfaceLanguage, PageSeo>> = {
       seoDescription: 'Trajetória, repertório e contato de Daniel Castro.',
     },
     en: { seoDescription: 'Path, repertoire, and contact for Daniel Castro.' },
+  },
+  privacy: {
+    pt: {
+      seoTitle: 'Política de Privacidade',
+      seoDescription:
+        'Como o danieldcs.com trata dados pessoais, cookies e contato.',
+    },
+    en: {
+      seoTitle: 'Privacy Policy',
+      seoDescription:
+        'How danieldcs.com handles personal data, cookies, and contact.',
+    },
   },
   trilha: {
     pt: {

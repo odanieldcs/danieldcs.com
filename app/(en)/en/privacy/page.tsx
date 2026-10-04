@@ -3,12 +3,12 @@ import { PrivacyView } from '@/components/privacy-view'
 import { getLocalizedPageMetadata } from '@/lib/i18n/page-metadata'
 
 export async function generateMetadata(
-  _props: PageProps<'/privacy'>,
+  _props: PageProps<'/en/privacy'>,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  return getLocalizedPageMetadata('privacy', 'pt', (await parent).openGraph)
+  return getLocalizedPageMetadata('privacy', 'en', (await parent).openGraph)
 }
 
 export default function PrivacyPage() {
-  return <PrivacyView language="pt" />
+  return <PrivacyView language="en" />
 }

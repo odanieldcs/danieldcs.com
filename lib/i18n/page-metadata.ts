@@ -16,6 +16,7 @@ const pagePath = {
   blog: '/blog',
   community: '/community',
   about: '/about',
+  privacy: '/privacy',
   trilha: '/trilha',
 } as const satisfies Record<SeoPageId, `/${string}`>
 

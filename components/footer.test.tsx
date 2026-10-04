@@ -67,7 +67,7 @@ test('labels the privacy link in English', () => {
   renderFooter('en')
 
   expect(screen.getByRole('link', { name: 'Privacy' }).getAttribute('href')).toBe(
-    '/privacy',
+    '/en/privacy',
   )
   expect(screen.queryByRole('link', { name: 'Leituras recentes' })).toBeNull()
 })

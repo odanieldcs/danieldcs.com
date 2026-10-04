@@ -69,7 +69,10 @@ export function Footer() {
           <span>
             © {year} {siteName}
           </span>
-          <Link href="/privacy" className={footerLinkClassName}>
+          <Link
+            href={localizePath('/privacy', language)}
+            className={footerLinkClassName}
+          >
             {privacyLabel}
           </Link>
           <span>Made with love in Gravataí 🇧🇷</span>

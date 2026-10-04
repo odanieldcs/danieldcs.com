@@ -7,13 +7,20 @@ import {
   getLocalizedPageMetadata,
 } from './page-metadata'
 
-const indexablePages = ['home', 'blog', 'community', 'about'] as const
+const indexablePages = [
+  'home',
+  'blog',
+  'community',
+  'about',
+  'privacy',
+] as const
 
 const pathname = {
   home: { pt: '/', en: '/en' },
   blog: { pt: '/blog', en: '/en/blog' },
   community: { pt: '/community', en: '/en/community' },
   about: { pt: '/about', en: '/en/about' },
+  privacy: { pt: '/privacy', en: '/en/privacy' },
 } as const
 
 function languagesFor(page: keyof typeof pathname) {
@@ -72,6 +79,24 @@ test.each([
   expect(getPageSeo(page, 'en').seoDescription).not.toBe(
     getPageSeo(page, 'pt').seoDescription,
   )
+})
+
+test('privacy uses localized SEO titles and descriptions', () => {
+  expect(getLocalizedPageMetadata('privacy', 'pt')).toMatchObject({
+    title: 'Política de Privacidade',
+    description:
+      'Como o danieldcs.com trata dados pessoais, cookies e contato.',
+    openGraph: {
+      title: 'Política de Privacidade',
+      url: '/privacy',
+    },
+  })
+  expect(getLocalizedPageMetadata('privacy', 'en')).toMatchObject({
+    title: 'Privacy Policy',
+    description:
+      'How danieldcs.com handles personal data, cookies, and contact.',
+    openGraph: { title: 'Privacy Policy', url: '/en/privacy' },
+  })
 })
 
 test('trilha stays noindex and emits no hreflang', () => {
