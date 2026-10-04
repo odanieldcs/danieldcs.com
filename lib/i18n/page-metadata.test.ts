@@ -93,7 +93,8 @@ test('privacy uses localized SEO titles and descriptions', () => {
   })
   expect(getLocalizedPageMetadata('privacy', 'en')).toMatchObject({
     title: 'Privacy Policy',
-    description: 'How danieldcs.com handles personal data, cookies, and contact.',
+    description:
+      'How danieldcs.com handles personal data, cookies, and contact.',
     openGraph: { title: 'Privacy Policy', url: '/en/privacy' },
   })
 })

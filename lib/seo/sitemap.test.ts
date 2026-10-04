@@ -16,7 +16,9 @@ test('includes every indexable localized page in PT and EN with hreflang', () =>
     for (const pathname of [page.pt, page.en]) {
       expect(urls).toContain(absoluteSiteUrl(pathname))
 
-      const entry = sitemap.find((item) => item.url === absoluteSiteUrl(pathname))
+      const entry = sitemap.find(
+        (item) => item.url === absoluteSiteUrl(pathname),
+      )
       const languages = getAlternates(pathname).languages
 
       expect(entry?.alternates?.languages).toEqual(

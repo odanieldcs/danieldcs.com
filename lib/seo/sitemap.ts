@@ -1,6 +1,10 @@
 import type { MetadataRoute } from 'next'
 import { getAllPosts, type PostSummary } from '@/lib/content/posts'
-import { getAlternates, isCanonicalUrl, localizedPages } from '@/lib/i18n/alternates'
+import {
+  getAlternates,
+  isCanonicalUrl,
+  localizedPages,
+} from '@/lib/i18n/alternates'
 import { interfaceLanguages } from '@/lib/i18n/types'
 import { absoluteSiteUrl } from '@/lib/site'
 
@@ -29,7 +33,9 @@ function staticSitemapEntries(): MetadataRoute.Sitemap {
 
       entries.push({
         url: absoluteSiteUrl(pathname),
-        ...(languages ? { alternates: { languages: absoluteLanguages(languages) } } : {}),
+        ...(languages
+          ? { alternates: { languages: absoluteLanguages(languages) } }
+          : {}),
       })
     }
   }
@@ -55,8 +61,6 @@ function postSitemapEntries(posts: PostSummary[]): MetadataRoute.Sitemap {
   return entries
 }
 
-export function buildSitemap(
-  posts = getAllPosts(),
-): MetadataRoute.Sitemap {
+export function buildSitemap(posts = getAllPosts()): MetadataRoute.Sitemap {
   return [...staticSitemapEntries(), ...postSitemapEntries(posts)]
 }
