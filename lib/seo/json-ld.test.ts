@@ -101,7 +101,7 @@ test('buildBlogPosting uses author @id and canonical url fields', () => {
   expect(posting.mainEntityOfPage).toBe(url)
   expect(posting.datePublished).toBe('2024-02-03T00:00:00.000Z')
   expect(posting.dateModified).toBe('2024-02-03T00:00:00.000Z')
-  expect(posting.inLanguage).toBe('pt')
+  expect(posting.inLanguage).toBe('pt-BR')
 })
 
 test('dateModified falls back to datePublished when updatedAt is absent', () => {

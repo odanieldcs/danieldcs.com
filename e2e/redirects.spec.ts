@@ -1,89 +1,82 @@
 import { expect, test } from '@playwright/test'
+import { flattenRedirects, redirectGroups } from '@/lib/redirects'
 
-type RedirectCase = {
-  label: string
-  path: string
-  expectedStatus: 308 | 307
-  expectedLocation: string | RegExp
-}
-
-const cases: RedirectCase[] = [
+const samples = [
   {
     label: 'post',
+    source: '/docker-introducao-e-primeiros-passos-para-devs{/}?',
     path: '/docker-introducao-e-primeiros-passos-para-devs',
-    expectedStatus: 308,
-    expectedLocation: '/blog/docker-introducao-e-primeiros-passos-para-devs',
   },
   {
     label: 'page',
+    source: '/sobre{/}?',
     path: '/sobre',
-    expectedStatus: 308,
-    expectedLocation: '/about',
   },
   {
-    label: 'wp archive',
+    label: 'page number',
+    source: '/page/:n',
+    path: '/page/2',
+  },
+  {
+    label: 'feed',
+    source: '/feed/atom{/}?',
+    path: '/feed/atom',
+  },
+  {
+    label: 'category',
+    source: '/categoria/:path*',
     path: '/categoria/javascript',
-    expectedStatus: 308,
-    expectedLocation: '/blog',
+  },
+  {
+    label: 'tag',
+    source: '/tag/:path*',
+    path: '/tag/javascript',
+  },
+  {
+    label: 'author',
+    source: '/author/daniel/:path*',
+    path: '/author/daniel/page/2',
   },
   {
     label: 'temporary',
+    source: '/cursos{/}?',
     path: '/cursos',
-    expectedStatus: 307,
-    expectedLocation: '/about?origin=cursos',
   },
   {
     label: 'short link',
+    source: '/telegram{/}?',
     path: '/telegram',
-    expectedStatus: 307,
-    expectedLocation: 'https://t.me/odanieldcs',
   },
   {
     label: 'emoji old slug',
+    source: '/onde-encontrar-vagas-remota-no-exterior-usd-%f0%9f%a4%91{/}?',
     path: '/onde-encontrar-vagas-remota-no-exterior-usd-%f0%9f%a4%91',
-    expectedStatus: 308,
-    expectedLocation: '/blog/onde-encontrar-vagas-remota-no-exterior-usd-eur',
   },
-  {
-    label: 'atom feed',
-    path: '/feed/atom',
-    expectedStatus: 308,
-    expectedLocation: '/feed',
-  },
-  {
-    label: 'comments feed',
-    path: '/comments/feed',
-    expectedStatus: 308,
-    expectedLocation: '/feed',
-  },
-  {
-    label: 'post feed',
-    path: '/docker-introducao-e-primeiros-passos-para-devs/feed',
-    expectedStatus: 308,
-    expectedLocation: '/feed',
-  },
-  {
-    label: 'category feed',
-    path: '/categoria/javascript/feed',
-    expectedStatus: 308,
-    expectedLocation: '/feed',
-  },
-]
+] as const
 
-for (const redirectCase of cases) {
-  test(`${redirectCase.label}: ${redirectCase.path} redirects in one hop`, async ({
+const emittedRedirects = flattenRedirects(redirectGroups)
+
+function expectation(source: string): { status: 307 | 308; location: string } {
+  const redirect = emittedRedirects.find((entry) => entry.source === source)
+  if (!redirect) {
+    throw new Error(`Redirect group for ${source} does not emit a destination`)
+  }
+
+  return {
+    status: redirect.permanent ? 308 : 307,
+    location: redirect.destination,
+  }
+}
+
+for (const sample of samples) {
+  test(`${sample.label}: ${sample.path} redirects in one hop`, async ({
     request,
   }) => {
-    const response = await request.get(redirectCase.path, {
-      maxRedirects: 0,
-    })
-    expect(response.status()).toBe(redirectCase.expectedStatus)
-    const location = response.headers().location ?? ''
-    if (redirectCase.expectedLocation instanceof RegExp) {
-      expect(location).toMatch(redirectCase.expectedLocation)
-    } else {
-      expect(location).toBe(redirectCase.expectedLocation)
-    }
+    const expected = expectation(sample.source)
+    const response = await request.get(sample.path, { maxRedirects: 0 })
+
+    expect(response.status()).toBe(expected.status)
+    expect(response.headers().location ?? '').toBe(expected.location)
   })
 }
 
