@@ -131,6 +131,8 @@ function absoluteUrl(path: string) {
   return path === '/' ? siteUrl : `${siteUrl}${path}`
 }
 
+const rssAlternate = `<link rel="alternate" type="application/rss+xml" href="${absoluteUrl('/feed')}"`
+
 function jsonLdScripts(html: string): unknown[] {
   const scripts =
     html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g) ??
@@ -207,6 +209,7 @@ function expectBaseMetadata(html: string, locale: Locale = 'pt_BR') {
   expectAbsoluteSiteUrl(
     tagAttr(html, /<meta\b[^>]*name="twitter:image"[^>]*>/, 'content'),
   )
+  expect(html).toContain(rssAlternate)
 }
 
 for (const page of pages) {
@@ -269,6 +272,7 @@ function expectPostMetadata(html: string, slug: string, title: string) {
     tagAttr(html, /<meta\b[^>]*name="twitter:image"[^>]*>/, 'content'),
   )
   expect(hreflangMap(html)).toEqual({})
+  expect(html).toContain(rssAlternate)
 }
 
 const noindexPages = [

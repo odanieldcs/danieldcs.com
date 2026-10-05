@@ -43,6 +43,12 @@ test('has a Portuguese default description and leaves icons to the file conventi
   expect('icons' in baseMetadata).toBe(false)
 })
 
+test('advertises the RSS feed', () => {
+  expect(baseMetadata.alternates?.types).toEqual({
+    'application/rss+xml': '/feed',
+  })
+})
+
 test('ships the same static icons and share image from both root layouts', () => {
   const [pt, en] = rootLayouts
   const icon = readPng(`${pt}/icon.png`)

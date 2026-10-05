@@ -15,11 +15,12 @@ import { MdxContent } from '@/lib/content/mdx'
 import { contentImageClassName } from '@/lib/content/mdx-components'
 import { getAlternates } from '@/lib/i18n/alternates'
 import { linkClassName } from '@/lib/link-styles'
+import { rssFeedTypes } from '@/lib/metadata'
 
 export const metadata: Metadata = {
   title: 'Design System (internal)',
   robots: { index: false, follow: false },
-  alternates: getAlternates('/design-system'),
+  alternates: { ...getAlternates('/design-system'), types: rssFeedTypes },
 }
 
 const colorTokens = [

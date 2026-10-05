@@ -3,7 +3,7 @@ import type { StaticImageData } from 'next/image'
 import type { PostSummary } from '@/lib/content/posts'
 import { getAlternates } from '@/lib/i18n/alternates'
 import type { InterfaceLanguage } from '@/lib/i18n/types'
-import { baseMetadata } from '@/lib/metadata'
+import { baseMetadata, rssFeedTypes } from '@/lib/metadata'
 import { getPostCanonicalPath } from '@/lib/seo/post-canonical'
 import {
   type PostShareImage,
@@ -40,7 +40,7 @@ export function buildPostMetadata(
   return {
     title: frontmatter.title,
     description: frontmatter.description,
-    alternates,
+    alternates: { ...alternates, types: rssFeedTypes },
     openGraph: {
       ...baseMetadata.openGraph,
       type: 'article',

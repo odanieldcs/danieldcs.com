@@ -15,7 +15,10 @@ function routesOf(language: InterfaceLanguage): Set<string> {
   const pageFiles = readdirSync(path.join(appDir, `(${language})`), {
     recursive: true,
     encoding: 'utf8',
-  }).filter((file) => path.basename(file) === 'page.tsx')
+  }).filter((file) => {
+    const base = path.basename(file)
+    return base === 'page.tsx' || base === 'route.ts'
+  })
 
   return new Set(
     pageFiles.map((file) => {
