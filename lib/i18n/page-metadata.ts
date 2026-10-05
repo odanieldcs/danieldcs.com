@@ -4,7 +4,7 @@ import { getAlternates } from '@/lib/i18n/alternates'
 import { getPageSeo, type SeoPageId } from '@/lib/i18n/pages'
 import { localizePath } from '@/lib/i18n/routes'
 import type { InterfaceLanguage } from '@/lib/i18n/types'
-import { baseMetadata } from '@/lib/metadata'
+import { baseMetadata, rssFeedTypes } from '@/lib/metadata'
 
 const openGraphLocale = {
   pt: 'pt_BR',
@@ -45,7 +45,7 @@ export function getLocalizedPageMetadata(
       alternateLocale:
         language === 'pt' ? openGraphLocale.en : openGraphLocale.pt,
     },
-    alternates: getAlternates(pathname),
+    alternates: { ...getAlternates(pathname), types: rssFeedTypes },
     ...(page === 'trilha' ? { robots: { index: false, follow: false } } : {}),
   }
 }
@@ -78,6 +78,7 @@ export function getBlogListingMetadata(
           typeof href === 'string' ? [[locale, `${href}${suffix}`]] : [],
         ),
       ),
+      types: rssFeedTypes,
     },
   }
 }

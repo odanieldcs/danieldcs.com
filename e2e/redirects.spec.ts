@@ -44,6 +44,30 @@ const cases: RedirectCase[] = [
     expectedStatus: 308,
     expectedLocation: '/blog/onde-encontrar-vagas-remota-no-exterior-usd-eur',
   },
+  {
+    label: 'atom feed',
+    path: '/feed/atom',
+    expectedStatus: 308,
+    expectedLocation: '/feed',
+  },
+  {
+    label: 'comments feed',
+    path: '/comments/feed',
+    expectedStatus: 308,
+    expectedLocation: '/feed',
+  },
+  {
+    label: 'post feed',
+    path: '/docker-introducao-e-primeiros-passos-para-devs/feed',
+    expectedStatus: 308,
+    expectedLocation: '/feed',
+  },
+  {
+    label: 'category feed',
+    path: '/categoria/javascript/feed',
+    expectedStatus: 308,
+    expectedLocation: '/feed',
+  },
 ]
 
 for (const redirectCase of cases) {

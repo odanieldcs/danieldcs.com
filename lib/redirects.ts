@@ -323,6 +323,17 @@ export const redirectGroups: readonly RedirectGroup[] = [
     permanent: true,
     from: ['/page/:n'],
   },
+  // Before `/categoria/:path*`, which would otherwise send `/categoria/:slug/feed/` to `/blog`.
+  {
+    to: '/feed',
+    permanent: true,
+    from: [
+      '/feed/atom{/}?',
+      '/comments/feed{/}?',
+      '/:slug/feed{/}?',
+      '/categoria/:path*/feed{/}?',
+    ],
+  },
   {
     to: '/blog',
     permanent: true,

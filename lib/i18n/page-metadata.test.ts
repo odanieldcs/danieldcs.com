@@ -2,6 +2,7 @@ import { expect, test } from 'vitest'
 import { getAlternates } from '@/lib/i18n/alternates'
 import { getPageSeo } from '@/lib/i18n/pages'
 import { htmlLang, type InterfaceLanguage } from '@/lib/i18n/types'
+import { rssFeedTypes } from '@/lib/metadata'
 import {
   getBlogListingMetadata,
   getLocalizedPageMetadata,
@@ -38,6 +39,7 @@ test.each(indexablePages)(
       expect(getLocalizedPageMetadata(page, language).alternates).toEqual({
         canonical: pathname[page][language],
         languages: languagesFor(page),
+        types: rssFeedTypes,
       })
     }
   },
@@ -108,6 +110,7 @@ test('trilha stays noindex and emits no hreflang', () => {
 
     expect(metadata.alternates).toEqual({
       canonical: language === 'pt' ? '/trilha' : '/en/trilha',
+      types: rssFeedTypes,
     })
     expect(metadata.robots).toEqual({ index: false, follow: false })
     expect(metadata.openGraph).toMatchObject({
@@ -124,16 +127,21 @@ test('trilha stays noindex and emits no hreflang', () => {
 test('blog page 1 and grid view share the path canonical', () => {
   const listing = getAlternates('/blog')
 
-  expect(getBlogListingMetadata({}, 'pt').alternates).toEqual(listing)
-  expect(getBlogListingMetadata({ page: '1' }, 'pt').alternates).toEqual(
-    listing,
-  )
-  expect(getBlogListingMetadata({ view: 'grid' }, 'pt').alternates).toEqual(
-    listing,
-  )
+  expect(getBlogListingMetadata({}, 'pt').alternates).toEqual({
+    ...listing,
+    types: rssFeedTypes,
+  })
+  expect(getBlogListingMetadata({ page: '1' }, 'pt').alternates).toEqual({
+    ...listing,
+    types: rssFeedTypes,
+  })
+  expect(getBlogListingMetadata({ view: 'grid' }, 'pt').alternates).toEqual({
+    ...listing,
+    types: rssFeedTypes,
+  })
   expect(
     getBlogListingMetadata({ page: '1', view: 'grid' }, 'en').alternates,
-  ).toEqual(getAlternates('/en/blog'))
+  ).toEqual({ ...getAlternates('/en/blog'), types: rssFeedTypes })
 })
 
 test('blog page above 1 keeps page on the canonical and on hreflang', () => {
@@ -144,11 +152,19 @@ test('blog page above 1 keeps page on the canonical and on hreflang', () => {
   }
 
   expect(getBlogListingMetadata({ page: '2' }, 'pt')).toMatchObject({
-    alternates: { canonical: '/blog?page=2', languages },
+    alternates: {
+      canonical: '/blog?page=2',
+      languages,
+      types: rssFeedTypes,
+    },
     openGraph: { url: '/blog?page=2' },
   })
   expect(getBlogListingMetadata({ page: '2' }, 'en')).toMatchObject({
-    alternates: { canonical: '/en/blog?page=2', languages },
+    alternates: {
+      canonical: '/en/blog?page=2',
+      languages,
+      types: rssFeedTypes,
+    },
     openGraph: { url: '/en/blog?page=2' },
   })
   expect(
@@ -162,7 +178,8 @@ test('blog ignores a non-positive page and still drops view', () => {
   expect(
     getBlogListingMetadata({ page: '0', view: 'grid' }, 'pt').alternates,
   ).toEqual(listing)
-  expect(getBlogListingMetadata({ page: 'nope' }, 'en').alternates).toEqual(
-    getAlternates('/en/blog'),
-  )
+  expect(getBlogListingMetadata({ page: 'nope' }, 'en').alternates).toEqual({
+    ...getAlternates('/en/blog'),
+    types: rssFeedTypes,
+  })
 })
