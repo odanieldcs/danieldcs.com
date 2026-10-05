@@ -1,4 +1,5 @@
 import type { PostFrontmatter } from '@/lib/content/schema'
+import { htmlLang } from '@/lib/i18n/types'
 import {
   absoluteSiteUrl,
   personId,
@@ -50,7 +51,7 @@ export type JsonLdBlogPosting = {
   url: string
   mainEntityOfPage: string
   image: string
-  inLanguage: PostFrontmatter['language']
+  inLanguage: string
 }
 
 export type JsonLdDocument = {
@@ -109,7 +110,7 @@ export function buildBlogPosting(
     url,
     mainEntityOfPage: url,
     image,
-    inLanguage: frontmatter.language,
+    inLanguage: htmlLang[frontmatter.language],
   }
 }
 
