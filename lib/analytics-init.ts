@@ -23,6 +23,8 @@ export async function initAnalytics(): Promise<void> {
   }
 
   try {
+    // Slim entry + __extensionClasses are PostHog internals; bump posthog-js only in a
+    // dedicated task that re-checks pageviews, registered extensions, and lazy chunk size.
     const [{ default: posthog }, { AnalyticsExtensions }] = await Promise.all([
       import('posthog-js/dist/module.slim'),
       import('posthog-js/dist/extension-bundles'),
