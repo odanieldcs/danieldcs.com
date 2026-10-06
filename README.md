@@ -23,7 +23,7 @@ cp .env.example .env
 pnpm dev
 ```
 
-V1 does not need any environment variables. `.env.example` only documents placeholders for later (PostHog in the Analytics & Observability milestone).
+Environment variables are optional; the site runs locally without them. `NEXT_PUBLIC_POSTHOG_KEY` enables analytics **only in Production** (`NEXT_PUBLIC_VERCEL_ENV=production`); see the gate in [`lib/analytics.ts`](lib/analytics.ts). The PostHog host is fixed in code. Privacy limits and the event list live in [`docs/analytics.md`](docs/analytics.md).
 
 ## Scripts
 
