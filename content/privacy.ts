@@ -16,22 +16,23 @@ export type PrivacyPageContent = {
 const privacyContent: Record<InterfaceLanguage, PrivacyPageContent> = {
   pt: {
     title: 'Política de Privacidade',
-    lastUpdatedLabel: 'Última atualização: 3 de outubro de 2026',
+    lastUpdatedLabel: 'Última atualização: 6 de outubro de 2026',
     intro:
-      'Esta política descreve como o site danieldcs.com trata informações quando você navega ou entra em contato. Ela reflete o site publicado em outubro de 2026.',
+      'Como o danieldcs.com trata informações quando você navega ou entra em contato.',
     sections: [
       {
         title: 'Quais dados são coletados',
         paragraphs: [
-          'O site novo não utiliza Google Analytics, Meta Pixel nem ferramentas equivalentes. Não coletamos páginas visitadas, tempo de permanência, cliques, tipo de navegador, localidade nem endereço IP para estatísticas.',
-          'Não há formulários de newsletter, pesquisas ou downloads no site. Se alguma captura de e-mail, nome ou telefone voltar a existir, esta página será atualizada antes.',
-          'Não usamos cookies de anúncios em Facebook, Instagram, Google ou YouTube. A preferência de tema claro ou escuro fica apenas no armazenamento local do seu navegador (via next-themes) e não é enviada ao servidor.',
+          'Usamos PostHog (US Cloud) para medir uso do conteúdo e detectar problemas técnicos.',
+          'Coletamos páginas visitadas (idioma da rota, sem parâmetros na URL), cliques em links externos e em ações do site que medimos, leitura concluída de posts, métricas de performance e erros. Cidade e país aproximados vêm do IP no envio; o IP não é armazenado.',
+          'Não usamos cookies nem localStorage de analytics (só memória), não identificamos você entre visitas e não guardamos IP nem conteúdo de formulários. Não há newsletter nem downloads; se isso mudar, atualizamos esta página antes.',
+          'Sem Google Analytics, Meta Pixel ou cookies de anúncios em Facebook, Instagram, Google ou YouTube. Tema claro ou escuro fica só no seu navegador (next-themes), não no servidor.',
         ],
       },
       {
         title: 'Como os dados são utilizados',
         paragraphs: [
-          'Em nenhuma hipótese seus dados serão compartilhados ou vendidos a terceiros.',
+          'PostHog processa os dados de analytics. Não vendemos nem compartilhamos seus dados com terceiros.',
           `Quando você envia um e-mail para ${contactEmail}, usamos o endereço somente para responder à sua mensagem.`,
         ],
       },
@@ -51,22 +52,23 @@ const privacyContent: Record<InterfaceLanguage, PrivacyPageContent> = {
   },
   en: {
     title: 'Privacy Policy',
-    lastUpdatedLabel: 'Last updated: October 3, 2026',
+    lastUpdatedLabel: 'Last updated: October 6, 2026',
     intro:
-      'This policy describes how danieldcs.com handles information when you browse or get in touch. It reflects the site as published in October 2026.',
+      'How danieldcs.com handles information when you browse or get in touch.',
     sections: [
       {
         title: 'What data is collected',
         paragraphs: [
-          'The new site does not use Google Analytics, Meta Pixel, or similar tools. We do not collect pages visited, time on site, clicks, browser type, location, or IP address for analytics.',
-          'There are no newsletter forms, surveys, or downloads on the site. If email, name, or phone collection is added again, this page will be updated first.',
-          'We do not use advertising cookies on Facebook, Instagram, Google, or YouTube. Light or dark theme preference stays only in your browser local storage (via next-themes) and is not sent to the server.',
+          'We use PostHog (US Cloud) to measure content use and detect technical issues.',
+          'We collect pages visited (route language, no query strings in the URL), clicks on external links and on site actions we track, completed post reads, performance metrics, and errors. Approximate city and country come from your IP at send time; the IP is not stored.',
+          'We do not use analytics cookies or localStorage (memory only), do not identify you across visits, and do not store IP addresses or form contents. There is no newsletter or downloads; if that changes, we update this page first.',
+          'No Google Analytics, Meta Pixel, or ad cookies on Facebook, Instagram, Google, or YouTube. Light or dark theme stays only in your browser (next-themes), not on the server.',
         ],
       },
       {
         title: 'How data is used',
         paragraphs: [
-          'Your data will never be shared with or sold to third parties.',
+          'PostHog processes analytics data. We do not sell or share your data with third parties.',
           `When you email ${contactEmail}, we use your address only to reply to your message.`,
         ],
       },
