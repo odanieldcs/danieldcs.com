@@ -9,7 +9,8 @@ Contract for PostHog on danieldcs.com: event names, properties, privacy limits, 
 - Client: `persistence: 'memory'` — no cookies, `localStorage`, or consent banner. Uniques are inflated (new `distinct_id` per full load); pageviews and custom events stay accurate.
 - Off: autocapture, session replay, surveys, feature flags.
 - Init only when `NEXT_PUBLIC_VERCEL_ENV === 'production'` and the public key exists; otherwise no-op. Skip init when `navigator.webdriver === true`.
-- Client bootstrap: root `instrumentation-client.ts` gates first, then lazy-loads `lib/analytics-init.ts` after `load` + `requestIdleCallback` (slim SDK + `historyAutocapture` only).
+- `posthog-js` is pinned (exact version) for the same reason as the slim entry and registered extensions—upgrades are an explicit task.
+- Client bootstrap: root `instrumentation-client.ts` gates first, then lazy-loads `lib/analytics-init.ts` via `scheduleOnLoad` (`load` + `requestIdleCallback`, including when `readyState` is already `complete`; slim SDK + `historyAutocapture` only).
 - `track()` from `lib/analytics.ts`: no-op when the gate is closed (events are not queued). When the gate is open and PostHog is not loaded yet, events are queued and flushed in order on `loaded`. If init fails, the queue is discarded silently.
 
 **Not collected:** stored IP, page text, input values, cross-visit identity.

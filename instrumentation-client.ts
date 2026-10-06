@@ -1,20 +1,13 @@
 import { isAnalyticsEnabled } from '@/lib/analytics'
+import { scheduleOnLoad } from '@/lib/analytics-schedule'
 
 function scheduleAnalyticsInit(): void {
   if (!isAnalyticsEnabled()) {
     return
   }
 
-  const runInit = () => {
+  scheduleOnLoad(() => {
     void import('@/lib/analytics-init').then((module) => module.initAnalytics())
-  }
-
-  window.addEventListener('load', () => {
-    if ('requestIdleCallback' in window) {
-      window.requestIdleCallback(runInit)
-    } else {
-      runInit()
-    }
   })
 }
 
