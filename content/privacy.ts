@@ -23,22 +23,25 @@ const privacyContent: Record<InterfaceLanguage, PrivacyPageContent> = {
       {
         title: 'Quais dados são coletados',
         paragraphs: [
-          'Usamos PostHog (US Cloud) para medir uso do conteúdo e detectar problemas técnicos.',
-          'Coletamos páginas visitadas (idioma da rota, sem parâmetros na URL), cliques em links externos e em ações do site que medimos, leitura concluída de posts, métricas de performance e erros. Cidade e país aproximados vêm do IP no envio; o IP não é armazenado.',
-          'Não usamos cookies nem localStorage de analytics (só memória), não identificamos você entre visitas e não guardamos IP nem conteúdo de formulários. Não há newsletter nem downloads; se isso mudar, atualizamos esta página antes.',
-          'Sem Google Analytics, Meta Pixel ou cookies de anúncios em Facebook, Instagram, Google ou YouTube. Tema claro ou escuro fica só no seu navegador (next-themes), não no servidor.',
+          'Usamos o PostHog para medir o uso do conteúdo e detectar problemas técnicos.',
+          'Quando você navega, registramos páginas visitadas (incluindo endereço completo e parâmetros na URL, quando presentes), página de origem, idioma da rota, cliques em links externos e em ações do site que medimos, leitura concluída de posts, métricas de performance e erros. O PostHog também recebe dados técnicos padrão do navegador, como sistema operacional, tipo de dispositivo e tamanho da tela. Cidade e país aproximados vêm do IP no momento do envio; o IP não é armazenado.',
+          'Não usamos cookies nem localStorage de analytics (apenas memória), não identificamos você entre visitas, não armazenamos IP nem o que você digita em formulários.',
+          'Não há newsletter nem downloads no site; se isso mudar, atualizamos esta página antes.',
+          'Não usamos Google Analytics, Meta Pixel nem cookies de anúncios em Facebook, Instagram, Google ou YouTube.',
+          'A preferência de tema claro ou escuro fica só no seu navegador, não nos nossos servidores.',
         ],
       },
       {
         title: 'Como os dados são utilizados',
         paragraphs: [
-          'PostHog processa os dados de analytics. Não vendemos nem compartilhamos seus dados com terceiros.',
+          'Usamos os dados de analytics para entender como o conteúdo é usado e para detectar problemas técnicos. O PostHog processa esses dados em servidores nos Estados Unidos, como prestador de serviço. Não vendemos seus dados nem os compartilhamos com outros terceiros.',
           `Quando você envia um e-mail para ${contactEmail}, usamos o endereço somente para responder à sua mensagem.`,
         ],
       },
       {
         title: 'Remoção de dados',
         paragraphs: [
+          'Não conseguimos apagar registros de analytics de uma visita específica, porque não guardamos dados que permitam identificar você entre visitas.',
           `Se você entrou em contato por e-mail e deseja que a conversa seja apagada, envie um pedido para ${contactEmail}. Atenderemos o quanto antes.`,
         ],
       },
@@ -59,22 +62,25 @@ const privacyContent: Record<InterfaceLanguage, PrivacyPageContent> = {
       {
         title: 'What data is collected',
         paragraphs: [
-          'We use PostHog (US Cloud) to measure content use and detect technical issues.',
-          'We collect pages visited (route language, no query strings in the URL), clicks on external links and on site actions we track, completed post reads, performance metrics, and errors. Approximate city and country come from your IP at send time; the IP is not stored.',
-          'We do not use analytics cookies or localStorage (memory only), do not identify you across visits, and do not store IP addresses or form contents. There is no newsletter or downloads; if that changes, we update this page first.',
-          'No Google Analytics, Meta Pixel, or ad cookies on Facebook, Instagram, Google, or YouTube. Light or dark theme stays only in your browser (next-themes), not on the server.',
+          'We use PostHog to measure content use and detect technical issues.',
+          'When you browse, we record pages visited (including the full address and any query parameters), referring page, route language, clicks on external links and on the site\u2019s actions we track, completed post reads, performance metrics, and errors. PostHog also receives default technical data from your browser, such as operating system, device type, and screen size. Approximate city and country come from your IP at send time; the IP is not stored.',
+          'We do not use analytics cookies or localStorage (memory only), do not identify you across visits, and do not store IP addresses or what you type into forms.',
+          'There is no newsletter or downloads on the site; if that changes, we update this page first.',
+          'We do not use Google Analytics, Meta Pixel, or ad cookies on Facebook, Instagram, Google, or YouTube.',
+          'Light or dark theme preference stays only in your browser, not on our servers.',
         ],
       },
       {
         title: 'How data is used',
         paragraphs: [
-          'PostHog processes analytics data. We do not sell or share your data with third parties.',
+          'We use analytics data to understand how content is used and to detect technical issues. PostHog processes this data on servers in the United States as our service provider. We do not sell your data or share it with any other third parties.',
           `When you email ${contactEmail}, we use your address only to reply to your message.`,
         ],
       },
       {
         title: 'Data removal',
         paragraphs: [
+          'We cannot delete analytics records for a specific visit because we do not store data that identifies you across visits.',
           `If you contacted us by email and want the conversation deleted, send a request to ${contactEmail}. We will respond as soon as we can.`,
         ],
       },
