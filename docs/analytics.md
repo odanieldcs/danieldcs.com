@@ -15,7 +15,7 @@ Contract for PostHog on danieldcs.com: event names, properties, privacy limits, 
 
 **Not collected:** stored IP, page text, input values, cross-visit identity.
 
-**Properties:** identifiers only (route id, slug, language, hostname)—not full URLs or query strings.
+**Custom event properties:** identifiers only (route id, slug, language, hostname)—not full URLs or query strings. PostHog's default properties (`$current_url`, `$referrer`, browser, OS, device, screen) are kept as sent, including query strings; the privacy policy discloses this.
 
 ## Events
 

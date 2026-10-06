@@ -8,6 +8,7 @@ test('shows the last updated date and contact email', () => {
 
   expect(screen.getByText(/Última atualização: 6 de outubro de 2026/)).toBeTruthy()
   expect(screen.getAllByText(/PostHog/).length).toBeGreaterThan(0)
+  expect(screen.getByText(/Estados Unidos/)).toBeTruthy()
   expect(
     screen.queryByText(/Não coletamos páginas visitadas/),
   ).toBeNull()
