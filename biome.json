@@ -11,6 +11,7 @@
       "app/**",
       "content/**/*.ts",
       "lib/**",
+      "instrumentation-client.ts",
       "next.config.ts",
       "vitest.config.*",
       "app/**/*.test.*",
