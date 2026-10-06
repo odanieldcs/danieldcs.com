@@ -17,13 +17,13 @@ test('does not include a Home item', () => {
 
 test('resolves labels and localized hrefs for a language', () => {
   expect(getMainNavigationForLanguage('pt')).toEqual([
-    { href: '/blog', label: 'Blog' },
-    { href: '/community', label: 'Comunidade' },
-    { href: '/about', label: 'Sobre' },
+    { href: '/blog', label: 'Blog', ctaTarget: 'blog' },
+    { href: '/community', label: 'Comunidade', ctaTarget: 'community' },
+    { href: '/about', label: 'Sobre', ctaTarget: 'about' },
   ])
   expect(getMainNavigationForLanguage('en')).toEqual([
-    { href: '/en/blog', label: 'Writing' },
-    { href: '/en/community', label: 'Community' },
-    { href: '/en/about', label: 'About' },
+    { href: '/en/blog', label: 'Writing', ctaTarget: 'blog' },
+    { href: '/en/community', label: 'Community', ctaTarget: 'community' },
+    { href: '/en/about', label: 'About', ctaTarget: 'about' },
   ])
 })

@@ -10,7 +10,7 @@ Contract for PostHog on danieldcs.com: event names, properties, privacy limits, 
 - Off: autocapture, session replay, surveys, feature flags.
 - Init only when `NEXT_PUBLIC_VERCEL_ENV === 'production'` and the public key exists; otherwise no-op. Skip init when `navigator.webdriver === true`.
 - `posthog-js` is pinned (exact version) for the same reason as the slim entry and registered extensions—upgrades are an explicit task.
-- Client bootstrap: root `instrumentation-client.ts` gates first, then lazy-loads `lib/analytics-init.ts` via `scheduleOnLoad` (`load` + `requestIdleCallback`, including when `readyState` is already `complete`; slim SDK + `historyAutocapture` only).
+- Client bootstrap: root `instrumentation-client.ts` gates first, registers delegated click tracking (`registerClickTracking` in capture phase), then lazy-loads `lib/analytics-init.ts` via `scheduleOnLoad` (`load` + `requestIdleCallback`, including when `readyState` is already `complete`; slim SDK + `historyAutocapture` only).
 - `track()` from `lib/analytics.ts`: no-op when the gate is closed (events are not queued). When the gate is open and PostHog is not loaded yet, events are queued and flushed in order on `loaded`. If init fails, the queue is discarded silently.
 
 **Not collected:** stored IP, page text, input values, cross-visit identity.
@@ -48,6 +48,15 @@ Mobile header nav uses the same values as desktop.
 
 1. `data-cta` on element or ancestor → `cta_click` only.
 2. Else external link → `external_link_click` only.
+
+## DOM attributes
+
+Mark interactive elements in the UI; the delegated listener in `lib/analytics-click.ts` reads them at click time.
+
+- **`data-cta`**, **`data-cta-location`**, optional **`data-cta-target`** — map to `cta_click` (`cta`, `location`, `target`). Invalid `data-cta` / `data-cta-location` values are ignored (no event).
+- **`data-analytics-source`** on an ancestor — `LinkSource` for `external_link_click` (`post`, `footer`, `about`, `community`). Missing or invalid → `unknown`.
+- **Middle-click** (`auxclick`) does not fire `click`; no custom event is sent.
+- Listener uses capture phase, is registered only when the analytics gate is open, and runs before PostHog lazy-load; early clicks still queue via `track()`.
 
 ## Deferred
 

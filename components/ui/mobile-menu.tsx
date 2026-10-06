@@ -8,6 +8,7 @@ import { NavLink } from '@/components/ui/nav-link'
 export type MobileMenuItem = {
   href: string
   label: string
+  ctaTarget: string
 }
 
 type MobileMenuProps = {
@@ -113,6 +114,9 @@ export function MobileMenu({
                       prefetch={false}
                       className="inline-flex min-h-11 items-center"
                       onClick={() => setOpen(false)}
+                      data-cta="nav_item"
+                      data-cta-location="header"
+                      data-cta-target={item.ctaTarget}
                     >
                       {item.label}
                     </NavLink>

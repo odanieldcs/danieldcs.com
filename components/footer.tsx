@@ -35,6 +35,11 @@ const socialLinks = [
 
 const footerLinkClassName = linkClassName.replace('text-link', 'text-muted')
 
+function footerNavTarget(href: string): string {
+  const segments = href.split('/').filter(Boolean)
+  return segments[segments.length - 1] ?? ''
+}
+
 export function Footer() {
   const { language } = useInterfaceLanguage()
   const year = new Date().getFullYear()
@@ -42,7 +47,10 @@ export function Footer() {
   const resourceLinks = getFooterResourceLinks(language)
 
   return (
-    <footer className="border-t border-border py-4">
+    <footer
+      className="border-t border-border py-4"
+      data-analytics-source="footer"
+    >
       <Container
         width="page"
         className="flex flex-col items-center gap-content-gap py-section text-center"
@@ -65,6 +73,9 @@ export function Footer() {
               <Link
                 href={localizePath(link.href, language)}
                 className={footerLinkClassName}
+                data-cta="nav_item"
+                data-cta-location="footer"
+                data-cta-target={footerNavTarget(link.href)}
               >
                 {link.label}
               </Link>
@@ -78,6 +89,9 @@ export function Footer() {
           <Link
             href={localizePath('/privacy', language)}
             className={footerLinkClassName}
+            data-cta="nav_item"
+            data-cta-location="footer"
+            data-cta-target="privacy"
           >
             {privacyLabel}
           </Link>

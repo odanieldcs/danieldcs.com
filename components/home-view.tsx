@@ -96,6 +96,8 @@ function Hero({
         <Link
           href={localizePath('/about', language)}
           className={quietCtaClassName}
+          data-cta="home_about"
+          data-cta-location="home"
         >
           {copy.aboutCta}
           <ArrowRightIcon />
@@ -164,6 +166,9 @@ function RecentWriting({
             <Link
               href={localizePath(`/blog/${post.slug}`, language)}
               className={articleCardClassName}
+              data-cta="post_card"
+              data-cta-location="home"
+              data-cta-target={post.slug}
             >
               <p className="text-xs font-medium uppercase text-foreground/45">
                 {post.tag ? (
