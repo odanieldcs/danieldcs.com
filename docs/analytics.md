@@ -24,11 +24,18 @@ Names are stable `snake_case` for `track()`. One click → one event ([precedenc
 | Event | Properties |
 | --- | --- |
 | `$pageview` | Super property `language` (`pt` \| `en`) from the route, not `Accept-Language` |
-| `article_read` | `slug`, `language` — read-complete threshold on a post |
+| `article_read` | `slug`, `language` — fires once when the end of the post body enters the viewport (see below) |
 | `external_link_click` | `href_host`, `source` — outbound link without `data-cta` |
 | `cta_click` | `cta`, `location`, optional `target` |
 
 `cta_click` fields: `cta` = kind below; `location` = `header` \| `footer` \| `home` \| `blog` \| `about`; `target` = nav segment, slug, or `pt` \| `en` (language switched **to**).
+
+### `article_read`
+
+- Fires when the sentinel after the MDX body intersects the viewport, once per post view.
+- Short posts whose end is already visible on first paint fire on load; the signal means “reached the end,” not reading time.
+- A full page reload sends a new event.
+- `language` is the interface language for the route (same as `$pageview` super property), not `frontmatter.language`.
 
 ## CTA catalog
 
