@@ -24,10 +24,12 @@ export async function initAnalytics(): Promise<void> {
 
   try {
     // Slim entry + __extensionClasses are PostHog internals; bump posthog-js only in a
-    // dedicated task that re-checks pageviews, registered extensions, and lazy chunk size.
+    // dedicated task that re-checks pageviews, registered extensions (historyAutocapture,
+    // webVitalsAutocapture), dist/web-vitals side import, and lazy chunk size.
     const [{ default: posthog }, { AnalyticsExtensions }] = await Promise.all([
       import('posthog-js/dist/module.slim'),
       import('posthog-js/dist/extension-bundles'),
+      import('posthog-js/dist/web-vitals'),
     ])
 
     posthog.init(key, {
@@ -39,13 +41,17 @@ export async function initAnalytics(): Promise<void> {
       capture_dead_clicks: false,
       rageclick: false,
       capture_heatmaps: false,
-      capture_performance: false,
+      capture_performance: {
+        web_vitals: true,
+        web_vitals_attribution: false,
+      },
       capture_exceptions: false,
       disable_session_recording: true,
       disable_surveys: true,
       advanced_disable_flags: true,
       __extensionClasses: {
         historyAutocapture: AnalyticsExtensions.historyAutocapture,
+        webVitalsAutocapture: AnalyticsExtensions.webVitalsAutocapture,
       },
       before_send: (captureResult) => {
         if (captureResult?.event !== '$pageview') {

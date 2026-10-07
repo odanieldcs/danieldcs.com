@@ -10,7 +10,7 @@ Contract for PostHog on danieldcs.com: event names, properties, privacy limits, 
 - Off: autocapture, session replay, surveys, feature flags.
 - Init only when `NEXT_PUBLIC_VERCEL_ENV === 'production'` and the public key exists; otherwise no-op. Skip init when `navigator.webdriver === true`.
 - `posthog-js` is pinned (exact version) for the same reason as the slim entry and registered extensions—upgrades are an explicit task.
-- Client bootstrap: root `instrumentation-client.ts` gates first, registers delegated click tracking (`registerClickTracking` in capture phase), then lazy-loads `lib/analytics-init.ts` via `scheduleOnLoad` (`load` + `requestIdleCallback`, including when `readyState` is already `complete`; slim SDK + `historyAutocapture` only).
+- Client bootstrap: root `instrumentation-client.ts` gates first, registers delegated click tracking (`registerClickTracking` in capture phase), then lazy-loads `lib/analytics-init.ts` via `scheduleOnLoad` (`load` + `requestIdleCallback`, including when `readyState` is already `complete`; slim SDK + `historyAutocapture` + `webVitalsAutocapture`, with bundled `posthog-js/dist/web-vitals`).
 - `track()` from `lib/analytics.ts`: no-op when the gate is closed (events are not queued). When the gate is open and PostHog is not loaded yet, events are queued and flushed in order on `loaded`. If init fails, the queue is discarded silently.
 
 **Not collected:** stored IP, page text, input values, cross-visit identity.
@@ -24,6 +24,7 @@ Names are stable `snake_case` for `track()`. One click → one event ([precedenc
 | Event | Properties |
 | --- | --- |
 | `$pageview` | Super property `language` (`pt` \| `en`) from the route, not `Accept-Language` |
+| `$web_vitals` | Automatic, PostHog web vitals extension — inherits super property `language` |
 | `article_read` | `slug`, `language` — fires once when the end of the post body enters the viewport (see below) |
 | `external_link_click` | `href_host`, `source` — outbound link without `data-cta` |
 | `cta_click` | `cta`, `location`, optional `target` |
@@ -36,6 +37,12 @@ Names are stable `snake_case` for `track()`. One click → one event ([precedenc
 - Short posts whose end is already visible on first paint fire on load; the signal means “reached the end,” not reading time.
 - A full page reload sends a new event.
 - `language` is the interface language for the route (same as `$pageview` super property), not `frontmatter.language`.
+
+### Web Vitals
+
+- PostHog’s web vitals extension sends `$web_vitals` with LCP, CLS, FCP, and INP (not TTFB). Attribution is off (`web_vitals_attribution: false`); the `web-vitals` script is bundled via `posthog-js/dist/web-vitals` (no CDN fetch).
+- In PostHog: **Web analytics → Web vitals**. Good thresholds: LCP ≤ 2.5 s, INP ≤ 200 ms, CLS ≤ 0.1, FCP ≤ 1.8 s.
+- Metrics reflect the **initial load** of each page, not client-side navigations. CLS and INP are flushed when the page is hidden or closed, so abrupt exits may drop samples.
 
 ## CTA catalog
 

@@ -67,7 +67,10 @@ jobs:
 
   e2e:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # Match @playwright/test in pnpm-lock.yaml (browsers + OS deps preinstalled).
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v5
       - uses: pnpm/action-setup@v4
@@ -76,7 +79,6 @@ jobs:
           node-version-file: '.nvmrc'
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm test:e2e
 
   ci:
