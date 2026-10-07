@@ -3,7 +3,7 @@
 import { buttonClassName } from '@/components/button'
 import { Container } from '@/components/container'
 import { useInterfaceLanguage } from '@/components/interface-language-provider'
-import { type TrilhaCopy, getTrilhaCopy } from '@/lib/i18n/pages'
+import { getTrilhaCopy, type TrilhaCopy } from '@/lib/i18n/pages'
 import { trilhaWhatsAppUrl } from '@/lib/site'
 
 const sectionGridClassName =
@@ -46,7 +46,9 @@ function Pillars({ copy }: { copy: TrilhaCopy }) {
     <section className="w-full">
       <Container width="page" className={sectionYClassName}>
         <div className={sectionGridClassName}>
-          <p className="text-eyebrow uppercase text-label">{copy.pillars.index}</p>
+          <p className="text-eyebrow uppercase text-label">
+            {copy.pillars.index}
+          </p>
           <div>
             <h2 className="font-display text-display-section">
               {copy.pillars.title}
@@ -66,14 +68,22 @@ function Pillars({ copy }: { copy: TrilhaCopy }) {
                 className={[
                   'flex flex-col gap-inline border-border py-8',
                   index > 0 ? 'md:pl-6' : '',
-                  !isLast ? 'border-b pr-0 md:border-r md:border-b-0 md:pr-6' : '',
+                  !isLast
+                    ? 'border-b pr-0 md:border-r md:border-b-0 md:pr-6'
+                    : '',
                 ]
                   .filter(Boolean)
                   .join(' ')}
               >
-                <span className="font-display text-sm text-label">{item.index}</span>
-                <h3 className="font-display text-display-title">{item.title}</h3>
-                <p className="text-note text-foreground/65">{item.description}</p>
+                <span className="font-display text-sm text-label">
+                  {item.index}
+                </span>
+                <h3 className="font-display text-display-title">
+                  {item.title}
+                </h3>
+                <p className="text-note text-foreground/65">
+                  {item.description}
+                </p>
               </li>
             )
           })}
@@ -90,9 +100,13 @@ function Building({ copy }: { copy: TrilhaCopy }) {
         width="page"
         className={`${sectionYClassName} ${sectionGridClassName}`}
       >
-        <p className="text-eyebrow uppercase text-label">{copy.building.label}</p>
+        <p className="text-eyebrow uppercase text-label">
+          {copy.building.label}
+        </p>
         <div className="flex max-w-2xl flex-col gap-4">
-          <h2 className="font-display text-display-section">{copy.building.title}</h2>
+          <h2 className="font-display text-display-section">
+            {copy.building.title}
+          </h2>
           <p className="text-base leading-relaxed text-foreground/70 sm:text-lg">
             {copy.building.body}
           </p>

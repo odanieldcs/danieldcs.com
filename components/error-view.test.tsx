@@ -15,7 +15,9 @@ test('renders Portuguese copy with retry and home link to PT root', () => {
     screen.getByRole('heading', { level: 1, name: 'Algo deu errado.' }),
   ).toBeTruthy()
   expect(
-    screen.getByRole('link', { name: 'Voltar para o início' }).getAttribute('href'),
+    screen
+      .getByRole('link', { name: 'Voltar para o início' })
+      .getAttribute('href'),
   ).toBe('/')
 
   fireEvent.click(screen.getByRole('button', { name: 'Tentar novamente' }))

@@ -36,9 +36,9 @@ test('renders the about page in Portuguese', () => {
     }),
   ).toBeTruthy()
   expect(screen.getByText('Sobre mim')).toBeTruthy()
-  expect(screen.getByRole('link', { name: 'Ler o blog' }).getAttribute('href')).toBe(
-    '/blog',
-  )
+  expect(
+    screen.getByRole('link', { name: 'Ler o blog' }).getAttribute('href'),
+  ).toBe('/blog')
   expect(screen.queryByRole('link', { name: 'Leituras recentes' })).toBeNull()
   expect(screen.queryByRole('link', { name: 'Usos' })).toBeNull()
   expect(screen.getByText('AI-Assisted Development')).toBeTruthy()
@@ -95,7 +95,9 @@ test('renders the about page in Portuguese', () => {
   expect(personal?.className).toContain('border-y')
   expect(personal?.className).not.toContain('bg-trail')
   expect(
-    screen.getByText(/Sou corredor amador que pegou o gosto por meia-maratonas/),
+    screen.getByText(
+      /Sou corredor amador que pegou o gosto por meia-maratonas/,
+    ),
   ).toBeTruthy()
 
   const contact = screen.getByRole('link', { name: 'Entre em contato' })

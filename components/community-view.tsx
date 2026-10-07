@@ -92,13 +92,17 @@ function EntryBody({
   return (
     <>
       <p className="text-xs font-medium uppercase text-foreground/45">
-        <time dateTime={entry.date}>{formatEntryDate(entry.date, language)}</time>
+        <time dateTime={entry.date}>
+          {formatEntryDate(entry.date, language)}
+        </time>
         <span aria-hidden="true"> · </span>
         <span>{copy.types[entry.type]}</span>
       </p>
       <h3 className={titleClassName}>{entry.title}</h3>
       {entry.eventName ? (
-        <p className="mt-2 text-sm font-semibold text-accent">{entry.eventName}</p>
+        <p className="mt-2 text-sm font-semibold text-accent">
+          {entry.eventName}
+        </p>
       ) : null}
     </>
   )
@@ -357,7 +361,9 @@ export function CommunityView({ entries }: { entries: CommunityEntryView[] }) {
     <main data-analytics-source="community">
       <Container width="page" className="pb-10 pt-10 sm:pb-12 sm:pt-16">
         <p className="text-eyebrow uppercase text-label">{copy.eyebrow}</p>
-        <h1 className="mt-5 max-w-2xl font-display text-display">{copy.title}</h1>
+        <h1 className="mt-5 max-w-2xl font-display text-display">
+          {copy.title}
+        </h1>
         <p className="mt-8 max-w-xl text-base leading-relaxed text-foreground/70 sm:text-lg">
           {copy.intro}
         </p>

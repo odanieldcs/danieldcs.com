@@ -84,7 +84,9 @@ test('links to the Portuguese home when the language is en', () => {
 test('links to the equivalent page in the other language', () => {
   renderSwitch('pt', '/about')
   expect(
-    screen.getByRole('link', { name: 'Switch to English' }).getAttribute('href'),
+    screen
+      .getByRole('link', { name: 'Switch to English' })
+      .getAttribute('href'),
   ).toBe('/en/about')
   cleanup()
 
@@ -99,7 +101,9 @@ test('links to the equivalent page in the other language', () => {
 test('keeps an open post on the same post in the other language', () => {
   renderSwitch('pt', '/blog/hello-world')
   expect(
-    screen.getByRole('link', { name: 'Switch to English' }).getAttribute('href'),
+    screen
+      .getByRole('link', { name: 'Switch to English' })
+      .getAttribute('href'),
   ).toBe('/en/blog/hello-world')
   cleanup()
 
@@ -115,6 +119,8 @@ test('keeps the current query string', () => {
   renderSwitch('pt', '/blog', 'view=grid&page=2')
 
   expect(
-    screen.getByRole('link', { name: 'Switch to English' }).getAttribute('href'),
+    screen
+      .getByRole('link', { name: 'Switch to English' })
+      .getAttribute('href'),
   ).toBe('/en/blog?view=grid&page=2')
 })

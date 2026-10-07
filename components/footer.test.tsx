@@ -72,8 +72,8 @@ test('renders social links, tagline, privacy link, and the current year', () => 
 test('labels the privacy link in English', () => {
   renderFooter('en')
 
-  expect(screen.getByRole('link', { name: 'Privacy' }).getAttribute('href')).toBe(
-    '/en/privacy',
-  )
+  expect(
+    screen.getByRole('link', { name: 'Privacy' }).getAttribute('href'),
+  ).toBe('/en/privacy')
   expect(screen.queryByRole('link', { name: 'Leituras recentes' })).toBeNull()
 })
