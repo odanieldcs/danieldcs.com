@@ -658,6 +658,37 @@ export function getNotFoundCopy(lang: InterfaceLanguage): NotFoundCopy {
   return notFoundCopy[lang]
 }
 
+export type ErrorCopy = {
+  eyebrow: string
+  title: string
+  paragraph: string
+  retryCta: string
+  homeCta: string
+}
+
+const errorCopy: Record<InterfaceLanguage, ErrorCopy> = {
+  pt: {
+    eyebrow: 'Erro',
+    title: 'Algo deu errado.',
+    paragraph:
+      'Não foi possível carregar esta página. Você pode tentar de novo ou voltar ao início.',
+    retryCta: 'Tentar novamente',
+    homeCta: 'Voltar para o início',
+  },
+  en: {
+    eyebrow: 'Error',
+    title: 'Something went wrong.',
+    paragraph:
+      "This page couldn't be loaded. You can try again or go back home.",
+    retryCta: 'Try again',
+    homeCta: 'Back to home',
+  },
+}
+
+export function getErrorCopy(lang: InterfaceLanguage): ErrorCopy {
+  return errorCopy[lang]
+}
+
 export type PostCopy = {
   /** Notice for a post read in an interface language it is not written in. */
   onlyAvailableIn: Record<InterfaceLanguage, string>

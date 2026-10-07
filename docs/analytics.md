@@ -10,8 +10,9 @@ Contract for PostHog on danieldcs.com: event names, properties, privacy limits, 
 - Off: autocapture, session replay, surveys, feature flags.
 - Init only when `NEXT_PUBLIC_VERCEL_ENV === 'production'` and the public key exists; otherwise no-op. Skip init when `navigator.webdriver === true`.
 - `posthog-js` is pinned (exact version) for the same reason as the slim entry and registered extensions—upgrades are an explicit task.
-- Client bootstrap: root `instrumentation-client.ts` gates first, registers delegated click tracking (`registerClickTracking` in capture phase), then lazy-loads `lib/analytics-init.ts` via `scheduleOnLoad` (`load` + `requestIdleCallback`, including when `readyState` is already `complete`; slim SDK + `historyAutocapture` + `webVitalsAutocapture`, with bundled `posthog-js/dist/web-vitals`).
+- Client bootstrap: root `instrumentation-client.ts` gates first, registers delegated click tracking (`registerClickTracking` in capture phase), then lazy-loads `lib/analytics-init.ts` via `scheduleOnLoad` (`load` + `requestIdleCallback`, including when `readyState` is already `complete`; slim SDK + `historyAutocapture` + `webVitalsAutocapture` + `exceptionObserver` / `exceptions`, with bundled `posthog-js/dist/web-vitals` and `posthog-js/dist/exception-autocapture`).
 - `track()` from `lib/analytics.ts`: no-op when the gate is closed (events are not queued). When the gate is open and PostHog is not loaded yet, events are queued and flushed in order on `loaded`. If init fails, the queue is discarded silently.
+- `captureError()` from `lib/analytics.ts`: separate from `track()` / `AnalyticsEvent`. No-op when the gate is closed (no queue). When the gate is open and PostHog is not loaded yet, errors are queued (max 10, oldest dropped) and flushed on `loaded` via `bindErrorCapture`. If init fails, the error queue is discarded with the event queue.
 
 **Not collected:** stored IP, page text, input values, cross-visit identity.
 
@@ -25,6 +26,7 @@ Names are stable `snake_case` for `track()`. One click → one event ([precedenc
 | --- | --- |
 | `$pageview` | Super property `language` (`pt` \| `en`) from the route, not `Accept-Language` |
 | `$web_vitals` | Automatic, PostHog web vitals extension — inherits super property `language` |
+| `$exception` | PostHog Error Tracking — unhandled errors and unhandled promise rejections (autocapture); React route/global boundaries via `captureError()` → `captureException` with `boundary` (`route` \| `global`) and optional `digest` (Next.js). Message and stack come from PostHog; no `capture_console_errors`. |
 | `article_read` | `slug`, `language` — fires once when the end of the post body enters the viewport (see below) |
 | `external_link_click` | `href_host`, `source` — outbound link without `data-cta` |
 | `cta_click` | `cta`, `location`, optional `target` |
@@ -37,6 +39,13 @@ Names are stable `snake_case` for `track()`. One click → one event ([precedenc
 - Short posts whose end is already visible on first paint fire on load; the signal means “reached the end,” not reading time.
 - A full page reload sends a new event.
 - `language` is the interface language for the route (same as `$pageview` super property), not `frontmatter.language`.
+
+### Errors
+
+- **Autocapture:** `window.onerror` and unhandled promise rejections when production analytics is enabled. Console errors are off. The autocapture script is bundled (`posthog-js/dist/exception-autocapture`); the browser should not fetch PostHog CDN chunks for it.
+- **Boundaries:** `app/(pt)/error.tsx`, `app/(en)/en/error.tsx`, and `app/global-error.tsx` call `captureError()` once per boundary render (React render errors are not double-counted with autocapture in normal cases).
+- **Dashboard:** PostHog **Error tracking** for `$exception` grouping and trends.
+- **Limits:** Client stacks are minified; no source maps in V1. SSG/build failures and server-only errors appear in Vercel logs, not PostHog.
 
 ### Web Vitals
 
