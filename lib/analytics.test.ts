@@ -1,6 +1,8 @@
 import { afterEach, expect, test, vi } from 'vitest'
 import {
   bindAnalyticsCapture,
+  bindErrorCapture,
+  captureError,
   isAnalyticsEnabled,
   resetAnalyticsStateForTests,
   track,
@@ -108,3 +110,49 @@ function assertInvalidAnalyticsEventsAreRejected() {
 }
 
 void assertInvalidAnalyticsEventsAreRejected
+
+test('captureError is a no-op when the gate is closed', () => {
+  const capture = vi.fn()
+  bindErrorCapture(capture)
+
+  captureError(new Error('fail'), { boundary: 'route' })
+
+  expect(capture).not.toHaveBeenCalled()
+})
+
+test('captureError queues until bind and drops oldest beyond 10', () => {
+  vi.stubEnv('NEXT_PUBLIC_VERCEL_ENV', 'production')
+  vi.stubEnv('NEXT_PUBLIC_POSTHOG_KEY', 'phc_test')
+
+  const capture = vi.fn()
+  for (let index = 0; index < 12; index += 1) {
+    captureError(new Error(`e-${index}`), { boundary: 'route' })
+  }
+
+  expect(capture).not.toHaveBeenCalled()
+
+  bindErrorCapture(capture)
+
+  expect(capture).toHaveBeenCalledTimes(10)
+  expect(capture.mock.calls[0]?.[0]).toMatchObject({ message: 'e-2' })
+  expect(capture.mock.calls[9]?.[0]).toMatchObject({ message: 'e-11' })
+})
+
+test('captureError sends immediately when error capture is already bound', () => {
+  vi.stubEnv('NEXT_PUBLIC_VERCEL_ENV', 'production')
+  vi.stubEnv('NEXT_PUBLIC_POSTHOG_KEY', 'phc_test')
+
+  const capture = vi.fn()
+  bindErrorCapture(capture)
+  capture.mockClear()
+
+  const error = new Error('boom')
+  captureError(error, { boundary: 'global', digest: 'abc123' })
+
+  expect(capture).toHaveBeenCalledOnce()
+  expect(capture.mock.calls[0]?.[0]).toBe(error)
+  expect(capture.mock.calls[0]?.[1]).toEqual({
+    boundary: 'global',
+    digest: 'abc123',
+  })
+})

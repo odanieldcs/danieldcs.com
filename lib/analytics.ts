@@ -58,6 +58,20 @@ type NavigatorLike = Pick<Navigator, 'webdriver'>
 const queue: AnalyticsEvent[] = []
 let capture: ((event: AnalyticsEvent) => void) | null = null
 
+export type ErrorBoundaryKind = 'route' | 'global'
+
+const ERROR_QUEUE_MAX = 10
+
+type QueuedErrorCapture = {
+  error: unknown
+  properties: Record<string, string>
+}
+
+const errorQueue: QueuedErrorCapture[] = []
+let errorCapture:
+  | ((error: unknown, properties: Record<string, string>) => void)
+  | null = null
+
 function readAnalyticsEnv(): AnalyticsEnv {
   return {
     NEXT_PUBLIC_VERCEL_ENV: process.env.NEXT_PUBLIC_VERCEL_ENV,
@@ -97,6 +111,49 @@ export function discardAnalyticsQueue(): void {
   queue.length = 0
 }
 
+export function bindErrorCapture(
+  fn: (error: unknown, properties: Record<string, string>) => void,
+): void {
+  errorCapture = fn
+  for (const item of errorQueue) {
+    fn(item.error, item.properties)
+  }
+  errorQueue.length = 0
+}
+
+export function discardErrorCaptureQueue(): void {
+  errorQueue.length = 0
+}
+
+export function discardPendingAnalytics(): void {
+  discardAnalyticsQueue()
+  discardErrorCaptureQueue()
+}
+
+export function captureError(
+  error: unknown,
+  options: { boundary: ErrorBoundaryKind; digest?: string },
+): void {
+  if (!isAnalyticsEnabled()) {
+    return
+  }
+
+  const properties: Record<string, string> = { boundary: options.boundary }
+  if (options.digest !== undefined) {
+    properties.digest = options.digest
+  }
+
+  if (errorCapture) {
+    errorCapture(error, properties)
+    return
+  }
+
+  errorQueue.push({ error, properties })
+  while (errorQueue.length > ERROR_QUEUE_MAX) {
+    errorQueue.shift()
+  }
+}
+
 export function track(event: AnalyticsEvent): void {
   if (!isAnalyticsEnabled()) {
     return
@@ -112,4 +169,6 @@ export function track(event: AnalyticsEvent): void {
 export function resetAnalyticsStateForTests(): void {
   queue.length = 0
   capture = null
+  errorQueue.length = 0
+  errorCapture = null
 }
