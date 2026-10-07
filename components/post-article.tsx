@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { ArticleReadSentinel } from '@/components/article-read-sentinel'
 import { Container } from '@/components/container'
 import { resolveCoverSrc } from '@/lib/content/cover'
 import { MdxContent } from '@/lib/content/mdx'
@@ -102,6 +103,11 @@ export function PostArticle({
         />
       ) : null}
       <MdxContent source={content} />
+      <ArticleReadSentinel
+        key={post.slug}
+        slug={post.slug}
+        language={language}
+      />
     </Container>
   )
 }
