@@ -30,6 +30,9 @@ export function HeaderNavLinks({ pathname }: { pathname: string | null }) {
           href={item.href}
           prefetch={false}
           active={pathname !== null && isMainNavActive(pathname, item.href)}
+          data-cta="nav_item"
+          data-cta-location="header"
+          data-cta-target={item.ctaTarget}
         >
           {item.label}
         </NavLink>

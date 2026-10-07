@@ -178,6 +178,8 @@ function Experience({ copy }: { copy: AboutCopy }) {
             target="_blank"
             rel="noopener noreferrer"
             className={ctaLinkClassName}
+            data-cta="linkedin_experience"
+            data-cta-location="about"
           >
             {copy.linkedinCta}
             <ArrowRightIcon />
@@ -277,7 +279,12 @@ function Contact({ copy }: { copy: AboutCopy }) {
             {paragraph}
           </p>
         ))}
-        <a href={`mailto:${contactEmail}`} className={ctaLinkClassName}>
+        <a
+          href={`mailto:${contactEmail}`}
+          className={ctaLinkClassName}
+          data-cta="contact_email"
+          data-cta-location="about"
+        >
           {copy.contactCta}
           <ArrowRightIcon />
         </a>
@@ -291,7 +298,7 @@ export function AboutView() {
   const copy = getAboutCopy(language)
 
   return (
-    <main>
+    <main data-analytics-source="about">
       <Container width="page" className="pb-20 pt-10 sm:pb-28 sm:pt-16">
         <Intro copy={copy} language={language} />
       </Container>

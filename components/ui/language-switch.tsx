@@ -55,6 +55,9 @@ function LanguageSwitchLink({ search }: { search: string }) {
           prefetch={false}
           aria-describedby={tooltipId}
           aria-label={label}
+          data-cta="language_switch"
+          data-cta-location="header"
+          data-cta-target={nextLanguage(language)}
         >
           <GlobeIcon />
         </ButtonLink>

@@ -4,9 +4,9 @@ import { afterEach, expect, test, vi } from 'vitest'
 import { MobileMenu, type MobileMenuItem } from './mobile-menu'
 
 const items: readonly MobileMenuItem[] = [
-  { href: '/blog', label: 'Blog' },
-  { href: '/community', label: 'Comunidade' },
-  { href: '/about', label: 'Sobre' },
+  { href: '/blog', label: 'Blog', ctaTarget: 'blog' },
+  { href: '/community', label: 'Comunidade', ctaTarget: 'community' },
+  { href: '/about', label: 'Sobre', ctaTarget: 'about' },
 ]
 
 vi.mock('next/link', () => ({

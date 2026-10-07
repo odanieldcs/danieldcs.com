@@ -1,14 +1,34 @@
 import type { InterfaceLanguage } from '@/lib/i18n/types'
 
-export type CtaKind =
-  | 'nav_item'
-  | 'home_about'
-  | 'post_card'
-  | 'linkedin_experience'
-  | 'contact_email'
-  | 'language_switch'
+export const CTA_KINDS = [
+  'nav_item',
+  'home_about',
+  'post_card',
+  'linkedin_experience',
+  'contact_email',
+  'language_switch',
+] as const
 
-export type CtaLocation = 'header' | 'footer' | 'home' | 'blog' | 'about'
+export type CtaKind = (typeof CTA_KINDS)[number]
+
+export const CTA_LOCATIONS = [
+  'header',
+  'footer',
+  'home',
+  'blog',
+  'about',
+] as const
+
+export type CtaLocation = (typeof CTA_LOCATIONS)[number]
+
+export const LINK_SOURCE_VALUES = [
+  'post',
+  'footer',
+  'about',
+  'community',
+] as const
+
+export type LinkSource = (typeof LINK_SOURCE_VALUES)[number] | 'unknown'
 
 export type AnalyticsEvent =
   | {
@@ -17,7 +37,7 @@ export type AnalyticsEvent =
     }
   | {
       name: 'external_link_click'
-      properties: { href_host: string; source: string }
+      properties: { href_host: string; source: LinkSource }
     }
   | {
       name: 'cta_click'

@@ -354,7 +354,7 @@ export function CommunityView({ entries }: { entries: CommunityEntryView[] }) {
   }
 
   return (
-    <main>
+    <main data-analytics-source="community">
       <Container width="page" className="pb-10 pt-10 sm:pb-12 sm:pt-16">
         <p className="text-eyebrow uppercase text-label">{copy.eyebrow}</p>
         <h1 className="mt-5 max-w-2xl font-display text-display">{copy.title}</h1>

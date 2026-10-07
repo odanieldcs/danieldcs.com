@@ -74,6 +74,9 @@ function ListItem({
       <Link
         href={localizePath(`/blog/${post.slug}`, language)}
         className={listLinkClassName}
+        data-cta="post_card"
+        data-cta-location="blog"
+        data-cta-target={post.slug}
       >
         <h2 className="min-w-0 font-display text-xl font-medium transition-colors group-hover:text-accent sm:text-2xl">
           {post.title}
@@ -109,6 +112,9 @@ function GridCard({
           interactiveSurfaceClassName,
           focusClassName,
         ].join(' ')}
+        data-cta="post_card"
+        data-cta-location="blog"
+        data-cta-target={post.slug}
       >
         <div className="relative aspect-video w-full bg-foreground/6">
           {coverSrc ? (
