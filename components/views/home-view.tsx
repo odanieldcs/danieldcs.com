@@ -67,7 +67,7 @@ function Hero({
       <div className="order-2 flex min-w-0 flex-col gap-content-gap md:order-1">
         <p className="text-eyebrow uppercase text-label">{copy.eyebrow}</p>
         <h1 className="font-display text-display">{copy.headline}</h1>
-        <div className="flex max-w-xl flex-col gap-3 text-home-intro text-foreground/70">
+        <div className="flex max-w-xl flex-col gap-3 text-home-intro text-foreground/80">
           {copy.intro.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
@@ -149,7 +149,7 @@ function RecentWriting({
               data-cta-location="home"
               data-cta-target={post.slug}
             >
-              <p className="text-xs font-medium uppercase text-foreground/45">
+              <p className="text-xs font-semibold uppercase text-foreground/45">
                 {post.tag ? (
                   <>
                     <span>{post.tag}</span>
@@ -160,10 +160,10 @@ function RecentWriting({
                   {formatDate(post.date, language, { style: 'full' })}
                 </time>
               </p>
-              <h3 className="mt-4 font-display text-display-title transition-colors group-hover:text-accent">
+              <h3 className="mt-4 min-w-0 truncate font-display text-display-title transition-colors group-hover:text-accent">
                 {post.title}
               </h3>
-              <p className="mt-3 text-note text-foreground/65">
+              <p className="mt-3 line-clamp-3 text-note text-foreground/65">
                 {post.description}
               </p>
               <span className="mt-auto inline-flex items-center gap-2 pt-6 text-sm font-semibold text-accent">
