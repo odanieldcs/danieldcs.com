@@ -1,6 +1,6 @@
 import type { Metadata, ResolvingMetadata } from 'next'
-import { AboutView } from '@/components/about-view'
 import { JsonLd } from '@/components/json-ld'
+import { AboutView } from '@/components/views/about-view'
 import { getLocalizedPageMetadata } from '@/lib/i18n/page-metadata'
 import { getAboutJsonLd } from '@/lib/page-data'
 

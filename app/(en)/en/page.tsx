@@ -1,6 +1,6 @@
 import type { Metadata, ResolvingMetadata } from 'next'
-import { HomeView } from '@/components/home-view'
 import { JsonLd } from '@/components/json-ld'
+import { HomeView } from '@/components/views/home-view'
 import { getLocalizedPageMetadata } from '@/lib/i18n/page-metadata'
 import { getHomeJsonLd, getHomePosts } from '@/lib/page-data'
 

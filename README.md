@@ -51,6 +51,7 @@ pnpm test:e2e
 - `content/` — source content (`posts/`, `community/`); MDX loaders come later
 - `public/` — static files, including `media/` for posts, personal photos, icons, illustrations, and documents
 - `lib/` — shared TypeScript modules
+- `components/` — UI by responsibility: `views/` (pages), `layout/` (shell, header, footer, container), `mdx/` (MDX blocks), `ui/` (controls and icons). Providers and route infra stay at the root (`theme-provider`, `interface-language-provider`, `json-ld`, `route-error-boundary`).
 - `e2e/` — Playwright smoke tests
 
 `@/foo` resolves to `<repo>/foo` via `compilerOptions.paths` in `tsconfig.json`. Example: `@/lib/site` → `lib/site.ts`. There is no `~/*` alias.

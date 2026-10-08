@@ -6,8 +6,8 @@ import {
   isValidElement,
   type ReactNode,
 } from 'react'
-import { MdxBookGrid } from '@/components/mdx-book-grid'
-import { MdxBookPick } from '@/components/mdx-book-pick'
+import { MdxBookGrid } from '@/components/mdx/mdx-book-grid'
+import { MdxBookPick } from '@/components/mdx/mdx-book-pick'
 import { externalLinkRel } from '@/lib/external-link'
 import { linkClassName } from '@/lib/link-styles'
 

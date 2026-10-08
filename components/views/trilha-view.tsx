@@ -1,8 +1,8 @@
 'use client'
 
-import { buttonClassName } from '@/components/button'
-import { Container } from '@/components/container'
 import { useInterfaceLanguage } from '@/components/interface-language-provider'
+import { Container } from '@/components/layout/container'
+import { buttonClassName } from '@/components/ui/button'
 import { getTrilhaCopy, type TrilhaCopy } from '@/lib/i18n/pages'
 import { trilhaWhatsAppUrl } from '@/lib/site'
 

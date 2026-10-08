@@ -1,12 +1,12 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Suspense } from 'react'
-import { Container } from '@/components/container'
+import { Container } from '@/components/layout/container'
 import {
   HeaderMobileMenu,
   HeaderNav,
   HeaderNavLinks,
-} from '@/components/header-nav'
+} from '@/components/layout/header-nav'
 import { LanguageSwitch } from '@/components/ui/language-switch'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { localizePath } from '@/lib/i18n/routes'

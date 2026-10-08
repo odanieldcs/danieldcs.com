@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
-import { NotFoundView } from '@/components/not-found-view'
-import { SiteShell } from '@/components/site-shell'
+import { SiteShell } from '@/components/layout/site-shell'
+import { NotFoundView } from '@/components/views/not-found-view'
 import { baseMetadata } from '@/lib/metadata'
 
 export const metadata: Metadata = {

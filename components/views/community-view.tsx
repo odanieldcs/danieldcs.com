@@ -1,9 +1,9 @@
 'use client'
 
 import { type ReactNode, useRef, useState } from 'react'
-import { Container } from '@/components/container'
 import { useInterfaceLanguage } from '@/components/interface-language-provider'
-import { GridViewIcon, ListViewIcon } from '@/components/view-mode-icons'
+import { Container } from '@/components/layout/container'
+import { GridViewIcon, ListViewIcon } from '@/components/views/view-mode-icons'
 import type { CommunityEntryType } from '@/lib/content/community-schema'
 import { type CommunityCopy, getCommunityCopy } from '@/lib/i18n/pages'
 import type { InterfaceLanguage } from '@/lib/i18n/types'

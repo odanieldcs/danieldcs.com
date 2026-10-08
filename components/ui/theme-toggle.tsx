@@ -2,8 +2,8 @@
 
 import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
-import { Button } from '@/components/button'
 import { useUiDictionary } from '@/components/interface-language-provider'
+import { Button } from '@/components/ui/button'
 import { Tooltip } from '@/components/ui/tooltip'
 
 const iconButtonClassName = 'peer min-w-11 px-0'

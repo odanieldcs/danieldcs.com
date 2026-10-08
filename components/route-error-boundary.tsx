@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import { ErrorView } from '@/components/error-view'
+import { ErrorView } from '@/components/views/error-view'
 import { captureError } from '@/lib/analytics'
 import type { InterfaceLanguage } from '@/lib/i18n/types'
 

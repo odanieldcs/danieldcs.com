@@ -1,5 +1,5 @@
 import { Fragment } from 'react'
-import { Container } from '@/components/container'
+import { Container } from '@/components/layout/container'
 import { certificatePage } from '@/lib/content/certificates'
 import type {
   CertificateDescription,
