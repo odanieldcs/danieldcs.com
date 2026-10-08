@@ -4,8 +4,7 @@ import { getNewestBlogPost } from './helpers/posts'
 
 const blogPostPath = `/blog/${getNewestBlogPost('theme').slug}` as const
 
-// Chromium serializes these oklch backgrounds as lab().
-const lightBackground = 'lab(95.2984 0.174552 4.59245)'
+const lightBackground = 'rgb(242, 238, 239)'
 const darkBackground = 'lab(11.8869 0.301734 4.69313)'
 const lightForeground = 'lab(10.2215 -2.79985 1.40786)'
 const darkForeground = 'rgb(236, 236, 236)'
@@ -34,21 +33,34 @@ async function expectThemeTokens(
 }
 
 for (const path of ['/', blogPostPath] as const) {
-  test(`system light theme tokens on ${path}`, async ({ page }) => {
+  test(`defaults to dark on ${path} when OS prefers light`, async ({
+    page,
+  }) => {
     const consoleErrors = collectConsoleErrors(page)
 
     await page.emulateMedia({ colorScheme: 'light' })
-    await page.goto(path)
-    await expectThemeTokens(page, 'light')
-    expect(consoleErrors).toEqual([])
-  })
-
-  test(`system dark theme tokens on ${path}`, async ({ page }) => {
-    const consoleErrors = collectConsoleErrors(page)
-
-    await page.emulateMedia({ colorScheme: 'dark' })
     await page.goto(path)
     await expectThemeTokens(page, 'dark')
     expect(consoleErrors).toEqual([])
   })
 }
+
+test('light theme choice persists across reload and navigation', async ({
+  page,
+}) => {
+  const consoleErrors = collectConsoleErrors(page)
+
+  await page.emulateMedia({ colorScheme: 'light' })
+  await page.goto('/')
+  await expectThemeTokens(page, 'dark')
+
+  await page.getByRole('button', { name: 'Modo claro' }).click()
+  await expectThemeTokens(page, 'light')
+
+  await page.reload()
+  await expectThemeTokens(page, 'light')
+
+  await page.goto(blogPostPath)
+  await expectThemeTokens(page, 'light')
+  expect(consoleErrors).toEqual([])
+})
