@@ -1,4 +1,10 @@
-import { cleanup, fireEvent, render, screen, within } from '@testing-library/react'
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  within,
+} from '@testing-library/react'
 import { afterEach, expect, test } from 'vitest'
 import { InterfaceLanguageProvider } from '@/components/interface-language-provider'
 import { type CommunityEntryView, CommunityView } from './community-view'
@@ -54,10 +60,7 @@ afterEach(() => {
   cleanup()
 })
 
-function renderCommunity(
-  language: 'pt' | 'en' = 'pt',
-  nextEntries = entries,
-) {
+function renderCommunity(language: 'pt' | 'en' = 'pt', nextEntries = entries) {
   return render(
     <InterfaceLanguageProvider language={language}>
       <CommunityView entries={nextEntries} />
@@ -66,7 +69,9 @@ function renderCommunity(
 }
 
 function yearSection(year: string) {
-  return screen.getByRole('heading', { level: 2, name: year }).closest('section')
+  return screen
+    .getByRole('heading', { level: 2, name: year })
+    .closest('section')
 }
 
 test('groups entries by year with date, type, title, and location', () => {
@@ -122,14 +127,16 @@ test('switches the same entries between list and grid', () => {
   const formatGroup = screen.getByRole('group', { name: 'Formato' })
   const listing = formatGroup.closest('.border-t')
   const switcherAnchor = formatGroup.parentElement
-  expect(listing?.contains(screen.getByRole('heading', { level: 1 }))).toBe(false)
+  expect(listing?.contains(screen.getByRole('heading', { level: 1 }))).toBe(
+    false,
+  )
   expect(listing?.querySelector('h2')?.textContent).toBe('2026')
   expect(formatGroup.className).toContain('w-fit')
   expect(switcherAnchor?.className).toContain('right-0')
   expect(switcherAnchor?.className).toContain('-translate-y-1/2')
-  expect(yearSection('2026')?.querySelector('ol')?.parentElement?.className).not.toContain(
-    'animate-community-view-in',
-  )
+  expect(
+    yearSection('2026')?.querySelector('ol')?.parentElement?.className,
+  ).not.toContain('animate-community-view-in')
   expect(yearSection('2026')?.querySelector('ol')).toBeTruthy()
 
   fireEvent.click(gridButton)
@@ -147,10 +154,12 @@ test('switches the same entries between list and grid', () => {
   })
   expect(card.getAttribute('href')).toBe('https://example.com/palestra')
   expect(
-    within(year2026 as HTMLElement).getByRole('heading', {
-      level: 3,
-      name: 'Exemplo de workshop',
-    }).closest('a'),
+    within(year2026 as HTMLElement)
+      .getByRole('heading', {
+        level: 3,
+        name: 'Exemplo de workshop',
+      })
+      .closest('a'),
   ).toBeNull()
 
   fireEvent.click(listButton)

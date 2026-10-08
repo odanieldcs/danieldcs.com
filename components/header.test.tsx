@@ -129,9 +129,9 @@ test('uses English nav labels and /en links when the interface language is en', 
   expect(
     screen.getByRole('link', { name: 'Community' }).getAttribute('href'),
   ).toBe('/en/community')
-  expect(
-    screen.getByRole('link', { name: 'About' }).getAttribute('href'),
-  ).toBe('/en/about')
+  expect(screen.getByRole('link', { name: 'About' }).getAttribute('href')).toBe(
+    '/en/about',
+  )
   expect(
     screen.getByRole('link', { name: 'About' }).className.split(/\s+/),
   ).toContain('text-foreground')

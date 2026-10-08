@@ -64,11 +64,7 @@ export function PostArticle({
     : undefined
 
   return (
-    <Container
-      as="article"
-      width="article"
-      data-analytics-source="post"
-    >
+    <Container as="article" width="article" data-analytics-source="post">
       <h1 className={articleTitleClassName}>{frontmatter.title}</h1>
       <time
         className={articleDateClassName}

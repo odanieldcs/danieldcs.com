@@ -1,4 +1,4 @@
-import { serializeJsonLd, type JsonLdDocument } from '@/lib/seo/json-ld'
+import { type JsonLdDocument, serializeJsonLd } from '@/lib/seo/json-ld'
 
 type JsonLdProps = {
   data: JsonLdDocument

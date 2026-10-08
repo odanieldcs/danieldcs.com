@@ -22,7 +22,8 @@ const posts: BlogPostView[] = [
   {
     slug: 'exemplo-typescript',
     title: 'TypeScript no dia a dia',
-    description: 'Pequenas decisões de tipagem que evitam surpresas em produção.',
+    description:
+      'Pequenas decisões de tipagem que evitam surpresas em produção.',
     date: '2026-08-15T00:00:00.000Z',
     cover: 'exemplo-typescript.png',
   },
@@ -69,7 +70,9 @@ test('list view links to posts with title and month-year on the right', () => {
 
   expect(articleLink.getAttribute('href')).toBe('/blog/content-system')
   expect(
-    within(articleLink).queryByText('Um passeio pelo pipeline de ponta a ponta.'),
+    within(articleLink).queryByText(
+      'Um passeio pelo pipeline de ponta a ponta.',
+    ),
   ).toBeNull()
   const published = within(articleLink).getByRole('time')
   expect(published.textContent).toBe('set. 2026')
@@ -83,7 +86,9 @@ test('list view formats month and year in English', () => {
     name: /Como o content system renderiza um artigo/i,
   })
 
-  expect(within(articleLink).getByRole('time').textContent).toMatch(/Sep\.? 2026/)
+  expect(within(articleLink).getByRole('time').textContent).toMatch(
+    /Sep\.? 2026/,
+  )
 })
 
 test('grid view hides descriptions and shows cover images', () => {
@@ -99,12 +104,12 @@ test('grid view hides descriptions and shows cover images', () => {
 test('view switch links preserve the current page', () => {
   renderBlog('pt', { page: 2, pageCount: 3 })
 
-  expect(
-    screen.getByRole('link', { name: 'Grade' }).getAttribute('href'),
-  ).toBe('/blog?view=grid&page=2')
-  expect(
-    screen.getByRole('link', { name: 'Lista' }).getAttribute('href'),
-  ).toBe('/blog?page=2')
+  expect(screen.getByRole('link', { name: 'Grade' }).getAttribute('href')).toBe(
+    '/blog?view=grid&page=2',
+  )
+  expect(screen.getByRole('link', { name: 'Lista' }).getAttribute('href')).toBe(
+    '/blog?page=2',
+  )
 })
 
 test('pagination is hidden with at most one page of items', () => {
@@ -117,30 +122,30 @@ test('pagination links preserve view and mark the current page', () => {
   renderBlog('pt', { view: 'grid', page: 2, pageCount: 3 })
 
   const nav = screen.getByRole('navigation', { name: 'Paginação' })
-  expect(within(nav).getByRole('link', { name: 'Anterior' }).getAttribute('href')).toBe(
-    '/blog?view=grid',
-  )
-  expect(within(nav).getByRole('link', { name: 'Próxima' }).getAttribute('href')).toBe(
-    '/blog?view=grid&page=3',
-  )
-  expect(within(nav).getByRole('link', { name: '2' }).getAttribute('aria-current')).toBe(
-    'page',
-  )
+  expect(
+    within(nav).getByRole('link', { name: 'Anterior' }).getAttribute('href'),
+  ).toBe('/blog?view=grid')
+  expect(
+    within(nav).getByRole('link', { name: 'Próxima' }).getAttribute('href'),
+  ).toBe('/blog?view=grid&page=3')
+  expect(
+    within(nav).getByRole('link', { name: '2' }).getAttribute('aria-current'),
+  ).toBe('page')
 })
 
 test('EN listing keeps view, pagination and posts under /en/blog', () => {
   renderBlog('en', { view: 'grid', page: 2, pageCount: 3 })
 
-  expect(
-    screen.getByRole('link', { name: 'List' }).getAttribute('href'),
-  ).toBe('/en/blog?page=2')
+  expect(screen.getByRole('link', { name: 'List' }).getAttribute('href')).toBe(
+    '/en/blog?page=2',
+  )
   const nav = screen.getByRole('navigation', { name: 'Pagination' })
-  expect(within(nav).getByRole('link', { name: 'Previous' }).getAttribute('href')).toBe(
-    '/en/blog?view=grid',
-  )
-  expect(within(nav).getByRole('link', { name: 'Next' }).getAttribute('href')).toBe(
-    '/en/blog?view=grid&page=3',
-  )
+  expect(
+    within(nav).getByRole('link', { name: 'Previous' }).getAttribute('href'),
+  ).toBe('/en/blog?view=grid')
+  expect(
+    within(nav).getByRole('link', { name: 'Next' }).getAttribute('href'),
+  ).toBe('/en/blog?view=grid&page=3')
   expect(
     screen
       .getByRole('link', { name: /Como o content system renderiza um artigo/i })

@@ -1,11 +1,11 @@
 'use client'
 
-import type { ReactNode } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import type { ReactNode } from 'react'
 import { Container } from '@/components/container'
 import { useInterfaceLanguage } from '@/components/interface-language-provider'
-import { buildBlogListingHref, type BlogViewMode } from '@/lib/blog/pagination'
+import { type BlogViewMode, buildBlogListingHref } from '@/lib/blog/pagination'
 import { resolveCoverSrc } from '@/lib/content/cover'
 import { type BlogCopy, getBlogCopy } from '@/lib/i18n/pages'
 import { localizePath } from '@/lib/i18n/routes'
@@ -317,7 +317,9 @@ export function BlogView({
     <main>
       <Container width="page" className="pb-10 pt-10 sm:pb-12 sm:pt-16">
         <p className="text-eyebrow uppercase text-label">{copy.eyebrow}</p>
-        <h1 className="mt-5 max-w-2xl font-display text-display">{copy.title}</h1>
+        <h1 className="mt-5 max-w-2xl font-display text-display">
+          {copy.title}
+        </h1>
         <p className="mt-8 max-w-xl text-base leading-relaxed text-foreground/70 sm:text-lg">
           {copy.intro}
         </p>

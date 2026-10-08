@@ -13,7 +13,9 @@ export function NotFoundView({ language }: { language: InterfaceLanguage }) {
     <main>
       <Container width="page" className="py-section">
         <p className="text-eyebrow uppercase text-label">{copy.eyebrow}</p>
-        <h1 className="mt-5 max-w-2xl font-display text-display">{copy.title}</h1>
+        <h1 className="mt-5 max-w-2xl font-display text-display">
+          {copy.title}
+        </h1>
         <p className="mt-8 max-w-xl text-base leading-relaxed text-foreground/70 sm:text-lg">
           {copy.paragraph}
         </p>

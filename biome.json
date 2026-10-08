@@ -9,6 +9,7 @@
     "ignoreUnknown": false,
     "includes": [
       "app/**",
+      "components/**",
       "content/**/*.ts",
       "lib/**",
       "instrumentation-client.ts",
@@ -68,5 +69,11 @@
         "organizeImports": "on"
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["components/**"],
+      "linter": { "enabled": false }
+    }
+  ]
 }
