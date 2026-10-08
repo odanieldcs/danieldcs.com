@@ -5,7 +5,7 @@ type ContainerElement = 'div' | 'main' | 'article' | 'section'
 
 const widthClass: Record<ContainerWidth, string> = {
   page: 'max-w-container px-page',
-  article: 'max-w-content px-inline',
+  article: 'max-w-post px-inline',
 }
 
 type ContainerProps<T extends ContainerElement> = {

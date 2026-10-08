@@ -251,6 +251,7 @@ export type AboutCopy = {
   blogCta: string
   pillars: string[]
   portraitAlt: string
+  scrollToExperienceLabel: string
   sectionExperienceIndex: string
   experienceTitle: string
   experienceSubtitle: string
@@ -260,8 +261,6 @@ export type AboutCopy = {
   repertoireTitle: string
   repertoireSubtitle: string
   repertoireGroups: AboutRepertoireGroup[]
-  languagesLabel: string
-  languagesValue: string
   stackLabel: string
   stackValue: string
   sectionPersonalIndex: string
@@ -284,16 +283,12 @@ const aboutCopy: Record<InterfaceLanguage, AboutCopy> = {
       'Atuar como Engenheiro de Software, desenvolvendo aplicações e sistemas para a web, explorando novas formas de aproximar engenharia, produto e métricas, agora com IA acelerando processos para melhorar a vida das pessoas é algo que tem feito minha jornada gratificante.',
       'Compartilhar também é parte do que sou. Ensinar, escrever, palestrar, participar de comunidades e orientar pessoas em diferentes momentos da carreira é algo que me faz feliz.',
       'Fora do código, sou casado com uma mulher incrível, pai de uma menina linda, pai de pets e corredor amador.',
-      'Neste site reúno um pouco de tudo isso: textos, experiências, projetos e experimentos. Mais do que um portfólio, é um lugar para registrar o caminho enquanto continuo aprendendo e construindo.',
+      'Neste site reúno um pouco de tudo: textos, experiências, projetos e experimentos. Mais do que um portfólio, é um lugar para registrar o caminho enquanto continuo aprendendo e construindo.',
     ],
     blogCta: 'Ler o blog',
-    pillars: [
-      'Software Engineering',
-      'AI-Assisted Development',
-      'Liderança técnica',
-      'Ensino',
-    ],
+    pillars: ['Software Engineering', 'AI-Assisted Development', 'Ensino'],
     portraitAlt: 'Retrato de Daniel Castro na Golden Gate',
+    scrollToExperienceLabel: 'Rolar até a seção Experiência',
     sectionExperienceIndex: '01 / Experiência',
     experienceTitle: 'Experiência',
     experienceSubtitle:
@@ -366,12 +361,10 @@ const aboutCopy: Record<InterfaceLanguage, AboutCopy> = {
       {
         title: 'Teaching',
         description:
-          'Conhecimento compartilhado por meio de conteúdo, aulas e conversas técnicas.',
+          'Conhecimento compartilhado por meio de conteúdo, aulas e workshops técnicos.',
         skills: ['Conteúdo', 'Palestras', 'Mentoria', 'Cursos'],
       },
     ],
-    languagesLabel: 'Idiomas',
-    languagesValue: 'Português · Inglês',
     stackLabel: 'Stack Principal',
     stackValue:
       'TypeScript · React · Next.js · Node.js · C# · Python · PostgreSQL · Drizzle/Prisma · GraphQL · AWS · Vercel · Docker',
@@ -396,16 +389,12 @@ const aboutCopy: Record<InterfaceLanguage, AboutCopy> = {
       "Working as a software engineer, building web applications and systems, exploring new ways to bring engineering, product, and metrics closer together, now with AI speeding up processes to improve people's lives, is something that has made my journey rewarding.",
       'Sharing is also part of who I am. Teaching, writing, speaking, taking part in communities, and guiding people at different moments in their careers is something that makes me happy.',
       "Away from the code, I'm married to an incredible woman, father of a beautiful girl, a pet dad, and an amateur runner.",
-      "On this site I gather a bit of all of that: writing, experiences, projects, and experiments. More than a portfolio, it's a place to record the path while I keep learning and building.",
+      "On this site I gather a bit of everything: writing, experiences, projects, and experiments. More than a portfolio, it's a place to record the path while I keep learning and building.",
     ],
     blogCta: 'Read the blog',
-    pillars: [
-      'Software Engineering',
-      'AI-Assisted Development',
-      'Technical leadership',
-      'Teaching',
-    ],
+    pillars: ['Software Engineering', 'AI-Assisted Development', 'Teaching'],
     portraitAlt: 'Portrait of Daniel Castro at the Golden Gate Bridge',
+    scrollToExperienceLabel: 'Scroll to the Experience section',
     sectionExperienceIndex: '01 / Experience',
     experienceTitle: 'Experience',
     experienceSubtitle:
@@ -478,12 +467,10 @@ const aboutCopy: Record<InterfaceLanguage, AboutCopy> = {
       {
         title: 'Teaching',
         description:
-          'Knowledge shared through content, classes, and technical conversations.',
+          'Knowledge shared through content, classes, and technical workshops.',
         skills: ['Content', 'Talks', 'Mentoring', 'Courses'],
       },
     ],
-    languagesLabel: 'Languages',
-    languagesValue: 'Portuguese · English',
     stackLabel: 'Main stack',
     stackValue:
       'TypeScript · React · Next.js · Node.js · C# · Python · PostgreSQL · Drizzle/Prisma · GraphQL · AWS · Vercel · Docker',
@@ -619,7 +606,10 @@ const footerResourceLinks: Record<
     { href: '/blog/livros-recomendados', label: 'Leituras recentes' },
     { href: '/blog/ferramentas-apps-e-setup', label: 'Usos' },
   ],
-  en: [],
+  en: [
+    { href: '/blog/livros-recomendados', label: 'Recent reads' },
+    { href: '/blog/ferramentas-apps-e-setup', label: 'Tools & setup' },
+  ],
 }
 
 export function getFooterResourceLinks(
@@ -690,6 +680,8 @@ export function getErrorCopy(lang: InterfaceLanguage): ErrorCopy {
 }
 
 export type PostCopy = {
+  backToBlog: string
+  backToTop: string
   /** Notice for a post read in an interface language it is not written in. */
   onlyAvailableIn: Record<InterfaceLanguage, string>
   /** CTA to the same post in the language it is written in. */
@@ -698,6 +690,8 @@ export type PostCopy = {
 
 const postCopy: Record<InterfaceLanguage, PostCopy> = {
   pt: {
+    backToBlog: 'Voltar para o blog',
+    backToTop: 'Voltar ao topo',
     onlyAvailableIn: {
       pt: 'Conteúdo disponível apenas em português.',
       en: 'Conteúdo disponível apenas em inglês.',
@@ -708,6 +702,8 @@ const postCopy: Record<InterfaceLanguage, PostCopy> = {
     },
   },
   en: {
+    backToBlog: 'Back to Blog',
+    backToTop: 'Back to top',
     onlyAvailableIn: {
       pt: 'Content available only in Portuguese.',
       en: 'Content available only in English.',

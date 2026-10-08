@@ -5,12 +5,15 @@ import Link from 'next/link'
 import { useInterfaceLanguage } from '@/components/interface-language-provider'
 import { Container } from '@/components/layout/container'
 import { ArrowRightIcon } from '@/components/ui/arrow-right-icon'
+import { AboutScrollHint } from '@/components/views/about-scroll-hint'
 import { type AboutCopy, getAboutCopy } from '@/lib/i18n/pages'
 import { localizePath } from '@/lib/i18n/routes'
 import type { InterfaceLanguage } from '@/lib/i18n/types'
 import { contactEmail, linkedInProfileUrl } from '@/lib/site'
 
 const PORTRAIT_SRC = '/media/personal/daniel_castro_profile_2.jpg'
+const ABOUT_EXPERIENCE_SECTION_ID = 'about-experience'
+const ABOUT_EXPERIENCE_HEADING_ID = `${ABOUT_EXPERIENCE_SECTION_ID}-heading`
 
 const sectionGridClassName =
   'grid items-start gap-10 md:grid-cols-[15rem_minmax(0,1fr)] md:gap-16'
@@ -26,14 +29,8 @@ const sectionTitleClassName = `mt-4 ${bandTitleClassName}`
 const subtitleClassName = 'mt-4 text-sm leading-relaxed text-foreground/55'
 
 const ctaLinkClassName = [
-  'group mt-8 inline-flex items-center gap-2 text-sm font-semibold text-accent',
+  'group mt-8 inline-flex items-center gap-2 text-sm font-normal text-accent',
   'rounded-sm hover:underline',
-  'outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
-].join(' ')
-
-const quietCtaClassName = [
-  'group mt-6 inline-flex w-fit items-center gap-1.5 text-sm text-foreground/55',
-  'rounded-sm transition-colors hover:text-foreground',
   'outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
 ].join(' ')
 
@@ -58,15 +55,19 @@ function SectionLabel({
   index,
   title,
   subtitle,
+  titleId,
 }: {
   index: string
   title: string
   subtitle?: string
+  titleId?: string
 }) {
   return (
     <div>
       <p className={indexClassName}>{index}</p>
-      <h2 className={sectionTitleClassName}>{title}</h2>
+      <h2 id={titleId} className={sectionTitleClassName}>
+        {title}
+      </h2>
       {subtitle ? <p className={subtitleClassName}>{subtitle}</p> : null}
     </div>
   )
@@ -80,33 +81,33 @@ function Intro({
   language: InterfaceLanguage
 }) {
   return (
-    <section className="grid items-start gap-content-gap md:grid-cols-[minmax(0,1.15fr)_minmax(16rem,0.85fr)] md:gap-section">
-      <figure className="group order-1 w-9/10 justify-self-center overflow-hidden rounded-lg bg-foreground/6 md:order-2 md:justify-self-end">
-        <div className="relative aspect-3/4 overflow-hidden">
+    <section className="grid items-start gap-section md:grid-cols-[minmax(0,65fr)_minmax(0,35fr)] md:gap-x-16 md:gap-y-0">
+      <figure className="group order-1 w-full justify-self-stretch overflow-hidden rounded-xl bg-foreground/6 md:order-2 md:mt-9">
+        <div className="relative aspect-[3/3.2] overflow-hidden md:aspect-3/4">
           <Image
             src={PORTRAIT_SRC}
             alt={copy.portraitAlt}
             fill
             loading="eager"
             fetchPriority="high"
-            sizes="(min-width: 48rem) 24rem, 90vw"
-            className="object-cover object-[center_30%] motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out motion-safe:group-hover:scale-106 motion-safe:group-hover:rotate-2"
+            sizes="(min-width: 48rem) 35vw, 100vw"
+            className="object-cover object-[50%_28%] motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out motion-safe:group-hover:scale-106 motion-safe:group-hover:rotate-2 md:object-[center_30%]"
           />
         </div>
       </figure>
-      <div className="order-2 md:order-1">
+      <div className="order-2 flex min-w-0 flex-col md:order-1">
         <p className={indexClassName}>{copy.eyebrow}</p>
-        <h1 className="mt-5 max-w-2xl font-display text-display">
+        <h1 className="mt-5 w-full font-display text-display">
           {copy.headline}
         </h1>
-        <div className="mt-8 max-w-xl space-y-5 text-base leading-relaxed text-foreground/70">
+        <div className="mt-8 max-w-lg space-y-5 text-base leading-relaxed text-foreground/80">
           {copy.introParagraphs.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
         </div>
         <Link
           href={localizePath('/blog', language)}
-          className={quietCtaClassName}
+          className={ctaLinkClassName}
         >
           {copy.blogCta}
           <ArrowRightIcon />
@@ -123,7 +124,11 @@ function Intro({
 
 function Experience({ copy }: { copy: AboutCopy }) {
   return (
-    <section className="w-full border-y border-border">
+    <section
+      id={ABOUT_EXPERIENCE_SECTION_ID}
+      className="scroll-mt-24 w-full border-y border-border"
+      aria-labelledby={ABOUT_EXPERIENCE_HEADING_ID}
+    >
       <Container
         width="page"
         className={joinSectionClassName(
@@ -135,6 +140,7 @@ function Experience({ copy }: { copy: AboutCopy }) {
           index={copy.sectionExperienceIndex}
           title={copy.experienceTitle}
           subtitle={copy.experienceSubtitle}
+          titleId={ABOUT_EXPERIENCE_HEADING_ID}
         />
         <div>
           <ol className="relative list-none border-l border-border">
@@ -153,7 +159,7 @@ function Experience({ copy }: { copy: AboutCopy }) {
                   <p className="text-xs font-medium uppercase text-foreground/45">
                     {entry.period}
                   </p>
-                  <h3 className="mt-2 font-display text-2xl font-medium">
+                  <h3 className="mt-2 font-display text-xl font-medium">
                     {entry.role}
                   </h3>
                   <p className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
@@ -205,10 +211,10 @@ function Repertoire({ copy }: { copy: AboutCopy }) {
               <h3 className="border-b border-border pb-4 font-display text-xl font-medium">
                 {group.title}
               </h3>
-              <p className="mt-4 text-sm leading-relaxed text-foreground/60">
+              <p className="mt-4 text-sm font-normal leading-relaxed text-foreground/60">
                 {group.description}
               </p>
-              <ul className="mt-4 flex list-none flex-wrap gap-x-4 gap-y-2 text-xs font-medium text-foreground/70">
+              <ul className="mt-4 flex list-none flex-wrap gap-x-4 gap-y-2 text-xs font-light text-foreground/45">
                 {group.skills.map((skill) => (
                   <li key={skill}>{skill}</li>
                 ))}
@@ -217,14 +223,6 @@ function Repertoire({ copy }: { copy: AboutCopy }) {
           ))}
         </ul>
         <div className="mt-14 border-t border-border pt-6">
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
-            <h3 className="font-display text-xl font-medium">
-              {copy.languagesLabel}
-            </h3>
-            <p className="text-sm text-foreground/60">{copy.languagesValue}</p>
-          </div>
-        </div>
-        <div className="mt-6 border-t border-border pt-6">
           <h3 className="font-display text-xl font-medium">
             {copy.stackLabel}
           </h3>
@@ -247,7 +245,7 @@ function Personal({ copy }: { copy: AboutCopy }) {
         <p className={indexClassName}>{copy.sectionPersonalIndex}</p>
         <div>
           <h2 className={bandTitleClassName}>{copy.personalTitle}</h2>
-          <p className="mt-4 max-w-2xl leading-relaxed text-foreground/65">
+          <p className="mt-4 max-w-3xl text-sm leading-relaxed text-foreground/65">
             {copy.personalParagraph}
           </p>
         </div>
@@ -261,16 +259,9 @@ function Contact({ copy }: { copy: AboutCopy }) {
 
   return (
     <section className={sectionGridClassName}>
-      <SectionLabel
-        index={copy.sectionContactIndex}
-        title={copy.contactTitle}
-      />
+      <p className={indexClassName}>{copy.sectionContactIndex}</p>
       <div>
-        {lead ? (
-          <p className="max-w-2xl font-display text-2xl font-medium leading-snug sm:text-3xl">
-            {lead}
-          </p>
-        ) : null}
+        {lead ? <h2 className={bandTitleClassName}>{lead}</h2> : null}
         {rest.map((paragraph) => (
           <p
             key={paragraph}
@@ -299,9 +290,13 @@ export function AboutView() {
 
   return (
     <main data-analytics-source="about">
-      <Container width="page" className="pb-20 pt-10 sm:pb-28 sm:pt-16">
+      <Container width="page" className="pb-20 pt-5 sm:pb-28 sm:pt-12 md:pt-16">
         <Intro copy={copy} language={language} />
       </Container>
+      <AboutScrollHint
+        targetId={ABOUT_EXPERIENCE_SECTION_ID}
+        label={copy.scrollToExperienceLabel}
+      />
       <Experience copy={copy} />
       <Container width="page" className={sectionYClassName}>
         <Repertoire copy={copy} />

@@ -72,6 +72,7 @@ test('pt and en about copy share the same key shape', () => {
     'blogCta',
     'pillars',
     'portraitAlt',
+    'scrollToExperienceLabel',
     'sectionExperienceIndex',
     'experienceTitle',
     'experienceSubtitle',
@@ -81,8 +82,6 @@ test('pt and en about copy share the same key shape', () => {
     'repertoireTitle',
     'repertoireSubtitle',
     'repertoireGroups',
-    'languagesLabel',
-    'languagesValue',
     'stackLabel',
     'stackValue',
     'sectionPersonalIndex',
@@ -108,13 +107,11 @@ test('pt and en about copy share the same key shape', () => {
   expect(pt.pillars).toEqual([
     'Software Engineering',
     'AI-Assisted Development',
-    'Liderança técnica',
     'Ensino',
   ])
   expect(en.pillars).toEqual([
     'Software Engineering',
     'AI-Assisted Development',
-    'Technical leadership',
     'Teaching',
   ])
   expect(pt.timeline.map((item) => Object.keys(item))).toEqual([
@@ -175,8 +172,6 @@ test('pt and en about copy share the same key shape', () => {
   expect(en.repertoireGroups[2]?.skills).toContain('Metrics')
   expect(pt.stackValue).toContain('Drizzle/Prisma')
   expect(en.stackValue).toBe(pt.stackValue)
-  expect(pt.languagesValue).toBe('Português · Inglês')
-  expect(en.languagesValue).toBe('Portuguese · English')
   expect(pt.contactCta).toBe('Entre em contato')
   expect(en.contactCta).toBe('Get in touch')
   expect(pt.contactParagraphs).toHaveLength(2)

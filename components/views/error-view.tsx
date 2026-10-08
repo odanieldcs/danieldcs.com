@@ -27,7 +27,7 @@ export function ErrorView({
         <h1 className="mt-5 max-w-2xl font-display text-display">
           {copy.title}
         </h1>
-        <p className="mt-8 max-w-xl text-base leading-relaxed text-foreground/70 sm:text-lg">
+        <p className="mt-8 max-w-xl text-base leading-relaxed text-foreground/80 sm:text-lg">
           {copy.paragraph}
         </p>
         <div className="mt-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6">

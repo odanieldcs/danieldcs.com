@@ -4,7 +4,9 @@ import { type ReactNode, useRef, useState } from 'react'
 import { useInterfaceLanguage } from '@/components/interface-language-provider'
 import { Container } from '@/components/layout/container'
 import { GridViewIcon, ListViewIcon } from '@/components/views/view-mode-icons'
+import { ViewModeSwitch } from '@/components/views/view-mode-switch'
 import type { CommunityEntryType } from '@/lib/content/community-schema'
+import { formatDate } from '@/lib/i18n/format-date'
 import { type CommunityCopy, getCommunityCopy } from '@/lib/i18n/pages'
 import type { InterfaceLanguage } from '@/lib/i18n/types'
 
@@ -23,28 +25,6 @@ export type CommunityEntryView = {
 }
 
 type CommunityViewMode = 'list' | 'grid'
-
-const dateLocale: Record<InterfaceLanguage, string> = {
-  pt: 'pt-BR',
-  en: 'en-US',
-}
-
-function formatEntryDate(isoDate: string, language: InterfaceLanguage): string {
-  // Frontmatter dates are UTC midnight. Format in UTC so the calendar day
-  // does not shift in timezones behind UTC. Shape: "21 set. 2026".
-  const parts = new Intl.DateTimeFormat(dateLocale[language], {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-    timeZone: 'UTC',
-  }).formatToParts(new Date(isoDate))
-  const day = parts.find((part) => part.type === 'day')?.value ?? ''
-  const month = parts.find((part) => part.type === 'month')?.value ?? ''
-  const year = parts.find((part) => part.type === 'year')?.value ?? ''
-  const monthLabel = month.endsWith('.') ? month : `${month}.`
-
-  return `${day} ${monthLabel} ${year}`
-}
 
 const sectionGridClassName =
   'grid items-start gap-10 md:grid-cols-[15rem_minmax(0,1fr)] md:gap-16'
@@ -94,7 +74,7 @@ function EntryBody({
     <>
       <p className="text-xs font-medium uppercase text-foreground/45">
         <time dateTime={entry.date}>
-          {formatEntryDate(entry.date, language)}
+          {formatDate(entry.date, language, { style: 'full' })}
         </time>
         <span aria-hidden="true"> · </span>
         <span>{copy.types[entry.type]}</span>
@@ -274,45 +254,17 @@ function ViewSwitch({
   view: CommunityViewMode
   onChange: (view: CommunityViewMode) => void
 }) {
-  const options: Array<{
-    id: CommunityViewMode
-    label: string
-    icon: ReactNode
-  }> = [
-    { id: 'list', label: copy.viewList, icon: <ListViewIcon /> },
-    { id: 'grid', label: copy.viewGrid, icon: <GridViewIcon /> },
-  ]
-
   return (
-    // biome-ignore lint/a11y/useSemanticElements: list/grid toggle; fieldset would break the pill layout with buttons.
-    <div
-      role="group"
-      aria-label={copy.viewLabel}
-      className="inline-flex w-fit rounded-full border border-border bg-background p-0.5"
-    >
-      {options.map((option) => {
-        const pressed = view === option.id
-
-        return (
-          <button
-            key={option.id}
-            type="button"
-            aria-pressed={pressed}
-            aria-label={option.label}
-            onClick={() => onChange(option.id)}
-            className={[
-              'inline-flex size-8 items-center justify-center rounded-full transition-colors duration-200',
-              focusClassName,
-              pressed
-                ? 'bg-foreground/10 text-foreground'
-                : 'text-foreground/45 hover:text-foreground',
-            ].join(' ')}
-          >
-            {option.icon}
-          </button>
-        )
-      })}
-    </div>
+    <ViewModeSwitch
+      ariaLabel={copy.viewLabel}
+      view={view}
+      idPrefix="community-view"
+      onSelect={onChange}
+      options={[
+        { id: 'list', label: copy.viewList, icon: <ListViewIcon /> },
+        { id: 'grid', label: copy.viewGrid, icon: <GridViewIcon /> },
+      ]}
+    />
   )
 }
 
@@ -333,10 +285,10 @@ export function CommunityView({ entries }: { entries: CommunityEntryView[] }) {
     <main data-analytics-source="community">
       <Container width="page" className="pb-10 pt-10 sm:pb-12 sm:pt-16">
         <p className="text-eyebrow uppercase text-label">{copy.eyebrow}</p>
-        <h1 className="mt-5 max-w-2xl font-display text-display">
+        <h1 className="mt-5 max-w-2xl font-display text-blog-display">
           {copy.title}
         </h1>
-        <p className="mt-8 max-w-xl text-base leading-relaxed text-foreground/70 sm:text-lg">
+        <p className="mt-8 max-w-xl text-post-body leading-relaxed text-foreground/80">
           {copy.intro}
         </p>
         {groups.length === 0 ? (

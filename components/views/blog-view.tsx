@@ -2,12 +2,18 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import type { ReactNode } from 'react'
+import { useState } from 'react'
 import { useInterfaceLanguage } from '@/components/interface-language-provider'
 import { Container } from '@/components/layout/container'
+import {
+  SlidingHighlight,
+  useSlidingHighlight,
+} from '@/components/layout/sliding-highlight'
 import { GridViewIcon, ListViewIcon } from '@/components/views/view-mode-icons'
+import { ViewModeSwitch } from '@/components/views/view-mode-switch'
 import { type BlogViewMode, buildBlogListingHref } from '@/lib/blog/pagination'
 import { resolveCoverSrc } from '@/lib/content/cover'
+import { formatDate } from '@/lib/i18n/format-date'
 import { type BlogCopy, getBlogCopy } from '@/lib/i18n/pages'
 import { localizePath } from '@/lib/i18n/routes'
 import type { InterfaceLanguage } from '@/lib/i18n/types'
@@ -25,27 +31,6 @@ export type BlogPostView = {
 const COVER_WIDTH = 800
 const COVER_HEIGHT = 450
 
-const dateLocale: Record<InterfaceLanguage, string> = {
-  pt: 'pt-BR',
-  en: 'en-US',
-}
-
-function formatPostMonthYear(
-  isoDate: string,
-  language: InterfaceLanguage,
-): string {
-  const parts = new Intl.DateTimeFormat(dateLocale[language], {
-    month: 'short',
-    year: 'numeric',
-    timeZone: 'UTC',
-  }).formatToParts(new Date(isoDate))
-  const month = parts.find((part) => part.type === 'month')?.value ?? ''
-  const year = parts.find((part) => part.type === 'year')?.value ?? ''
-  const monthLabel = month.endsWith('.') ? month : `${month}.`
-
-  return `${monthLabel} ${year}`
-}
-
 const focusClassName = [
   'outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/35',
   'focus-visible:ring-offset-2 focus-visible:ring-offset-background',
@@ -56,6 +41,16 @@ const interactiveSurfaceClassName = [
   'transition-colors duration-200',
   'hover:border-accent/40 hover:bg-foreground/5',
 ].join(' ')
+
+const highlightControlClassName = [
+  'relative z-10 inline-flex items-center justify-center rounded-md',
+  'transition-colors duration-200 hover:text-foreground',
+  focusClassName,
+].join(' ')
+
+function highlightControlToneClassName(active: boolean) {
+  return active ? 'text-foreground' : 'text-foreground/80'
+}
 
 const listLinkClassName = [
   'group flex items-baseline justify-between gap-4 p-4 sm:gap-6 sm:p-5',
@@ -79,14 +74,14 @@ function ListItem({
         data-cta-location="blog"
         data-cta-target={post.slug}
       >
-        <h2 className="min-w-0 font-display text-xl font-medium transition-colors group-hover:text-accent sm:text-2xl">
+        <h2 className="min-w-0 font-display text-base font-medium transition-colors group-hover:text-accent sm:text-xl">
           {post.title}
         </h2>
         <time
           dateTime={post.date}
           className="shrink-0 text-xs font-medium uppercase tabular-nums text-foreground/45"
         >
-          {formatPostMonthYear(post.date, language)}
+          {formatDate(post.date, language, { style: 'monthYear' })}
         </time>
       </Link>
     </li>
@@ -133,7 +128,7 @@ function GridCard({
           <time dateTime={post.date} className={postDateMetadataClassName}>
             {post.date}
           </time>
-          <h2 className="font-display text-xl font-medium transition-colors group-hover:text-accent">
+          <h2 className="font-display text-base font-medium transition-colors group-hover:text-accent">
             {post.title}
           </h2>
         </div>
@@ -153,49 +148,17 @@ function ViewSwitch({
   page: number
   language: InterfaceLanguage
 }) {
-  const options: Array<{
-    id: BlogViewMode
-    label: string
-    icon: ReactNode
-  }> = [
-    { id: 'list', label: copy.viewList, icon: <ListViewIcon /> },
-    { id: 'grid', label: copy.viewGrid, icon: <GridViewIcon /> },
-  ]
-
   return (
-    // biome-ignore lint/a11y/useSemanticElements: list/grid toggle; fieldset would break the pill layout with links.
-    <div
-      role="group"
-      aria-label={copy.viewLabel}
-      className="inline-flex w-fit rounded-full border border-border bg-background p-0.5"
-    >
-      {options.map((option) => {
-        const pressed = view === option.id
-        const href = buildBlogListingHref({
-          page,
-          view: option.id,
-          language,
-        })
-
-        return (
-          <Link
-            key={option.id}
-            href={href}
-            aria-pressed={pressed}
-            aria-label={option.label}
-            className={[
-              'inline-flex size-8 items-center justify-center rounded-full transition-colors duration-200',
-              focusClassName,
-              pressed
-                ? 'bg-foreground/10 text-foreground'
-                : 'text-foreground/45 hover:text-foreground',
-            ].join(' ')}
-          >
-            {option.icon}
-          </Link>
-        )
-      })}
-    </div>
+    <ViewModeSwitch
+      ariaLabel={copy.viewLabel}
+      view={view}
+      idPrefix="blog-view"
+      hrefFor={(id) => buildBlogListingHref({ page, view: id, language })}
+      options={[
+        { id: 'list', label: copy.viewList, icon: <ListViewIcon /> },
+        { id: 'grid', label: copy.viewGrid, icon: <GridViewIcon /> },
+      ]}
+    />
   )
 }
 
@@ -212,9 +175,17 @@ function Pagination({
   pageCount: number
   language: InterfaceLanguage
 }) {
+  const [hoveredPage, setHoveredPage] = useState<number | null>(null)
+  const { containerRef, box, instant } = useSlidingHighlight<HTMLUListElement>(
+    String(hoveredPage ?? page),
+  )
   const pages = Array.from({ length: pageCount }, (_, index) => index + 1)
   const pageHref = (target: number) =>
     buildBlogListingHref({ page: target, view, language })
+  const paginationEdgeClassName = [
+    highlightControlClassName,
+    'px-3 py-2.5 text-sm text-foreground/80',
+  ].join(' ')
 
   return (
     <nav
@@ -222,17 +193,16 @@ function Pagination({
       className="mt-12 flex flex-wrap items-center justify-center gap-2"
     >
       {page > 1 ? (
-        <Link
-          href={pageHref(page - 1)}
-          className={[
-            'rounded-md border border-border px-3 py-1.5 text-sm transition-colors hover:border-accent/40',
-            focusClassName,
-          ].join(' ')}
-        >
+        <Link href={pageHref(page - 1)} className={paginationEdgeClassName}>
           {copy.paginationPrevious}
         </Link>
       ) : null}
-      <ul className="flex list-none flex-wrap items-center gap-1">
+      <ul
+        ref={containerRef}
+        className="relative flex list-none flex-wrap items-center gap-1"
+        onMouseLeave={() => setHoveredPage(null)}
+      >
+        <SlidingHighlight box={box} instant={instant} />
         {pages.map((pageNumber) => {
           const current = pageNumber === page
 
@@ -241,12 +211,13 @@ function Pagination({
               <Link
                 href={pageHref(pageNumber)}
                 aria-current={current ? 'page' : undefined}
+                aria-label={String(pageNumber)}
+                data-highlight-target={String(pageNumber)}
+                onMouseEnter={() => setHoveredPage(pageNumber)}
                 className={[
-                  'inline-flex min-w-9 items-center justify-center rounded-md border px-2 py-1.5 text-sm transition-colors',
-                  focusClassName,
-                  current
-                    ? 'border-foreground/20 bg-foreground/10 text-foreground'
-                    : 'border-border hover:border-accent/40',
+                  'min-w-9 px-2 py-2.5 text-sm',
+                  highlightControlClassName,
+                  highlightControlToneClassName(current),
                 ].join(' ')}
               >
                 {pageNumber}
@@ -256,13 +227,7 @@ function Pagination({
         })}
       </ul>
       {page < pageCount ? (
-        <Link
-          href={pageHref(page + 1)}
-          className={[
-            'rounded-md border border-border px-3 py-1.5 text-sm transition-colors hover:border-accent/40',
-            focusClassName,
-          ].join(' ')}
-        >
+        <Link href={pageHref(page + 1)} className={paginationEdgeClassName}>
           {copy.paginationNext}
         </Link>
       ) : null}
@@ -289,10 +254,10 @@ export function BlogView({
     <main>
       <Container width="page" className="pb-10 pt-10 sm:pb-12 sm:pt-16">
         <p className="text-eyebrow uppercase text-label">{copy.eyebrow}</p>
-        <h1 className="mt-5 max-w-2xl font-display text-display">
+        <h1 className="mt-5 max-w-2xl font-display text-blog-display">
           {copy.title}
         </h1>
-        <p className="mt-8 max-w-xl text-base leading-relaxed text-foreground/70 sm:text-lg">
+        <p className="mt-8 max-w-xl text-post-body leading-relaxed text-foreground/80">
           {copy.intro}
         </p>
         {!hasPosts ? (

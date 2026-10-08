@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useInterfaceLanguage } from '@/components/interface-language-provider'
 import { Container } from '@/components/layout/container'
 import { ArrowRightIcon } from '@/components/ui/arrow-right-icon'
+import { formatDate } from '@/lib/i18n/format-date'
 import {
   getHomeCopy,
   type HomeCopy,
@@ -26,28 +27,6 @@ export type HomePostSummary = {
   tag?: string
 }
 
-const dateLocale: Record<InterfaceLanguage, string> = {
-  pt: 'pt-BR',
-  en: 'en-US',
-}
-
-function formatPostDate(isoDate: string, language: InterfaceLanguage): string {
-  // Frontmatter dates are UTC midnight. Format in UTC so the calendar day
-  // does not shift in timezones behind UTC. Shape: "21 set. 2026".
-  const parts = new Intl.DateTimeFormat(dateLocale[language], {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-    timeZone: 'UTC',
-  }).formatToParts(new Date(isoDate))
-  const day = parts.find((part) => part.type === 'day')?.value ?? ''
-  const month = parts.find((part) => part.type === 'month')?.value ?? ''
-  const year = parts.find((part) => part.type === 'year')?.value ?? ''
-  const monthLabel = month.endsWith('.') ? month : `${month}.`
-
-  return `${day} ${monthLabel} ${year}`
-}
-
 const articleCardClassName = [
   'group flex h-full w-full flex-col rounded-lg border border-border p-7',
   'transition-colors hover:border-accent/40 hover:bg-foreground/5',
@@ -55,7 +34,7 @@ const articleCardClassName = [
 ].join(' ')
 
 const quietCtaClassName = [
-  'group inline-flex w-fit items-center gap-1.5 text-sm text-foreground/55',
+  'group inline-flex w-fit items-center gap-1.5 text-sm font-normal text-foreground/55',
   'rounded-sm transition-colors hover:text-foreground',
   'outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
 ].join(' ')
@@ -68,17 +47,17 @@ function Hero({
   language: InterfaceLanguage
 }) {
   return (
-    <section className="grid items-center gap-content-gap md:grid-cols-[minmax(0,1.15fr)_minmax(16rem,0.85fr)] md:gap-section">
-      <figure className="group order-1 w-9/10 justify-self-center md:order-2 md:justify-self-end">
-        <div className="relative aspect-3/4 overflow-hidden rounded-lg bg-foreground/6">
+    <section className="grid items-center gap-inline md:grid-cols-[minmax(0,1.15fr)_minmax(16rem,0.85fr)] md:gap-section">
+      <figure className="group order-1 w-full justify-self-stretch md:order-2 md:w-9/10 md:justify-self-end">
+        <div className="relative aspect-[3/3.2] overflow-hidden rounded-xl bg-foreground/6 md:aspect-3/4">
           <Image
             src={PORTRAIT_SRC}
             alt={copy.portraitAlt}
             fill
             loading="eager"
             fetchPriority="high"
-            sizes="(min-width: 48rem) 24rem, 90vw"
-            className="object-cover object-top motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out motion-safe:group-hover:scale-106 motion-safe:group-hover:rotate-2"
+            sizes="(min-width: 48rem) 24rem, 100vw"
+            className="object-cover rounded-[0.875rem] object-[50%_28%] motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out motion-safe:group-hover:scale-106 motion-safe:group-hover:rotate-2 md:object-[center_30%]"
           />
           <figcaption className="absolute inset-x-0 bottom-0 bg-black/90 px-4 py-3 text-xs text-white/90">
             {copy.portraitCaption}
@@ -88,7 +67,7 @@ function Hero({
       <div className="order-2 flex min-w-0 flex-col gap-content-gap md:order-1">
         <p className="text-eyebrow uppercase text-label">{copy.eyebrow}</p>
         <h1 className="font-display text-display">{copy.headline}</h1>
-        <div className="flex max-w-xl flex-col gap-3 text-home-intro text-foreground/70">
+        <div className="flex max-w-xl flex-col gap-3 text-home-intro text-foreground/80">
           {copy.intro.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
@@ -170,7 +149,7 @@ function RecentWriting({
               data-cta-location="home"
               data-cta-target={post.slug}
             >
-              <p className="text-xs font-medium uppercase text-foreground/45">
+              <p className="text-xs font-semibold uppercase text-foreground/45">
                 {post.tag ? (
                   <>
                     <span>{post.tag}</span>
@@ -178,13 +157,13 @@ function RecentWriting({
                   </>
                 ) : null}
                 <time dateTime={post.date}>
-                  {formatPostDate(post.date, language)}
+                  {formatDate(post.date, language, { style: 'full' })}
                 </time>
               </p>
-              <h3 className="mt-4 font-display text-display-title transition-colors group-hover:text-accent">
+              <h3 className="mt-4 min-w-0 truncate font-display text-display-title transition-colors group-hover:text-accent">
                 {post.title}
               </h3>
-              <p className="mt-3 text-note text-foreground/65">
+              <p className="mt-3 line-clamp-3 text-note text-foreground/65">
                 {post.description}
               </p>
               <span className="mt-auto inline-flex items-center gap-2 pt-6 text-sm font-semibold text-accent">
@@ -204,7 +183,7 @@ export function HomeView({ posts }: { posts: HomePostSummary[] }) {
   const copy = getHomeCopy(language)
 
   return (
-    <main className="flex w-full flex-col gap-section py-section">
+    <main className="flex w-full flex-col gap-section pt-10 pb-section md:py-section">
       <Container width="page">
         <Hero copy={copy} language={language} />
       </Container>

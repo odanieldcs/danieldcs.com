@@ -12,7 +12,7 @@ test('page width applies max-w-container', () => {
   expect(container.firstElementChild?.className).toContain('max-w-container')
 })
 
-test('article width applies max-w-content', () => {
+test('article width applies max-w-post', () => {
   const { container } = render(<Container width="article">Article</Container>)
-  expect(container.firstElementChild?.className).toContain('max-w-content')
+  expect(container.firstElementChild?.className).toContain('max-w-post')
 })

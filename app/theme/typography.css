@@ -5,13 +5,16 @@
   --type-display-section: 1.875rem;
   --type-display-band: 2.25rem;
   --type-display-title: 1.5rem;
+  /* Blog / community listing hero. Caps at 3rem on small viewports. */
+  --type-blog-display: 3rem;
 }
 
 @media (min-width: 48rem) {
   :root {
-    --type-display: 4.25rem;
+    --type-display: 4rem;
     --type-display-section: 2.25rem;
     --type-display-band: 3rem;
+    --type-blog-display: 4rem;
   }
 }
 
@@ -52,6 +55,21 @@
   --text-body: 1.125rem;
   --text-body--line-height: 1.75;
   --text-body--font-weight: 400;
+
+  /* Blog post prose and listing intro. */
+  --text-post-body: 1.025rem;
+  --text-post-body--line-height: 1.75;
+  --text-post-body--font-weight: 400;
+
+  /* Post page title (outside MDX). */
+  --text-post-title: 2.5rem;
+  --text-post-title--line-height: 1.2;
+  --text-post-title--font-weight: 600;
+
+  /* Blog / community listing hero. Size follows --type-blog-display. */
+  --text-blog-display: var(--type-blog-display);
+  --text-blog-display--line-height: 1.03;
+  --text-blog-display--font-weight: 500;
 
   /* Header navigation. 13px / 500, softer than body copy. */
   --text-nav: 0.8125rem;

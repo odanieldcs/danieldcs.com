@@ -34,7 +34,7 @@ export function SiteShell({
       className={`${inter.variable} ${GeistMono.variable} ${fraunces.variable}`}
       suppressHydrationWarning
     >
-      <body className="bg-background font-sans text-foreground">
+      <body className="bg-background font-sans text-foreground antialiased">
         <ThemeProvider>
           <InterfaceLanguageProvider language={language}>
             <Header language={language} />

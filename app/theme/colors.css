@@ -1,6 +1,6 @@
 /* Semantic colors. Dark only under .dark. */
 :root {
-  --background: #f2eeef;
+  --background: #f2ebeb;
   /* Warm ink from the editorial reference, not neutral black. */
   --foreground: oklch(0.225 0.009 155.4);
   --muted: #595959; /* 6.09:1 on background */
@@ -19,7 +19,7 @@
 }
 
 .dark {
-  --background: oklch(0.24 0.012 87.5);
+  --background: #100d0d;
   --foreground: #ececec; /* 13.91:1 on background */
   --muted: #a3a3a3; /* 6.51:1 on background */
   --link: #d4d4d4; /* 11.09:1 on background */

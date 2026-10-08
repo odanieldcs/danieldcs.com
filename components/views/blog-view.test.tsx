@@ -86,9 +86,7 @@ test('list view formats month and year in English', () => {
     name: /Como o content system renderiza um artigo/i,
   })
 
-  expect(within(articleLink).getByRole('time').textContent).toMatch(
-    /Sep\.? 2026/,
-  )
+  expect(within(articleLink).getByRole('time').textContent).toBe('Sep 2026')
 })
 
 test('grid view hides descriptions and shows cover images', () => {

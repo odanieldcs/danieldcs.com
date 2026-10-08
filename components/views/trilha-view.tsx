@@ -53,7 +53,7 @@ function Pillars({ copy }: { copy: TrilhaCopy }) {
             <h2 className="font-display text-display-section">
               {copy.pillars.title}
             </h2>
-            <p className="mt-4 max-w-2xl text-base leading-relaxed text-foreground/70 sm:text-lg">
+            <p className="mt-4 max-w-2xl text-base leading-relaxed text-foreground/80 sm:text-lg">
               {copy.pillars.intro}
             </p>
           </div>
@@ -107,10 +107,10 @@ function Building({ copy }: { copy: TrilhaCopy }) {
           <h2 className="font-display text-display-section">
             {copy.building.title}
           </h2>
-          <p className="text-base leading-relaxed text-foreground/70 sm:text-lg">
+          <p className="text-base leading-relaxed text-foreground/80 sm:text-lg">
             {copy.building.body}
           </p>
-          <p className="text-base leading-relaxed text-foreground/70 sm:text-lg">
+          <p className="text-base leading-relaxed text-foreground/80 sm:text-lg">
             {copy.building.personalization}
           </p>
         </div>
