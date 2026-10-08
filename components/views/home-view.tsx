@@ -34,7 +34,7 @@ const articleCardClassName = [
 ].join(' ')
 
 const quietCtaClassName = [
-  'group inline-flex w-fit items-center gap-1.5 text-base font-semibold text-foreground/55',
+  'group inline-flex w-fit items-center gap-1.5 text-sm font-normal text-foreground/55',
   'rounded-sm transition-colors hover:text-foreground',
   'outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
 ].join(' ')

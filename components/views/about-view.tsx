@@ -26,13 +26,13 @@ const sectionTitleClassName = `mt-4 ${bandTitleClassName}`
 const subtitleClassName = 'mt-4 text-sm leading-relaxed text-foreground/55'
 
 const ctaLinkClassName = [
-  'group mt-8 inline-flex items-center gap-2 text-base font-semibold text-accent',
+  'group mt-8 inline-flex items-center gap-2 text-sm font-normal text-accent',
   'rounded-sm hover:underline',
   'outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
 ].join(' ')
 
 const contactCtaLinkClassName = [
-  'group mt-8 inline-flex items-center gap-2 text-base font-normal text-accent',
+  'group mt-8 inline-flex items-center gap-2 text-sm font-normal text-accent',
   'rounded-sm hover:underline',
   'outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
 ].join(' ')
