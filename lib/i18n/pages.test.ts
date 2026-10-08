@@ -108,13 +108,11 @@ test('pt and en about copy share the same key shape', () => {
   expect(pt.pillars).toEqual([
     'Software Engineering',
     'AI-Assisted Development',
-    'Liderança técnica',
     'Ensino',
   ])
   expect(en.pillars).toEqual([
     'Software Engineering',
     'AI-Assisted Development',
-    'Technical leadership',
     'Teaching',
   ])
   expect(pt.timeline.map((item) => Object.keys(item))).toEqual([

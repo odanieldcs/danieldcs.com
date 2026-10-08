@@ -53,6 +53,21 @@
   --text-body--line-height: 1.75;
   --text-body--font-weight: 400;
 
+  /* Blog post prose and listing intro. */
+  --text-post-body: 1.025rem;
+  --text-post-body--line-height: 1.75;
+  --text-post-body--font-weight: 400;
+
+  /* Post page title (outside MDX). */
+  --text-post-title: 2.5rem;
+  --text-post-title--line-height: 1.2;
+  --text-post-title--font-weight: 600;
+
+  /* Blog listing hero title. */
+  --text-blog-display: 4rem;
+  --text-blog-display--line-height: 1.03;
+  --text-blog-display--font-weight: 500;
+
   /* Header navigation. 13px / 500, softer than body copy. */
   --text-nav: 0.8125rem;
   --text-nav--line-height: 1.4;

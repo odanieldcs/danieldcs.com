@@ -24,7 +24,7 @@ test('renders a mixed MDX fixture with semantic HTML and styled links', async ()
   const html = renderToStaticMarkup(content)
 
   expect(html).toMatch(/<h1[^>]*class="[^"]*text-h1[^"]*"[^>]*>Heading<\/h1>/)
-  expect(html).toMatch(/<p[^>]*class="[^"]*text-body/)
+  expect(html).toMatch(/<p[^>]*class="[^"]*text-post-body/)
   expect(html).toContain('href="/blog/hello-world"')
   expect(html).toContain('href="https://example.com"')
   expect(html).toContain('target="_blank"')

@@ -42,7 +42,8 @@ function joinClasses(...parts: (string | undefined)[]) {
 }
 
 /** Article chrome — reuse on `app/blog/[slug]/page.tsx`. */
-export const articleTitleClassName = 'text-center text-h1 font-semibold mb-2'
+export const articleTitleClassName =
+  'text-center text-post-title font-semibold mb-2'
 export const articleDateClassName =
   'mb-content-gap block text-center text-base font-semibold text-foreground/55'
 
@@ -190,7 +191,7 @@ export const mdxComponents: NonNullable<MDXRemoteProps['components']> = {
   h1: ({ className, ...props }) => (
     <h1
       className={joinClasses(
-        'mt-section mb-content-gap text-h1 font-semibold first:mt-0',
+        'mt-16 mb-content-gap text-h1 font-semibold first:mt-0',
         className,
       )}
       {...props}
@@ -199,7 +200,7 @@ export const mdxComponents: NonNullable<MDXRemoteProps['components']> = {
   h2: ({ className, ...props }) => (
     <h2
       className={joinClasses(
-        'mt-section mb-content-gap text-h2 font-semibold first:mt-0',
+        'mt-16 mb-content-gap text-h2 font-semibold first:mt-0',
         className,
       )}
       {...props}
@@ -225,7 +226,10 @@ export const mdxComponents: NonNullable<MDXRemoteProps['components']> = {
   ),
   p: ({ className, ...props }) => (
     <p
-      className={joinClasses('mb-content-gap text-body last:mb-0', className)}
+      className={joinClasses(
+        'mb-content-gap text-post-body last:mb-0',
+        className,
+      )}
       {...props}
     />
   ),

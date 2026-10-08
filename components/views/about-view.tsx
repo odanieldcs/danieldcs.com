@@ -26,14 +26,8 @@ const sectionTitleClassName = `mt-4 ${bandTitleClassName}`
 const subtitleClassName = 'mt-4 text-sm leading-relaxed text-foreground/55'
 
 const ctaLinkClassName = [
-  'group mt-8 inline-flex items-center gap-2 text-sm font-semibold text-accent',
+  'group mt-8 inline-flex items-center gap-2 text-base font-semibold text-accent',
   'rounded-sm hover:underline',
-  'outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
-].join(' ')
-
-const quietCtaClassName = [
-  'group mt-6 inline-flex w-fit items-center gap-1.5 text-sm text-foreground/55',
-  'rounded-sm transition-colors hover:text-foreground',
   'outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
 ].join(' ')
 
@@ -99,14 +93,14 @@ function Intro({
         <h1 className="mt-5 max-w-2xl font-display text-display">
           {copy.headline}
         </h1>
-        <div className="mt-8 max-w-xl space-y-5 text-base leading-relaxed text-foreground/70">
+        <div className="mt-8 max-w-xl space-y-5 text-base leading-relaxed text-foreground/80">
           {copy.introParagraphs.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
         </div>
         <Link
           href={localizePath('/blog', language)}
-          className={quietCtaClassName}
+          className={ctaLinkClassName}
         >
           {copy.blogCta}
           <ArrowRightIcon />
@@ -205,10 +199,10 @@ function Repertoire({ copy }: { copy: AboutCopy }) {
               <h3 className="border-b border-border pb-4 font-display text-xl font-medium">
                 {group.title}
               </h3>
-              <p className="mt-4 text-sm leading-relaxed text-foreground/60">
+              <p className="mt-4 text-sm font-normal leading-relaxed text-foreground/60">
                 {group.description}
               </p>
-              <ul className="mt-4 flex list-none flex-wrap gap-x-4 gap-y-2 text-xs font-medium text-foreground/70">
+              <ul className="mt-4 flex list-none flex-wrap gap-x-4 gap-y-2 text-xs font-light text-foreground/45">
                 {group.skills.map((skill) => (
                   <li key={skill}>{skill}</li>
                 ))}
@@ -247,7 +241,7 @@ function Personal({ copy }: { copy: AboutCopy }) {
         <p className={indexClassName}>{copy.sectionPersonalIndex}</p>
         <div>
           <h2 className={bandTitleClassName}>{copy.personalTitle}</h2>
-          <p className="mt-4 max-w-2xl leading-relaxed text-foreground/65">
+          <p className="mt-4 max-w-3xl text-sm leading-relaxed text-foreground/65">
             {copy.personalParagraph}
           </p>
         </div>
@@ -267,7 +261,7 @@ function Contact({ copy }: { copy: AboutCopy }) {
       />
       <div>
         {lead ? (
-          <p className="max-w-2xl font-display text-2xl font-medium leading-snug sm:text-3xl">
+          <p className="max-w-xl text-sm leading-relaxed text-foreground/60">
             {lead}
           </p>
         ) : null}
