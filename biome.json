@@ -72,8 +72,12 @@
   },
   "overrides": [
     {
-      "includes": ["components/**"],
-      "linter": { "enabled": false }
+      "includes": ["**/*.test.tsx"],
+      "linter": {
+        "rules": {
+          "performance": { "noImgElement": "off" }
+        }
+      }
     }
   ]
 }
