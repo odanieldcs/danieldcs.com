@@ -1,16 +1,16 @@
 /* Semantic colors. Dark only under .dark. */
 :root {
-  --background: oklch(0.959 0.012 87.5);
+  --background: #f2eeef;
   /* Warm ink from the editorial reference, not neutral black. */
   --foreground: oklch(0.225 0.009 155.4);
-  --muted: #595959; /* 6.22:1 on background */
+  --muted: #595959; /* 6.09:1 on background */
   --border: color-mix(in oklch, var(--foreground) 12%, transparent);
-  --link: #3f3f46; /* 9.27:1 on background */
-  /* Reference green: 6.94:1 as text on paper. */
+  --link: #3f3f46; /* 9.08:1 on background */
+  /* Reference green: 6.78:1 as text on paper. */
   --accent: oklch(0.431 0.063 167.2);
   --accent-foreground: oklch(0.975 0.008 87.5); /* 7.30:1 on accent */
   /* Eyebrows and pillar numbers. Reference terracotta. */
-  --label: oklch(0.58 0.073 56.4);
+  --label: oklch(0.53 0.073 56.4); /* 4.69:1 on background */
   --trail: var(--accent);
   --trail-foreground: var(--accent-foreground);
   /* Shiki line highlight — Kent pattern: gray wash + darker bar */
