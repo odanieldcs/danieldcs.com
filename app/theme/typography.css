@@ -9,7 +9,7 @@
 
 @media (min-width: 48rem) {
   :root {
-    --type-display: 4.25rem;
+    --type-display: 4rem;
     --type-display-section: 2.25rem;
     --type-display-band: 3rem;
   }

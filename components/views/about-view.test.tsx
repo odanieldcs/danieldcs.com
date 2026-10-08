@@ -100,6 +100,14 @@ test('renders the about page in Portuguese', () => {
     ),
   ).toBeTruthy()
 
+  expect(
+    screen.getByRole('heading', {
+      level: 2,
+      name: 'Ajudo em desafios de engenharia.',
+    }),
+  ).toBeTruthy()
+  expect(screen.queryByRole('heading', { name: 'Vamos conversar.' })).toBeNull()
+
   const contact = screen.getByRole('link', { name: 'Entre em contato' })
   expect(contact.getAttribute('href')).toBe(`mailto:${contactEmail}`)
   expect(contact.getAttribute('href')).not.toContain('subject')
@@ -142,8 +150,12 @@ test('renders English copy when the interface language is en', () => {
     }),
   ).toBeTruthy()
   expect(
-    screen.getByRole('heading', { level: 2, name: "Let's talk." }),
+    screen.getByRole('heading', {
+      level: 2,
+      name: 'I help with engineering challenges.',
+    }),
   ).toBeTruthy()
+  expect(screen.queryByRole('heading', { name: "Let's talk." })).toBeNull()
   expect(screen.getByText('AI-Assisted Development')).toBeTruthy()
   expect(screen.queryByText('Technology, learning, and exchange.')).toBeNull()
   expect(

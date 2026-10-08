@@ -31,6 +31,12 @@ const ctaLinkClassName = [
   'outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
 ].join(' ')
 
+const contactCtaLinkClassName = [
+  'group mt-8 inline-flex items-center gap-2 text-base font-normal text-accent',
+  'rounded-sm hover:underline',
+  'outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+].join(' ')
+
 function joinSectionClassName(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
@@ -74,7 +80,7 @@ function Intro({
   language: InterfaceLanguage
 }) {
   return (
-    <section className="grid items-start gap-content-gap md:grid-cols-[minmax(0,1.15fr)_minmax(16rem,0.85fr)] md:gap-section">
+    <section className="grid items-start gap-inline md:grid-cols-[minmax(0,1.15fr)_minmax(16rem,0.85fr)] md:gap-section">
       <figure className="group order-1 w-9/10 justify-self-center overflow-hidden rounded-lg bg-foreground/6 md:order-2 md:justify-self-end">
         <div className="relative aspect-3/4 overflow-hidden">
           <Image
@@ -255,16 +261,9 @@ function Contact({ copy }: { copy: AboutCopy }) {
 
   return (
     <section className={sectionGridClassName}>
-      <SectionLabel
-        index={copy.sectionContactIndex}
-        title={copy.contactTitle}
-      />
+      <p className={indexClassName}>{copy.sectionContactIndex}</p>
       <div>
-        {lead ? (
-          <p className="max-w-xl text-sm leading-relaxed text-foreground/60">
-            {lead}
-          </p>
-        ) : null}
+        {lead ? <h2 className={bandTitleClassName}>{lead}</h2> : null}
         {rest.map((paragraph) => (
           <p
             key={paragraph}
@@ -275,7 +274,7 @@ function Contact({ copy }: { copy: AboutCopy }) {
         ))}
         <a
           href={`mailto:${contactEmail}`}
-          className={ctaLinkClassName}
+          className={contactCtaLinkClassName}
           data-cta="contact_email"
           data-cta-location="about"
         >
@@ -293,7 +292,7 @@ export function AboutView() {
 
   return (
     <main data-analytics-source="about">
-      <Container width="page" className="pb-20 pt-10 sm:pb-28 sm:pt-16">
+      <Container width="page" className="pb-20 pt-8 sm:pb-28 sm:pt-12 md:pt-16">
         <Intro copy={copy} language={language} />
       </Container>
       <Experience copy={copy} />

@@ -47,17 +47,17 @@ function Hero({
   language: InterfaceLanguage
 }) {
   return (
-    <section className="grid items-center gap-content-gap md:grid-cols-[minmax(0,1.15fr)_minmax(16rem,0.85fr)] md:gap-section">
-      <figure className="group order-1 w-9/10 justify-self-center md:order-2 md:justify-self-end">
-        <div className="relative aspect-3/4 overflow-hidden rounded-lg bg-foreground/6">
+    <section className="grid items-center gap-inline md:grid-cols-[minmax(0,1.15fr)_minmax(16rem,0.85fr)] md:gap-section">
+      <figure className="group order-1 w-full justify-self-stretch md:order-2 md:w-9/10 md:justify-self-end">
+        <div className="relative aspect-[3/3.2] overflow-hidden rounded-lg bg-foreground/6 md:aspect-3/4">
           <Image
             src={PORTRAIT_SRC}
             alt={copy.portraitAlt}
             fill
             loading="eager"
             fetchPriority="high"
-            sizes="(min-width: 48rem) 24rem, 90vw"
-            className="object-cover object-top motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out motion-safe:group-hover:scale-106 motion-safe:group-hover:rotate-2"
+            sizes="(min-width: 48rem) 24rem, 100vw"
+            className="object-cover object-[50%_28%] motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out motion-safe:group-hover:scale-106 motion-safe:group-hover:rotate-2 md:object-[center_30%]"
           />
           <figcaption className="absolute inset-x-0 bottom-0 bg-black/90 px-4 py-3 text-xs text-white/90">
             {copy.portraitCaption}
@@ -183,7 +183,7 @@ export function HomeView({ posts }: { posts: HomePostSummary[] }) {
   const copy = getHomeCopy(language)
 
   return (
-    <main className="flex w-full flex-col gap-section py-section">
+    <main className="flex w-full flex-col gap-section pt-10 pb-section md:py-section">
       <Container width="page">
         <Hero copy={copy} language={language} />
       </Container>
