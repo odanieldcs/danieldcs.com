@@ -2,8 +2,8 @@
 
 import { usePathname, useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
-import { ButtonLink } from '@/components/button'
 import { useInterfaceLanguage } from '@/components/interface-language-provider'
+import { ButtonLink } from '@/components/ui/button'
 import { Tooltip } from '@/components/ui/tooltip'
 import { getLanguageSwitchHref } from '@/lib/i18n/alternates'
 import { getDictionary } from '@/lib/i18n/dictionary'

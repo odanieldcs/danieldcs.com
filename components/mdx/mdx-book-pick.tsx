@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { ArrowRightIcon } from '@/components/arrow-right-icon'
+import { ArrowRightIcon } from '@/components/ui/arrow-right-icon'
 import { externalLinkRel } from '@/lib/external-link'
 
 const focusRingClassName = [

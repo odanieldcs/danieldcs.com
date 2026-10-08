@@ -2,9 +2,9 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRightIcon } from '@/components/arrow-right-icon'
-import { Container } from '@/components/container'
 import { useInterfaceLanguage } from '@/components/interface-language-provider'
+import { Container } from '@/components/layout/container'
+import { ArrowRightIcon } from '@/components/ui/arrow-right-icon'
 import {
   getHomeCopy,
   type HomeCopy,

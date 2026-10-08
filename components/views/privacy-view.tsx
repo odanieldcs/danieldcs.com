@@ -1,4 +1,4 @@
-import { Container } from '@/components/container'
+import { Container } from '@/components/layout/container'
 import { getPrivacyContent } from '@/content/privacy'
 import type { InterfaceLanguage } from '@/lib/i18n/types'
 import { linkClassName } from '@/lib/link-styles'

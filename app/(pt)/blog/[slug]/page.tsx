@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { JsonLd } from '@/components/json-ld'
-import { PostArticle } from '@/components/post-article'
+import { PostArticle } from '@/components/views/post-article'
 import {
   getPost,
   getPostJsonLd,

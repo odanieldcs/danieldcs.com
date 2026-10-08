@@ -1,8 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { Container } from '@/components/container'
 import { useInterfaceLanguage } from '@/components/interface-language-provider'
+import { Container } from '@/components/layout/container'
 import { getFooterResourceLinks } from '@/lib/i18n/pages'
 import { localizePath } from '@/lib/i18n/routes'
 import { linkClassName } from '@/lib/link-styles'

@@ -1,5 +1,5 @@
 import type { Metadata, ResolvingMetadata } from 'next'
-import { CommunityView } from '@/components/community-view'
+import { CommunityView } from '@/components/views/community-view'
 import { getLocalizedPageMetadata } from '@/lib/i18n/page-metadata'
 import { getCommunityEntryViews } from '@/lib/page-data'
 

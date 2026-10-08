@@ -1,5 +1,5 @@
 import type { Metadata, ResolvingMetadata } from 'next'
-import { BlogView } from '@/components/blog-view'
+import { BlogView } from '@/components/views/blog-view'
 import { getBlogListingMetadata } from '@/lib/i18n/page-metadata'
 import { getBlogListing } from '@/lib/page-data'
 

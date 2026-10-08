@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { AlunosView } from '@/components/alunos-view'
+import { AlunosView } from '@/components/views/alunos-view'
 import { certificatePage } from '@/lib/content/certificates'
 import { getAlternates } from '@/lib/i18n/alternates'
 import { rssFeedTypes } from '@/lib/metadata'

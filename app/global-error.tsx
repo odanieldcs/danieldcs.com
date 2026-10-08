@@ -2,12 +2,12 @@
 
 import { useEffect } from 'react'
 import '@/app/globals.css'
-import { ArrowRightIcon } from '@/components/arrow-right-icon'
-import { Container } from '@/components/container'
+import { Container } from '@/components/layout/container'
+import { ArrowRightIcon } from '@/components/ui/arrow-right-icon'
 import {
   textLinkCtaClassName,
   textLinkRetryButtonClassName,
-} from '@/components/text-link-cta'
+} from '@/components/ui/text-link-cta'
 import { captureError } from '@/lib/analytics'
 import { getErrorCopy } from '@/lib/i18n/pages'
 import { htmlLang } from '@/lib/i18n/types'
