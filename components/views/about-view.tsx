@@ -81,8 +81,8 @@ function Intro({
   language: InterfaceLanguage
 }) {
   return (
-    <section className="grid items-start gap-inline md:grid-cols-[minmax(0,1.15fr)_minmax(16rem,0.85fr)] md:gap-section">
-      <figure className="group order-1 w-full justify-self-stretch overflow-hidden rounded-lg bg-foreground/6 md:order-2 md:w-9/10 md:justify-self-end">
+    <section className="grid items-start gap-section md:grid-cols-[minmax(0,65fr)_minmax(0,35fr)] md:gap-x-16 md:gap-y-0">
+      <figure className="group order-1 w-full justify-self-stretch overflow-hidden rounded-xl bg-foreground/6 md:order-2 md:mt-9">
         <div className="relative aspect-[3/3.2] overflow-hidden md:aspect-3/4">
           <Image
             src={PORTRAIT_SRC}
@@ -90,17 +90,17 @@ function Intro({
             fill
             loading="eager"
             fetchPriority="high"
-            sizes="(min-width: 48rem) 24rem, 100vw"
+            sizes="(min-width: 48rem) 35vw, 100vw"
             className="object-cover object-[50%_28%] motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out motion-safe:group-hover:scale-106 motion-safe:group-hover:rotate-2 md:object-[center_30%]"
           />
         </div>
       </figure>
-      <div className="order-2 md:order-1">
+      <div className="order-2 flex min-w-0 flex-col md:order-1">
         <p className={indexClassName}>{copy.eyebrow}</p>
-        <h1 className="mt-5 max-w-2xl font-display text-display">
+        <h1 className="mt-5 w-full font-display text-display">
           {copy.headline}
         </h1>
-        <div className="mt-8 max-w-xl space-y-5 text-base leading-relaxed text-foreground/80">
+        <div className="mt-8 max-w-lg space-y-5 text-base leading-relaxed text-foreground/80">
           {copy.introParagraphs.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
