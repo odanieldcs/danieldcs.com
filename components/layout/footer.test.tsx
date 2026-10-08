@@ -75,5 +75,11 @@ test('labels the privacy link in English', () => {
   expect(
     screen.getByRole('link', { name: 'Privacy' }).getAttribute('href'),
   ).toBe('/en/privacy')
-  expect(screen.queryByRole('link', { name: 'Leituras recentes' })).toBeNull()
+
+  expect(
+    screen.getByRole('link', { name: 'Recent reads' }).getAttribute('href'),
+  ).toBe('/en/blog/livros-recomendados')
+  expect(
+    screen.getByRole('link', { name: 'Tools & setup' }).getAttribute('href'),
+  ).toBe('/en/blog/ferramentas-apps-e-setup')
 })

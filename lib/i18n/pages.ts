@@ -619,7 +619,10 @@ const footerResourceLinks: Record<
     { href: '/blog/livros-recomendados', label: 'Leituras recentes' },
     { href: '/blog/ferramentas-apps-e-setup', label: 'Usos' },
   ],
-  en: [],
+  en: [
+    { href: '/blog/livros-recomendados', label: 'Recent reads' },
+    { href: '/blog/ferramentas-apps-e-setup', label: 'Tools & setup' },
+  ],
 }
 
 export function getFooterResourceLinks(
