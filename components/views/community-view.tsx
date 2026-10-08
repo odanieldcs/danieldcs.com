@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { type ReactNode, useRef, useState } from 'react'
 import { useInterfaceLanguage } from '@/components/interface-language-provider'
 import { Container } from '@/components/layout/container'
 import { GridViewIcon, ListViewIcon } from '@/components/views/view-mode-icons'
