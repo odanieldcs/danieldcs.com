@@ -34,9 +34,7 @@ test('home loads without console errors', async ({ page }) => {
   await expect(main.locator('a[href^="/blog/"]')).not.toHaveCount(0)
 
   const header = page.getByRole('banner')
-  await expect(
-    header.getByRole('button', { name: 'Modo claro' }),
-  ).toBeVisible()
+  await expect(header.getByRole('button', { name: 'Modo claro' })).toBeVisible()
   await expect(
     header.getByRole('link', { name: 'Switch to English' }),
   ).toBeVisible()
