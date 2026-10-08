@@ -22,7 +22,7 @@ export function Header({ language }: { language: InterfaceLanguage }) {
     <header className="relative z-20 bg-background">
       <Container
         width="page"
-        className="grid grid-cols-[1fr_auto_1fr] items-center gap-content-gap py-inline"
+        className="grid grid-cols-[1fr_auto_1fr] items-center gap-content-gap py-8"
       >
         <Link
           href={localizePath('/', language)}

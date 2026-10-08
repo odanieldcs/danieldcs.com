@@ -70,20 +70,22 @@ test('identity links home and desktop nav lists the public items', () => {
 
   const shell = document.querySelector('header > div')
   expect(shell?.className).toContain('grid-cols-[1fr_auto_1fr]')
+  expect(shell?.className).toContain('py-8')
 
-  expect(screen.getByRole('link', { name: 'Blog' }).getAttribute('href')).toBe(
-    '/blog',
-  )
-  expect(
-    screen.getByRole('link', { name: 'Comunidade' }).getAttribute('href'),
-  ).toBe('/community')
-  expect(screen.getByRole('link', { name: 'Sobre' }).getAttribute('href')).toBe(
-    '/about',
-  )
+  const blog = screen.getByRole('link', { name: 'Blog' })
+  const comunidade = screen.getByRole('link', { name: 'Comunidade' })
+  const sobre = screen.getByRole('link', { name: 'Sobre' })
+  expect(blog.getAttribute('href')).toBe('/blog')
+  expect(comunidade.getAttribute('href')).toBe('/community')
+  expect(sobre.getAttribute('href')).toBe('/about')
+  expect(blog.className).toContain('hover:bg-')
+  expect(comunidade.className).toContain('hover:bg-')
+  expect(sobre.className).toContain('hover:bg-')
 
   const nav = screen.getByRole('navigation', { name: 'Navegação principal' })
   expect(nav.className).toContain('hidden')
   expect(nav.className).toContain('md:flex')
+  expect(nav.className).toContain('gap-1')
   const mobileSlot = document.querySelector('header .md\\:hidden')
   const menuButton = screen.getByRole('button', { name: 'Menu' })
   const themeButton = screen.getByRole('button', { name: 'Theme' })

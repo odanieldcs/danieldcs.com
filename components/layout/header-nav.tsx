@@ -21,13 +21,14 @@ export function HeaderNavLinks({ pathname }: { pathname: string | null }) {
   return (
     <nav
       aria-label={dictionary.mobileMenu.navAriaLabel}
-      className="hidden items-center gap-content-gap md:flex"
+      className="hidden items-center gap-1 md:flex"
     >
       {items.map((item) => (
         <NavLink
           key={item.href}
           href={item.href}
           active={pathname !== null && isMainNavActive(pathname, item.href)}
+          className="rounded-md! px-3 py-1.5 duration-150 hover:bg-foreground/[0.06] motion-reduce:transition-none"
           data-cta="nav_item"
           data-cta-location="header"
           data-cta-target={item.ctaTarget}
