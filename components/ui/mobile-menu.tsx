@@ -111,7 +111,6 @@ export function MobileMenu({
                   <li key={item.href}>
                     <NavLink
                       href={item.href}
-                      prefetch={false}
                       className="inline-flex min-h-11 items-center"
                       onClick={() => setOpen(false)}
                       data-cta="nav_item"
