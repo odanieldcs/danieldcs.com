@@ -1,5 +1,5 @@
 import { cleanup, render, screen } from '@testing-library/react'
-import { afterEach, expect, test, vi } from 'vitest'
+import { afterEach, beforeEach, expect, test, vi } from 'vitest'
 import { InterfaceLanguageProvider } from '@/components/interface-language-provider'
 import { contactEmail, linkedInProfileUrl } from '@/lib/site'
 import { AboutView } from './about-view'
@@ -10,8 +10,18 @@ vi.mock('next/image', () => ({
   },
 }))
 
+class MockIntersectionObserver {
+  observe = vi.fn()
+  disconnect = vi.fn()
+}
+
+beforeEach(() => {
+  vi.stubGlobal('IntersectionObserver', MockIntersectionObserver)
+})
+
 afterEach(() => {
   cleanup()
+  vi.unstubAllGlobals()
 })
 
 function renderAbout(language: 'pt' | 'en' = 'pt') {
@@ -50,6 +60,11 @@ test('renders the about page in Portuguese', () => {
       })
       .getAttribute('src'),
   ).toBe('/media/personal/daniel_castro_profile_2.jpg')
+
+  expect(
+    screen.getByRole('button', { name: 'Rolar até a seção Experiência' }),
+  ).toBeTruthy()
+  expect(document.getElementById('about-experience')).toBeTruthy()
 
   const experience = sectionByHeading('Experiência')
   const timelineItems = experience?.querySelectorAll('ol > li') ?? []

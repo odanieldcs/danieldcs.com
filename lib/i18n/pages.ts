@@ -251,6 +251,7 @@ export type AboutCopy = {
   blogCta: string
   pillars: string[]
   portraitAlt: string
+  scrollToExperienceLabel: string
   sectionExperienceIndex: string
   experienceTitle: string
   experienceSubtitle: string
@@ -289,6 +290,7 @@ const aboutCopy: Record<InterfaceLanguage, AboutCopy> = {
     blogCta: 'Ler o blog',
     pillars: ['Software Engineering', 'AI-Assisted Development', 'Ensino'],
     portraitAlt: 'Retrato de Daniel Castro na Golden Gate',
+    scrollToExperienceLabel: 'Rolar até a seção Experiência',
     sectionExperienceIndex: '01 / Experiência',
     experienceTitle: 'Experiência',
     experienceSubtitle:
@@ -396,6 +398,7 @@ const aboutCopy: Record<InterfaceLanguage, AboutCopy> = {
     blogCta: 'Read the blog',
     pillars: ['Software Engineering', 'AI-Assisted Development', 'Teaching'],
     portraitAlt: 'Portrait of Daniel Castro at the Golden Gate Bridge',
+    scrollToExperienceLabel: 'Scroll to the Experience section',
     sectionExperienceIndex: '01 / Experience',
     experienceTitle: 'Experience',
     experienceSubtitle:

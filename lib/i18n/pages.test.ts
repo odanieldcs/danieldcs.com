@@ -72,6 +72,7 @@ test('pt and en about copy share the same key shape', () => {
     'blogCta',
     'pillars',
     'portraitAlt',
+    'scrollToExperienceLabel',
     'sectionExperienceIndex',
     'experienceTitle',
     'experienceSubtitle',
