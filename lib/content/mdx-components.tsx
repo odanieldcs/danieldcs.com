@@ -42,11 +42,10 @@ function joinClasses(...parts: (string | undefined)[]) {
 }
 
 /** Article chrome — reuse on `app/blog/[slug]/page.tsx`. */
-export const articleTitleClassName = 'text-h1 font-semibold mb-content-gap'
+export const articleTitleClassName =
+  'text-center text-h1 font-semibold mb-2'
 export const articleDateClassName =
-  'mb-content-gap block text-caption text-muted'
-export const articleTagsListClassName =
-  'mb-section flex list-none flex-wrap gap-inline text-caption text-muted'
+  'mb-content-gap block text-center text-base font-semibold text-foreground/55'
 
 function isInternalHref(href: string | undefined): href is string {
   return (

@@ -690,6 +690,8 @@ export function getErrorCopy(lang: InterfaceLanguage): ErrorCopy {
 }
 
 export type PostCopy = {
+  backToBlog: string
+  backToTop: string
   /** Notice for a post read in an interface language it is not written in. */
   onlyAvailableIn: Record<InterfaceLanguage, string>
   /** CTA to the same post in the language it is written in. */
@@ -698,6 +700,8 @@ export type PostCopy = {
 
 const postCopy: Record<InterfaceLanguage, PostCopy> = {
   pt: {
+    backToBlog: 'Voltar para o blog',
+    backToTop: 'Voltar ao topo',
     onlyAvailableIn: {
       pt: 'Conteúdo disponível apenas em português.',
       en: 'Conteúdo disponível apenas em inglês.',
@@ -708,6 +712,8 @@ const postCopy: Record<InterfaceLanguage, PostCopy> = {
     },
   },
   en: {
+    backToBlog: 'Back to Blog',
+    backToTop: 'Back to top',
     onlyAvailableIn: {
       pt: 'Content available only in Portuguese.',
       en: 'Content available only in English.',

@@ -79,6 +79,52 @@ test('postgresql pilot article renders without console errors and code blocks', 
   expect(consoleErrors).toEqual([])
 })
 
+const postgresqlSlug = 'postgresql-e-pgadmin-com-docker-compose'
+
+test('postgresql article shows localized date and cover width at 1280', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 720 })
+  await page.goto(`/blog/${postgresqlSlug}`)
+
+  const date = page.locator('article time').first()
+  await expect(date).toHaveText('31 jul. 2023')
+  await expect(date).toHaveAttribute('datetime', '2023-07-31T00:00:00.000Z')
+
+  const cover = page.locator('article img').first()
+  await expect(cover).toBeVisible()
+  const box = await cover.boundingBox()
+  expect(box?.width).toBe(840)
+})
+
+test('postgresql article English date', async ({ page }) => {
+  await page.goto(`/en/blog/${postgresqlSlug}`)
+
+  const date = page.locator('article time').first()
+  await expect(date).toHaveText('Jul 31, 2023')
+  await expect(date).toHaveAttribute('datetime', '2023-07-31T00:00:00.000Z')
+})
+
+test('postgresql article cover does not overflow viewport on small screens', async ({
+  page,
+}) => {
+  for (const width of [375, 768] as const) {
+    await page.setViewportSize({ width, height: 800 })
+    await page.goto(`/blog/${postgresqlSlug}`)
+
+    const coverFitsViewport = await page.evaluate(() => {
+      const cover = document.querySelector('article img')
+      if (!cover) {
+        return true
+      }
+      const { left, right } = cover.getBoundingClientRect()
+      const viewport = document.documentElement.clientWidth
+      return left >= -0.5 && right <= viewport + 0.5
+    })
+    expect(coverFitsViewport).toBe(true)
+  }
+})
+
 test('missing slug returns 404', async ({ page }) => {
   const response = await page.goto('/blog/slug-inexistente')
 
