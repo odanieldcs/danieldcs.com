@@ -4,8 +4,8 @@ import { getNewestBlogPost } from './helpers/posts'
 
 const blogPostPath = `/blog/${getNewestBlogPost('theme').slug}` as const
 
-const lightBackground = 'rgb(242, 238, 239)'
-const darkBackground = 'rgb(22, 21, 17)'
+const lightBackground = 'rgb(242, 235, 235)'
+const darkBackground = 'rgb(16, 13, 13)'
 const lightForeground = 'lab(10.2215 -2.79985 1.40786)'
 const darkForeground = 'rgb(236, 236, 236)'
 
