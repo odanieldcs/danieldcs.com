@@ -196,5 +196,5 @@ test('renders English chrome when the interface language is en', () => {
   expect(screen.getByRole('button', { name: 'List' })).toBeTruthy()
   expect(screen.getByRole('button', { name: 'Grid' })).toBeTruthy()
   expect(screen.queryByText('Palestra')).toBeNull()
-  expect(document.querySelector('time')?.textContent).toBe('23 Sep. 2026')
+  expect(document.querySelector('time')?.textContent).toBe('Sep 23, 2026')
 })

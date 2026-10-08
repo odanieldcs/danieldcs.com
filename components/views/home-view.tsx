@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useInterfaceLanguage } from '@/components/interface-language-provider'
 import { Container } from '@/components/layout/container'
 import { ArrowRightIcon } from '@/components/ui/arrow-right-icon'
+import { formatDate } from '@/lib/i18n/format-date'
 import {
   getHomeCopy,
   type HomeCopy,
@@ -24,28 +25,6 @@ export type HomePostSummary = {
   language: 'pt' | 'en'
   /** First frontmatter tag. Omitted when the post has none. */
   tag?: string
-}
-
-const dateLocale: Record<InterfaceLanguage, string> = {
-  pt: 'pt-BR',
-  en: 'en-US',
-}
-
-function formatPostDate(isoDate: string, language: InterfaceLanguage): string {
-  // Frontmatter dates are UTC midnight. Format in UTC so the calendar day
-  // does not shift in timezones behind UTC. Shape: "21 set. 2026".
-  const parts = new Intl.DateTimeFormat(dateLocale[language], {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-    timeZone: 'UTC',
-  }).formatToParts(new Date(isoDate))
-  const day = parts.find((part) => part.type === 'day')?.value ?? ''
-  const month = parts.find((part) => part.type === 'month')?.value ?? ''
-  const year = parts.find((part) => part.type === 'year')?.value ?? ''
-  const monthLabel = month.endsWith('.') ? month : `${month}.`
-
-  return `${day} ${monthLabel} ${year}`
 }
 
 const articleCardClassName = [
@@ -178,7 +157,7 @@ function RecentWriting({
                   </>
                 ) : null}
                 <time dateTime={post.date}>
-                  {formatPostDate(post.date, language)}
+                  {formatDate(post.date, language, { style: 'full' })}
                 </time>
               </p>
               <h3 className="mt-4 font-display text-display-title transition-colors group-hover:text-accent">

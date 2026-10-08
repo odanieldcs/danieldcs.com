@@ -8,6 +8,7 @@ import { Container } from '@/components/layout/container'
 import { GridViewIcon, ListViewIcon } from '@/components/views/view-mode-icons'
 import { type BlogViewMode, buildBlogListingHref } from '@/lib/blog/pagination'
 import { resolveCoverSrc } from '@/lib/content/cover'
+import { formatDate } from '@/lib/i18n/format-date'
 import { type BlogCopy, getBlogCopy } from '@/lib/i18n/pages'
 import { localizePath } from '@/lib/i18n/routes'
 import type { InterfaceLanguage } from '@/lib/i18n/types'
@@ -24,27 +25,6 @@ export type BlogPostView = {
 
 const COVER_WIDTH = 800
 const COVER_HEIGHT = 450
-
-const dateLocale: Record<InterfaceLanguage, string> = {
-  pt: 'pt-BR',
-  en: 'en-US',
-}
-
-function formatPostMonthYear(
-  isoDate: string,
-  language: InterfaceLanguage,
-): string {
-  const parts = new Intl.DateTimeFormat(dateLocale[language], {
-    month: 'short',
-    year: 'numeric',
-    timeZone: 'UTC',
-  }).formatToParts(new Date(isoDate))
-  const month = parts.find((part) => part.type === 'month')?.value ?? ''
-  const year = parts.find((part) => part.type === 'year')?.value ?? ''
-  const monthLabel = month.endsWith('.') ? month : `${month}.`
-
-  return `${monthLabel} ${year}`
-}
 
 const focusClassName = [
   'outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/35',
@@ -86,7 +66,7 @@ function ListItem({
           dateTime={post.date}
           className="shrink-0 text-xs font-medium uppercase tabular-nums text-foreground/45"
         >
-          {formatPostMonthYear(post.date, language)}
+          {formatDate(post.date, language, { style: 'monthYear' })}
         </time>
       </Link>
     </li>

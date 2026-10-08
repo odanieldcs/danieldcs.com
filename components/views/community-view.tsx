@@ -5,6 +5,7 @@ import { useInterfaceLanguage } from '@/components/interface-language-provider'
 import { Container } from '@/components/layout/container'
 import { GridViewIcon, ListViewIcon } from '@/components/views/view-mode-icons'
 import type { CommunityEntryType } from '@/lib/content/community-schema'
+import { formatDate } from '@/lib/i18n/format-date'
 import { type CommunityCopy, getCommunityCopy } from '@/lib/i18n/pages'
 import type { InterfaceLanguage } from '@/lib/i18n/types'
 
@@ -23,28 +24,6 @@ export type CommunityEntryView = {
 }
 
 type CommunityViewMode = 'list' | 'grid'
-
-const dateLocale: Record<InterfaceLanguage, string> = {
-  pt: 'pt-BR',
-  en: 'en-US',
-}
-
-function formatEntryDate(isoDate: string, language: InterfaceLanguage): string {
-  // Frontmatter dates are UTC midnight. Format in UTC so the calendar day
-  // does not shift in timezones behind UTC. Shape: "21 set. 2026".
-  const parts = new Intl.DateTimeFormat(dateLocale[language], {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-    timeZone: 'UTC',
-  }).formatToParts(new Date(isoDate))
-  const day = parts.find((part) => part.type === 'day')?.value ?? ''
-  const month = parts.find((part) => part.type === 'month')?.value ?? ''
-  const year = parts.find((part) => part.type === 'year')?.value ?? ''
-  const monthLabel = month.endsWith('.') ? month : `${month}.`
-
-  return `${day} ${monthLabel} ${year}`
-}
 
 const sectionGridClassName =
   'grid items-start gap-10 md:grid-cols-[15rem_minmax(0,1fr)] md:gap-16'
@@ -94,7 +73,7 @@ function EntryBody({
     <>
       <p className="text-xs font-medium uppercase text-foreground/45">
         <time dateTime={entry.date}>
-          {formatEntryDate(entry.date, language)}
+          {formatDate(entry.date, language, { style: 'full' })}
         </time>
         <span aria-hidden="true"> · </span>
         <span>{copy.types[entry.type]}</span>

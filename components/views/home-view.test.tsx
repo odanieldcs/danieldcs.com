@@ -158,7 +158,7 @@ test('renders English copy when the interface language is en', () => {
   expect(
     screen.getByRole('heading', { level: 2, name: 'Recent writing' }),
   ).toBeTruthy()
-  expect(document.querySelector('time')?.textContent).toBe('21 Sep. 2026')
+  expect(document.querySelector('time')?.textContent).toBe('Sep 21, 2026')
   const articleLink = screen.getByRole('link', { name: /Read article/ })
   expect(articleLink.getAttribute('href')).toBe('/en/blog/content-system')
   expect(articleLink.querySelector('svg')).toBeTruthy()
