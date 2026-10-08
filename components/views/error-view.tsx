@@ -1,12 +1,12 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowRightIcon } from '@/components/arrow-right-icon'
-import { Container } from '@/components/container'
+import { Container } from '@/components/layout/container'
+import { ArrowRightIcon } from '@/components/ui/arrow-right-icon'
 import {
   textLinkCtaClassName,
   textLinkRetryButtonClassName,
-} from '@/components/text-link-cta'
+} from '@/components/ui/text-link-cta'
 import { getErrorCopy } from '@/lib/i18n/pages'
 import { localizePath } from '@/lib/i18n/routes'
 import type { InterfaceLanguage } from '@/lib/i18n/types'

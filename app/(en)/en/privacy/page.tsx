@@ -1,5 +1,5 @@
 import type { Metadata, ResolvingMetadata } from 'next'
-import { PrivacyView } from '@/components/privacy-view'
+import { PrivacyView } from '@/components/views/privacy-view'
 import { getLocalizedPageMetadata } from '@/lib/i18n/page-metadata'
 
 export async function generateMetadata(

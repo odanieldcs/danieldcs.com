@@ -1,5 +1,5 @@
 import type { Metadata, ResolvingMetadata } from 'next'
-import { TrilhaView } from '@/components/trilha-view'
+import { TrilhaView } from '@/components/views/trilha-view'
 import { getLocalizedPageMetadata } from '@/lib/i18n/page-metadata'
 
 export async function generateMetadata(

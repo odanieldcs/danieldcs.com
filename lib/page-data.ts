@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { cache } from 'react'
 import defaultOpenGraphImage from '@/app/(pt)/opengraph-image.png'
-import type { BlogPostView } from '@/components/blog-view'
-import type { CommunityEntryView } from '@/components/community-view'
-import type { HomePostSummary } from '@/components/home-view'
+import type { BlogPostView } from '@/components/views/blog-view'
+import type { CommunityEntryView } from '@/components/views/community-view'
+import type { HomePostSummary } from '@/components/views/home-view'
 import {
   type BlogViewMode,
   buildBlogListingHref,

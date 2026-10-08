@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArticleReadSentinel } from '@/components/article-read-sentinel'
-import { Container } from '@/components/container'
+import { Container } from '@/components/layout/container'
+import { ArticleReadSentinel } from '@/components/views/article-read-sentinel'
 import { resolveCoverSrc } from '@/lib/content/cover'
 import { MdxContent } from '@/lib/content/mdx'
 import {
