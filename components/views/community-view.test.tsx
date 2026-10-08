@@ -120,8 +120,8 @@ test('switches the same entries between list and grid', () => {
 
   const listButton = screen.getByRole('button', { name: 'Lista' })
   const gridButton = screen.getByRole('button', { name: 'Grade' })
-  expect(listButton.textContent).toBe('')
   expect(listButton.querySelector('svg')).toBeTruthy()
+  expect(screen.getByRole('tooltip', { name: 'Lista' })).toBeTruthy()
   expect(gridButton.querySelector('svg')).toBeTruthy()
   expect(listButton.getAttribute('aria-pressed')).toBe('true')
   const formatGroup = screen.getByRole('group', { name: 'Formato' })

@@ -2,7 +2,6 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import type { ReactNode } from 'react'
 import { useState } from 'react'
 import { useInterfaceLanguage } from '@/components/interface-language-provider'
 import { Container } from '@/components/layout/container'
@@ -11,6 +10,7 @@ import {
   useSlidingHighlight,
 } from '@/components/layout/sliding-highlight'
 import { GridViewIcon, ListViewIcon } from '@/components/views/view-mode-icons'
+import { ViewModeSwitch } from '@/components/views/view-mode-switch'
 import { type BlogViewMode, buildBlogListingHref } from '@/lib/blog/pagination'
 import { resolveCoverSrc } from '@/lib/content/cover'
 import { formatDate } from '@/lib/i18n/format-date'
@@ -42,14 +42,6 @@ const interactiveSurfaceClassName = [
   'hover:border-accent/40 hover:bg-foreground/5',
 ].join(' ')
 
-const viewSwitchTooltipClassName = [
-  'pointer-events-none absolute top-full left-1/2 z-20 mt-1.5 -translate-x-1/2',
-  'whitespace-nowrap rounded-md border border-border bg-background px-2 py-1 text-caption text-foreground shadow-sm',
-  'translate-y-0.5 opacity-0 transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none',
-  'group-hover/viewtip:translate-y-0 group-hover/viewtip:opacity-100',
-  'group-focus-visible/viewtip:translate-y-0 group-focus-visible/viewtip:opacity-100',
-].join(' ')
-
 const highlightControlClassName = [
   'relative z-10 inline-flex items-center justify-center rounded-md',
   'transition-colors duration-200 hover:text-foreground',
@@ -57,7 +49,7 @@ const highlightControlClassName = [
 ].join(' ')
 
 function highlightControlToneClassName(active: boolean) {
-  return active ? 'text-foreground' : 'text-foreground/70'
+  return active ? 'text-foreground' : 'text-foreground/80'
 }
 
 const listLinkClassName = [
@@ -156,77 +148,17 @@ function ViewSwitch({
   page: number
   language: InterfaceLanguage
 }) {
-  const [pendingView, setPendingView] = useState<BlogViewMode | null>(null)
-  const [trackedView, setTrackedView] = useState(view)
-  if (view !== trackedView) {
-    setTrackedView(view)
-    setPendingView(null)
-  }
-
-  const activeView = pendingView ?? view
-  const { containerRef, box, instant } =
-    useSlidingHighlight<HTMLDivElement>(activeView)
-  const options: Array<{
-    id: BlogViewMode
-    label: string
-    icon: ReactNode
-  }> = [
-    { id: 'list', label: copy.viewList, icon: <ListViewIcon /> },
-    { id: 'grid', label: copy.viewGrid, icon: <GridViewIcon /> },
-  ]
-
   return (
-    // biome-ignore lint/a11y/useSemanticElements: list/grid toggle; fieldset would break the pill layout with links.
-    <div
-      role="group"
-      aria-label={copy.viewLabel}
-      className="inline-flex w-fit rounded-full border border-border bg-background p-0.5"
-    >
-      <div ref={containerRef} className="relative inline-flex">
-        <SlidingHighlight
-          box={box}
-          instant={instant}
-          radiusClassName="rounded-full"
-        />
-        {options.map((option) => {
-          const pressed = view === option.id
-          const highlighted = activeView === option.id
-          const tooltipId = `blog-view-${option.id}`
-          const href = buildBlogListingHref({
-            page,
-            view: option.id,
-            language,
-          })
-
-          return (
-            <Link
-              key={option.id}
-              href={href}
-              aria-pressed={pressed}
-              aria-label={option.label}
-              aria-describedby={tooltipId}
-              data-highlight-target={option.id}
-              onPointerDown={() => setPendingView(option.id)}
-              className={[
-                'group/viewtip relative z-10 inline-flex size-8 items-center justify-center rounded-full',
-                'transition-colors duration-200',
-                focusClassName,
-                highlightControlToneClassName(highlighted),
-              ].join(' ')}
-            >
-              {option.icon}
-              <span
-                id={tooltipId}
-                role="tooltip"
-                className={viewSwitchTooltipClassName}
-              >
-                {option.label}
-              </span>
-            </Link>
-          )
-        })}
-      </div>
-    </div>
+    <ViewModeSwitch
+      ariaLabel={copy.viewLabel}
+      view={view}
+      idPrefix="blog-view"
+      hrefFor={(id) => buildBlogListingHref({ page, view: id, language })}
+      options={[
+        { id: 'list', label: copy.viewList, icon: <ListViewIcon /> },
+        { id: 'grid', label: copy.viewGrid, icon: <GridViewIcon /> },
+      ]}
+    />
   )
 }
 
@@ -252,7 +184,7 @@ function Pagination({
     buildBlogListingHref({ page: target, view, language })
   const paginationEdgeClassName = [
     highlightControlClassName,
-    'px-3 py-2.5 text-sm text-foreground/70',
+    'px-3 py-2.5 text-sm text-foreground/80',
   ].join(' ')
 
   return (
@@ -325,7 +257,7 @@ export function BlogView({
         <h1 className="mt-5 max-w-2xl font-display text-blog-display">
           {copy.title}
         </h1>
-        <p className="mt-8 max-w-xl text-post-body leading-relaxed text-foreground/70">
+        <p className="mt-8 max-w-xl text-post-body leading-relaxed text-foreground/80">
           {copy.intro}
         </p>
         {!hasPosts ? (
