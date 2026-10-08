@@ -261,8 +261,6 @@ export type AboutCopy = {
   repertoireTitle: string
   repertoireSubtitle: string
   repertoireGroups: AboutRepertoireGroup[]
-  languagesLabel: string
-  languagesValue: string
   stackLabel: string
   stackValue: string
   sectionPersonalIndex: string
@@ -363,12 +361,10 @@ const aboutCopy: Record<InterfaceLanguage, AboutCopy> = {
       {
         title: 'Teaching',
         description:
-          'Conhecimento compartilhado por meio de conteúdo, aulas e conversas técnicas.',
+          'Conhecimento compartilhado por meio de conteúdo, aulas e workshops técnicos.',
         skills: ['Conteúdo', 'Palestras', 'Mentoria', 'Cursos'],
       },
     ],
-    languagesLabel: 'Idiomas',
-    languagesValue: 'Português · Inglês',
     stackLabel: 'Stack Principal',
     stackValue:
       'TypeScript · React · Next.js · Node.js · C# · Python · PostgreSQL · Drizzle/Prisma · GraphQL · AWS · Vercel · Docker',
@@ -471,12 +467,10 @@ const aboutCopy: Record<InterfaceLanguage, AboutCopy> = {
       {
         title: 'Teaching',
         description:
-          'Knowledge shared through content, classes, and technical conversations.',
+          'Knowledge shared through content, classes, and technical workshops.',
         skills: ['Content', 'Talks', 'Mentoring', 'Courses'],
       },
     ],
-    languagesLabel: 'Languages',
-    languagesValue: 'Portuguese · English',
     stackLabel: 'Main stack',
     stackValue:
       'TypeScript · React · Next.js · Node.js · C# · Python · PostgreSQL · Drizzle/Prisma · GraphQL · AWS · Vercel · Docker',

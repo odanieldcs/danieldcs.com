@@ -87,7 +87,7 @@ test('renders the about page in Portuguese', () => {
   expect(linkedin.querySelector('svg')).toBeTruthy()
 
   const repertoire = sectionByHeading('Como contribuo')
-  expect(repertoire?.querySelectorAll('h3')).toHaveLength(6)
+  expect(repertoire?.querySelectorAll('h3')).toHaveLength(5)
   expect(screen.getByText('Arquitetura')).toBeTruthy()
   expect(screen.getByText('AI-assisted development')).toBeTruthy()
   expect(screen.getByText('Mentoria')).toBeTruthy()
@@ -96,10 +96,7 @@ test('renders the about page in Portuguese', () => {
     screen.getByRole('heading', { level: 3, name: 'Stack Principal' }),
   ).toBeTruthy()
   expect(screen.getByText(/Drizzle\/Prisma/)).toBeTruthy()
-  expect(
-    screen.getByRole('heading', { level: 3, name: 'Idiomas' }),
-  ).toBeTruthy()
-  expect(screen.getByText('Português · Inglês')).toBeTruthy()
+  expect(screen.queryByRole('heading', { name: 'Idiomas' })).toBeNull()
 
   const pillar = screen.getByText('AI-Assisted Development')
   expect(pillar.closest('ul')).toBeNull()
@@ -181,7 +178,7 @@ test('renders English copy when the interface language is en', () => {
   expect(screen.getByText('Curebase')).toBeTruthy()
   expect(screen.getByText('United States · remote · contract')).toBeTruthy()
   expect(screen.getByText('Architecture')).toBeTruthy()
-  expect(screen.getByText('Portuguese · English')).toBeTruthy()
+  expect(screen.queryByRole('heading', { name: 'Languages' })).toBeNull()
 
   const linkedin = screen.getByRole('link', {
     name: 'See the full path on LinkedIn',

@@ -223,14 +223,6 @@ function Repertoire({ copy }: { copy: AboutCopy }) {
           ))}
         </ul>
         <div className="mt-14 border-t border-border pt-6">
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
-            <h3 className="font-display text-xl font-medium">
-              {copy.languagesLabel}
-            </h3>
-            <p className="text-sm text-foreground/60">{copy.languagesValue}</p>
-          </div>
-        </div>
-        <div className="mt-6 border-t border-border pt-6">
           <h3 className="font-display text-xl font-medium">
             {copy.stackLabel}
           </h3>
