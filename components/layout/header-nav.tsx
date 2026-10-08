@@ -23,12 +23,10 @@ export function HeaderNavLinks({ pathname }: { pathname: string | null }) {
       aria-label={dictionary.mobileMenu.navAriaLabel}
       className="hidden items-center gap-content-gap md:flex"
     >
-      {/* Prefetch stays off until these routes exist, so missing pages do not log 404s. */}
       {items.map((item) => (
         <NavLink
           key={item.href}
           href={item.href}
-          prefetch={false}
           active={pathname !== null && isMainNavActive(pathname, item.href)}
           data-cta="nav_item"
           data-cta-location="header"

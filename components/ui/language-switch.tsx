@@ -52,7 +52,6 @@ function LanguageSwitchLink({ search }: { search: string }) {
           variant="ghost"
           className="peer min-w-11 px-0"
           href={search ? `${path}?${search}` : path}
-          prefetch={false}
           aria-describedby={tooltipId}
           aria-label={label}
           data-cta="language_switch"
