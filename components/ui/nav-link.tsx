@@ -11,7 +11,7 @@ export function navLinkClassName({ active = false }: NavLinkOptions = {}) {
     'text-nav rounded-sm',
     'outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
     'transition-colors hover:text-foreground',
-    active ? 'text-foreground' : 'text-foreground/70',
+    active ? 'text-foreground' : 'text-foreground/80',
   ].join(' ')
 }
 

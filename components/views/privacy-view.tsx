@@ -50,7 +50,7 @@ export function PrivacyView({ language }: { language: InterfaceLanguage }) {
               >
                 {section.title}
               </h2>
-              <div className="space-y-4 text-sm leading-relaxed text-foreground/70">
+              <div className="space-y-4 text-sm leading-relaxed text-foreground/80">
                 {section.paragraphs.map((paragraph) => (
                   <PrivacyParagraph key={paragraph} text={paragraph} />
                 ))}

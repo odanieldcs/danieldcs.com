@@ -34,7 +34,7 @@ function CertificateGroupSection({ group }: { group: CertificateGroup }) {
       <h2 id={titleId} className="font-display text-3xl font-medium">
         {group.title}
       </h2>
-      <p className="mt-4 text-sm leading-relaxed text-foreground/70">
+      <p className="mt-4 text-sm leading-relaxed text-foreground/80">
         <Description parts={group.description} />
       </p>
       {'emptyMessage' in group ? (

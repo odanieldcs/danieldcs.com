@@ -120,7 +120,7 @@ test('marks the current route and nested paths as active', () => {
     screen.getByRole('link', { name: 'Blog' }).className.split(/\s+/),
   ).toContain('text-foreground')
   expect(screen.getByRole('link', { name: 'Comunidade' }).className).toContain(
-    'text-foreground/70',
+    'text-foreground/80',
   )
   expect(
     screen
@@ -137,7 +137,7 @@ test('marks the current route and nested paths as active', () => {
     screen.getByRole('link', { name: 'Blog' }).className.split(/\s+/),
   ).toContain('text-foreground')
   expect(screen.getByRole('link', { name: 'Sobre' }).className).toContain(
-    'text-foreground/70',
+    'text-foreground/80',
   )
 })
 
