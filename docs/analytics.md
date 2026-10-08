@@ -22,14 +22,14 @@ Contract for PostHog on danieldcs.com: event names, properties, privacy limits, 
 
 Names are stable `snake_case` for `track()`. One click → one event ([precedence](#precedence)).
 
-| Event | Properties |
-| --- | --- |
-| `$pageview` | Super property `language` (`pt` \| `en`) from the route, not `Accept-Language` |
-| `$web_vitals` | Automatic, PostHog web vitals extension — inherits super property `language` |
-| `$exception` | PostHog Error Tracking — unhandled errors and unhandled promise rejections (autocapture); React route/global boundaries via `captureError()` → `captureException` with `boundary` (`route` \| `global`) and optional `digest` (Next.js). Message and stack come from PostHog; no `capture_console_errors`. |
-| `article_read` | `slug`, `language` — fires once when the end of the post body enters the viewport (see below) |
-| `external_link_click` | `href_host`, `source` — outbound link without `data-cta` |
-| `cta_click` | `cta`, `location`, optional `target` |
+| Event                 | Properties                                                                                                                                                                                                                                                                                                 |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `$pageview`           | Super property `language` (`pt` \| `en`) from the route, not `Accept-Language`                                                                                                                                                                                                                             |
+| `$web_vitals`         | Automatic, PostHog web vitals extension — inherits super property `language`                                                                                                                                                                                                                               |
+| `$exception`          | PostHog Error Tracking — unhandled errors and unhandled promise rejections (autocapture); React route/global boundaries via `captureError()` → `captureException` with `boundary` (`route` \| `global`) and optional `digest` (Next.js). Message and stack come from PostHog; no `capture_console_errors`. |
+| `article_read`        | `slug`, `language` — fires once when the end of the post body enters the viewport (see below)                                                                                                                                                                                                              |
+| `external_link_click` | `href_host`, `source` — outbound link without `data-cta`                                                                                                                                                                                                                                                   |
+| `cta_click`           | `cta`, `location`, optional `target`                                                                                                                                                                                                                                                                       |
 
 `cta_click` fields: `cta` = kind below; `location` = `header` \| `footer` \| `home` \| `blog` \| `about`; `target` = nav segment, slug, or `pt` \| `en` (language switched **to**).
 
@@ -57,15 +57,15 @@ Names are stable `snake_case` for `track()`. One click → one event ([precedenc
 
 Mobile header nav uses the same values as desktop.
 
-| Where | UI | Event | `cta` / other |
-| --- | --- | --- | --- |
-| Header | Blog, Community, About | `cta_click` | `nav_item`, `target`: `blog` \| `community` \| `about` |
-| Footer | PT posts `blog/livros-recomendados`, `blog/ferramentas-apps-e-setup`; Privacy | `cta_click` | `nav_item`, `target`: path id or `privacy` |
-| Footer | LinkedIn, GitHub, YouTube, Instagram | `external_link_click` | `source: footer`, `href_host` |
-| Home | About link; post cards | `cta_click` | `home_about`; or `post_card` + `target` slug |
-| Blog | Post cards (list/grid) | `cta_click` | `post_card`, `target`: slug |
-| About | LinkedIn trajectory; `mailto` contact | `cta_click` | `linkedin_experience`; `contact_email` |
-| Header | Language switch | `cta_click` | `language_switch`, `target`: `pt` \| `en` |
+| Where  | UI                                                                            | Event                 | `cta` / other                                          |
+| ------ | ----------------------------------------------------------------------------- | --------------------- | ------------------------------------------------------ |
+| Header | Blog, Community, About                                                        | `cta_click`           | `nav_item`, `target`: `blog` \| `community` \| `about` |
+| Footer | PT posts `blog/livros-recomendados`, `blog/ferramentas-apps-e-setup`; Privacy | `cta_click`           | `nav_item`, `target`: path id or `privacy`             |
+| Footer | LinkedIn, GitHub, YouTube, Instagram                                          | `external_link_click` | `source: footer`, `href_host`                          |
+| Home   | About link; post cards                                                        | `cta_click`           | `home_about`; or `post_card` + `target` slug           |
+| Blog   | Post cards (list/grid)                                                        | `cta_click`           | `post_card`, `target`: slug                            |
+| About  | LinkedIn trajectory; `mailto` contact                                         | `cta_click`           | `linkedin_experience`; `contact_email`                 |
+| Header | Language switch                                                               | `cta_click`           | `language_switch`, `target`: `pt` \| `en`              |
 
 ## Precedence
 
@@ -89,3 +89,26 @@ Mark interactive elements in the UI; the delegated listener in `lib/analytics-cl
 ## New events
 
 Document name and properties here first. Stable `snake_case`; identifiers only; one click, one event.
+
+## Operations
+
+Configuration outside this repo that the code and the privacy policy depend on.
+
+**PostHog** — project `Daniel's Blog` (US Cloud)
+
+- Discard client IP data: **on** (the privacy policy depends on it)
+- Cookieless tracking: **off** (it would disable GeoIP and bot detection)
+- Transformations: GeoIP and Bot detection **on**
+- Session replay and surveys: off
+- A separate test project (`<nome>`) is used for local validation; never put its key in Vercel.
+
+**Vercel**
+
+- `NEXT_PUBLIC_POSTHOG_KEY` is set for **Production only**; preview and development send nothing.
+- Changing the key requires a production redeploy (`NEXT_PUBLIC_*` is inlined at build time).
+- Failed deployment notifications: `<e-mail ou canal>`.
+
+**Uptime** — Better Stack
+
+- Monitors `<URL de produção>` and `<URL>/en`; alerts go to Slack (`<#canal>`).
+- Switch the monitored URLs to `danieldcs.com` in the Migration & Launch milestone.
