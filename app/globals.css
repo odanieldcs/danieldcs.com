@@ -8,6 +8,7 @@
 
 @theme {
   --animate-community-view-in: community-view-in 320ms ease;
+  --animate-page-in: page-in 200ms ease-out both;
 
   @keyframes community-view-in {
     from {
@@ -18,6 +19,18 @@
     to {
       opacity: 1;
       transform: translateY(0);
+    }
+  }
+
+  @keyframes page-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.25rem);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
     }
   }
 }
