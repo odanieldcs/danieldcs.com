@@ -50,10 +50,11 @@ function LanguageSwitchLink({ search }: { search: string }) {
       {(tooltipId) => (
         <ButtonLink
           variant="ghost"
-          className="peer min-w-11 px-0"
+          className="peer min-w-11 px-0 hover:bg-transparent!"
           href={search ? `${path}?${search}` : path}
           aria-describedby={tooltipId}
           aria-label={label}
+          data-highlight-target="language"
           data-cta="language_switch"
           data-cta-location="header"
           data-cta-target={nextLanguage(language)}

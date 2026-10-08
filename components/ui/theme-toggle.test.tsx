@@ -43,6 +43,7 @@ test('names the destination theme and toggles light and dark', async () => {
   const toLight = await screen.findByRole('button', { name: 'Light mode' })
   expect(toLight.className).toContain('min-w-11')
   expect(toLight.className).toContain('min-h-11')
+  expect(toLight.className).toContain('cursor-pointer')
   expect(toLight.textContent).not.toContain('Light mode')
   expect(screen.getByRole('tooltip').textContent).toBe('Light mode')
   expect(toLight.getAttribute('aria-describedby')).toBe(
