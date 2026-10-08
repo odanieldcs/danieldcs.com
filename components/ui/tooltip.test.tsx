@@ -27,9 +27,10 @@ test('links the tooltip to the trigger and shows it on hover and keyboard focus'
 
   expect(tooltip.textContent).toBe('Dark mode')
   expect(trigger.getAttribute('aria-describedby')).toBe(tooltip.id)
-  expect(tooltip.className).toContain('invisible')
-  expect(tooltip.className).toContain('peer-hover:visible')
-  expect(tooltip.className).toContain('peer-focus-visible:visible')
+  expect(tooltip.className).toContain('opacity-0')
+  expect(tooltip.className).toContain('peer-hover:opacity-100')
+  expect(tooltip.className).toContain('peer-focus-visible:opacity-100')
+  expect(tooltip.className).toContain('duration-300')
   expect(tooltip.className).toContain('left-1/2')
   expect(tooltip.className).not.toContain('peer-focus:visible')
 })

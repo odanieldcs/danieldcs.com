@@ -3,8 +3,13 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import type { ReactNode } from 'react'
+import { useState } from 'react'
 import { useInterfaceLanguage } from '@/components/interface-language-provider'
 import { Container } from '@/components/layout/container'
+import {
+  SlidingHighlight,
+  useSlidingHighlight,
+} from '@/components/layout/sliding-highlight'
 import { GridViewIcon, ListViewIcon } from '@/components/views/view-mode-icons'
 import { type BlogViewMode, buildBlogListingHref } from '@/lib/blog/pagination'
 import { resolveCoverSrc } from '@/lib/content/cover'
@@ -37,6 +42,24 @@ const interactiveSurfaceClassName = [
   'hover:border-accent/40 hover:bg-foreground/5',
 ].join(' ')
 
+const viewSwitchTooltipClassName = [
+  'pointer-events-none absolute top-full left-1/2 z-20 mt-1.5 -translate-x-1/2',
+  'whitespace-nowrap rounded-md border border-border bg-background px-2 py-1 text-caption text-foreground shadow-sm',
+  'translate-y-0.5 opacity-0 transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none',
+  'group-hover/viewtip:translate-y-0 group-hover/viewtip:opacity-100',
+  'group-focus-visible/viewtip:translate-y-0 group-focus-visible/viewtip:opacity-100',
+].join(' ')
+
+const highlightControlClassName = [
+  'relative z-10 inline-flex items-center justify-center rounded-md',
+  'transition-colors duration-200 hover:text-foreground',
+  focusClassName,
+].join(' ')
+
+function highlightControlToneClassName(active: boolean) {
+  return active ? 'text-foreground' : 'text-foreground/70'
+}
+
 const listLinkClassName = [
   'group flex items-baseline justify-between gap-4 p-4 sm:gap-6 sm:p-5',
   interactiveSurfaceClassName,
@@ -59,7 +82,7 @@ function ListItem({
         data-cta-location="blog"
         data-cta-target={post.slug}
       >
-        <h2 className="min-w-0 font-display text-xl font-medium transition-colors group-hover:text-accent sm:text-2xl">
+        <h2 className="min-w-0 font-display text-base font-medium transition-colors group-hover:text-accent sm:text-xl">
           {post.title}
         </h2>
         <time
@@ -113,7 +136,7 @@ function GridCard({
           <time dateTime={post.date} className={postDateMetadataClassName}>
             {post.date}
           </time>
-          <h2 className="font-display text-xl font-medium transition-colors group-hover:text-accent">
+          <h2 className="font-display text-base font-medium transition-colors group-hover:text-accent">
             {post.title}
           </h2>
         </div>
@@ -133,6 +156,16 @@ function ViewSwitch({
   page: number
   language: InterfaceLanguage
 }) {
+  const [pendingView, setPendingView] = useState<BlogViewMode | null>(null)
+  const [trackedView, setTrackedView] = useState(view)
+  if (view !== trackedView) {
+    setTrackedView(view)
+    setPendingView(null)
+  }
+
+  const activeView = pendingView ?? view
+  const { containerRef, box, instant } =
+    useSlidingHighlight<HTMLDivElement>(activeView)
   const options: Array<{
     id: BlogViewMode
     label: string
@@ -149,32 +182,50 @@ function ViewSwitch({
       aria-label={copy.viewLabel}
       className="inline-flex w-fit rounded-full border border-border bg-background p-0.5"
     >
-      {options.map((option) => {
-        const pressed = view === option.id
-        const href = buildBlogListingHref({
-          page,
-          view: option.id,
-          language,
-        })
+      <div ref={containerRef} className="relative inline-flex">
+        <SlidingHighlight
+          box={box}
+          instant={instant}
+          radiusClassName="rounded-full"
+        />
+        {options.map((option) => {
+          const pressed = view === option.id
+          const highlighted = activeView === option.id
+          const tooltipId = `blog-view-${option.id}`
+          const href = buildBlogListingHref({
+            page,
+            view: option.id,
+            language,
+          })
 
-        return (
-          <Link
-            key={option.id}
-            href={href}
-            aria-pressed={pressed}
-            aria-label={option.label}
-            className={[
-              'inline-flex size-8 items-center justify-center rounded-full transition-colors duration-200',
-              focusClassName,
-              pressed
-                ? 'bg-foreground/10 text-foreground'
-                : 'text-foreground/45 hover:text-foreground',
-            ].join(' ')}
-          >
-            {option.icon}
-          </Link>
-        )
-      })}
+          return (
+            <Link
+              key={option.id}
+              href={href}
+              aria-pressed={pressed}
+              aria-label={option.label}
+              aria-describedby={tooltipId}
+              data-highlight-target={option.id}
+              onPointerDown={() => setPendingView(option.id)}
+              className={[
+                'group/viewtip relative z-10 inline-flex size-8 items-center justify-center rounded-full',
+                'transition-colors duration-200',
+                focusClassName,
+                highlightControlToneClassName(highlighted),
+              ].join(' ')}
+            >
+              {option.icon}
+              <span
+                id={tooltipId}
+                role="tooltip"
+                className={viewSwitchTooltipClassName}
+              >
+                {option.label}
+              </span>
+            </Link>
+          )
+        })}
+      </div>
     </div>
   )
 }
@@ -192,9 +243,17 @@ function Pagination({
   pageCount: number
   language: InterfaceLanguage
 }) {
+  const [hoveredPage, setHoveredPage] = useState<number | null>(null)
+  const { containerRef, box, instant } = useSlidingHighlight<HTMLUListElement>(
+    String(hoveredPage ?? page),
+  )
   const pages = Array.from({ length: pageCount }, (_, index) => index + 1)
   const pageHref = (target: number) =>
     buildBlogListingHref({ page: target, view, language })
+  const paginationEdgeClassName = [
+    highlightControlClassName,
+    'px-3 py-2.5 text-sm text-foreground/70',
+  ].join(' ')
 
   return (
     <nav
@@ -202,17 +261,16 @@ function Pagination({
       className="mt-12 flex flex-wrap items-center justify-center gap-2"
     >
       {page > 1 ? (
-        <Link
-          href={pageHref(page - 1)}
-          className={[
-            'rounded-md border border-border px-3 py-1.5 text-sm transition-colors hover:border-accent/40',
-            focusClassName,
-          ].join(' ')}
-        >
+        <Link href={pageHref(page - 1)} className={paginationEdgeClassName}>
           {copy.paginationPrevious}
         </Link>
       ) : null}
-      <ul className="flex list-none flex-wrap items-center gap-1">
+      <ul
+        ref={containerRef}
+        className="relative flex list-none flex-wrap items-center gap-1"
+        onMouseLeave={() => setHoveredPage(null)}
+      >
+        <SlidingHighlight box={box} instant={instant} />
         {pages.map((pageNumber) => {
           const current = pageNumber === page
 
@@ -221,12 +279,13 @@ function Pagination({
               <Link
                 href={pageHref(pageNumber)}
                 aria-current={current ? 'page' : undefined}
+                aria-label={String(pageNumber)}
+                data-highlight-target={String(pageNumber)}
+                onMouseEnter={() => setHoveredPage(pageNumber)}
                 className={[
-                  'inline-flex min-w-9 items-center justify-center rounded-md border px-2 py-1.5 text-sm transition-colors',
-                  focusClassName,
-                  current
-                    ? 'border-foreground/20 bg-foreground/10 text-foreground'
-                    : 'border-border hover:border-accent/40',
+                  'min-w-9 px-2 py-2.5 text-sm',
+                  highlightControlClassName,
+                  highlightControlToneClassName(current),
                 ].join(' ')}
               >
                 {pageNumber}
@@ -236,13 +295,7 @@ function Pagination({
         })}
       </ul>
       {page < pageCount ? (
-        <Link
-          href={pageHref(page + 1)}
-          className={[
-            'rounded-md border border-border px-3 py-1.5 text-sm transition-colors hover:border-accent/40',
-            focusClassName,
-          ].join(' ')}
-        >
+        <Link href={pageHref(page + 1)} className={paginationEdgeClassName}>
           {copy.paginationNext}
         </Link>
       ) : null}

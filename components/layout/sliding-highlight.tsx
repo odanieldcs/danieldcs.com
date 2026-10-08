@@ -97,15 +97,21 @@ export function useSlidingHighlight<T extends HTMLElement = HTMLElement>(
 export function SlidingHighlight({
   box,
   instant,
+  radiusClassName = 'rounded-md',
 }: {
   box: SlidingHighlightBox
   instant: boolean
+  radiusClassName?: string
 }) {
   return (
     <span
       aria-hidden="true"
       data-header-highlight=""
-      className="pointer-events-none absolute top-0 left-0 z-0 rounded-md bg-foreground/[0.06] transition-[transform,width,height,opacity] duration-300 ease-out motion-reduce:transition-none"
+      className={[
+        'pointer-events-none absolute top-0 left-0 z-0 bg-foreground/[0.06]',
+        'transition-[transform,width,height,opacity] duration-300 ease-out motion-reduce:transition-none',
+        radiusClassName,
+      ].join(' ')}
       style={{
         width: box.width,
         height: box.height,

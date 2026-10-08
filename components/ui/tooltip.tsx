@@ -5,6 +5,7 @@ type TooltipAlign = 'center' | 'end'
 type TooltipProps = {
   label: string
   align?: TooltipAlign
+  className?: string
   children: (tooltipId: string) => ReactNode
 }
 
@@ -14,22 +15,34 @@ const alignClassName: Record<TooltipAlign, string> = {
 }
 
 const tooltipClassName = [
-  'pointer-events-none invisible absolute top-full z-10 mt-1',
+  'pointer-events-none absolute top-full z-10 mt-1.5',
   'whitespace-nowrap rounded-md border border-border bg-background px-2 py-1 text-caption text-foreground shadow-sm',
-  'peer-hover:visible peer-focus-visible:visible',
+  'translate-y-0.5 opacity-0 transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none',
+  'peer-hover:translate-y-0 peer-hover:opacity-100 peer-focus-visible:translate-y-0 peer-focus-visible:opacity-100',
 ].join(' ')
 
+export function tooltipPopupClassName(align: TooltipAlign = 'center') {
+  return `${tooltipClassName} ${alignClassName[align]}`
+}
+
 /** CSS tooltip. The trigger must include the `peer` class and `aria-describedby={tooltipId}`. */
-export function Tooltip({ label, align = 'center', children }: TooltipProps) {
+export function Tooltip({
+  label,
+  align = 'center',
+  className,
+  children,
+}: TooltipProps) {
   const tooltipId = useId()
 
   return (
-    <div className="relative inline-flex">
+    <div
+      className={['relative inline-flex', className].filter(Boolean).join(' ')}
+    >
       {children(tooltipId)}
       <span
         id={tooltipId}
         role="tooltip"
-        className={`${tooltipClassName} ${alignClassName[align]}`}
+        className={tooltipPopupClassName(align)}
       >
         {label}
       </span>
