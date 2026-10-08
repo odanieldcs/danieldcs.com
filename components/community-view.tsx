@@ -3,6 +3,7 @@
 import { type ReactNode, useRef, useState } from 'react'
 import { Container } from '@/components/container'
 import { useInterfaceLanguage } from '@/components/interface-language-provider'
+import { GridViewIcon, ListViewIcon } from '@/components/view-mode-icons'
 import type { CommunityEntryType } from '@/lib/content/community-schema'
 import { type CommunityCopy, getCommunityCopy } from '@/lib/i18n/pages'
 import type { InterfaceLanguage } from '@/lib/i18n/types'
@@ -264,36 +265,6 @@ function YearSection({
   )
 }
 
-const viewIconProps = {
-  'aria-hidden': true,
-  viewBox: '0 0 24 24',
-  className: 'size-4',
-  fill: 'none',
-  stroke: 'currentColor',
-  strokeWidth: 1.5,
-  strokeLinecap: 'round',
-  strokeLinejoin: 'round',
-} as const
-
-function ListIcon() {
-  return (
-    <svg {...viewIconProps}>
-      <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
-    </svg>
-  )
-}
-
-function GridIcon() {
-  return (
-    <svg {...viewIconProps}>
-      <rect x="3.5" y="3.5" width="7" height="7" rx="1" />
-      <rect x="13.5" y="3.5" width="7" height="7" rx="1" />
-      <rect x="3.5" y="13.5" width="7" height="7" rx="1" />
-      <rect x="13.5" y="13.5" width="7" height="7" rx="1" />
-    </svg>
-  )
-}
-
 function ViewSwitch({
   copy,
   view,
@@ -308,11 +279,12 @@ function ViewSwitch({
     label: string
     icon: ReactNode
   }> = [
-    { id: 'list', label: copy.viewList, icon: <ListIcon /> },
-    { id: 'grid', label: copy.viewGrid, icon: <GridIcon /> },
+    { id: 'list', label: copy.viewList, icon: <ListViewIcon /> },
+    { id: 'grid', label: copy.viewGrid, icon: <GridViewIcon /> },
   ]
 
   return (
+    // biome-ignore lint/a11y/useSemanticElements: list/grid toggle; fieldset would break the pill layout with buttons.
     <div
       role="group"
       aria-label={copy.viewLabel}

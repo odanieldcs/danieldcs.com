@@ -10,6 +10,7 @@ import { linkClassName } from '@/lib/link-styles'
 function Description({ parts }: { parts: CertificateDescription }) {
   return parts.map((part, index) =>
     typeof part === 'string' ? (
+      // biome-ignore lint/suspicious/noArrayIndexKey: static description fragments, fixed order.
       <Fragment key={index}>{part}</Fragment>
     ) : (
       <a
