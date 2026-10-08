@@ -5,6 +5,8 @@
   --type-display-section: 1.875rem;
   --type-display-band: 2.25rem;
   --type-display-title: 1.5rem;
+  /* Blog / community listing hero. Caps at 3rem on small viewports. */
+  --type-blog-display: 3rem;
 }
 
 @media (min-width: 48rem) {
@@ -12,6 +14,7 @@
     --type-display: 4rem;
     --type-display-section: 2.25rem;
     --type-display-band: 3rem;
+    --type-blog-display: 4rem;
   }
 }
 
@@ -63,8 +66,8 @@
   --text-post-title--line-height: 1.2;
   --text-post-title--font-weight: 600;
 
-  /* Blog listing hero title. */
-  --text-blog-display: 4rem;
+  /* Blog / community listing hero. Size follows --type-blog-display. */
+  --text-blog-display: var(--type-blog-display);
   --text-blog-display--line-height: 1.03;
   --text-blog-display--font-weight: 500;
 
