@@ -78,14 +78,19 @@ test('identity links home and desktop nav lists the public items', () => {
   expect(blog.getAttribute('href')).toBe('/blog')
   expect(comunidade.getAttribute('href')).toBe('/community')
   expect(sobre.getAttribute('href')).toBe('/about')
-  expect(blog.className).toContain('hover:bg-')
-  expect(comunidade.className).toContain('hover:bg-')
-  expect(sobre.className).toContain('hover:bg-')
+  for (const link of [blog, comunidade, sobre]) {
+    expect(link.className).toContain('px-4')
+    expect(link.className).toContain('py-2.5')
+  }
 
   const nav = screen.getByRole('navigation', { name: 'Navegação principal' })
   expect(nav.className).toContain('hidden')
   expect(nav.className).toContain('md:flex')
   expect(nav.className).toContain('gap-1')
+  const highlight = nav.querySelector('[data-header-highlight]')
+  expect(highlight?.className).toContain('bg-foreground/')
+  expect(highlight?.className).toContain('duration-300')
+  expect((highlight as HTMLElement | null)?.style.opacity).toBe('0')
   const mobileSlot = document.querySelector('header .md\\:hidden')
   const menuButton = screen.getByRole('button', { name: 'Menu' })
   const themeButton = screen.getByRole('button', { name: 'Theme' })
@@ -93,6 +98,18 @@ test('identity links home and desktop nav lists the public items', () => {
   expect(mobileSlot?.contains(themeButton)).toBe(false)
   expect(screen.getByRole('button', { name: 'Theme' })).toBeTruthy()
   expect(screen.getByRole('link', { name: 'Switch to English' })).toBeTruthy()
+
+  const controls = document.querySelector('[data-header-controls]')
+  const controlsHighlight = controls?.querySelector('[data-header-highlight]')
+  expect(
+    controls?.contains(screen.getByRole('button', { name: 'Theme' })),
+  ).toBe(true)
+  expect(
+    controls?.contains(screen.getByRole('link', { name: 'Switch to English' })),
+  ).toBe(true)
+  expect(controlsHighlight?.className).toContain('bg-foreground/')
+  expect(controlsHighlight?.className).toContain('duration-300')
+  expect((controlsHighlight as HTMLElement | null)?.style.opacity).toBe('0')
 })
 
 test('marks the current route and nested paths as active', () => {
@@ -105,6 +122,12 @@ test('marks the current route and nested paths as active', () => {
   expect(screen.getByRole('link', { name: 'Comunidade' }).className).toContain(
     'text-foreground/70',
   )
+  expect(
+    screen
+      .getByRole('navigation', { name: 'Navegação principal' })
+      .querySelector('[data-header-highlight]')
+      ?.getAttribute('style'),
+  ).toContain('opacity: 1')
   unmount()
 
   navigation.pathname = '/blog/content-system'

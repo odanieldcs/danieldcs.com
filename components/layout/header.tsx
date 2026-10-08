@@ -2,13 +2,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Suspense } from 'react'
 import { Container } from '@/components/layout/container'
+import { HeaderControls } from '@/components/layout/header-controls'
 import {
   HeaderMobileMenu,
   HeaderNav,
   HeaderNavLinks,
 } from '@/components/layout/header-nav'
-import { LanguageSwitch } from '@/components/ui/language-switch'
-import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { localizePath } from '@/lib/i18n/routes'
 import type { InterfaceLanguage } from '@/lib/i18n/types'
 
@@ -51,10 +50,7 @@ export function Header({ language }: { language: InterfaceLanguage }) {
           <div className="md:hidden">
             <HeaderMobileMenu />
           </div>
-          <div className="flex items-center gap-1">
-            <ThemeToggle />
-            <LanguageSwitch />
-          </div>
+          <HeaderControls />
         </div>
       </Container>
     </header>

@@ -6,7 +6,8 @@ import { useUiDictionary } from '@/components/interface-language-provider'
 import { Button } from '@/components/ui/button'
 import { Tooltip } from '@/components/ui/tooltip'
 
-const iconButtonClassName = 'peer min-w-11 px-0'
+const iconButtonClassName =
+  'peer min-w-11 cursor-pointer px-0 hover:bg-transparent!'
 
 const iconProps = {
   viewBox: '0 0 24 24',
@@ -48,9 +49,10 @@ export function ThemeToggle() {
     return (
       <Button
         variant="ghost"
-        className="min-w-11 px-0"
+        className={iconButtonClassName}
         disabled
         aria-label={theme.toggle}
+        data-highlight-target="theme"
       />
     )
   }
@@ -66,6 +68,7 @@ export function ThemeToggle() {
           className={iconButtonClassName}
           aria-describedby={tooltipId}
           aria-label={label}
+          data-highlight-target="theme"
           onClick={() => setTheme(isDark ? 'light' : 'dark')}
         >
           {isDark ? <SunIcon /> : <MoonIcon />}
