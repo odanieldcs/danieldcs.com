@@ -27,14 +27,14 @@ export function Header({ language }: { language: InterfaceLanguage }) {
           href={localizePath('/', language)}
           className={`${homeLinkClassName} justify-self-start`}
         >
-          <span className="flex size-8 shrink-0 items-center justify-center rounded-md bg-[#212121] dark:bg-transparent">
+          <span className="flex size-8 shrink-0 items-center justify-center">
             <Image
               src="/media/icons/logo-ddev.png"
               alt=""
               width={145}
               height={150}
               loading="eager"
-              className="h-5 w-auto"
+              className="h-6 w-auto"
             />
           </span>
           <span className="truncate font-display text-xl font-medium">
