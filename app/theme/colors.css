@@ -19,7 +19,7 @@
 }
 
 .dark {
-  --background: oklch(0.24 0.012 87.5);
+  --background: #161511;
   --foreground: #ececec; /* 13.91:1 on background */
   --muted: #a3a3a3; /* 6.51:1 on background */
   --link: #d4d4d4; /* 11.09:1 on background */
