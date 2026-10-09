@@ -70,56 +70,58 @@ export function PostArticle({
 
   return (
     <>
-      <Container
-        as="article"
-        width="article"
-        data-analytics-source="post"
-        className="pt-10 pb-10 sm:pt-16 sm:pb-16"
-      >
-        <h1 className={articleTitleClassName}>{frontmatter.title}</h1>
-        <time
-          className={articleDateClassName}
-          dateTime={frontmatter.date.toISOString()}
+      <div className="article-frame">
+        <Container
+          as="article"
+          width="article"
+          data-analytics-source="post"
+          className="pt-10 pb-10 sm:pt-16 sm:pb-16"
         >
-          {formatDate(frontmatter.date, language, { style: 'full' })}
-        </time>
-        {coverSrc ? (
-          <Image
-            src={coverSrc}
-            alt={frontmatter.title}
-            width={COVER_WIDTH}
-            height={COVER_HEIGHT}
-            className={articleCoverClassName}
-            sizes="(min-width: 48rem) 840px, 100vw"
-            loading="eager"
-            fetchPriority="high"
-          />
-        ) : null}
-        {frontmatter.language !== language ? (
-          <ContentLanguageNotice
+          <h1 className={articleTitleClassName}>{frontmatter.title}</h1>
+          <time
+            className={articleDateClassName}
+            dateTime={frontmatter.date.toISOString()}
+          >
+            {formatDate(frontmatter.date, language, { style: 'full' })}
+          </time>
+          {coverSrc ? (
+            <Image
+              src={coverSrc}
+              alt={frontmatter.title}
+              width={COVER_WIDTH}
+              height={COVER_HEIGHT}
+              className={articleCoverClassName}
+              sizes="(min-width: 48rem) 840px, 100vw"
+              loading="eager"
+              fetchPriority="high"
+            />
+          ) : null}
+          {frontmatter.language !== language ? (
+            <ContentLanguageNotice
+              slug={post.slug}
+              postLanguage={frontmatter.language}
+              language={language}
+            />
+          ) : null}
+          <MdxContent source={content} />
+          <ArticleReadSentinel
+            key={post.slug}
             slug={post.slug}
-            postLanguage={frontmatter.language}
             language={language}
           />
-        ) : null}
-        <MdxContent source={content} />
-        <ArticleReadSentinel
-          key={post.slug}
-          slug={post.slug}
-          language={language}
-        />
-        <div className="mt-section flex justify-center">
-          <Link
-            href={localizePath('/blog', language)}
-            className={textLinkCtaClassName}
-          >
-            <span className="-scale-x-100">
-              <ArrowRightIcon />
-            </span>
-            {copy.backToBlog}
-          </Link>
-        </div>
-      </Container>
+          <div className="mt-section flex justify-center">
+            <Link
+              href={localizePath('/blog', language)}
+              className={textLinkCtaClassName}
+            >
+              <span className="-scale-x-100">
+                <ArrowRightIcon />
+              </span>
+              {copy.backToBlog}
+            </Link>
+          </div>
+        </Container>
+      </div>
       <ArticleScrollToTop label={copy.backToTop} />
     </>
   )

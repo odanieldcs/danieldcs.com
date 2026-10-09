@@ -100,6 +100,7 @@ test('renders the editorial home and recent posts in Portuguese', () => {
   ).toBeTruthy()
   expect(screen.getByText('content')).toBeTruthy()
   const articleLink = screen.getByRole('link', { name: /Ler artigo/ })
+  expect(articleLink.closest('li')?.className).toContain('min-w-0')
   expect(articleLink.getAttribute('href')).toBe('/blog/content-system')
   expect(articleLink.className).toContain('group')
   expect(articleLink.querySelector('a')).toBeNull()

@@ -43,7 +43,7 @@ function joinClasses(...parts: (string | undefined)[]) {
 
 /** Article chrome — reuse on `app/blog/[slug]/page.tsx`. */
 export const articleTitleClassName =
-  'text-center text-post-title font-semibold mb-2'
+  'text-center text-post-title font-semibold mb-2 break-words'
 export const articleDateClassName =
   'mb-content-gap block text-center text-base font-semibold text-foreground/55'
 

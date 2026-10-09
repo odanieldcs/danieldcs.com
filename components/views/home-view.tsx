@@ -66,7 +66,9 @@ function Hero({
       </figure>
       <div className="order-2 flex min-w-0 flex-col gap-content-gap md:order-1">
         <p className="text-eyebrow uppercase text-label">{copy.eyebrow}</p>
-        <h1 className="font-display text-display">{copy.headline}</h1>
+        <h1 className="break-words font-display text-display">
+          {copy.headline}
+        </h1>
         <div className="flex max-w-xl flex-col gap-3 text-home-intro text-foreground/80">
           {copy.intro.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
@@ -141,7 +143,7 @@ function RecentWriting({
       </div>
       <ul className="grid list-none gap-content-gap md:grid-cols-2">
         {posts.map((post) => (
-          <li key={post.slug} className="flex">
+          <li key={post.slug} className="flex min-w-0">
             <Link
               href={localizePath(`/blog/${post.slug}`, language)}
               className={articleCardClassName}
