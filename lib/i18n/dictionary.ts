@@ -21,6 +21,9 @@ export type UiDictionary = {
     trigger: string
     navAriaLabel: string
   }
+  navigation: {
+    loading: string
+  }
 }
 
 const uiCopy: Record<InterfaceLanguage, Omit<UiDictionary, 'nav'>> = {
@@ -39,6 +42,9 @@ const uiCopy: Record<InterfaceLanguage, Omit<UiDictionary, 'nav'>> = {
       trigger: 'Menu',
       navAriaLabel: 'Navegação principal',
     },
+    navigation: {
+      loading: 'O conteúdo está sendo carregado',
+    },
   },
   en: {
     theme: {
@@ -54,6 +60,9 @@ const uiCopy: Record<InterfaceLanguage, Omit<UiDictionary, 'nav'>> = {
     mobileMenu: {
       trigger: 'Menu',
       navAriaLabel: 'Main navigation',
+    },
+    navigation: {
+      loading: 'The content is loading',
     },
   },
 }
