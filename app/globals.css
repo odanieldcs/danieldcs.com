@@ -8,6 +8,7 @@
 
 @theme {
   --animate-community-view-in: community-view-in 320ms ease;
+  --animate-page-in: page-in 200ms ease-out both;
 
   @keyframes community-view-in {
     from {
@@ -19,6 +20,65 @@
       opacity: 1;
       transform: translateY(0);
     }
+  }
+
+  @keyframes page-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.25rem);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+/* Top bar while a not-yet-ready route is loading. Kept outside @theme so the
+   complete state can delay opacity without delaying the fill. */
+.navigation-progress-bar {
+  height: 100%;
+  width: 100%;
+  transform-origin: left center;
+  background-color: var(--accent);
+  transform: scaleX(0.12);
+}
+
+@keyframes navigation-progress-fill {
+  from {
+    transform: scaleX(0.12);
+  }
+
+  to {
+    transform: scaleX(0.9);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .navigation-progress-bar[data-phase="loading"] {
+    animation: navigation-progress-fill 8s cubic-bezier(0.15, 0.6, 0.2, 1)
+      forwards;
+  }
+
+  .navigation-progress-bar[data-phase="complete"] {
+    animation: none;
+    transform: scaleX(1);
+    opacity: 0;
+    transition-property: transform, opacity;
+    transition-duration: 160ms, 180ms;
+    transition-timing-function: ease-out, ease;
+    transition-delay: 0s, 140ms;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navigation-progress-bar[data-phase="loading"] {
+    transform: scaleX(1);
+  }
+
+  .navigation-progress-bar[data-phase="complete"] {
+    opacity: 0;
   }
 }
 

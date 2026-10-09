@@ -23,6 +23,8 @@ test('pt and en dictionaries share the same key shape', () => {
   expect(Object.keys(en.language)).toEqual(Object.keys(pt.language))
   expect(Object.keys(pt.mobileMenu)).toEqual(['trigger', 'navAriaLabel'])
   expect(Object.keys(en.mobileMenu)).toEqual(Object.keys(pt.mobileMenu))
+  expect(Object.keys(pt.navigation)).toEqual(['loading'])
+  expect(Object.keys(en.navigation)).toEqual(Object.keys(pt.navigation))
 })
 
 test('nav labels match doc 4 in Portuguese', () => {
@@ -69,4 +71,6 @@ test('includes theme, language switch, and mobile menu copy in both languages', 
   expect(en.language.switchToPt).toBe('Switch to Portuguese')
   expect(pt.mobileMenu.trigger).toBe('Menu')
   expect(en.mobileMenu.navAriaLabel).toBe('Main navigation')
+  expect(pt.navigation.loading).toBe('O conteúdo está sendo carregado')
+  expect(en.navigation.loading).toBe('The content is loading')
 })
