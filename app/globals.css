@@ -82,6 +82,43 @@
   }
 }
 
+/* First-paint bar. Opacity stays at 1 until the failsafe ends, so a slow load
+   does not fade the bar out early. JS sets html[data-loaded] on window load. */
+@keyframes boot-progress-dismiss {
+  0%,
+  99% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.boot-progress {
+  animation: boot-progress-dismiss 10s linear forwards;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html[data-loaded] .boot-progress {
+    animation: none;
+    opacity: 0;
+    transition: opacity 180ms ease;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boot-progress {
+    animation-timing-function: step-end;
+  }
+
+  html[data-loaded] .boot-progress {
+    animation: none;
+    opacity: 0;
+  }
+}
+
 /* Long article tokens wrap in place. Titles, nav, and footer stay unchanged. */
 article :where(a, strong, :not(pre) > code) {
   overflow-wrap: anywhere;

@@ -2,9 +2,10 @@ import { GeistMono } from 'geist/font/mono'
 import { Fraunces, Inter } from 'next/font/google'
 import type { ReactNode } from 'react'
 import { InterfaceLanguageProvider } from '@/components/interface-language-provider'
-import { BootLoader } from '@/components/layout/boot-loader'
+import { BootProgress } from '@/components/layout/boot-progress'
 import { Footer } from '@/components/layout/footer'
 import { Header } from '@/components/layout/header'
+import { LoadingBar } from '@/components/layout/loading-indicator'
 import { NavigationProgress } from '@/components/layout/navigation-progress'
 import { ThemeProvider } from '@/components/theme-provider'
 import { htmlLang, type InterfaceLanguage } from '@/lib/i18n/types'
@@ -39,7 +40,11 @@ export function SiteShell({
       <body className="bg-background font-sans text-foreground antialiased">
         <ThemeProvider>
           <InterfaceLanguageProvider language={language}>
-            <BootLoader />
+            <LoadingBar
+              phase="loading"
+              className="boot-progress fixed inset-x-0 top-0 z-40"
+            />
+            <BootProgress />
             <NavigationProgress />
             <Header language={language} />
             {children}
