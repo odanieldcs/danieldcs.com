@@ -66,7 +66,7 @@ function Pillars({ copy }: { copy: TrilhaCopy }) {
               <li
                 key={item.index}
                 className={[
-                  'flex flex-col gap-inline border-border py-8',
+                  'flex min-w-0 flex-col gap-inline border-border py-8',
                   index > 0 ? 'md:pl-6' : '',
                   !isLast
                     ? 'border-b pr-0 md:border-r md:border-b-0 md:pr-6'
@@ -78,7 +78,7 @@ function Pillars({ copy }: { copy: TrilhaCopy }) {
                 <span className="font-display text-sm text-label">
                   {item.index}
                 </span>
-                <h3 className="font-display text-display-title">
+                <h3 className="break-words font-display text-display-title">
                   {item.title}
                 </h3>
                 <p className="text-note text-foreground/65">
