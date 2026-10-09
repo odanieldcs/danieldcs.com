@@ -1,6 +1,6 @@
 /* Semantic type scale. text-h1–h4 stay for MDX. Home display tokens are separate. */
 :root {
-  /* Home display scale. Hero ~2.75rem, section titles smaller. */
+  /* Home display scale. 2.75rem through 352px, where a long word may hyphenate. */
   --type-display: 2.75rem;
   --type-display-section: 1.875rem;
   --type-display-band: 2.25rem;
@@ -9,9 +9,17 @@
   --type-blog-display: 3rem;
 }
 
+/* 360px–25rem: grow back to 2.75rem so "compartilhando," fits the column. */
+@media (min-width: 22.5rem) {
+  :root {
+    --type-display: clamp(2.48rem, 0.05rem + 10.8vw, 2.75rem);
+  }
+}
+
 @media (min-width: 48rem) {
   :root {
-    --type-display: 4rem;
+    /* Fluid until 4rem fits the hero column (~66.75rem). */
+    --type-display: clamp(2.7rem, -0.628rem + 6.933333vw, 4rem);
     --type-display-section: 2.25rem;
     --type-display-band: 3rem;
     --type-blog-display: 4rem;
@@ -133,5 +141,25 @@
   h5,
   h6 {
     font-family: var(--font-display);
+  }
+
+  /* lang on <html> comes from the route. break-words remains the fallback.
+     Auto only while a long word may be wider than the column. From 360px
+     a word that fits wraps whole; auto would still hyphenate it to fill
+     the line, including the home hero at 1280. */
+  h1,
+  h2,
+  h3 {
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+
+  @media (min-width: 22.5rem) {
+    h1,
+    h2,
+    h3 {
+      -webkit-hyphens: manual;
+      hyphens: manual;
+    }
   }
 }
