@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
+import { PageEnter } from '@/components/layout/page-enter'
 
 export default function Template({ children }: { children: ReactNode }) {
-  return <div className="motion-safe:animate-page-in">{children}</div>
+  return <PageEnter>{children}</PageEnter>
 }
