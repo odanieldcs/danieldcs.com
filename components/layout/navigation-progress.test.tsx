@@ -25,16 +25,12 @@ vi.mock('@/components/layout/page-enter', () => ({
 beforeEach(() => {
   navigation.pathname = '/'
   navigation.animateNext = false
-  vi.stubGlobal(
-    'matchMedia',
-    (query: string) =>
-      ({
-        matches: false,
-        media: query,
-        addEventListener: () => {},
-        removeEventListener: () => {},
-      }) as MediaQueryList,
-  )
+  vi.stubGlobal('matchMedia', ((query: string) => ({
+    matches: false,
+    media: query,
+    addEventListener: () => {},
+    removeEventListener: () => {},
+  })) as unknown as typeof window.matchMedia)
 })
 
 afterEach(() => {
