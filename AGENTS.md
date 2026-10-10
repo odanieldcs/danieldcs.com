@@ -5,7 +5,7 @@ Operational context for this repo. Commands, scripts, and folder layout live in 
 ## Stack
 
 - Next.js 16 App Router, React 19, TypeScript strict, pnpm 11.5
-- Tailwind CSS v4, Biome, MDX (content files only for now)
+- Tailwind CSS v4, Biome, MDX loaded from `content/` in `lib/content`
 - Vitest + Testing Library, Playwright (Chromium)
 - Vercel Git integration (no `vercel.ts` in V1)
 - Import alias is `@/*` → repo root. Do not add `~/*`.
@@ -21,7 +21,7 @@ Operational context for this repo. Commands, scripts, and folder layout live in 
 
 ## Out of V1
 
-Do not add these unless the current ticket asks for them: custom domain `danieldcs.com`, MDX loaders, CMS, required PR reviews, CODEOWNERS.
+Do not add these unless the current ticket asks for them: custom domain `danieldcs.com`, CMS, required PR reviews, CODEOWNERS.
 
 ## Workflow
 

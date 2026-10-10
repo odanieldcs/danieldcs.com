@@ -8,14 +8,14 @@ Personal website of Daniel Castro. Static-first Next.js app, hosted on Vercel.
 - TypeScript (strict)
 - Tailwind CSS v4
 - Biome (lint and format)
-- MDX (content loaders come later)
+- MDX loaded from `content/` in `lib/content` (gray-matter, Zod, `next-mdx-remote`)
 - Vitest and Testing Library
 - Playwright (Chromium)
 - Vercel
 
 ## Getting started
 
-Requires [pnpm](https://pnpm.io) 11.5.2 and Node.js 22+.
+Requires [pnpm](https://pnpm.io) 11.5.2 and Node.js 24 (`.nvmrc` and `engines.node` `24.x`).
 
 ```sh
 pnpm install
@@ -48,7 +48,7 @@ pnpm test:e2e
 ## Project structure
 
 - `app/` — Next.js App Router (routes, layouts, and styles)
-- `content/` — source content (`posts/`, `community/`); MDX loaders come later
+- `content/` — source content (`posts/`, `community/`), loaded by `lib/content`
 - `public/` — static files, including `media/` for posts, personal photos, icons, illustrations, and documents
 - `lib/` — shared TypeScript modules
 - `components/` — UI by responsibility: `views/` (pages), `layout/` (shell, header, footer, container), `mdx/` (MDX blocks), `ui/` (controls and icons). Providers and route infra stay at the root (`theme-provider`, `interface-language-provider`, `json-ld`, `route-error-boundary`).
