@@ -119,6 +119,16 @@
   }
 }
 
+/* Long article tokens wrap in place. Titles, nav, and footer stay unchanged. */
+article :where(a, strong, :not(pre) > code) {
+  overflow-wrap: anywhere;
+}
+
+/* Full-width frame so the code breakout uses layout width (cqw), not 100vw. */
+.article-frame {
+  container-type: inline-size;
+}
+
 /* Shiki dual-theme (next-themes `.dark`; token colors via shiki-transformers). */
 pre.shiki {
   --code-block-bg: color-mix(in srgb, var(--muted) 5%, var(--background));
@@ -128,7 +138,19 @@ pre.shiki {
     var(--code-block-bg)
   );
   position: relative;
-  margin-inline: calc(-1 * var(--space-code-breakout));
+  margin-inline: calc(
+    -1 *
+    min(
+      var(--space-code-breakout),
+      max(
+        var(--space-inline),
+        50cqw -
+        var(--post-content-max) /
+        2 +
+        var(--space-inline)
+      )
+    )
+  );
   margin-block: var(--space-content-gap);
   overflow-x: auto;
   border-radius: 0.5rem;
