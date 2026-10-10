@@ -37,6 +37,7 @@ afterEach(() => {
   cleanup()
   document.body.replaceChildren()
   vi.useRealTimers()
+  vi.unstubAllGlobals()
 })
 
 function renderProgress() {
@@ -54,6 +55,49 @@ function clickAbout() {
   anchor.addEventListener('click', (event) => event.preventDefault())
   anchor.click()
   anchor.remove()
+}
+
+function installAnimationFrames() {
+  const queued = new Map<number, FrameRequestCallback>()
+  let nextId = 1
+  vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+    const id = nextId
+    nextId += 1
+    queued.set(id, callback)
+    return id
+  })
+  vi.stubGlobal('cancelAnimationFrame', (id: number) => {
+    queued.delete(id)
+  })
+  return () => {
+    const pending = [...queued.values()]
+    queued.clear()
+    act(() => {
+      for (const callback of pending) callback(0)
+    })
+  }
+}
+
+function mountPageEnter(playState: AnimationPlayState) {
+  const enter = document.createElement('div')
+  enter.dataset.pageEnter = ''
+  enter.className = 'motion-safe:animate-page-in'
+  enter.getAnimations = () =>
+    [{ animationName: 'page-in', playState }] as unknown as Animation[]
+  document.body.append(enter)
+  return enter
+}
+
+function commitRoute(
+  view: ReturnType<typeof renderProgress>,
+  pathname: string,
+) {
+  navigation.pathname = pathname
+  view.rerender(
+    <InterfaceLanguageProvider language="pt">
+      <NavigationProgress />
+    </InterfaceLanguageProvider>,
+  )
 }
 
 test('tracks another internal page and a new search', () => {
@@ -100,24 +144,19 @@ test('shows the bar on click and keeps the message until the page has been loadi
 
 test('hides the bar when the entering page finishes fading in', () => {
   navigation.animateNext = true
+  const flushFrame = installAnimationFrames()
   const view = renderProgress()
 
   act(() => {
     clickAbout()
   })
 
-  const enter = document.createElement('div')
-  enter.dataset.pageEnter = ''
-  enter.className = 'motion-safe:animate-page-in'
-  document.body.append(enter)
-  navigation.pathname = '/about'
-  view.rerender(
-    <InterfaceLanguageProvider language="pt">
-      <NavigationProgress />
-    </InterfaceLanguageProvider>,
-  )
+  const enter = mountPageEnter('running')
+  commitRoute(view, '/about')
+  flushFrame()
 
   expect(screen.queryByRole('status')).toBeNull()
+  expect(document.querySelector('[data-phase="loading"]')).not.toBeNull()
 
   act(() => {
     const event = new Event('animationend')
@@ -126,6 +165,26 @@ test('hides the bar when the entering page finishes fading in', () => {
   })
 
   expect(screen.queryByRole('status')).toBeNull()
+  expect(document.querySelector('[data-phase="complete"]')).not.toBeNull()
+})
+
+test('settles on the next frame when the template does not remount', () => {
+  navigation.animateNext = true
+  const flushFrame = installAnimationFrames()
+  const view = renderProgress()
+
+  act(() => {
+    clickAbout()
+  })
+
+  mountPageEnter('finished')
+  commitRoute(view, '/blog/postgresql-e-pgadmin-com-docker-compose')
+
+  expect(document.querySelector('[data-phase="loading"]')).not.toBeNull()
+
+  flushFrame()
+
+  expect(document.querySelector('[data-phase="loading"]')).toBeNull()
   expect(document.querySelector('[data-phase="complete"]')).not.toBeNull()
 })
 

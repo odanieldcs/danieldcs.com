@@ -40,6 +40,16 @@ function navigationFadesIn() {
   )
 }
 
+function hasRunningPageIn(enter: Element) {
+  return enter.getAnimations().some((animation) => {
+    return (
+      'animationName' in animation &&
+      animation.animationName === 'page-in' &&
+      animation.playState === 'running'
+    )
+  })
+}
+
 function NavigationProgressIndicator() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -85,35 +95,24 @@ function NavigationProgressIndicator() {
     }
 
     let detach = () => {}
-    let frame = 0
-    const started = performance.now()
-
-    const scan = () => {
+    const frame = window.requestAnimationFrame(() => {
       if (cancelled) return
       const enter = document.querySelector('[data-page-enter]')
-      if (
-        enter instanceof HTMLElement &&
-        enter.classList.contains('motion-safe:animate-page-in')
-      ) {
-        const onEnd = (event: AnimationEvent) => {
-          if (event.target !== enter || event.animationName !== 'page-in') {
-            return
-          }
-          settle()
-        }
-        enter.addEventListener('animationend', onEnd)
-        detach = () => enter.removeEventListener('animationend', onEnd)
-        holdTimerRef.current = window.setTimeout(settle, ENTER_HOLD_MS)
-        return
-      }
-      if (performance.now() - started > ENTER_HOLD_MS) {
+      if (!(enter instanceof HTMLElement) || !hasRunningPageIn(enter)) {
         settle()
         return
       }
-      frame = window.requestAnimationFrame(scan)
-    }
 
-    scan()
+      const onEnd = (event: AnimationEvent) => {
+        if (event.target !== enter || event.animationName !== 'page-in') {
+          return
+        }
+        settle()
+      }
+      enter.addEventListener('animationend', onEnd)
+      detach = () => enter.removeEventListener('animationend', onEnd)
+      holdTimerRef.current = window.setTimeout(settle, ENTER_HOLD_MS)
+    })
 
     return () => {
       cancelled = true
