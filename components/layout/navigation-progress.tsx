@@ -7,10 +7,12 @@ import {
   LoadingBar,
   LoadingStatus,
 } from '@/components/layout/loading-indicator'
+import { willAnimateNextEnter } from '@/components/layout/page-enter'
 
 const SHOW_AFTER_MS = 100
-const MESSAGE_AFTER_MS = 2000
+const MESSAGE_AFTER_MS = 1000
 const HIDE_AFTER_MS = 320
+const ENTER_HOLD_MS = 400
 
 type Phase = 'idle' | 'loading' | 'complete'
 type TimerRef = { current: number | null }
@@ -31,6 +33,13 @@ function clearTimer(timerRef: TimerRef) {
   timerRef.current = null
 }
 
+function navigationFadesIn() {
+  return (
+    willAnimateNextEnter() &&
+    !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  )
+}
+
 function NavigationProgressIndicator() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -43,37 +52,96 @@ function NavigationProgressIndicator() {
   const showTimerRef = useRef<number | null>(null)
   const messageTimerRef = useRef<number | null>(null)
   const hideTimerRef = useRef<number | null>(null)
+  const holdTimerRef = useRef<number | null>(null)
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: routeKey is the commit signal; the effect reads refs
   useEffect(() => {
     if (!pendingRef.current) return
 
-    pendingRef.current = false
-    clearTimer(showTimerRef)
-    clearTimer(messageTimerRef)
-    setShowMessage(false)
-
     const wasVisible = visibleRef.current
-    visibleRef.current = false
-    if (!wasVisible) return
+    clearTimer(showTimerRef)
 
-    setPhase('complete')
-    hideTimerRef.current = window.setTimeout(() => {
-      setPhase('idle')
-    }, HIDE_AFTER_MS)
+    let cancelled = false
+
+    const settle = () => {
+      if (cancelled) return
+      cancelled = true
+      pendingRef.current = false
+      visibleRef.current = false
+      clearTimer(holdTimerRef)
+      clearTimer(messageTimerRef)
+      setShowMessage(false)
+      if (!wasVisible) return
+
+      setPhase('complete')
+      hideTimerRef.current = window.setTimeout(() => {
+        setPhase('idle')
+      }, HIDE_AFTER_MS)
+    }
+
+    if (!wasVisible || !navigationFadesIn()) {
+      settle()
+      return
+    }
+
+    let detach = () => {}
+    let frame = 0
+    const started = performance.now()
+
+    const scan = () => {
+      if (cancelled) return
+      const enter = document.querySelector('[data-page-enter]')
+      if (
+        enter instanceof HTMLElement &&
+        enter.classList.contains('motion-safe:animate-page-in')
+      ) {
+        const onEnd = (event: AnimationEvent) => {
+          if (event.target !== enter || event.animationName !== 'page-in') {
+            return
+          }
+          settle()
+        }
+        enter.addEventListener('animationend', onEnd)
+        detach = () => enter.removeEventListener('animationend', onEnd)
+        holdTimerRef.current = window.setTimeout(settle, ENTER_HOLD_MS)
+        return
+      }
+      if (performance.now() - started > ENTER_HOLD_MS) {
+        settle()
+        return
+      }
+      frame = window.requestAnimationFrame(scan)
+    }
+
+    scan()
+
+    return () => {
+      cancelled = true
+      window.cancelAnimationFrame(frame)
+      detach()
+      clearTimer(holdTimerRef)
+    }
   }, [routeKey])
 
   useEffect(() => {
     const begin = () => {
       clearTimer(hideTimerRef)
+      clearTimer(holdTimerRef)
       pendingRef.current = true
       setShowMessage(false)
       clearTimer(showTimerRef)
       clearTimer(messageTimerRef)
-      showTimerRef.current = window.setTimeout(() => {
+
+      if (navigationFadesIn()) {
         visibleRef.current = true
         setPhase('loading')
-      }, SHOW_AFTER_MS)
+      } else {
+        showTimerRef.current = window.setTimeout(() => {
+          visibleRef.current = true
+          setPhase('loading')
+        }, SHOW_AFTER_MS)
+      }
+
       messageTimerRef.current = window.setTimeout(() => {
         setShowMessage(true)
       }, MESSAGE_AFTER_MS)
@@ -100,6 +168,7 @@ function NavigationProgressIndicator() {
       clearTimer(showTimerRef)
       clearTimer(messageTimerRef)
       clearTimer(hideTimerRef)
+      clearTimer(holdTimerRef)
     }
   }, [])
 
