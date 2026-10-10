@@ -1,5 +1,9 @@
 import Link from 'next/link'
-import type { ComponentPropsWithoutRef, ReactNode } from 'react'
+import type {
+  ComponentPropsWithoutRef,
+  ComponentPropsWithRef,
+  ReactNode,
+} from 'react'
 
 type ButtonVariant = 'primary' | 'outline' | 'ghost'
 type ButtonShape = 'rounded' | 'pill'
@@ -52,7 +56,7 @@ type ButtonProps = {
   variant?: ButtonVariant
   className?: string
   children?: ReactNode
-} & ComponentPropsWithoutRef<'button'>
+} & ComponentPropsWithRef<'button'>
 
 export function Button({
   variant = 'primary',
