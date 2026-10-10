@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useId, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Button } from '@/components/ui/button'
 import { NavLink } from '@/components/ui/nav-link'
@@ -48,6 +48,8 @@ export function MobileMenu({
 }: MobileMenuProps) {
   const [open, setOpen] = useState(false)
   const panelId = useId()
+  const triggerRef = useRef<HTMLButtonElement>(null)
+  const panelRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
     if (!open) {
@@ -72,6 +74,7 @@ export function MobileMenu({
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === 'Escape') {
         setOpen(false)
+        triggerRef.current?.focus()
       }
     }
 
@@ -87,9 +90,61 @@ export function MobileMenu({
     }
   }, [open])
 
+  useEffect(() => {
+    if (!open) {
+      return
+    }
+
+    const panel = panelRef.current
+    const touched: HTMLElement[] = []
+
+    for (const child of document.body.children) {
+      if (!(child instanceof HTMLElement)) continue
+      if (child === panel || child.tagName === 'HEADER') continue
+      if (child.inert) continue
+      child.inert = true
+      touched.push(child)
+    }
+
+    panel?.querySelector('a')?.focus({ preventScroll: true })
+
+    return () => {
+      for (const child of touched) {
+        child.inert = false
+      }
+    }
+  }, [open])
+
+  useEffect(() => {
+    if (!open) {
+      return
+    }
+
+    // `48rem` is the `md` breakpoint. The trigger is `md:hidden`, so closing
+    // here must not move focus onto it.
+    const media = window.matchMedia('(min-width: 48rem)')
+
+    function onChange(event: MediaQueryListEvent) {
+      if (event.matches) {
+        setOpen(false)
+      }
+    }
+
+    if (media.matches) {
+      setOpen(false)
+      return
+    }
+
+    media.addEventListener('change', onChange)
+    return () => {
+      media.removeEventListener('change', onChange)
+    }
+  }, [open])
+
   return (
     <>
       <Button
+        ref={triggerRef}
         variant="ghost"
         className="relative z-30 min-w-11 px-0"
         aria-expanded={open}
@@ -102,6 +157,7 @@ export function MobileMenu({
       {open
         ? createPortal(
             <nav
+              ref={panelRef}
               id={panelId}
               aria-label={navAriaLabel}
               className="fixed inset-0 z-10 overflow-y-auto bg-background px-page pt-28"
