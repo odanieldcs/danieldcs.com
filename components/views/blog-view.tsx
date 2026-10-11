@@ -79,7 +79,7 @@ function ListItem({
         </h2>
         <time
           dateTime={post.date}
-          className="shrink-0 text-xs font-medium uppercase tabular-nums text-foreground/45"
+          className="shrink-0 text-xs font-medium uppercase tabular-nums text-foreground/65"
         >
           {formatDate(post.date, language, { style: 'monthYear' })}
         </time>
@@ -261,7 +261,7 @@ export function BlogView({
           {copy.intro}
         </p>
         {!hasPosts ? (
-          <p className="mt-10 text-base text-foreground/60">{copy.empty}</p>
+          <p className="mt-10 text-base text-muted">{copy.empty}</p>
         ) : null}
       </Container>
       {hasPosts ? (

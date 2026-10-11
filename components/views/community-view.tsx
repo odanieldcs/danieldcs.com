@@ -72,7 +72,7 @@ function EntryBody({
 }) {
   return (
     <>
-      <p className="text-xs font-medium uppercase text-foreground/45">
+      <p className="text-xs font-medium uppercase text-foreground/65">
         <time dateTime={entry.date}>
           {formatDate(entry.date, language, { style: 'full' })}
         </time>
@@ -292,7 +292,7 @@ export function CommunityView({ entries }: { entries: CommunityEntryView[] }) {
           {copy.intro}
         </p>
         {groups.length === 0 ? (
-          <p className="mt-10 text-base text-foreground/60">{copy.empty}</p>
+          <p className="mt-10 text-base text-muted">{copy.empty}</p>
         ) : null}
       </Container>
       {groups.length > 0 ? (

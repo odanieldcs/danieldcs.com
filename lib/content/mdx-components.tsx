@@ -45,7 +45,7 @@ function joinClasses(...parts: (string | undefined)[]) {
 export const articleTitleClassName =
   'text-center text-post-title font-semibold mb-2 break-words'
 export const articleDateClassName =
-  'mb-content-gap block text-center text-base font-semibold text-foreground/55'
+  'mb-content-gap block text-center text-base font-semibold text-muted'
 
 function isInternalHref(href: string | undefined): href is string {
   return (

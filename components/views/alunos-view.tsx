@@ -38,7 +38,7 @@ function CertificateGroupSection({ group }: { group: CertificateGroup }) {
         <Description parts={group.description} />
       </p>
       {'emptyMessage' in group ? (
-        <p className="mt-8 text-sm leading-relaxed text-foreground/55">
+        <p className="mt-8 text-sm leading-relaxed text-muted">
           {group.emptyMessage}
         </p>
       ) : (
@@ -50,7 +50,7 @@ function CertificateGroupSection({ group }: { group: CertificateGroup }) {
                 key={certificate.number}
                 className="grid grid-cols-[9.5rem_minmax(0,1fr)] gap-3"
               >
-                <span className="font-mono text-foreground/55">
+                <span className="font-mono text-muted">
                   {certificate.number}
                 </span>
                 <span>{certificate.name}</span>
@@ -70,7 +70,7 @@ export function AlunosView() {
         <h1 className="font-display text-3xl font-medium">
           {certificatePage.title}
         </h1>
-        <p className="mt-4 text-sm leading-relaxed text-foreground/55">
+        <p className="mt-4 text-sm leading-relaxed text-muted">
           {certificatePage.intro}
         </p>
         <nav aria-label="Treinamentos e eventos" className="mt-8">

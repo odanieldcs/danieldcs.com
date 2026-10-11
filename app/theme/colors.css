@@ -9,12 +9,13 @@
   /* Reference green: 6.78:1 as text on paper. */
   --accent: oklch(0.431 0.063 167.2);
   --accent-foreground: oklch(0.975 0.008 87.5); /* 7.30:1 on accent */
-  /* Eyebrows and pillar numbers. Reference terracotta. */
-  --label: oklch(0.53 0.073 56.4); /* 4.69:1 on background */
+  /* Eyebrows and pillar numbers. Reference terracotta.
+     Light: 5.22:1 on background, 4.81:1 on foreground/4. */
+  --label: oklch(0.5 0.073 56.4);
   --trail: var(--accent);
   --trail-foreground: var(--accent-foreground);
   /* Shiki line highlight — Kent pattern: gray wash + darker bar */
-  --code-line-highlight-bar: #7a8194;
+  --code-line-highlight-bar: #5e5e5e; /* 6.13:1 on the light code block, 5.97:1 on the highlight */
   --code-line-highlight-fill: #b8bcc6;
 }
 
