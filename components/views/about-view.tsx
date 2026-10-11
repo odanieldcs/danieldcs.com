@@ -26,7 +26,7 @@ const bandTitleClassName = 'font-display text-3xl font-medium'
 
 const sectionTitleClassName = `mt-4 ${bandTitleClassName}`
 
-const subtitleClassName = 'mt-4 text-sm leading-relaxed text-foreground/55'
+const subtitleClassName = 'mt-4 text-sm leading-relaxed text-muted'
 
 const ctaLinkClassName = [
   'group mt-8 inline-flex items-center gap-2 text-sm font-normal text-accent',
@@ -112,7 +112,7 @@ function Intro({
           {copy.blogCta}
           <ArrowRightIcon />
         </Link>
-        <div className="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm font-medium text-foreground/55">
+        <div className="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm font-medium text-muted">
           {copy.pillars.map((pillar) => (
             <span key={pillar}>{pillar}</span>
           ))}
@@ -156,7 +156,7 @@ function Experience({ copy }: { copy: AboutCopy }) {
                     aria-hidden="true"
                     className="absolute -left-1.25 top-1.5 size-2.25 rounded-full bg-accent ring-4 ring-background"
                   />
-                  <p className="text-xs font-medium uppercase text-foreground/45">
+                  <p className="text-xs font-medium uppercase text-foreground/65">
                     {entry.period}
                   </p>
                   <h3 className="mt-2 font-display text-xl font-medium">
@@ -171,7 +171,7 @@ function Experience({ copy }: { copy: AboutCopy }) {
                         <span className="text-foreground/30" aria-hidden="true">
                           /
                         </span>
-                        <span className="text-foreground/55">{org.meta}</span>
+                        <span className="text-muted">{org.meta}</span>
                       </>
                     ) : null}
                   </p>
@@ -211,10 +211,10 @@ function Repertoire({ copy }: { copy: AboutCopy }) {
               <h3 className="border-b border-border pb-4 font-display text-xl font-medium">
                 {group.title}
               </h3>
-              <p className="mt-4 text-sm font-normal leading-relaxed text-foreground/60">
+              <p className="mt-4 text-sm font-normal leading-relaxed text-muted">
                 {group.description}
               </p>
-              <ul className="mt-4 flex list-none flex-wrap gap-x-4 gap-y-2 text-xs font-light text-foreground/45">
+              <ul className="mt-4 flex list-none flex-wrap gap-x-4 gap-y-2 text-xs font-light text-foreground/65">
                 {group.skills.map((skill) => (
                   <li key={skill}>{skill}</li>
                 ))}
@@ -226,7 +226,7 @@ function Repertoire({ copy }: { copy: AboutCopy }) {
           <h3 className="font-display text-xl font-medium">
             {copy.stackLabel}
           </h3>
-          <p className="mt-4 max-w-3xl text-sm leading-relaxed text-foreground/60">
+          <p className="mt-4 max-w-3xl text-sm leading-relaxed text-muted">
             {copy.stackValue}
           </p>
         </div>
@@ -265,7 +265,7 @@ function Contact({ copy }: { copy: AboutCopy }) {
         {rest.map((paragraph) => (
           <p
             key={paragraph}
-            className="mt-5 max-w-xl text-sm leading-relaxed text-foreground/60"
+            className="mt-5 max-w-xl text-sm leading-relaxed text-muted"
           >
             {paragraph}
           </p>

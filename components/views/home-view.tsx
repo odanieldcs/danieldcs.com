@@ -34,7 +34,7 @@ const articleCardClassName = [
 ].join(' ')
 
 const quietCtaClassName = [
-  'group inline-flex w-fit items-center gap-1.5 text-sm font-normal text-foreground/55',
+  'group inline-flex w-fit items-center gap-1.5 text-sm font-normal text-muted',
   'rounded-sm transition-colors hover:text-foreground',
   'outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/35 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
 ].join(' ')
@@ -151,7 +151,7 @@ function RecentWriting({
               data-cta-location="home"
               data-cta-target={post.slug}
             >
-              <p className="text-xs font-semibold uppercase text-foreground/45">
+              <p className="text-xs font-semibold uppercase text-foreground/65">
                 {post.tag ? (
                   <>
                     <span>{post.tag}</span>

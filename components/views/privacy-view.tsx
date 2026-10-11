@@ -32,10 +32,10 @@ export function PrivacyView({ language }: { language: InterfaceLanguage }) {
         <h1 className="mt-5 max-w-2xl font-display text-display">
           {privacyPage.title}
         </h1>
-        <p className="mt-4 text-sm text-foreground/55">
+        <p className="mt-4 text-sm text-muted">
           {privacyPage.lastUpdatedLabel}
         </p>
-        <p className="mt-4 text-base text-foreground/60">{privacyPage.intro}</p>
+        <p className="mt-4 text-base text-muted">{privacyPage.intro}</p>
 
         <div className="mt-16 space-y-14">
           {privacyPage.sections.map((section) => (

@@ -131,10 +131,10 @@ article :where(a, strong, :not(pre) > code) {
 
 /* Shiki dual-theme (next-themes `.dark`; token colors via shiki-transformers). */
 pre.shiki {
-  --code-block-bg: color-mix(in srgb, var(--muted) 5%, var(--background));
+  --code-block-bg: color-mix(in srgb, white 65%, var(--background));
   --code-line-highlight-wash: color-mix(
     in srgb,
-    var(--code-line-highlight-fill) 22%,
+    var(--code-line-highlight-fill) 5%,
     var(--code-block-bg)
   );
   position: relative;
@@ -156,6 +156,15 @@ pre.shiki {
   border-radius: 0.5rem;
   background-color: var(--code-block-bg);
   padding: 2rem 0;
+}
+
+.dark pre.shiki {
+  --code-block-bg: color-mix(in srgb, var(--muted) 5%, var(--background));
+  --code-line-highlight-wash: color-mix(
+    in srgb,
+    var(--code-line-highlight-fill) 22%,
+    var(--code-block-bg)
+  );
 }
 
 pre.shiki code {
@@ -234,7 +243,6 @@ pre.shiki[data-language]::after {
   line-height: 1;
   color: var(--code-line-highlight-bar);
   text-transform: lowercase;
-  opacity: 0.7;
   content: attr(data-language);
   pointer-events: none;
   user-select: none;
