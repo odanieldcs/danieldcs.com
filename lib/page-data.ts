@@ -70,6 +70,7 @@ export function getBlogListing(
     title: post.frontmatter.title,
     description: post.frontmatter.description,
     date: post.frontmatter.date.toISOString(),
+    language: post.frontmatter.language,
     cover: post.frontmatter.cover,
   }))
 

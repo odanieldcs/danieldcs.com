@@ -167,6 +167,95 @@ test('switches the same entries between list and grid', () => {
   expect(yearSection('2026')?.querySelector('ol')).toBeTruthy()
 })
 
+test('marks titles whose language differs from the English interface', () => {
+  renderCommunity('en')
+
+  expect(
+    screen
+      .getByRole('heading', { level: 3, name: 'Exemplo de palestra' })
+      .getAttribute('lang'),
+  ).toBe('pt-BR')
+  expect(
+    screen
+      .getByRole('heading', { level: 3, name: 'Exemplo de evento' })
+      .getAttribute('lang'),
+  ).toBe('pt-BR')
+  expect(
+    screen
+      .getByRole('heading', { level: 3, name: 'Exemplo de outra participação' })
+      .getAttribute('lang'),
+  ).toBe('pt-BR')
+  expect(
+    screen
+      .getByRole('heading', { level: 3, name: 'Exemplo de workshop' })
+      .hasAttribute('lang'),
+  ).toBe(false)
+  expect(
+    screen
+      .getByRole('heading', { level: 3, name: 'Exemplo de evento antigo' })
+      .hasAttribute('lang'),
+  ).toBe(false)
+
+  const talk = screen
+    .getByRole('heading', { level: 3, name: 'Exemplo de palestra' })
+    .closest('li') as HTMLElement
+  expect(talk.querySelector('time')?.hasAttribute('lang')).toBe(false)
+  expect(talk.querySelector('time')?.textContent).toBe('Sep 23, 2026')
+  expect(within(talk).getByText('Talk').hasAttribute('lang')).toBe(false)
+  expect(
+    within(talk).getByText('Encontro de exemplo').hasAttribute('lang'),
+  ).toBe(false)
+  expect(screen.getByRole('heading', { level: 1 }).hasAttribute('lang')).toBe(
+    false,
+  )
+  expect(
+    screen
+      .getByRole('heading', { level: 2, name: '2026' })
+      .hasAttribute('lang'),
+  ).toBe(false)
+
+  fireEvent.click(screen.getByRole('button', { name: 'Grid' }))
+  expect(
+    screen
+      .getByRole('heading', { level: 3, name: 'Exemplo de palestra' })
+      .getAttribute('lang'),
+  ).toBe('pt-BR')
+  expect(
+    screen
+      .getByRole('heading', { level: 3, name: 'Exemplo de workshop' })
+      .hasAttribute('lang'),
+  ).toBe(false)
+})
+
+test('marks English titles when the interface is Portuguese', () => {
+  renderCommunity('pt')
+
+  expect(
+    screen
+      .getByRole('heading', { level: 3, name: 'Exemplo de workshop' })
+      .getAttribute('lang'),
+  ).toBe('en')
+  expect(
+    screen
+      .getByRole('heading', { level: 3, name: 'Exemplo de evento antigo' })
+      .getAttribute('lang'),
+  ).toBe('en')
+  expect(
+    screen
+      .getByRole('heading', { level: 3, name: 'Exemplo de palestra' })
+      .hasAttribute('lang'),
+  ).toBe(false)
+
+  const talk = screen
+    .getByRole('heading', { level: 3, name: 'Exemplo de palestra' })
+    .closest('li') as HTMLElement
+  expect(talk.querySelector('time')?.hasAttribute('lang')).toBe(false)
+  expect(within(talk).getByText('Palestra').hasAttribute('lang')).toBe(false)
+  expect(
+    within(talk).getByText('Encontro de exemplo').hasAttribute('lang'),
+  ).toBe(false)
+})
+
 test('renders an empty state when there are no entries', () => {
   renderCommunity('pt', [])
 

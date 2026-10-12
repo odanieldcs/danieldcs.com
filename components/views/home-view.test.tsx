@@ -40,6 +40,15 @@ const posts: HomePostSummary[] = [
   },
 ]
 
+const englishPost: HomePostSummary = {
+  slug: 'content-system',
+  title: 'English title',
+  date: '2026-09-21T00:00:00.000Z',
+  description: 'English description',
+  language: 'en',
+  tag: 'content',
+}
+
 afterEach(() => {
   cleanup()
 })
@@ -165,6 +174,65 @@ test('renders English copy when the interface language is en', () => {
   expect(articleLink.querySelector('svg')).toBeTruthy()
   expect(screen.queryByRole('link', { name: 'See the Trilha' })).toBeNull()
   expect(screen.queryByRole('heading', { name: 'Escrita recente' })).toBeNull()
+})
+
+test('marks title and description when the post language differs', () => {
+  renderHome('en')
+
+  expect(
+    screen
+      .getByRole('heading', {
+        level: 3,
+        name: 'Como o content system renderiza um artigo',
+      })
+      .getAttribute('lang'),
+  ).toBe('pt-BR')
+  expect(
+    screen
+      .getByText('Um passeio pelo pipeline de ponta a ponta.')
+      .getAttribute('lang'),
+  ).toBe('pt-BR')
+  expect(document.querySelector('time')?.hasAttribute('lang')).toBe(false)
+  expect(document.querySelector('time')?.textContent).toBe('Sep 21, 2026')
+  expect(screen.getByText('content').hasAttribute('lang')).toBe(false)
+  expect(screen.getByText('Read article').hasAttribute('lang')).toBe(false)
+  expect(screen.getByRole('heading', { level: 1 }).hasAttribute('lang')).toBe(
+    false,
+  )
+})
+
+test('omits lang when the post language matches the interface', () => {
+  renderHome('pt')
+
+  expect(
+    screen
+      .getByRole('heading', {
+        level: 3,
+        name: 'Como o content system renderiza um artigo',
+      })
+      .hasAttribute('lang'),
+  ).toBe(false)
+  expect(
+    screen
+      .getByText('Um passeio pelo pipeline de ponta a ponta.')
+      .hasAttribute('lang'),
+  ).toBe(false)
+})
+
+test('marks an English post when the interface is Portuguese', () => {
+  renderHome('pt', [englishPost])
+
+  expect(
+    screen
+      .getByRole('heading', { level: 3, name: 'English title' })
+      .getAttribute('lang'),
+  ).toBe('en')
+  expect(screen.getByText('English description').getAttribute('lang')).toBe(
+    'en',
+  )
+  expect(document.querySelector('time')?.hasAttribute('lang')).toBe(false)
+  expect(screen.getByText('content').hasAttribute('lang')).toBe(false)
+  expect(screen.getByText('Ler artigo').hasAttribute('lang')).toBe(false)
 })
 
 test('omits the tag label when the post has no tag', () => {

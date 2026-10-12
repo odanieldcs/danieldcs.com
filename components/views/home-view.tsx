@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useInterfaceLanguage } from '@/components/interface-language-provider'
 import { Container } from '@/components/layout/container'
 import { ArrowRightIcon } from '@/components/ui/arrow-right-icon'
+import { contentLang } from '@/lib/i18n/content-lang'
 import { formatDate } from '@/lib/i18n/format-date'
 import {
   getHomeCopy,
@@ -162,10 +163,16 @@ function RecentWriting({
                   {formatDate(post.date, language, { style: 'full' })}
                 </time>
               </p>
-              <h3 className="mt-4 min-w-0 truncate font-display text-display-title transition-colors group-hover:text-accent">
+              <h3
+                lang={contentLang(post.language, language)}
+                className="mt-4 min-w-0 truncate font-display text-display-title transition-colors group-hover:text-accent"
+              >
                 {post.title}
               </h3>
-              <p className="mt-3 line-clamp-3 text-note text-foreground/65">
+              <p
+                lang={contentLang(post.language, language)}
+                className="mt-3 line-clamp-3 text-note text-foreground/65"
+              >
                 {post.description}
               </p>
               <span className="mt-auto inline-flex items-center gap-2 pt-6 text-sm font-semibold text-accent">

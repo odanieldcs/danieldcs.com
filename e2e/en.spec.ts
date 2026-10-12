@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test'
+import { expect, type Locator, test } from '@playwright/test'
 import { BLOG_PAGE_SIZE } from '@/lib/blog/pagination'
 import { homePath, localizedPages } from '@/lib/i18n/alternates'
 import { collectConsoleErrors } from './helpers/console'
@@ -123,6 +123,96 @@ test('a PT post read in PT shows no language notice', async ({ page }) => {
   ).toBeVisible()
   await expect(page.getByRole('note')).toHaveCount(0)
 })
+
+async function langAttributes(locator: Locator): Promise<(string | null)[]> {
+  return locator.evaluateAll((nodes) =>
+    nodes.map((node) => node.getAttribute('lang')),
+  )
+}
+
+async function expectContentLang(locator: Locator, value: string) {
+  const values = await langAttributes(locator)
+  expect(values.length).toBeGreaterThan(0)
+  expect(values).toEqual(values.map(() => value))
+}
+
+async function expectNoLang(locator: Locator) {
+  const values = await langAttributes(locator)
+  expect(values.length).toBeGreaterThan(0)
+  expect(values).toEqual(values.map(() => null))
+}
+
+test('an English article marks Portuguese title and body, and leaves chrome unmarked', async ({
+  page,
+}) => {
+  expect(newestPost.frontmatter.language).toBe('pt')
+  await page.goto(`/en/blog/${newestPost.slug}`)
+
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en')
+  const article = page.locator('article')
+  await expect(article.locator('h1')).toHaveAttribute('lang', 'pt-BR')
+  const body = article.locator('> div[lang]')
+  await expect(body).toHaveCount(1)
+  await expect(body).toHaveAttribute('lang', 'pt-BR')
+  await expectNoLang(article.locator('time'))
+  await expectNoLang(page.getByRole('note'))
+  await expectNoLang(page.getByRole('link', { name: 'Back to Blog' }))
+  await expectNoLang(page.getByRole('link', { name: 'Read in Portuguese' }))
+})
+
+test('English listings mark Portuguese titles and leave page chrome unmarked', async ({
+  page,
+}) => {
+  for (const path of ['/en/blog', '/en/blog?view=grid']) {
+    await page.goto(path)
+    await expectContentLang(
+      page.getByRole('main').getByRole('heading', { level: 2 }),
+      'pt-BR',
+    )
+    await expectNoLang(
+      page.getByRole('main').getByRole('heading', { level: 1 }),
+    )
+    await expectNoLang(page.locator('main time'))
+    await expectNoLang(page.locator('main a'))
+  }
+
+  await page.goto('/en')
+  const cards = page.locator('main a[href^="/en/blog/"]')
+  await expectContentLang(cards.locator('h3'), 'pt-BR')
+  await expectContentLang(cards.locator('h3 + p'), 'pt-BR')
+  await expectNoLang(cards.locator('time'))
+  await expectNoLang(cards.locator('> p:first-of-type'))
+  await expectNoLang(cards.getByText('Read article'))
+  await expectNoLang(page.getByRole('main').getByRole('heading', { level: 1 }))
+  await expectNoLang(page.getByRole('main').getByRole('heading', { level: 2 }))
+
+  await page.goto('/en/community')
+  await expectContentLang(
+    page.getByRole('main').getByRole('heading', { level: 3 }),
+    'pt-BR',
+  )
+  await expectNoLang(page.getByRole('main').getByRole('heading', { level: 1 }))
+  await expectNoLang(page.getByRole('main').getByRole('heading', { level: 2 }))
+  await expectNoLang(page.locator('main time'))
+  await expectNoLang(page.locator('main p'))
+  await expectNoLang(page.locator('main button'))
+})
+
+const portugueseRoutes = [
+  '/',
+  '/blog',
+  '/blog?view=grid',
+  `/blog/${newestPost.slug}`,
+  '/community',
+]
+
+for (const path of portugueseRoutes) {
+  test(`${path} has no extra lang inside main`, async ({ page }) => {
+    await page.goto(path)
+    await expect(page.locator('html')).toHaveAttribute('lang', 'pt-BR')
+    await expect(page.locator('main [lang]')).toHaveCount(0)
+  })
+}
 
 test('/en/blog view switch stays under /en/blog', async ({ page }) => {
   await page.goto('/en/blog')

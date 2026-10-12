@@ -13,6 +13,7 @@ import {
   contentImageClassName,
 } from '@/lib/content/mdx-components'
 import type { Post } from '@/lib/content/posts'
+import { contentLang } from '@/lib/i18n/content-lang'
 import { formatDate } from '@/lib/i18n/format-date'
 import { getPostCopy } from '@/lib/i18n/pages'
 import { localizePath } from '@/lib/i18n/routes'
@@ -64,6 +65,7 @@ export function PostArticle({
 }) {
   const { frontmatter, content } = post
   const copy = getPostCopy(language)
+  const articleLang = contentLang(frontmatter.language, language)
   const coverSrc = frontmatter.cover
     ? resolveCoverSrc(frontmatter.cover)
     : undefined
@@ -77,7 +79,9 @@ export function PostArticle({
           data-analytics-source="post"
           className="pt-10 pb-10 sm:pt-16 sm:pb-16"
         >
-          <h1 className={articleTitleClassName}>{frontmatter.title}</h1>
+          <h1 className={articleTitleClassName} lang={articleLang}>
+            {frontmatter.title}
+          </h1>
           <time
             className={articleDateClassName}
             dateTime={frontmatter.date.toISOString()}
@@ -103,7 +107,9 @@ export function PostArticle({
               language={language}
             />
           ) : null}
-          <MdxContent source={content} />
+          <div lang={articleLang}>
+            <MdxContent source={content} />
+          </div>
           <ArticleReadSentinel
             key={post.slug}
             slug={post.slug}

@@ -10,6 +10,7 @@ const posts: BlogPostView[] = [
     title: 'Como o content system renderiza um artigo',
     description: 'Um passeio pelo pipeline de ponta a ponta.',
     date: '2026-09-21T00:00:00.000Z',
+    language: 'pt',
     cover: 'content-system.png',
   },
   {
@@ -17,6 +18,7 @@ const posts: BlogPostView[] = [
     title: 'Hello World',
     description: 'Fixture post for the content system loaders.',
     date: '2026-09-21T00:00:00.000Z',
+    language: 'pt',
     cover: 'hello-world.png',
   },
   {
@@ -25,9 +27,18 @@ const posts: BlogPostView[] = [
     description:
       'Pequenas decisões de tipagem que evitam surpresas em produção.',
     date: '2026-08-15T00:00:00.000Z',
+    language: 'pt',
     cover: 'exemplo-typescript.png',
   },
 ]
+
+const englishPost: BlogPostView = {
+  slug: 'content-system',
+  title: 'English title',
+  description: 'A post written in English.',
+  date: '2026-09-21T00:00:00.000Z',
+  language: 'en',
+}
 
 afterEach(() => {
   cleanup()
@@ -170,4 +181,60 @@ test('empty state hides the view switch and pagination', () => {
 
 test('page size constant matches the listing contract', () => {
   expect(BLOG_PAGE_SIZE).toBe(12)
+})
+
+test('list view marks a Portuguese title when the interface is English', () => {
+  renderBlog('en')
+
+  const title = screen.getByRole('heading', {
+    level: 2,
+    name: 'Como o content system renderiza um artigo',
+  })
+  expect(title.getAttribute('lang')).toBe('pt-BR')
+
+  const published = within(title.closest('a') as HTMLElement).getByRole('time')
+  expect(published.hasAttribute('lang')).toBe(false)
+  expect(published.textContent).toBe('Sep 2026')
+})
+
+test('grid view marks a Portuguese title when the interface is English', () => {
+  renderBlog('en', { view: 'grid' })
+
+  const title = screen.getByRole('heading', {
+    level: 2,
+    name: 'Como o content system renderiza um artigo',
+  })
+  expect(title.getAttribute('lang')).toBe('pt-BR')
+  expect(
+    within(title.closest('a') as HTMLElement)
+      .getByRole('time')
+      .hasAttribute('lang'),
+  ).toBe(false)
+})
+
+test('omits lang when the post language matches the interface', () => {
+  renderBlog('pt')
+
+  for (const title of screen.getAllByRole('heading', { level: 2 })) {
+    expect(title.hasAttribute('lang')).toBe(false)
+  }
+
+  cleanup()
+  renderBlog('en', { posts: [englishPost] })
+  expect(
+    screen
+      .getByRole('heading', { level: 2, name: 'English title' })
+      .hasAttribute('lang'),
+  ).toBe(false)
+})
+
+test('marks an English title when the interface is Portuguese', () => {
+  renderBlog('pt', { posts: [englishPost] })
+
+  expect(
+    screen
+      .getByRole('heading', { level: 2, name: 'English title' })
+      .getAttribute('lang'),
+  ).toBe('en')
+  expect(screen.getByRole('time').hasAttribute('lang')).toBe(false)
 })
