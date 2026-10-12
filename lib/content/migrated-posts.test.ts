@@ -60,6 +60,31 @@ function bodyMediaPaths(raw: string): string[] {
   )
 }
 
+const decorativeEmptyAlts = new Set([
+  '/media/posts/como-enviar-sms-em-nodejs-com-sns-aws/giphy.webp',
+  '/media/posts/construindo-um-web-scraping-em-nodejs/magic.webp',
+])
+
+function bodyOutsideFences(raw: string): string {
+  const lines = matter(raw).content.split('\n')
+  const kept: string[] = []
+  let inFence = false
+  for (const line of lines) {
+    if (line.startsWith('```')) {
+      inFence = !inFence
+      continue
+    }
+    if (!inFence) kept.push(line)
+  }
+  return kept.join('\n')
+}
+
+function emptyAltPaths(raw: string): string[] {
+  return [...bodyOutsideFences(raw).matchAll(/!\[]\(([^)\s]+)/g)].map((match) =>
+    normalizePublicPath(match[1] ?? ''),
+  )
+}
+
 function citedPaths(raw: string): Set<string> {
   const cited = new Set(bodyMediaPaths(raw))
   const cover = coverPath(raw)
@@ -135,4 +160,16 @@ test('posts do not reference wp-content', () => {
     readPost(filename).includes('wp-content'),
   )
   expect(hits).toEqual([])
+})
+
+test('empty image alts are limited to decorative reactions', () => {
+  const unexpected: string[] = []
+  for (const filename of postFiles()) {
+    for (const urlPath of emptyAltPaths(readPost(filename))) {
+      if (!decorativeEmptyAlts.has(urlPath)) {
+        unexpected.push(`${filename}: ${urlPath}`)
+      }
+    }
+  }
+  expect(unexpected).toEqual([])
 })

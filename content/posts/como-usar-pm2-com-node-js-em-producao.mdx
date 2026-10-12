@@ -136,7 +136,7 @@ pm2 start app.js --watch
 
 Agora, a saída no terminal deve ser como está imagem, com o modo Watching **_enabled_**.
 
-![](/media/posts/como-usar-pm2-com-node-js-em-producao/pm2-output-start-w-1024x98.png)
+![Tabela do PM2 com o processo app online e watching enabled](/media/posts/como-usar-pm2-com-node-js-em-producao/pm2-output-start-w-1024x98.png)
 
 Vamos adicionar uma nova rota no código para testar se está funcionando como esperado.
 
@@ -168,7 +168,7 @@ Você deve ver duas linhas com a mensagem: App listening on port 3000!
 
 Inclusive, quando algum erro acontecer na aplicação, você poderá inspecionar a mensagem que sair no terminal com este comando, a baixo um exemplo de mensagem, forcei um erro na rota /timestamp e instantes depois o PM2 reiniciou o processo.
 
-![](/media/posts/como-usar-pm2-com-node-js-em-producao/pm2-output-logs-1024x389.png)
+![Logs do PM2 com um RangeError e App listening on port 3000](/media/posts/como-usar-pm2-com-node-js-em-producao/pm2-output-logs-1024x389.png)
 
 Caso você tenha muitas linhas sendo retornadas, você pode limitar a quantidade de linhas usando a propriedade --lines <quantidade>, ficando assim:
 
@@ -210,7 +210,7 @@ pm2 start app02.js --watch --name app-02
 
 A partir de agora você deverá ter dois processos em execução como nesta imagem:
 
-![](/media/posts/como-usar-pm2-com-node-js-em-producao/pm2-output-logs-2process-1024x113.png)
+![Tabela do PM2 com app-01 e app-02 online em modo fork](/media/posts/como-usar-pm2-com-node-js-em-producao/pm2-output-logs-2process-1024x113.png)
 
 Algo que também pode ser útil para limitar o consumo de memória de um processo é atribuir um limite de uso, com o PM2 é possível definir o máximo de memória que o processo pode usar do servidor, quando este limite é atingido, o processo é reiniciado.
 
@@ -258,7 +258,7 @@ Você pode especificar a quantidade de CPUs que o processo vai usar <numero> ou 
 
 <figure>
 
-![](/media/posts/como-usar-pm2-com-node-js-em-producao/pm2-output-start-cluster-1024x154.png)
+![Tabela do PM2 com quatro instâncias de app-01 em modo cluster](/media/posts/como-usar-pm2-com-node-js-em-producao/pm2-output-start-cluster-1024x154.png)
 
 <figcaption>
 
