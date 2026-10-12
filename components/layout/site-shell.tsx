@@ -1,4 +1,3 @@
-import { GeistMono } from 'geist/font/mono'
 import { Fraunces, Inter } from 'next/font/google'
 import type { ReactNode } from 'react'
 import { InterfaceLanguageProvider } from '@/components/interface-language-provider'
@@ -9,6 +8,7 @@ import { LoadingBar } from '@/components/layout/loading-indicator'
 import { NavigationProgress } from '@/components/layout/navigation-progress'
 import { SkipLink } from '@/components/layout/skip-link'
 import { ThemeProvider } from '@/components/theme-provider'
+import { geistMono } from '@/lib/fonts/geist-mono'
 import { getDictionary } from '@/lib/i18n/dictionary'
 import { htmlLang, type InterfaceLanguage } from '@/lib/i18n/types'
 import '@/app/globals.css'
@@ -38,7 +38,7 @@ export function SiteShell({
   return (
     <html
       lang={htmlLang[language]}
-      className={`${inter.variable} ${GeistMono.variable} ${fraunces.variable}`}
+      className={`${inter.variable} ${geistMono.variable} ${fraunces.variable}`}
       suppressHydrationWarning
     >
       <body className="bg-background font-sans text-foreground antialiased">
