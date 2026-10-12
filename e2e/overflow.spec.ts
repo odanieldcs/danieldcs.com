@@ -1,5 +1,9 @@
 import { test } from '@playwright/test'
-import { expectNoHorizontalOverflow, overflowRoutes } from './helpers/overflow'
+import {
+  expectNoHorizontalOverflow,
+  openForOverflowCheck,
+  overflowRoutes,
+} from './helpers/overflow'
 
 const widths = [320, 390] as const
 const routes = overflowRoutes()
@@ -10,7 +14,7 @@ test.describe('horizontal overflow', { tag: '@mobile' }, () => {
     for (const width of widths) {
       test(`${route} does not overflow at ${width}px`, async ({ page }) => {
         await page.setViewportSize({ width, height: 844 })
-        await page.goto(route)
+        await openForOverflowCheck(page, route)
         await expectNoHorizontalOverflow(page, route, width)
       })
     }

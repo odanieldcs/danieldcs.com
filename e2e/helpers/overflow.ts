@@ -10,6 +10,16 @@ export function overflowRoutes(): string[] {
   return [...new Set<string>([...guardRoutes, ...postRoutes])]
 }
 
+export async function openForOverflowCheck(page: Page, route: string) {
+  // `load` also waits for images. One post never reaches it in CI, which
+  // hides the scrollWidth check. Layout is ready with the document and fonts.
+  await page.goto(route, { waitUntil: 'domcontentloaded' })
+  await expect(page.getByRole('main')).toBeVisible()
+  await page.evaluate(async () => {
+    await document.fonts.ready
+  })
+}
+
 export async function expectNoHorizontalOverflow(
   page: Page,
   route: string,
