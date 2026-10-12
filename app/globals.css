@@ -4,9 +4,9 @@
 @import "./theme/spacing.css";
 @import "./theme/containers.css";
 
-/* Skip-link focus is programmatic. Beats the preflight :focus-visible outline. */
-main:focus,
-main:focus-visible {
+/* Hash focus from the skip link. Beats the preflight :focus-visible outline. */
+#conteudo:focus,
+#conteudo:focus-visible {
   outline: none;
 }
 

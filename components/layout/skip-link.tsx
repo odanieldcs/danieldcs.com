@@ -1,8 +1,3 @@
-'use client'
-
-import type { MouseEvent } from 'react'
-import { useUiDictionary } from '@/components/interface-language-provider'
-
 // not-sr-only sets position: static and fights with fixed. Reset the clip on focus.
 const skipLinkClassName = [
   'sr-only fixed z-50 bg-background text-sm font-medium text-foreground',
@@ -15,27 +10,10 @@ const skipLinkClassName = [
   'focus-visible:[clip-path:none]',
 ].join(' ')
 
-export function SkipLink() {
-  const { skipLink } = useUiDictionary()
-
-  function onClick(event: MouseEvent<HTMLAnchorElement>) {
-    const mains = document.querySelectorAll('main')
-    const main = mains.length === 1 ? mains[0] : undefined
-    if (!main) {
-      return
-    }
-
-    event.preventDefault()
-    main.tabIndex = -1
-    main.focus()
-  }
-
+export function SkipLink({ label }: { label: string }) {
   return (
-    <nav aria-label={skipLink.navAriaLabel}>
-      {/* biome-ignore lint/a11y/useValidAnchor: click focuses the only main; views do not each carry an id. */}
-      <a href="#conteudo" className={skipLinkClassName} onClick={onClick}>
-        {skipLink.label}
-      </a>
-    </nav>
+    <a href="#conteudo" className={skipLinkClassName}>
+      {label}
+    </a>
   )
 }

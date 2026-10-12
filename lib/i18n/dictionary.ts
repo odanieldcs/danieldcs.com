@@ -23,7 +23,6 @@ export type UiDictionary = {
   }
   skipLink: {
     label: string
-    navAriaLabel: string
   }
   navigation: {
     loading: string
@@ -48,7 +47,6 @@ const uiCopy: Record<InterfaceLanguage, Omit<UiDictionary, 'nav'>> = {
     },
     skipLink: {
       label: 'Pular para o conteúdo',
-      navAriaLabel: 'Atalho',
     },
     navigation: {
       loading: 'O conteúdo está sendo carregado',
@@ -71,7 +69,6 @@ const uiCopy: Record<InterfaceLanguage, Omit<UiDictionary, 'nav'>> = {
     },
     skipLink: {
       label: 'Skip to content',
-      navAriaLabel: 'Skip',
     },
     navigation: {
       loading: 'The content is loading',
