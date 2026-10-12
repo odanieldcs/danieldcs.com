@@ -13,6 +13,7 @@ import { GridViewIcon, ListViewIcon } from '@/components/views/view-mode-icons'
 import { ViewModeSwitch } from '@/components/views/view-mode-switch'
 import { type BlogViewMode, buildBlogListingHref } from '@/lib/blog/pagination'
 import { resolveCoverSrc } from '@/lib/content/cover'
+import { contentLang } from '@/lib/i18n/content-lang'
 import { formatDate } from '@/lib/i18n/format-date'
 import { type BlogCopy, getBlogCopy } from '@/lib/i18n/pages'
 import { localizePath } from '@/lib/i18n/routes'
@@ -24,6 +25,7 @@ export type BlogPostView = {
   description: string
   /** ISO-8601 timestamp serialized on the server. */
   date: string
+  language: InterfaceLanguage
   /** Filename in public/media/posts/ when not an absolute path. */
   cover?: string
 }
@@ -74,7 +76,10 @@ function ListItem({
         data-cta-location="blog"
         data-cta-target={post.slug}
       >
-        <h2 className="min-w-0 font-display text-base font-medium transition-colors group-hover:text-accent sm:text-xl">
+        <h2
+          lang={contentLang(post.language, language)}
+          className="min-w-0 font-display text-base font-medium transition-colors group-hover:text-accent sm:text-xl"
+        >
           {post.title}
         </h2>
         <time
@@ -128,7 +133,10 @@ function GridCard({
           <time dateTime={post.date} className={postDateMetadataClassName}>
             {post.date}
           </time>
-          <h2 className="font-display text-base font-medium transition-colors group-hover:text-accent">
+          <h2
+            lang={contentLang(post.language, language)}
+            className="font-display text-base font-medium transition-colors group-hover:text-accent"
+          >
             {post.title}
           </h2>
         </div>

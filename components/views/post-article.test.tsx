@@ -19,13 +19,14 @@ vi.mock('next/link', () => ({
     children,
     href,
     className,
+    ...rest
   }: {
     children: ReactNode
     href: string
     className?: string
   }) {
     return (
-      <a href={href} className={className}>
+      <a href={href} className={className} {...rest}>
         {children}
       </a>
     )
@@ -64,4 +65,77 @@ test('wraps the article frame in main and keeps the top button outside the frame
   expect(main.contains(backToTop)).toBe(true)
   expect(frame?.contains(backToTop)).toBe(false)
   expect(container.querySelector('img')?.getAttribute('alt')).toBe('')
+})
+
+function renderArticle(
+  language: 'pt' | 'en',
+  contentLanguage: 'pt' | 'en' = 'pt',
+) {
+  return render(
+    <PostArticle
+      post={{
+        ...post,
+        frontmatter: { ...post.frontmatter, language: contentLanguage },
+      }}
+      language={language}
+    />,
+  )
+}
+
+test('marks the title and body when a Portuguese post is read in English', () => {
+  const { container } = renderArticle('en')
+
+  expect(screen.getByRole('heading', { level: 1 }).getAttribute('lang')).toBe(
+    'pt-BR',
+  )
+  expect(screen.getByText('Body').parentElement?.getAttribute('lang')).toBe(
+    'pt-BR',
+  )
+  expect(container.querySelector('article')?.hasAttribute('lang')).toBe(false)
+  expect(container.querySelector('img')?.hasAttribute('lang')).toBe(false)
+
+  const published = screen.getByRole('time')
+  expect(published.hasAttribute('lang')).toBe(false)
+  expect(published.textContent).toBe('Sep 21, 2026')
+  expect(screen.getByRole('note').hasAttribute('lang')).toBe(false)
+  expect(
+    screen
+      .getByRole('link', { name: 'Read in Portuguese' })
+      .hasAttribute('lang'),
+  ).toBe(false)
+  expect(
+    screen.getByRole('link', { name: 'Back to Blog' }).hasAttribute('lang'),
+  ).toBe(false)
+})
+
+test('omits lang when a Portuguese post is read in Portuguese', () => {
+  const { container } = renderArticle('pt')
+
+  expect(container.querySelector('[lang]')).toBeNull()
+  expect(screen.getByRole('time').textContent).toBe('21 set. 2026')
+  expect(screen.queryByRole('note')).toBeNull()
+  expect(
+    screen
+      .getByRole('link', { name: 'Voltar para o blog' })
+      .hasAttribute('lang'),
+  ).toBe(false)
+})
+
+test('marks the title and body when an English post is read in Portuguese', () => {
+  renderArticle('pt', 'en')
+
+  expect(screen.getByRole('heading', { level: 1 }).getAttribute('lang')).toBe(
+    'en',
+  )
+  expect(screen.getByText('Body').parentElement?.getAttribute('lang')).toBe(
+    'en',
+  )
+  expect(screen.getByRole('time').hasAttribute('lang')).toBe(false)
+  expect(screen.getByRole('time').textContent).toBe('21 set. 2026')
+  expect(screen.getByRole('note').hasAttribute('lang')).toBe(false)
+  expect(
+    screen
+      .getByRole('link', { name: 'Voltar para o blog' })
+      .hasAttribute('lang'),
+  ).toBe(false)
 })

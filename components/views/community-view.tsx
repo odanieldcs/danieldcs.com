@@ -6,6 +6,7 @@ import { Container } from '@/components/layout/container'
 import { GridViewIcon, ListViewIcon } from '@/components/views/view-mode-icons'
 import { ViewModeSwitch } from '@/components/views/view-mode-switch'
 import type { CommunityEntryType } from '@/lib/content/community-schema'
+import { contentLang } from '@/lib/i18n/content-lang'
 import { formatDate } from '@/lib/i18n/format-date'
 import { type CommunityCopy, getCommunityCopy } from '@/lib/i18n/pages'
 import type { InterfaceLanguage } from '@/lib/i18n/types'
@@ -79,7 +80,12 @@ function EntryBody({
         <span aria-hidden="true"> · </span>
         <span>{copy.types[entry.type]}</span>
       </p>
-      <h3 className={titleClassName}>{entry.title}</h3>
+      <h3
+        className={titleClassName}
+        lang={contentLang(entry.language, language)}
+      >
+        {entry.title}
+      </h3>
       {entry.eventName ? (
         <p className="mt-2 text-sm font-semibold text-accent">
           {entry.eventName}
