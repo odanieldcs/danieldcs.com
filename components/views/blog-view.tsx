@@ -116,7 +116,7 @@ function GridCard({
           {coverSrc ? (
             <Image
               src={coverSrc}
-              alt={post.title}
+              alt=""
               width={COVER_WIDTH}
               height={COVER_HEIGHT}
               className="size-full object-cover"

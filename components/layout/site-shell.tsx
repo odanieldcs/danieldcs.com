@@ -7,7 +7,9 @@ import { Footer } from '@/components/layout/footer'
 import { Header } from '@/components/layout/header'
 import { LoadingBar } from '@/components/layout/loading-indicator'
 import { NavigationProgress } from '@/components/layout/navigation-progress'
+import { SkipLink } from '@/components/layout/skip-link'
 import { ThemeProvider } from '@/components/theme-provider'
+import { getDictionary } from '@/lib/i18n/dictionary'
 import { htmlLang, type InterfaceLanguage } from '@/lib/i18n/types'
 import '@/app/globals.css'
 
@@ -31,6 +33,8 @@ export function SiteShell({
   language: InterfaceLanguage
   children: ReactNode
 }) {
+  const skipLabel = getDictionary(language).skipLink.label
+
   return (
     <html
       lang={htmlLang[language]}
@@ -46,8 +50,11 @@ export function SiteShell({
             />
             <BootProgress />
             <NavigationProgress />
+            <SkipLink label={skipLabel} />
             <Header language={language} />
-            {children}
+            <div id="conteudo" tabIndex={-1}>
+              {children}
+            </div>
             <Footer />
           </InterfaceLanguageProvider>
         </ThemeProvider>

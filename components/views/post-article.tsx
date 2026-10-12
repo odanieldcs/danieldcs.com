@@ -69,7 +69,7 @@ export function PostArticle({
     : undefined
 
   return (
-    <>
+    <main>
       <div className="article-frame">
         <Container
           as="article"
@@ -87,7 +87,7 @@ export function PostArticle({
           {coverSrc ? (
             <Image
               src={coverSrc}
-              alt={frontmatter.title}
+              alt=""
               width={COVER_WIDTH}
               height={COVER_HEIGHT}
               className={articleCoverClassName}
@@ -123,6 +123,6 @@ export function PostArticle({
         </Container>
       </div>
       <ArticleScrollToTop label={copy.backToTop} />
-    </>
+    </main>
   )
 }

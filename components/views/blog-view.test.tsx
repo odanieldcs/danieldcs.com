@@ -89,14 +89,23 @@ test('list view formats month and year in English', () => {
   expect(within(articleLink).getByRole('time').textContent).toBe('Sep 2026')
 })
 
-test('grid view hides descriptions and shows cover images', () => {
-  renderBlog('pt', { view: 'grid' })
+test('grid view hides descriptions and treats covers as decorative', () => {
+  const { container } = renderBlog('pt', { view: 'grid' })
 
   expect(
     screen.queryByText('Um passeio pelo pipeline de ponta a ponta.'),
   ).toBeNull()
-  expect(screen.getAllByRole('img')).toHaveLength(3)
-  expect(screen.getByRole('img', { name: 'Hello World' })).toBeTruthy()
+  const covers = container.querySelectorAll('img')
+  expect(covers).toHaveLength(3)
+  for (const cover of covers) {
+    expect(cover.getAttribute('alt')).toBe('')
+  }
+  expect(
+    screen.getByRole('link', {
+      name: (accessibleName) =>
+        accessibleName.split('Hello World').length - 1 === 1,
+    }),
+  ).toBeTruthy()
 })
 
 test('view switch links preserve the current page', () => {

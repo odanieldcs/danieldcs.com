@@ -21,6 +21,9 @@ export type UiDictionary = {
     trigger: string
     navAriaLabel: string
   }
+  skipLink: {
+    label: string
+  }
   navigation: {
     loading: string
   }
@@ -42,6 +45,9 @@ const uiCopy: Record<InterfaceLanguage, Omit<UiDictionary, 'nav'>> = {
       trigger: 'Menu',
       navAriaLabel: 'Navegação principal',
     },
+    skipLink: {
+      label: 'Pular para o conteúdo',
+    },
     navigation: {
       loading: 'O conteúdo está sendo carregado',
     },
@@ -60,6 +66,9 @@ const uiCopy: Record<InterfaceLanguage, Omit<UiDictionary, 'nav'>> = {
     mobileMenu: {
       trigger: 'Menu',
       navAriaLabel: 'Main navigation',
+    },
+    skipLink: {
+      label: 'Skip to content',
     },
     navigation: {
       loading: 'The content is loading',

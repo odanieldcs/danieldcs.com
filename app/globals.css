@@ -4,6 +4,12 @@
 @import "./theme/spacing.css";
 @import "./theme/containers.css";
 
+/* Hash focus from the skip link. Beats the preflight :focus-visible outline. */
+#conteudo:focus,
+#conteudo:focus-visible {
+  outline: none;
+}
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
