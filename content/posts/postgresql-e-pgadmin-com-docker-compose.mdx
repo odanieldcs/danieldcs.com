@@ -27,7 +27,7 @@ docker --version
 
 O resultado esperado é a versão do Docker instalado, semelhante a este print:
 
-![](/media/posts/postgresql-e-pgadmin-com-docker-compose/docker-version-300x65.png)
+![Terminal com docker --version e a versão 24.0.2](/media/posts/postgresql-e-pgadmin-com-docker-compose/docker-version-300x65.png)
 
 A segunda etapa é criar uma rede para nossos Containers, geralmente gosto de adotar essa estratégia para manter os containers de um projeto, dentro de uma rede especifica para ele, rode o seguinte comando:
 
@@ -37,7 +37,7 @@ docker network create local-network
 
 Após executar o comando, você deve ver um ID alfanúmerico no terminal, semelhante a este:
 
-![](/media/posts/postgresql-e-pgadmin-com-docker-compose/docker-network-created.png)
+![Terminal com o ID da rede local-network recém-criada](/media/posts/postgresql-e-pgadmin-com-docker-compose/docker-network-created.png)
 
 ## Configurando o PostgreSQL com Docker
 
@@ -80,7 +80,7 @@ Uma informação extra, caso você esteja usando um Macbook com M1 ou M2, recome
 
 Isto ajuda na compatibilidade da imagem Docker com o Apple Silicon, um problema que eu tive logo que comecei a trabalhar com os M2.
 
-![](/media/posts/postgresql-e-pgadmin-com-docker-compose/docker-property-platform.png)
+![Compose com platform linux/x86_64 no serviço dcs-postgres](/media/posts/postgresql-e-pgadmin-com-docker-compose/docker-property-platform.png)
 
 Agora com o serviço definido, podemos executar nosso Compose, no terminal execute:
 
@@ -92,7 +92,7 @@ Após rodar o comando, o Docker vai fazer o download da imagem do PostgreSQL, in
 
 No final, você deve ver uma imagem semelhante a esta.
 
-![](/media/posts/postgresql-e-pgadmin-com-docker-compose/docker-compose-postgres-started.png)
+![Log do PostgreSQL 15.3 pronto para conexões na porta 5432](/media/posts/postgresql-e-pgadmin-com-docker-compose/docker-compose-postgres-started.png)
 
 Agora o que resta é testar a conexão.
 
@@ -150,13 +150,13 @@ Agora para testar, pare o container atual (CTRL+C) no seu terminal e execute nov
 
 O resultado no seu terminal deve ser semelhante a este:
 
-![](/media/posts/postgresql-e-pgadmin-com-docker-compose/pgadmin-container-runing.png)
+![Containers dcs-postgres e dcs-pgadmin no ar, pgAdmin na porta 80](/media/posts/postgresql-e-pgadmin-com-docker-compose/pgadmin-container-runing.png)
 
 Para testar se o serviço do pgAdmin está funcionando acesse http://localhost:8080 no seu navegador, haverá uma tela de autenticação, você deverá informar o usuário e senha que defimos no Composer e se preferir você poderá trocar o idioma da aplicação.
 
 A tela deve ser semelhante a esta:
 
-![](/media/posts/postgresql-e-pgadmin-com-docker-compose/pgadmin-ui-web-1024x421.png)
+![Tela de login do pgAdmin com o e-mail user@localhost.com](/media/posts/postgresql-e-pgadmin-com-docker-compose/pgadmin-ui-web-1024x421.png)
 
 Autenticado, agora vamos adicionar nosso servidor e testar a conexão.
 
@@ -180,19 +180,19 @@ Existem também outras configurações úteis, mas para este cenário, vamos con
 
 Após salvar, se você seguiu todas as etapas até aqui, o resultado é um Dashboard com as informações do banco de dados que você está conectado.
 
-![](/media/posts/postgresql-e-pgadmin-com-docker-compose/pgadmin-database-connection-1024x390.png)
+![Dashboard do pgAdmin conectado ao Server Projeto A](/media/posts/postgresql-e-pgadmin-com-docker-compose/pgadmin-database-connection-1024x390.png)
 
 Por fim, agora vamos criar nosso database, clique com botão direito em Bancos de dados
 
-![](/media/posts/postgresql-e-pgadmin-com-docker-compose/pgadmin-new-database.png)
+![Menu Criar Banco de dados no Object Explorer do pgAdmin](/media/posts/postgresql-e-pgadmin-com-docker-compose/pgadmin-new-database.png)
 
 Informe um nome para seu banco de dados e clique em Salvar para continuar.
 
-![](/media/posts/postgresql-e-pgadmin-com-docker-compose/pgadmin-new-database-modal.png)
+![Diálogo de criação do banco meu-db no pgAdmin](/media/posts/postgresql-e-pgadmin-com-docker-compose/pgadmin-new-database-modal.png)
 
 Finalizado, na aba Object Explorer, você deverá ver o seu novo banco de dados listado.  
 
-![](/media/posts/postgresql-e-pgadmin-com-docker-compose/pgadmin-new-database-view.png)
+![Object Explorer com o banco meu-db criado](/media/posts/postgresql-e-pgadmin-com-docker-compose/pgadmin-new-database-view.png)
 
 Pronto! Chegamos ao fim e agora você tem um ambiente com PostgreSQL e o pgAdmin web.
 

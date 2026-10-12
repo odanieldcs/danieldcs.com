@@ -350,7 +350,7 @@ Uma vez adicionada a base do nosso método com html carregado, veja que estou pa
 
 Uma dica para identificar o seletor correto é usar o modo Inspect do Google Chrome, com ele aberto você pode copiar o seletor ao inspecionar o html:
 
-![](/media/posts/construindo-um-web-scraping-em-nodejs/tutorial-web-scraper-inspecionar-elemento-300x174.png)
+![Inspecionar elemento no Chrome com Copy selector no card do produto](/media/posts/construindo-um-web-scraping-em-nodejs/tutorial-web-scraper-inspecionar-elemento-300x174.png)
 
 Descobrimos que o **li** contém algumas classes e está dentro do **ul** com identificador **searchResults**. Com isso podemos iterar na lista. Veja que o seletor ideal é:
 
@@ -440,7 +440,7 @@ Por fim, adicione o script start no seu package.json.
 
 Agora basta digitar **npm start** no seu terminal para a mágica acontecer.
 
-![](/media/posts/construindo-um-web-scraping-em-nodejs/magic.gif)
+![](/media/posts/construindo-um-web-scraping-em-nodejs/magic.webp)
 
 Este meu exemplo é básico,  ainda é possível melhorar os tratamentos de erros, otimizar as funções e usar outras bibliotecas. Puppeteer ou PhantomJS são outras opções, caso você queira aprender mais.
 
