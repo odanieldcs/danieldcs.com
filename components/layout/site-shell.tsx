@@ -7,6 +7,7 @@ import { Footer } from '@/components/layout/footer'
 import { Header } from '@/components/layout/header'
 import { LoadingBar } from '@/components/layout/loading-indicator'
 import { NavigationProgress } from '@/components/layout/navigation-progress'
+import { SkipLink } from '@/components/layout/skip-link'
 import { ThemeProvider } from '@/components/theme-provider'
 import { htmlLang, type InterfaceLanguage } from '@/lib/i18n/types'
 import '@/app/globals.css'
@@ -46,6 +47,7 @@ export function SiteShell({
             />
             <BootProgress />
             <NavigationProgress />
+            <SkipLink />
             <Header language={language} />
             {children}
             <Footer />

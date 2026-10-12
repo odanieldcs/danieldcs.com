@@ -90,7 +90,7 @@ export function ViewModeSwitch({
               <Link
                 key={option.id}
                 href={hrefFor(option.id)}
-                aria-pressed={pressed}
+                aria-current={pressed ? 'page' : undefined}
                 aria-label={option.label}
                 aria-describedby={tooltipId}
                 data-highlight-target={option.id}

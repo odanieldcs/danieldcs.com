@@ -4,6 +4,12 @@
 @import "./theme/spacing.css";
 @import "./theme/containers.css";
 
+/* Skip-link focus is programmatic. Beats the preflight :focus-visible outline. */
+main:focus,
+main:focus-visible {
+  outline: none;
+}
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
