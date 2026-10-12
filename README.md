@@ -10,7 +10,7 @@ Personal website of Daniel Castro. Static-first Next.js app, hosted on Vercel.
 - Biome (lint and format)
 - MDX loaded from `content/` in `lib/content` (gray-matter, Zod, `next-mdx-remote`)
 - Vitest and Testing Library
-- Playwright (Chromium)
+- Playwright (`chromium`, `mobile`, and `webkit`)
 - Vercel
 
 ## Getting started
@@ -31,16 +31,18 @@ Environment variables are optional; the site runs locally without them. `NEXT_PU
 - `pnpm build` — production build
 - `pnpm start` — serve the production build
 - `pnpm test` — unit tests (Vitest)
-- `pnpm test:e2e` — E2E smoke tests (Playwright, Chromium)
+- `pnpm test:e2e` — Playwright. Untagged tests run in `chromium` (Desktop Chrome). `@mobile` runs in `mobile` (Pixel 7). `@smoke` runs in `webkit` (Desktop Safari).
 - `pnpm lint` — Biome check
 - `pnpm format` — Biome check and write
 - `pnpm typecheck` — `tsc --noEmit`
 
-Install Playwright's Chromium browser once before the first E2E run:
+Install Chromium and WebKit once before the first local E2E run. CI uses the Playwright image, which already includes the browsers, and does not install them:
 
 ```sh
-pnpm exec playwright install
+pnpm exec playwright install chromium webkit
 pnpm test:e2e
+pnpm test:e2e -- --project=mobile
+pnpm test:e2e -- --project=webkit
 ```
 
 `pnpm test:e2e` builds and starts the app (`pnpm build && pnpm start`) via Playwright's `webServer`.
@@ -52,7 +54,7 @@ pnpm test:e2e
 - `public/` — static files, including `media/` for posts, personal photos, icons, illustrations, and documents
 - `lib/` — shared TypeScript modules
 - `components/` — UI by responsibility: `views/` (pages), `layout/` (shell, header, footer, container), `mdx/` (MDX blocks), `ui/` (controls and icons). Providers and route infra stay at the root (`theme-provider`, `interface-language-provider`, `json-ld`, `route-error-boundary`).
-- `e2e/` — Playwright smoke tests
+- `e2e/` — Playwright tests (`chromium`, `@mobile`, `@smoke`)
 
 `@/foo` resolves to `<repo>/foo` via `compilerOptions.paths` in `tsconfig.json`. Example: `@/lib/site` → `lib/site.ts`. There is no `~/*` alias.
 

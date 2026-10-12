@@ -14,6 +14,10 @@ function loadPosts(context: string): PostSummary[] {
   return cachedPosts
 }
 
+export function getAllBlogPosts(context: string): PostSummary[] {
+  return loadPosts(context)
+}
+
 export function getNewestBlogPost(context: string): PostSummary {
   const posts = loadPosts(context)
   const newest = posts[0]

@@ -27,7 +27,9 @@ test('first Tab skips to content on a post', async ({ page }) => {
   await skipToContent(page, '/blog/meu-blog-profissional')
 })
 
-test('open mobile menu makes the skip link inert', async ({ page }) => {
+test('open mobile menu makes the skip link inert', { tag: '@mobile' }, async ({
+  page,
+}) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/')
   await page.getByRole('button', { name: 'Menu' }).click()
