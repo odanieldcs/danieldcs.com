@@ -92,7 +92,7 @@ Document name and properties here first. Stable `snake_case`; identifiers only; 
 
 ## Operations
 
-Configuration outside this repo that the code and the privacy policy depend on.
+Configuration outside this repo that the code and the privacy policy depend on. Operational details (channels, accounts) stay out of this repository.
 
 **PostHog** — project `Daniel's Blog` (US Cloud)
 
@@ -106,9 +106,8 @@ Configuration outside this repo that the code and the privacy policy depend on.
 
 - `NEXT_PUBLIC_POSTHOG_KEY` is set for **Production only**; preview and development send nothing.
 - Changing the key requires a production redeploy (`NEXT_PUBLIC_*` is inlined at build time).
-- Failed deployment notifications: `<e-mail ou canal>`.
+- Failed deployment notifications are enabled.
 
 **Uptime** — Better Stack
 
-- Monitors `<URL de produção>` and `<URL>/en`; alerts go to Slack (`<#canal>`).
-- Switch the monitored URLs to `danieldcs.com` in the Migration & Launch milestone.
+- Monitors `https://danieldcs.com`; alerts go to Slack.

@@ -1,6 +1,6 @@
 export const siteName = 'danieldcs.com'
 
-/** Canonical origin of the site, including in previews before the launch. */
+/** Canonical origin of the site. Previews use it too, so canonical never points at a preview URL. */
 export const siteUrl = 'https://danieldcs.com'
 
 export function absoluteSiteUrl(pathname: string): string {
