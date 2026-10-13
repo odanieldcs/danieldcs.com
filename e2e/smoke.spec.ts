@@ -1,4 +1,5 @@
-import { expect, test } from '@playwright/test'
+import { expect } from '@playwright/test'
+import { test } from './helpers/block-posthog'
 
 const lightBackground = 'rgb(242, 235, 235)'
 const darkBackground = 'rgb(16, 13, 13)'

@@ -1,9 +1,5 @@
-import {
-  type APIRequestContext,
-  expect,
-  type Page,
-  test,
-} from '@playwright/test'
+import { type APIRequestContext, expect, type Page } from '@playwright/test'
+import { test } from './helpers/block-posthog'
 import { getNewestBlogPost } from './helpers/posts'
 import { xmlTextContents } from './helpers/xml'
 
