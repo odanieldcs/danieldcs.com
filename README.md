@@ -1,6 +1,6 @@
 # danieldcs.com
 
-Personal website of Daniel Castro. Static-first Next.js app, hosted on Vercel.
+Personal website of Daniel Castro, live at https://danieldcs.com. Static-first Next.js app, hosted on Vercel.
 
 ## Stack
 
