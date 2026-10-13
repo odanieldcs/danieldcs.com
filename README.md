@@ -43,6 +43,7 @@ pnpm exec playwright install chromium webkit
 pnpm test:e2e
 pnpm test:e2e -- --project=mobile
 pnpm test:e2e -- --project=webkit
+PLAYWRIGHT_BASE_URL=https://danieldcs.com pnpm test:e2e
 ```
 
 `pnpm test:e2e` builds and starts the app (`pnpm build && pnpm start`) via Playwright's `webServer`.

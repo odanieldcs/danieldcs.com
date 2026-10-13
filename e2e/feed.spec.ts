@@ -1,4 +1,5 @@
-import { expect, test } from '@playwright/test'
+import { expect } from '@playwright/test'
+import { test } from './helpers/block-posthog'
 import { xmlTextContents } from './helpers/xml'
 
 function canonicalHref(html: string) {
