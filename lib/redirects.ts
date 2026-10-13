@@ -352,20 +352,34 @@ export const redirectGroups: readonly RedirectGroup[] = [
 
   // --- Temporary (307) ---
   {
-    to: '/about?origin=cursos',
+    to: '/?origin=cursos',
     permanent: false,
     from: ['/cursos{/}?'],
   },
   {
-    to: '/about?origin=webfs',
+    to: '/?origin=webfs',
     permanent: false,
-    from: ['/curso-comunidade-web-full-stack{/}?', '/webfs{/}?'],
+    from: [
+      '/curso-comunidade-web-full-stack{/}?',
+      '/webfs{/}?',
+      '/curso-web-fullstack-js{/}?',
+    ],
   },
   {
     to: '/',
     permanent: false,
     note: 'eventos encerrados',
     from: ['/semana-ddev{/}?', '/odt24{/}?'],
+  },
+  {
+    to: 'https://github.com/danielcsrs/tips-clean-js',
+    permanent: false,
+    from: ['/guia-clean-code{/}?'],
+  },
+  {
+    to: 'https://github.com/odanieldcs/tdc-palestra-graphql',
+    permanent: false,
+    from: ['/repo-graphql{/}?'],
   },
 
   // --- Short links (307) ---
@@ -383,6 +397,21 @@ export const redirectGroups: readonly RedirectGroup[] = [
     to: 'https://discord.com/invite/gce4RSzhTC',
     permanent: false,
     from: ['/discord{/}?'],
+  },
+  {
+    to: 'https://calendly.com/odanieldcs',
+    permanent: false,
+    from: ['/calendar{/}?'],
+  },
+  {
+    to: 'https://danieldcs.com/meet',
+    permanent: false,
+    from: ['/agendamento{/}?'],
+  },
+  {
+    to: 'https://chat.whatsapp.com/IxMEKAWhKWjHLKKIF6NjEL',
+    permanent: false,
+    from: ['/avisos{/}?'],
   },
   {
     to: 'https://linktr.ee/danielcsrs',
