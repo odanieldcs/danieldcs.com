@@ -404,7 +404,7 @@ export const redirectGroups: readonly RedirectGroup[] = [
     from: ['/calendar{/}?'],
   },
   {
-    to: 'https://danieldcs.com/meet',
+    to: 'https://danieldcs.com/calendar',
     permanent: false,
     from: ['/agendamento{/}?'],
   },
