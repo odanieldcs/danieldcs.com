@@ -26,7 +26,7 @@
     "react-dom": "19.2.8",
     "remark-gfm": "^4.0.1",
     "tailwindcss": "^4.3.3",
-    "zod": "^4.6.5"
+    "zod": "^4.6.6"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",
